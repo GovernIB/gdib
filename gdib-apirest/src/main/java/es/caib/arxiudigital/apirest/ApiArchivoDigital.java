@@ -1935,6 +1935,7 @@ public class ApiArchivoDigital {
       requiredFilters.setCustDate(filtrosRequeridos.getCustDate());
       requiredFilters.setDocSeries(filtrosRequeridos.getDocSeries());
       requiredFilters.setName(filtrosRequeridos.getName());
+      requiredFilters.setEniId(filtrosRequeridos.getEniId());
     }
 
     if (filtroOptativo != null) {
@@ -1947,6 +1948,7 @@ public class ApiArchivoDigital {
       optionalFilters.setCustDate(crearLista(filtroOptativo.getCustDate()));
       optionalFilters.setDocSeries(crearLista(filtroOptativo.getDocSeries()));
       optionalFilters.setName(crearLista(filtroOptativo.getName()));
+      optionalFilters.setEniId(crearLista(filtroOptativo.getEniId()));
     }
 
     param.setRequiredFilters(requiredFilters);
