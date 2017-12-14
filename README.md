@@ -72,3 +72,5 @@ API Rest per atacar als Serveis de GDIB a traves del BUS de Serveis
      <version>1.0.5</version>
   </dependency>
   ```
+  
+  Per l'accés a l'Arxiu CAIB és recomana fer ús de l'API d'Arxiu genèric emprant el plugin de d'Arxiu Digital CAIB( 	arxiudigitalcaib): https://github.com/GovernIB/pluginsib/tree/pluginsib-1.0/plugins-documentcustody
