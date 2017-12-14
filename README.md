@@ -5,9 +5,9 @@
 Descripció del contingut de cada directori (14/12/2017)
 <table>
   <tr><td>
-**Directori**
+    <b>Directori</b>
    </td><td>
-**Descripció**
+    <b>Descripció</b>
 </td></tr>
 
 <tr><td>
