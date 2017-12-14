@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="GetMigrationNodeSequence" xmlns="http://ws.apache.org/ns/synapse">
+  <parameter name="appId"/>
+  <parameter name="externalId"/>
+  <parameter name="getContent"/>
+  <parameter name="serviceHeaderString"/>
+  <sequence>
+    <log>
+      <property name="### Secuencia getMigrationNodeSequence ###" value="!!!!!!!!!!!!!!!!!!!!!!!!!!! Entrando en la secuencia getMigrationNodeSequence !!!!!!!!!!!!!!!!!!!!!!!!!!!"/>
+    </log>
+    <payloadFactory media-type="xml">
+      <format>
+        <soapenv:Envelope
+          xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+          xmlns:ws="http://www.caib.es/gdib/repository/ws" xmlns:wsm="http://www.caib.es/gdib/migration/ws">
+          <soapenv:Body>
+            <wsm:getMigrationNode>
+              <wsm:migrationId>
+                <wsm:appId>$1</wsm:appId>
+                <wsm:externalId>$2</wsm:externalId>
+              </wsm:migrationId>
+              <wsm:withContent>$3</wsm:withContent>
+              <wsm:withSign>$3</wsm:withSign>
+              <wsm:withMigrationSign>$3</wsm:withMigrationSign>
+            </wsm:getMigrationNode>
+          </soapenv:Body>
+        </soapenv:Envelope>
+      </format>
+      <args>
+        <arg evaluator="xml" expression="$func:appId" xmlns:ns="http://org.apache.synapse/xsd"/>
+        <arg evaluator="xml" expression="$func:externalId" xmlns:ns="http://org.apache.synapse/xsd"/>
+        <arg evaluator="xml" expression="$func:getContent" xmlns:ns="http://org.apache.synapse/xsd"/>
+      </args>
+    </payloadFactory>
+    <enrich>
+      <source clone="true" xmlns:ns="http://org.apache.synapse/xsd"
+        xmlns:ws="http://www.caib.es/gdib/repository/ws"
+        xmlns:wsm="http://www.caib.es/gdib/migration/ws" xpath="get-property('serviceHeaderOm')"/>
+      <target action="child" xmlns:ns="http://org.apache.synapse/xsd"
+        xmlns:ws="http://www.caib.es/gdib/repository/ws"
+        xmlns:wsm="http://www.caib.es/gdib/migration/ws" xpath="$body/wsm:getMigrationNode"/>
+    </enrich>
+    <log level="full"/>
+    <header name="Action" scope="default" value="getMigrationNode"/>
+    <call>
+      <endpoint>
+        <address format="soap11" trace="enable" uri="https://afirmades.caib.es:4430/alfresco/webservice/gdib/migration">
+          <enableAddressing version="submission"/>
+          <timeout>
+            <duration>20000</duration>
+            <responseAction>fault</responseAction>
+          </timeout>
+          <suspendOnFailure>
+            <errorCodes>-1</errorCodes>
+            <initialDuration>0</initialDuration>
+            <progressionFactor>1.0</progressionFactor>
+            <maximumDuration>0</maximumDuration>
+          </suspendOnFailure>
+          <markForSuspension>
+            <errorCodes>-1</errorCodes>
+          </markForSuspension>
+        </address>
+      </endpoint>
+    </call>
+    <header action="remove" name="Action" scope="default"/>
+    <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+    <xslt key="conf:/repository/esb/registry/xslt/getMigrationDocXMLResponse.xslt">
+      <property expression="$func:getContent" name="retrieveContent"/>
+    </xslt>
+  </sequence>
+</template>

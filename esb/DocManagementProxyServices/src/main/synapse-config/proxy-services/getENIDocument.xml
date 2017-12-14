@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="getENIDocument" startOnLoad="true" trace="enable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target faultSequence="conf:/repository/esb/registry/sequences/ExceptionSequence">
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+      <property name="csgdOperation" scope="default" type="STRING" value="getENIDocument"/>
+      <property name="typeRestrictions" scope="default" type="STRING" value="eni:documento"/>
+      <log level="full"/>
+      <property expression="json-eval($.getENIDocRequest.serviceHeader)"
+        name="serviceHeader" scope="default" type="STRING"/>
+      <script function="parseServiceHeader"
+        key="conf:/repository/esb/registry/js/serviceHeaderUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('errorMessage')" name="### Cabecera correcta ¿? ###"/>
+      </log>
+      <log>
+        <property expression="get-property('username')" name="### Usuario cabecera Property ###"/>
+      </log>
+      <filter xpath="not(get-property('serviceHeaderOk'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+          <payloadFactory media-type="json">
+            <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}                 
+		            	</format>
+            <args>
+              <arg evaluator="xml" expression="get-property('errorMessage')"/>
+            </args>
+          </payloadFactory>
+          <respond/>
+        </then>
+        <else/>
+      </filter>
+      <payloadFactory media-type="json">
+        <format>
+           		{
+				  "getDocumentRequest": {
+				    "serviceHeader": {
+				      "serviceVersion": "1.0",
+				      "auditInfo": {
+				        "applicant": {
+				          "document": "$1",
+				          "name": "$2"
+				        },
+				        "publicServant": {
+				        	"identificationData": {
+					          "document": "$3",
+					          "name": "$4"
+					        },
+					        "organization": "$5"
+				        },
+				        "file": {
+				          "id": "$6",
+				          "proceedings": {
+				          	"id": "$7", 
+				          	"name": "$8" 
+				          }
+				        },
+				        "application": "$9",
+				        "esbOperation": "$10"
+				      },
+				      "securityInfo": {
+				        "user": "$11",
+				        "$12": "$13"
+				      },
+				      "restrictions": {
+				      	"types": "$14"
+				      }
+				    },
+				    "param": {
+				      "documentId": { 
+				      	"nodeId": "$15"
+				      },
+				      "content": "true"
+				    }
+				  }
+				}                 
+           	   </format>
+        <args>
+          <arg evaluator="xml" expression="get-property('serviceHeaderApplicantDoc')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderApplicantName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderPublicServantDoc')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderPublicServantName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderOrgAuthor')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileId')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileProcId')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileProcName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderAppName')"/>
+          <arg evaluator="xml" expression="get-property('csgdOperation')"/>
+          <arg evaluator="xml" expression="get-property('username')"/>
+          <arg evaluator="xml" expression="get-property('secToken')"/>
+          <arg evaluator="xml" expression="get-property('password')"/>
+          <arg evaluator="xml" expression="get-property('typeRestrictions')"/>
+          <arg evaluator="json" expression="$.getENIDocRequest.param.nodeId"/>
+        </args>
+      </payloadFactory>
+      <call>
+        <endpoint>
+          <http method="post" trace="disable" uri-template="https://afirmades.caib.es:4430/esb/services/getDocument">
+            <timeout>
+              <duration>20000</duration>
+              <responseAction>fault</responseAction>
+            </timeout>
+            <suspendOnFailure>
+              <errorCodes>-1</errorCodes>
+              <initialDuration>0</initialDuration>
+              <progressionFactor>1.0</progressionFactor>
+              <maximumDuration>0</maximumDuration>
+            </suspendOnFailure>
+            <markForSuspension>
+              <errorCodes>-1</errorCodes>
+            </markForSuspension>
+          </http>
+        </endpoint>
+      </call>
+      <filter regex="200" source="get-property('axis2', 'HTTP_SC')" xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0">
+        <then>
+          <property
+            expression="json-eval($.getDocumentResult.result.code)"
+            name="getDocResultCode" scope="default" type="STRING"/>
+          <log>
+            <property
+              expression="boolean(get-property('getDocResultCode') = 'COD_000')" name="### Respuesta GetDocument correcta y con resultados ¿? ###"/>
+          </log>
+          <!-- Formar respuesta formato ENI Doc v1.0 -->
+          <!-- Se forma estrucutura XML de la respuesta recibida -->
+          <property expression="json-eval($.getDocumentResult)"
+            name="getDocRes" scope="default" type="STRING"/>
+          <script function="extractDocumentInfoAndContents"
+            key="conf:/repository/esb/registry/js/getDocumentUtils.js" language="js"/>
+          <payloadFactory media-type="xml">
+            <format>
+              <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                <soapenv:Body>
+                  <csgd:document/>
+                </soapenv:Body>
+              </soapenv:Envelope>
+            </format>
+            <args/>
+          </payloadFactory>
+          <property expression="get-property('documentResp')"
+            name="documentRespOm" scope="default" type="OM"/>
+          <enrich>
+            <source clone="true" xpath="get-property('documentRespOm')"/>
+            <target xpath="$body/csgd:document"/>
+          </enrich>
+          <log>
+            <property
+              expression="/csgd:document/csgd:aspects[text() = 'gdib:borrador']" name="### Aspecto borrador ###"/>
+          </log>
+          <log>
+            <property
+              expression="boolean(/csgd:document/csgd:aspects[text() = 'gdib:borrador'])" name="### Documento borrador ¿? ###"/>
+          </log>
+          <filter xpath="boolean(//csgd:aspects[text() = 'gdib:borrador'])">
+            <then>
+              <property name="exceptionHttpStatusCode" scope="default"
+                type="STRING" value="404"/>
+              <property name="exceptionCode" scope="default"
+                type="STRING" value="COD_002"/>
+              <property name="exceptionDesc" scope="default"
+                type="STRING" value="No es posible generar la estructura ENI para un documento en elaboración (borrador)."/>
+            </then>
+            <else>
+              <!-- Pdte de determinar como son retornados los documentos XML por la capa GDIB, en base64 o XML - 01/09/2016 -->
+              <filter xpath="upper-case(/csgd:document/csgd:metadataCollection[csgd:qname = 'eni:nombre_formato']/csgd:value/text()) = 'XML'">
+                <then>
+                  <property
+                    expression="$body/csgd:document/csgd:binaryContents[csgd:binaryType = 'CONTENT']/csgd:content/text()"
+                    name="base64Source" scope="default" type="STRING"/>
+                  <class name="es.caib.archivodigital.esb.services.mediators.Base64Mediator">
+                    <property name="charset" value="UTF-8"/>
+                    <property name="operation" value="decode"/>
+                  </class>
+                  <property expression="get-property('base64Res')"
+                    name="docContent" scope="default" type="STRING"/>
+                </then>
+                <else>
+                  <property
+                    expression="$body/csgd:document/csgd:binaryContents[csgd:binaryType = 'CONTENT']/csgd:content/text()"
+                    name="docContent" scope="default" type="STRING"/>
+                </else>
+              </filter>
+              <xslt key="conf:/repository/esb/registry/xslt/generateENIDocument.xslt">
+                <property expression="get-property('docContent')" name="docContent"/>
+              </xslt>
+              <log level="full"/>
+              <property expression="$body/enidoc:documento"
+                name="base64Source" scope="default" type="STRING"
+                xmlns:enidoc="http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e"
+                xmlns:enidocmeta="http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e/metadatos"
+                xmlns:enids="http://administracionelectronica.gob.es/ENI/XSD/v1.0/firma" xmlns:enifile="http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e/contenido"/>
+              <class name="es.caib.archivodigital.esb.services.mediators.Base64Mediator">
+                <property name="charset" value="UTF-8"/>
+                <property name="operation" value="encode"/>
+              </class>
+              <log>
+                <property expression="get-property('base64Res')" name="### Documento ENI - Base 64 ###"/>
+              </log>
+              <payloadFactory media-type="xml">
+                <format>
+                  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Body>
+                      <csgd:getENIDocResult>
+                        <csgd:result>
+                          <csgd:code>COD_000</csgd:code>
+                          <csgd:description>Operación realizada correctamente.</csgd:description>
+                        </csgd:result>
+                        <csgd:resParam>$1</csgd:resParam>
+                      </csgd:getENIDocResult>
+                    </soapenv:Body>
+                  </soapenv:Envelope>
+                </format>
+                <args>
+                  <arg evaluator="xml" expression="get-property('base64Res')"/>
+                </args>
+              </payloadFactory>
+            </else>
+          </filter>
+        </then>
+        <else>
+          <property expression="get-property('axis2', 'HTTP_SC')"
+            name="exceptionHttpStatusCode" scope="default" type="STRING"/>
+          <property expression="json-eval($.exception.code)"
+            name="exceptionCode" scope="default" type="STRING"/>
+          <property expression="json-eval($.exception.description)"
+            name="exceptionDesc" scope="default" type="STRING"/>
+        </else>
+      </filter>
+      <filter regex="false" source="boolean(get-property('exceptionCode'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+        </then>
+        <else>
+          <property expression="get-property('exceptionHttpStatusCode')"
+            name="HTTP_SC" scope="axis2" type="STRING"/>
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}                 
+           	   </format>
+            <args>
+              <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+              <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+            </args>
+          </payloadFactory>
+        </else>
+      </filter>
+      <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+      <respond/>
+    </inSequence>
+    <outSequence/>
+  </target>
+  <parameter name="disableSOAP12">true</parameter>
+  <parameter name="disableSOAP11">true</parameter>
+</proxy>

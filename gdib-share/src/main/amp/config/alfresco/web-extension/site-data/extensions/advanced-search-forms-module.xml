@@ -1,0 +1,62 @@
+<extension>
+    <modules>
+        <module>
+            <id>Caib :: Advanced search forms</id>
+            <version>1.0</version>
+            <auto-deploy>true</auto-deploy>
+            <configurations>
+                <config replace="true" evaluator="string-compare" condition="AdvancedSearch">
+					<advanced-search>
+						<forms>
+							<form labelId="search.form.label.cm_content" descriptionId="search.form.desc.cm_content">cm:content
+							</form>
+							<form labelId="search.form.label.cm_folder" descriptionId="search.form.desc.cm_folder">cm:folder
+							</form>
+							<form labelId="search.form.label.eni_expediente" descriptionId="search.form.desc.eni_expediente">rma:recordFolder
+							</form>
+							<form labelId="search.form.label.eni_documento" descriptionId="search.form.desc.eni_documento">eni:documento
+							</form>
+						</forms>
+					</advanced-search>
+				</config>
+
+				<config evaluator="model-type" condition="rma:recordFolder">
+                    <forms>
+						<form id="search">
+				            <field-visibility>
+				               <show id="cm:name" force="true"/>
+				               <show id="cm:title" force="true" />
+
+				               <!-- eni:id -->
+				               <show id="eni:id" force="true"/>
+				               <show id="eni:organo" force="true"/>
+
+				               <!-- eni:transferencia -->
+								<show id="eni:estado_archivo" force="true"/>
+
+				            </field-visibility>
+				         </form>
+					</forms>
+				</config>
+
+				<config evaluator="model-type" condition="eni:documento">
+                    <forms>
+						<form id="search">
+				            <field-visibility>
+				               <show id="cm:name" />
+				               <show id="cm:title" force="true" />
+
+				               <!-- eni:id -->
+				               <show id="eni:id" />
+				               <show id="eni:subtipo_doc" />
+				               <show id="eni:organo" />
+
+				            </field-visibility>
+				         </form>
+					</forms>
+				</config>
+
+            </configurations>
+        </module>
+    </modules>
+</extension>

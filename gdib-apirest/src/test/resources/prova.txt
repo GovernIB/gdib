@@ -1,0 +1,9 @@
+# Important: Les relacions han de ser 1 a 1
+
+# reg 1          reg 3
+# ======================================
+# ofic_fisica=idioma(es,en,ca, ...)
+# Castellano
+1=es
+#Catala
+2=ca

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:caibexpind="urn:es:caib:archivodigital:gestiondocumental:expediente-e:indice-e:1.0" 
+	targetNamespace="urn:es:caib:archivodigital:gestiondocumental:expediente-e:indice-e:1.0" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="es">XSD INDICE ELECTRONICO EXPEDIENTES PARA CAIB (v1.0)</xsd:documentation>
+	</xsd:annotation>
+	<!-- Tipos genéricos -->
+	<xsd:simpleType name="TipoEstadoExpediente">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="es">Conjunto de estados posibles para un expediente administrativo:
+					- E01 - Abierto.
+					- E02 - Cerrado.
+					- E03 - Índice para remisión cerrado. 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="E01"/>
+			<xsd:enumeration value="E02"/>
+			<xsd:enumeration value="E03"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TipoFuncionHash">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="es">Conjunto de posibles funciones de hash empleado para generar la huella digital de los documentos:
+					- SHA256.
+					- SHA512. 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SHA256"/>
+			<xsd:enumeration value="SHA512"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TipoFormatoFirma">
+		<xsd:annotation>
+			<xsd:documentation> Formatos de firma electrónica admitidos:
+				- TF01 - XAdES enveloped signature. 	
+				</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TF01"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- Fin tipos genéricos -->
+	<!-- Definición índice electrónico -->
+	<xsd:element name="IndiceElectronico" type="caibexpind:TipoIndiceElectronico">
+		<xsd:annotation>
+			<xsd:documentation>Elemento que representa el índice electrónico de un expediente </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="TipoIndiceElectronico">
+		<xsd:sequence>
+			<xsd:element name="contenidoExpediente" type="caibexpind:TipoExpediente">
+				<xsd:annotation>
+					<xsd:documentation>Información y contenido indizado de un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="firma" type="caibexpind:TipoFirmaElectronica">
+				<xsd:annotation>
+					<xsd:documentation>Información de firma electrónica del índice.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="fechaGeneracion" type="xsd:dateTime" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Fecha de generación del índice.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!-- Fin definición índice electrónico -->
+	<!-- Contenido de expedientes, referenciados o contenidos -->
+	<xsd:complexType name="TipoMetadatosExpediente">
+		<xsd:annotation>
+			<xsd:documentation>Define los metadatos del expediente que serán incluidos en el índice</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="numero" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Número de expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fechaApertura" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Fecha de apertura del expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fechaCierre" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Fecha de cierre del expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="estado" type="caibexpind:TipoEstadoExpediente">
+				<xsd:annotation>
+					<xsd:documentation>Estado del expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoExpediente">
+		<xsd:annotation>
+			<xsd:documentation>Define el contenido del expediente que será incluido en el índice. Inicialmente, los elementos que pueden formar parte de un expediente son: documentos simples, agrupaciones documentales, sub expedientes, y documentos y expedientes asociados o referenciados.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="documentosIndizados" type="caibexpind:TipoContenidoDocsIndizados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de documentos simples incluidos en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="documentosReferenciados" type="caibexpind:TipoContenidoDocsReferenciados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de documentos simples referenciados en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subexpedientesIndizados" type="caibexpind:TipoContenidoExpedientes" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de sub expedientes incluidos en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="expedientesReferenciados" type="caibexpind:TipoContenidoExpReferenciados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de expedientes referenciados en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="carpetasIndizadas" type="caibexpind:TipoContenidoCarpetas" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de agrupaciones documentales o carpetas incluidas en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TipoExpediente">
+		<xsd:sequence>
+			<xsd:element name="metadatos" type="caibexpind:TipoMetadatosExpediente">
+				<xsd:annotation>
+					<xsd:documentation>Metadatos de un expediente incluidos en el índice.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contenido" type="caibexpind:TipoContenidoExpediente">
+				<xsd:annotation>
+					<xsd:documentation>Contenido de un expediente (documentos, sub expedientes, carpetas, etc.).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identificador interno de un expediente.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoExpedientes">
+		<xsd:annotation>
+			<xsd:documentation>Lista de subexpedientes de un expediente o agrupación documental.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="subexpediente" type="caibexpind:TipoExpediente" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Representa un sub expediente incluido en un expediente, sub expediente o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TipoExpedienteReferenciado">
+		<xsd:annotation>
+			<xsd:documentation>Define la información incluida en el índice para los expedientes referenciados.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="numero" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Número de expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identificador interno de expediente.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoExpReferenciados">
+		<xsd:annotation>
+			<xsd:documentation>Lista de expedientes referenciados para un expediente, sub expediente, o agrupación documental.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="expReferenciado" type="caibexpind:TipoExpedienteReferenciado" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Representa un expediente referenciado en un expediente, sub expediente o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fin contenido de expedientes, referenciados o contenidos -->
+	<!-- Contenido de documentos, referenciados o contenidos -->
+	<xsd:complexType name="TipoContenidoDocIndizado">
+		<xsd:annotation>
+			<xsd:documentation>Define el contenido de un documento simple incluido en el índice de un expediente.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nombre" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Nombre de un documento.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="hash" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Huella digital de un documento.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="funcionHash" type="caibexpind:TipoFuncionHash">
+				<xsd:annotation>
+					<xsd:documentation>Algoritmo de hash empleado para obtener la huella digital de un documento.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fechaIncorporacion" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Fecha de incorporación al gestor documental de un documento.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ordenDocumento" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>Número de orden de un documento en un expediente.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identificador interno de documento.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoDocsIndizados">
+		<xsd:annotation>
+			<xsd:documentation>Lista de documentos de un expediente o agrupación documental.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="docIndizado" type="caibexpind:TipoContenidoDocIndizado" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Representa un documento simple incluido en un expediente, sub expediente o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoDocReferenciado">
+		<xsd:annotation>
+			<xsd:documentation>Define el contenido en el índice de un documento referenciado en un expediente.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nombre" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Nombre de un documento.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identificador interno de documento.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoDocsReferenciados">
+		<xsd:annotation>
+			<xsd:documentation>Lista de documentos referenciados de un expediente o agrupación documental.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="docReferenciado" type="caibexpind:TipoContenidoDocReferenciado" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Representa un documento simple referenciado en un expediente, sub expediente o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fin contenido de documentos, referenciados o contenidos -->
+	<!-- Contenido de carpetas o agrupaciones documentales -->
+	<xsd:complexType name="TipoContenidoCarpetaIndizada">
+		<xsd:annotation>
+			<xsd:documentation>Define el contenido de una agrupación documental, carpeta, incluida en el índice. Inicialmente, los elementos que pueden formar parte de un expediente son: documentos simples, agrupaciones documentales, sub expedientes.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="documentosIndizados" type="caibexpind:TipoContenidoDocsIndizados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de documentos simples incluidos en una agrupación documental o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="documentosReferenciados" type="caibexpind:TipoContenidoDocsReferenciados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de documentos referenciados en una agrupación documental o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subexpedientes" type="caibexpind:TipoContenidoExpedientes" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de sub expedientes incluidos en una agrupación documental o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="expedientesReferenciados" type="caibexpind:TipoContenidoExpReferenciados" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de expedientes referenciados en una agrupación documental o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="carpetasIndizadas" type="caibexpind:TipoContenidoCarpetas" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Relación de carpetas incluidas en una agrupación documental o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Identificador interno de agrupación documental o carpeta.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="nombre" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Nombre de la agrupación documental o carpeta.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="TipoContenidoCarpetas">
+		<xsd:annotation>
+			<xsd:documentation>Lista de carpetas de un expediente o agrupación documental.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="carpetaIndizada" type="caibexpind:TipoContenidoCarpetaIndizada" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Representa una agrupación documental o carpeta incluida en un expediente, sub expediente o carpeta.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fin contenido de carpetas o agrupaciones documentales -->
+	<!-- Firmas electrónicas del índice electrónico -->
+	<xsd:complexType name="TipoContenidoFirma">
+		<xsd:annotation>
+			<xsd:documentation>Contenido de la firma electrónica del índice electrónico.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<!-- Una vez se haya completado la generación del índice, este elemento se corresponderá con el 
+			elemento dsig:Signature del namespace http://www.w3.org/2000/09/xmldsig# -->
+			<xsd:any minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TipoFirmaElectronica">
+		<xsd:annotation>
+			<xsd:documentation>Define la información de la firma electrónica que garantiza la integridad del índice electrónico.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tipoFirma" type="caibexpind:TipoFormatoFirma" default="TF01">
+				<xsd:annotation>
+					<xsd:documentation>Formato de la firma electrónica del índice.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contenidoFirma" type="caibexpind:TipoContenidoFirma">
+				<xsd:annotation>
+					<xsd:documentation>Firma electrónica del índice.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fin firmas electrónicas del índice electrónico -->
+</xsd:schema>

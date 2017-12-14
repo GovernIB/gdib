@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><artifacts>
+    <artifact name="DSSAfirmaSign" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSAfirmaSign.xml</file>
+    </artifact>
+    <artifact name="DSSAfirmaVerify" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSAfirmaVerify.xml</file>
+    </artifact>
+    <artifact name="DSSAfirmaVerifyCertificate" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSAfirmaVerifyCertificate.xml</file>
+    </artifact>
+    <artifact name="DSSAsyncRequestStatus" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSAsyncRequestStatus.xml</file>
+    </artifact>
+    <artifact name="DSSBatchVerifyCertificate" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSBatchVerifyCertificate.xml</file>
+    </artifact>
+    <artifact name="DSSBatchVerifySignature" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/DSSBatchVerifySignature.xml</file>
+    </artifact>
+    <artifact name="GetInfoCertificate" groupId="es.caib.archivodigital.esb.services.afirma.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/GetInfoCertificate.xml</file>
+    </artifact>
+</artifacts>

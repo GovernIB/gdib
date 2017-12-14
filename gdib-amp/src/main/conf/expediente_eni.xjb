@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings
+    version="2.1"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eniexp="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e"
+	xmlns:eniexpind="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/indice-e"
+	xmlns:eniconexpind="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/indice-e/contenido"
+	xmlns:eniexpmeta="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/metadatos"
+	xmlns:enifile="http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e/contenido"
+	xmlns:enids="http://administracionelectronica.gob.es/ENI/XSD/v1.0/firma"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+
+	<jaxb:bindings scd="x-schema::eniexp" xmlns:eniexp="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+	
+    <jaxb:bindings scd="x-schema::eniexpind" xmlns:eniexpind="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/indice-e" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.indice"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+
+	<jaxb:bindings scd="x-schema::eniconexpind" xmlns:eniconexpind="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/indice-e/contenido" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.indice.contenido"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+
+	<jaxb:bindings scd="x-schema::eniexpmeta" xmlns:eniexpmeta="http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e/metadatos" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.indice.metadatos"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+
+	<jaxb:bindings scd="x-schema::enifile" xmlns:enifile="http://administracionelectronica.gob.es/ENI/XSD/v1.0/documento-e/contenido" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.doc.contenido"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+	
+	<jaxb:bindings scd="x-schema::enids" xmlns:enids="http://administracionelectronica.gob.es/ENI/XSD/v1.0/firma" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.firma"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+	
+	<jaxb:bindings scd="x-schema::ds" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" >
+        <jaxb:schemaBindings>
+            <jaxb:package name="es.caib.gdib.ws.xsd.expediente.eni.firma.xmldsig"/>
+        </jaxb:schemaBindings>      
+    </jaxb:bindings>
+	
+</jaxb:bindings>

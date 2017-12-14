@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page>
+  <id>expurgo-page</id>
+  <title-id>page.expurgo-page.title</title-id>
+  <description-id>page.expurgo-page.description</description-id>
+  <authentication>user</authentication>
+  <template-instance>expurgo-page</template-instance>
+
+  <components>
+
+      <!-- Cuadro Clasificacion -->
+      <component>
+         <region-id>expurgo</region-id>
+         <url>/components/expurgo</url>
+      </component>
+
+   </components>
+
+</page>

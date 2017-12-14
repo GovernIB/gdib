@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="getEcmAutTicket" startOnLoad="true" trace="enable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target faultSequence="conf:/repository/esb/registry/sequences/ExceptionSequence">
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+      <property name="csgdOperation" scope="default" type="STRING" value="getEcmAutTicket"/>
+      <log level="full"/>
+      <property
+        expression="json-eval($.getEcmAutTicketRequest.serviceHeader)"
+        name="serviceHeader" scope="default" type="STRING"/>
+      <script function="parseGetEcmAutTicketServiceHeader"
+        key="conf:/repository/esb/registry/js/serviceHeaderUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('errorMessage')" name="### Cabecera correcta ¿? ###"/>
+      </log>
+      <log>
+        <property expression="get-property('username')" name="### Usuario cabecera Property ###"/>
+      </log>
+      <filter regex="true" source="boolean(get-property('serviceHeaderOk'))">
+        <then>
+          <property expression="get-property('serviceHeaderString')"
+            name="serviceHeaderOm" scope="default" type="OM"/>
+        </then>
+        <else>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+          <payloadFactory media-type="json">
+            <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}                 
+		            	</format>
+            <args>
+              <arg evaluator="xml" expression="get-property('errorMessage')"/>
+            </args>
+          </payloadFactory>
+          <respond description="Enviar excepcion"/>
+        </else>
+      </filter>
+      <payloadFactory media-type="xml">
+        <format>
+          <soapenv:Envelope
+            xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+            <soapenv:Body>
+              <ws:getTicket/>
+            </soapenv:Body>
+          </soapenv:Envelope>
+        </format>
+        <args/>
+      </payloadFactory>
+      <enrich>
+        <source clone="true"
+          xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+        <target action="child"
+          xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:getTicket"/>
+      </enrich>
+      <header name="Action" scope="default" value="getTicket"/>
+      <log level="full"/>
+      <log>
+        <property name="### Invocar servicio ###" value="Antes de invocar"/>
+      </log>
+      <call>
+        <endpoint>
+          <address format="soap11" trace="enable" uri="https://afirmades.caib.es:4430/alfresco/webservice/gdib/repository">
+            <enableAddressing version="submission"/>
+            <timeout>
+              <duration>20000</duration>
+              <responseAction>fault</responseAction>
+            </timeout>
+            <suspendOnFailure>
+              <errorCodes>-1</errorCodes>
+              <initialDuration>0</initialDuration>
+              <progressionFactor>1.0</progressionFactor>
+              <maximumDuration>0</maximumDuration>
+            </suspendOnFailure>
+            <markForSuspension>
+              <errorCodes>-1</errorCodes>
+            </markForSuspension>
+          </address>
+        </endpoint>
+      </call>
+      <log>
+        <property name="### Invocar servicio ###" value="Despues de invocar"/>
+      </log>
+      <header action="remove" name="Action" scope="default"/>
+      <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+      <log level="full"/>
+      <xslt key="conf:/repository/esb/registry/xslt/getEcmAutTicketXMLResponse.xslt"/>
+      <filter regex="false" source="boolean(get-property('exceptionCode'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+        </then>
+        <else>
+          <property expression="get-property('exceptionHttpStatusCode')"
+            name="HTTP_SC" scope="axis2" type="STRING"/>
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}           </format>
+            <args>
+              <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+              <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+            </args>
+          </payloadFactory>
+        </else>
+      </filter>
+      <log>
+        <property name="### Enviar respuesta ###" value="Antes de enviar respuesta"/>
+      </log>
+      <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+      <respond description="Enviar respuesta"/>
+    </inSequence>
+    <outSequence/>
+  </target>
+  <parameter name="disableSOAP12">true</parameter>
+  <parameter name="disableSOAP11">true</parameter>
+</proxy>

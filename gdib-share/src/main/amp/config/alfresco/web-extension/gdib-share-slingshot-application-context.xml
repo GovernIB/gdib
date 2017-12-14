@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!--
+     Define beans related to this Share extension here, such as
+      evaluators and resource bootstrapping.
+
+      Note. Any configuration related to the whole Share.war webapp
+            (i.e. not specific to this share extension) should be
+             placed in the tomcat/shared/classes/alfresco/web-extension/custom-slingshot-application-context.xml file
+    -->
+
+    <!-- Add module specific messages and labels -->
+    <bean id="es.caib.gdib.gdib-share.resources"
+          class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent">
+        <property name="resourceBundles">
+            <list>
+                <value>alfresco.web-extension.messages.gdib-share</value>
+                <value>alfresco.web-extension.messages.caib-model</value>
+            </list>
+        </property>
+    </bean>
+
+	<bean id="isType.subcomponent.evaluator" class="es.caib.gdib.subcomponent.evaluator.IsTypeSubComponentEvaluator" />
+
+	<!--  Evaluator para comprobar si un nodo, tiene el aspecto interoperable. Utilizado para mostrar
+	el boton de "editar metadatos eni" en el documentLibrary del RM -->
+	<bean id="evaluator.doclib.action.hasInteroperableAspect" parent="evaluator.doclib.action.hasAspect">
+      <property name="aspects">
+         <list>
+            <value>eni:interoperable</value>
+         </list>
+      </property>
+   </bean>
+
+	<!--  Evaluator para comprobar si un nodo, tiene el aspecto transferible. Utilizado para mostrar
+	el boton de "cambiar el estado de archivo" en el documentLibrary del RM -->
+   <bean id="evaluator.doclib.action.hasTransferibleAspect" parent="evaluator.doclib.action.hasAspect">
+      <property name="aspects">
+         <list>
+            <value>eni:transferible</value>
+         </list>
+      </property>
+   </bean>
+
+	<!--  Evaluator para comprobar si un nodo para comprobar los permisos. Si un usuario no pertenece a este
+	grupo, no puede utilizar las opciones de "editar metadatos eni" y "cambiar el estado de archivo" en el RM-->
+	<bean id="evaluator.doclib.action.isRmManager" parent="evaluator.doclib.action.groupMembership">
+		<property name="groups">
+			<list>
+				<value>GROUP_RECORD_CONTRIBUTORS</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="es.caib.gdib.doclib.evaluator.PreRegister" parent="evaluator.doclib.action.value">
+		<property name="accessor" value="node.properties.eni:estado_archivo" />
+		<property name="comparator">
+			<bean class="org.alfresco.web.evaluator.StringEqualsComparator">
+				<property name="value" value="Preingreso" />
+			</bean>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,6 @@
+<webscript>
+  <shortname>Informe</shortname>
+  <description>Informe de estado</description>
+  <url>/gdib/expedient/report</url>
+  <authentication>user</authentication>
+</webscript>

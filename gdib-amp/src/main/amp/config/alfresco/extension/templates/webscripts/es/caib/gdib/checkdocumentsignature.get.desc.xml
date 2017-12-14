@@ -1,0 +1,7 @@
+<webscript>
+    <shortname>Check document signature</shortname>
+    <description>Check document signature</description>
+    <url>/gdib/signature/check?nodeRef={nodRef}</url>
+    <authentication>user</authentication>
+    <format default="json"></format>
+</webscript>

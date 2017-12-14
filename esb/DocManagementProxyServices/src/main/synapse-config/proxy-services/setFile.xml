@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="setFile" startOnLoad="true" trace="enable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target faultSequence="conf:/repository/esb/registry/sequences/ExceptionSequence">
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+      <property name="csgdOperation" scope="default" type="STRING" value="setFile"/>
+      <property name="typeRestrictions" scope="default" type="STRING" value="eni:expediente"/>
+      <log level="full"/>
+      <property expression="json-eval($.setFileRequest.serviceHeader)"
+        name="serviceHeader" scope="default" type="STRING"/>
+      <script function="parseServiceHeader"
+        key="conf:/repository/esb/registry/js/serviceHeaderUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('errorMessage')" name="### Cabecera correcta ¿? ###"/>
+      </log>
+      <log>
+        <property expression="get-property('username')" name="### Usuario cabecera Property ###"/>
+      </log>
+      <filter regex="true" source="not(boolean(get-property('serviceHeaderOk')))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+          <payloadFactory media-type="json">
+            <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}                 
+		            	</format>
+            <args>
+              <arg evaluator="xml" expression="get-property('errorMessage')"/>
+            </args>
+          </payloadFactory>
+          <respond description="Enviar excepcion"/>
+        </then>
+        <else/>
+      </filter>
+      <property name="reqService" scope="default">
+        <ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws"/>
+      </property>
+      <script function="buildSetFileRequest"
+        key="conf:/repository/esb/registry/js/createAndSetNodeUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('reqServiceOk')" name="### Peticion correcta ###"/>
+      </log>
+      <filter regex="true" source="boolean(get-property('reqServiceOk'))">
+        <then>
+          <call-template target="conf:/repository/esb/registry/sequences/ReusableServiceReqSequence">
+            <with-param name="reqService" value="{get-property('reqService')}"/>
+            <with-param name="serviceHeaderString" value="{get-property('serviceHeaderString')}"/>
+            <with-param name="gdibOperation" value="modifyNode"/>
+          </call-template>
+          <!-- El metodo no devuelve respuesta en caso de finalizar correctamente la petición -->
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"setFileResult": {
+           				"result": {
+           					"code": "COD_000",
+           					"description": "Petición realizada correctamente."
+           				}
+           			}
+           		}                 
+           	   </format>
+            <args/>
+          </payloadFactory>
+        </then>
+        <else>
+          <property name="exceptionHttpStatusCode" scope="default"
+            type="STRING" value="400"/>
+          <property name="exceptionCode" scope="default" type="STRING" value="COD_099"/>
+          <property expression="get-property('reqServiceErrorMessage')"
+            name="exceptionDesc" scope="default" type="STRING"/>
+        </else>
+      </filter>
+      <filter regex="false" source="boolean(get-property('exceptionCode'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+        </then>
+        <else>
+          <property expression="get-property('exceptionHttpStatusCode')"
+            name="HTTP_SC" scope="axis2" type="STRING"/>
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}          </format>
+            <args>
+              <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+              <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+            </args>
+          </payloadFactory>
+        </else>
+      </filter>
+      <log>
+        <property name="### Enviar respuesta ###" value="Antes de enviar respuesta"/>
+      </log>
+      <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+      <respond description="Enviar respuesta"/>
+    </inSequence>
+    <outSequence/>
+  </target>
+  <parameter name="disableSOAP12">true</parameter>
+  <parameter name="disableSOAP11">true</parameter>
+</proxy>

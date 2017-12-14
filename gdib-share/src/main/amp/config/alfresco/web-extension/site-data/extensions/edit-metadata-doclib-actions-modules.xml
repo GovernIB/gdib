@@ -1,0 +1,301 @@
+<extension>
+    <modules>
+        <module>
+            <id>Caib :: Editar metadatos ENI y Cambiar estado del archivo. Acciones en el RM</id>
+            <version>1.0</version>
+            <auto-deploy>true</auto-deploy>
+            <configurations>
+
+				<config evaluator="string-compare" condition="DocLibCustom">
+					<dependencies>
+						<js src="components/documentlibrary/register-expedient-doclib-actions.js" />
+					</dependencies>
+				</config>
+
+            	<config evaluator="string-compare" condition="DocumentLibrary">
+                    <indicators>
+                        <indicator id="gdib.indicator.preregistro"
+                                   icon="register-expedient-16.png"
+                                   index="1"
+                                   label="gdib.doclib.action.expedient.register.label">
+                            <evaluator>es.caib.gdib.doclib.evaluator.PreRegister</evaluator>
+                        </indicator>
+                    </indicators>
+                </config>
+
+                <config evaluator="string-compare" condition="DocLibActions">
+                    <actions>
+                    <!-- Si se quiere desactivar para todos los usuarios (administrador incluido) descomentar.
+                    	<action id="rm-edit-details" type="pagelink" label="actions.edit-details"
+							icon="folder-edit-metadata">
+							<param name="page">edit-metadata?nodeRef={node.nodeRef}</param>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+					 -->
+                        <action id="gdib.doclib.action.editEniMetadata.folder"
+                                icon="folder-edit-metadata"
+                                type="javascript"
+                                label="gdib.doclib.action.editEniMetadata.label">
+                            <param name="function">onActionFormDialog</param>
+                            <param name="itemKind">node</param>
+                            <param name="itemId">{node.nodeRef}</param>
+                            <param name="formId">eni-metadata</param><!-- ID del formulario -->
+                            <param name="mode">edit</param>
+                            <param name="destination">{node.nodeRef}</param>
+                            <param name="successMessage">gdib.doclib.action.editEniMetadata.msg.success</param>
+                            <param name="failureMessage">gdib.doclib.action.editEniMetadata.msg.failure</param>
+                            <evaluator>evaluator.doclib.action.hasInteroperableAspect</evaluator>
+<!--                             <evaluator>evaluator.doclib.action.isRmManager</evaluator> -->
+                        </action>
+
+                        <action id="gdib.doclib.action.editEniMetadata.content"
+                                icon="folder-edit-metadata"
+                                type="javascript"
+                                label="gdib.doclib.action.editEniMetadata.label">
+                            <param name="function">onActionFormDialog</param>
+                            <param name="itemKind">node</param>
+                            <param name="itemId">{node.nodeRef}</param>
+                            <param name="formId">eni-metadata</param><!-- ID del formulario -->
+                            <param name="mode">edit</param>
+                            <param name="destination">{node.nodeRef}</param>
+                            <param name="successMessage">gdib.doclib.action.editEniMetadata.msg.success</param>
+                            <param name="failureMessage">gdib.doclib.action.editEniMetadata.msg.failure</param>
+                            <evaluator>evaluator.doclib.action.hasInteroperableAspect</evaluator>
+<!--                             <evaluator>evaluator.doclib.action.isRmManager</evaluator> -->
+                        </action>
+
+                        <action id="gdib.doclib.action.folder.estadoArchivo"
+                                icon="folder-edit-metadata"
+                                type="javascript"
+                                label="gdib.doclib.action.folder.estadoArchivo.label">
+                            <param name="function">onActionFormDialog</param>
+                            <param name="itemKind">node</param>
+                            <param name="itemId">{node.nodeRef}</param>
+                            <param name="formId">estado-archivo-recordFolder-metadata</param><!-- ID del formulario -->
+                            <param name="mode">edit</param>
+                            <param name="destination">{node.nodeRef}</param>
+                            <param name="successMessage">gdib.doclib.action.folder.estadoArchivo.msg.success</param>
+                            <param name="failureMessage">gdib.doclib.action.folder.estadoArchivo.msg.failure</param>
+                            <evaluator>evaluator.doclib.action.hasTransferibleAspect</evaluator>
+<!--                             <evaluator>evaluator.doclib.action.isRmManager</evaluator> -->
+                            <evaluator negate="true">es.caib.gdib.doclib.evaluator.PreRegister</evaluator>
+                        </action>
+
+                        <action id="gdib.doclib.action.document.estadoArchivo"
+                                icon="folder-edit-metadata"
+                                type="javascript"
+                                label="gdib.doclib.action.document.estadoArchivo.label">
+                            <param name="function">onActionFormDialog</param>
+                            <param name="itemKind">node</param>
+                            <param name="itemId">{node.nodeRef}</param>
+                            <param name="formId">estado-archivo-document-metadata</param><!-- ID del formulario -->
+                            <param name="mode">edit</param>
+                            <param name="destination">{node.nodeRef}</param>
+                            <param name="successMessage">gdib.doclib.action.document.estadoArchivo.msg.success</param>
+                            <param name="failureMessage">gdib.doclib.action.document.estadoArchivo.msg.failure</param>
+                            <evaluator>evaluator.doclib.action.hasTransferibleAspect</evaluator>
+<!--                             <evaluator>evaluator.doclib.action.isRmManager</evaluator> -->
+                            <evaluator negate="true">es.caib.gdib.doclib.evaluator.PreRegister</evaluator>
+                        </action>
+
+                      	<action id="gdib.doclib.action.expedient.register"
+                                icon="folder-edit-metadata"
+                                type="javascript"
+                                label="gdib.doclib.action.expedient.register.label">
+                            <param name="function">onActionPreRegisterExpedient</param>
+                            <param name="successMessage">gdib.doclib.action.expedient.register.msg.success</param>
+                            <param name="failureMessage">gdib.doclib.action.expedient.register.msg.failure</param>
+                            <evaluator>es.caib.gdib.doclib.evaluator.PreRegister</evaluator>
+<!--                             <evaluator>evaluator.doclib.action.isRmManager</evaluator> -->
+                        </action>
+
+                    </actions>
+
+                    <actionGroups>
+						<actionGroup id="rm-record-category-browse" replace="true">
+						</actionGroup>
+						<actionGroup id="rm-record-category-details" replace="true">
+						</actionGroup>
+						<actionGroup id="rm-record-folder-browse">
+							<action index="110" id="gdib.doclib.action.editEniMetadata.folder" />
+							<action index="400" id="gdib.doclib.action.folder.estadoArchivo" />
+							<action index="10" id="gdib.doclib.action.expedient.register" />
+						</actionGroup>
+						<actionGroup id="rm-record-folder-details">
+							<action index="110" id="gdib.doclib.action.editEniMetadata.folder" />
+							<action index="400" id="gdib.doclib.action.folder.estadoArchivo" />
+						</actionGroup>
+						<actionGroup id="rm-record-browse">
+							<action index="110" id="gdib.doclib.action.editEniMetadata.content" />
+							<action index="400" id="gdib.doclib.action.document.estadoArchivo" />
+						</actionGroup>
+						<actionGroup id="rm-record-details">
+							<action index="110" id="gdib.doclib.action.editEniMetadata.content" />
+							<action index="400" id="gdib.doclib.action.document.estadoArchivo" />
+						</actionGroup>
+
+					</actionGroups>
+
+                </config>
+
+                <config evaluator="node-type"
+                        condition="rma:recordFolder">
+                    <forms>
+                        <form id="eni-metadata">
+                            <field-visibility>
+                            <!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:estado_exp" />
+                            	<show id="eni:interesados_exp" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:soporte" />
+                            	<show id="eni:loc_archivo_central" />
+                            	<show id="eni:loc_archivo_general" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:id_tramite" />
+
+		                        <show id="eni:organo" />
+								<show id="eni:fecha_inicio" />
+								<show id="eni:tamano_logico" />
+								<show id="eni:interesados_exp" />
+								<show id="eni:descripcion" />
+								<show id="eni:soporte" />
+								<show id="eni:loc_archivo_central" />
+								<show id="eni:loc_archivo_general" />
+								<show id="eni:unidades" />
+								<show id="eni:id_tramite" />
+
+                            </field-visibility>
+                            <appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<field id="eni:id" set="interoperable" read-only="true"/>
+                            	<field id="eni:organo" set="interoperable"/>
+                            	<field id="eni:v_nti" set="interoperable" read-only="true"/>
+								<field id="eni:origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:fecha_inicio" set="interoperable"/>
+                            	<field id="eni:cod_clasificacion" set="interoperable" read-only="true"/>
+                            	<field id="eni:estado_exp" set="interoperable" read-only="true"/>
+								<field id="eni:tamano_logico" set="interoperable"/>
+                            	<field id="eni:interesados_exp" set="interoperable"/>
+                            	<field id="eni:descripcion" set="interoperable"/>
+                            	<field id="eni:soporte" set="interoperable"/>
+                            	<field id="eni:loc_archivo_central" set="interoperable"/>
+                            	<field id="eni:loc_archivo_general" set="interoperable"/>
+                            	<field id="eni:unidades" set="interoperable"/>
+                            	<field id="eni:id_tramite" set="interoperable"/>
+                            </appearance>
+                        </form>
+
+                        <form id="estado-archivo-recordFolder-metadata">
+                            <field-visibility>
+                            <!-- eni:transferible -->
+		                        <show id="eni:estado_archivo" />
+                            </field-visibility>
+                            <appearance>
+                            <field id="eni:estado_archivo">
+                            	<control
+									template="/gdib/components/form/controls/selectoneRemoveOption.ftl">
+									<control-param name="deleteValue">Preingreso</control-param>
+								</control>
+                            </field>
+                            </appearance>
+                        </form>
+
+                    </forms>
+                </config>
+
+                <config evaluator="node-type"
+                        condition="eni:documento">
+                    <forms>
+                        <form id="eni-metadata">
+                            <field-visibility>
+                            <!-- eni:interoperable -->
+                            	<!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:id_origen" />
+                            	<show id="eni:estado_elaboracion" />
+                            	<show id="eni:tipo_doc_ENI" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:nombre_formato" />
+                            	<show id="eni:extension_formato" />
+                            	<show id="eni:def_csv" />
+                            	<show id="eni:resolucion" />
+                            	<show id="eni:idioma" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:subtipo_doc" />
+                            	<show id="eni:profundidad_color" />
+                            	<show id="eni:termino_punto_acceso" />
+                            	<show id="eni:id_punto_acceso" />
+                            	<show id="eni:esquema_punto_acceso" />
+
+                            <!-- eni:registrable -->
+                                <show id="eni:tipo_asiento_registral"/>
+                                <show id="eni:codigo_oficina_registro"/>
+                                <show id="eni:fecha_asiento_registral"/>
+                                <show id="eni:numero_asiento_registral"/>
+
+                            </field-visibility>
+                            <appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<field id="eni:organo" set="interoperable" />
+								<field id="eni:tipo_doc_ENI" set="interoperable" />
+								<field id="eni:fecha_inicio" set="interoperable" />
+								<field id="eni:nombre_formato" set="interoperable" />
+								<field id="eni:extension_formato" set="interoperable" />
+								<field id="eni:resolucion" set="interoperable" />
+								<field id="eni:descripcion" set="interoperable" />
+								<field id="eni:idioma" set="interoperable" />
+								<field id="eni:tamano_logico" set="interoperable" />
+								<field id="eni:termino_punto_acceso" set="interoperable" />
+								<field id="eni:id_punto_acceso" set="interoperable" />
+								<field id="eni:esquema_punto_acceso" set="interoperable" />
+								<field id="eni:soporte" set="interoperable" />
+								<field id="eni:loc_archivo_central" set="interoperable" />
+								<field id="eni:loc_archivo_general" set="interoperable" />
+								<field id="eni:unidades" set="interoperable" />
+
+								<set id="registrable" label-id="label.set.eni.registrable"
+									appearance="panel" />
+								<field id="eni:tipo_asiento_registral" set="registrable" />
+								<field id="eni:codigo_oficina_registro" set="registrable" />
+								<field id="eni:fecha_asiento_registral" set="registrable" />
+								<field id="eni:numero_asiento_registral" set="registrable" />
+                            </appearance>
+                        </form>
+
+                        <form id="estado-archivo-document-metadata">
+                            <field-visibility>
+                            <!-- eni:transferible -->
+		                        <show id="eni:estado_archivo"  />
+                            </field-visibility>
+                            <appearance>
+	                            <field id="eni:estado_archivo">
+	                            	<control
+										template="/gdib/components/form/controls/selectoneRemoveOption.ftl">
+										<control-param name="deleteValue">Preingreso</control-param>
+									</control>
+	                            </field>
+                            </appearance>
+                        </form>
+
+                    </forms>
+                </config>
+
+            </configurations>
+        </module>
+    </modules>
+</extension>

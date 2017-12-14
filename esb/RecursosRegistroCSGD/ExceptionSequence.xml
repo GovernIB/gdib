@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="ExceptionSequence" xmlns="http://ws.apache.org/ns/synapse">
+  <sequence>
+    <log>
+      <property name="### Excepcion ###" value="Se procede a formar y enviar la respuesta"/>
+    </log>
+    <filter xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xpath="boolean($body/soapenv:Fault/faultstring/text())">
+      <then>
+        <log>
+          <property name="### Tipo Excepcion ###" value="Excepcion retornada por un servicio Alfresco"/>
+        </log>
+        <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+        <property name="exceptionCode" scope="default" type="STRING" value="COD_021"/>
+        <property expression="$body/soapenv:Fault/faultstring"
+          name="exceptionMessage" scope="default" type="STRING"/>
+      </then>
+      <else>
+        <log>
+          <property name="### Tipo Excepcion ###" value="Excepcion producida en un mediador"/>
+        </log>
+        <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+        <filter xpath="boolean(get-property('errorMessage'))">
+          <then>
+            <property expression="get-property('errorCode')"
+              name="exceptionCode" scope="default" type="STRING"/>
+            <property expression="get-property('errorMessage')"
+              name="exceptionMessage" scope="default" type="STRING"/>
+          </then>
+          <else>
+            <property name="exceptionCode" scope="default" type="STRING" value="COD_020"/>
+            <property expression="get-property('ERROR_MESSAGE')"
+              name="exceptionMessage" scope="default" type="STRING"/>
+          </else>
+        </filter>
+      </else>
+    </filter>
+    <log level="custom" separator=",">
+      <property expression="get-property('exceptionMessage')"
+        name="### Mensaje error informado en excepcion ###" xmlns:ns="http://org.apache.synapse/xsd"/>
+    </log>
+    <payloadFactory media-type="json">
+      <format>
+             	{
+             		"exception":{
+             			"code": "$1",
+             			"description": "$2"
+             		}
+             	}                 
+             </format>
+      <args>
+        <arg evaluator="xml" expression="get-property('exceptionCode')" xmlns:ns="http://org.apache.synapse/xsd"/>
+        <arg evaluator="xml"
+          expression="get-property('exceptionMessage')" xmlns:ns="http://org.apache.synapse/xsd"/>
+      </args>
+    </payloadFactory>
+    <respond/>
+  </sequence>
+</template>

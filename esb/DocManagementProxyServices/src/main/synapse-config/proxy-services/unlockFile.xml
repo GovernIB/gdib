@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="unlockFile" startOnLoad="true" trace="enable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target faultSequence="conf:/repository/esb/registry/sequences/ExceptionSequence">
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+      <property name="csgdOperation" scope="default" type="STRING" value="unlockFile"/>
+      <property name="typeRestrictions" scope="default" type="STRING" value="eni:expediente"/>
+      <log level="full"/>
+      <property
+        expression="json-eval($.unlockFileRequest.serviceHeader)"
+        name="serviceHeader" scope="default" type="STRING"/>
+      <script function="parseServiceHeader"
+        key="conf:/repository/esb/registry/js/serviceHeaderUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('errorMessage')" name="### Cabecera correcta ¿? ###"/>
+      </log>
+      <log>
+        <property expression="get-property('username')" name="### Usuario cabecera Property ###"/>
+      </log>
+      <filter regex="true" source="not(boolean(get-property('serviceHeaderOk')))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+          <payloadFactory media-type="json">
+            <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}                 
+		            	</format>
+            <args>
+              <arg evaluator="xml" expression="get-property('errorMessage')"/>
+            </args>
+          </payloadFactory>
+          <respond description="Enviar excepcion"/>
+        </then>
+        <else/>
+      </filter>
+      <property expression="json-eval($.unlockFileRequest.param.nodeId)"
+        name="nodeIdParam" scope="default" type="STRING"/>
+      <log>
+        <property expression="boolean(get-property('nodeIdParam'))" name="### nodeIdParamOk ###"/>
+      </log>
+      <log>
+        <property expression="boolean(get-property('nodeIdParam'))" name="### Peticion correcta ###"/>
+      </log>
+      <filter regex="true" source="boolean(get-property('nodeIdParam'))">
+        <then>
+          <call-template target="conf:/repository/esb/registry/sequences/ReusableNodeOpSequence">
+            <with-param name="nodeId" value="{get-property('nodeIdParam')}"/>
+            <with-param name="serviceHeaderString" value="{get-property('serviceHeaderString')}"/>
+            <with-param name="gdibOperation" value="unlockNode"/>
+          </call-template>
+          <!-- El metodo no devuelve respuesta en caso de finalizar correctamente la petición -->
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"unlockFileResult": {
+           				"result": {
+           					"code": "COD_000",
+           					"description": "Petición realizada correctamente."
+           				}
+           			}
+           		}                 
+           	   </format>
+            <args/>
+          </payloadFactory>
+        </then>
+        <else>
+          <property name="exceptionHttpStatusCode" scope="default"
+            type="STRING" value="400"/>
+          <property name="exceptionCode" scope="default" type="STRING" value="COD_099"/>
+          <property name="exceptionDesc" scope="default" type="STRING" value="No ha sido informado en la petición del servicio el identificador del expediente o subexpediente a desbloquear."/>
+        </else>
+      </filter>
+      <filter regex="false" source="boolean(get-property('exceptionCode'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+        </then>
+        <else>
+          <property expression="get-property('exceptionHttpStatusCode')"
+            name="HTTP_SC" scope="axis2" type="STRING"/>
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}                 
+           	   </format>
+            <args>
+              <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+              <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+            </args>
+          </payloadFactory>
+        </else>
+      </filter>
+      <log>
+        <property name="### Enviar respuesta ###" value="Antes de enviar respuesta"/>
+      </log>
+      <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+      <respond description="Enviar respuesta"/>
+    </inSequence>
+    <outSequence/>
+  </target>
+  <parameter name="disableSOAP12">true</parameter>
+  <parameter name="disableSOAP11">true</parameter>
+</proxy>

@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://www.springframework.org/schema/util
+          http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<import resource="classpath:alfresco/context/repositoryService-context.xml"/>
+
+	<bean id="nodeDraftDocument" parent="nodeDocument">
+		<property name="aspects" ref="aspectsDraft" />
+	</bean>
+
+	<!-- Contenido de un fichero -->
+	<bean id="contentDataSourceModify" class="javax.activation.FileDataSource"
+		lazy-init="true">
+		<constructor-arg value="src/test/resources/testFiles/migradoModify.txt" />
+	</bean>
+
+	<bean id="contentDataHandlerModify" class="javax.activation.DataHandler"
+		lazy-init="true">
+		<constructor-arg ref="contentDataSourceModify" />
+	</bean>
+
+	<bean id="contentTypeModify" class="es.caib.gdib.ws.common.types.Content">
+		<property name="mimetype" value="text/plain" />
+		<property name="encoding" value="UTF-8" />
+		<property name="data" ref="contentDataHandlerModify" />
+	</bean>
+	<!-- FIN Contenido de un fichero -->
+
+<!-- 	  * - "eni:soporte" es digital, "eni:nombre_formato" y "eni:extension_formato" debe ser informado -->
+<!--      * - "eni:estado_elaboracoin" es EE02, EE03 o EE04 - "eni:id_origen" debe estar informado -->
+<!--      * - "eni:tipo_acceso" es limitado - "eni:codigo_causa_limitacion" debe estar informado -->
+<!--      * - "eni:tipo_acceso" es libre - "eni:cond_reutilizacion" debe estar informado -->
+<!--      * - "eni:tipo_dictament" es tipo_dictamen_ep o tipo_dictament_et - "eni:plazo_accion_dictaminada" debe estar informado -->
+
+	<util:list id="propertiesFinallyDocumentIntegrityNombreFormato">
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="{http://www.alfresco.org/model/content/1.0}title" />
+			<property name="value" value="document" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:organo" />
+				<property name="value" value="${node.property.organo}" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:tipoFirma" />
+				<property name="value" value="TF01" />
+			</bean>
+
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:soporte" />
+				<property name="value" value="Digital" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:extension_formato" />
+				<property name="value" value="extension" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:estado_elaboracion" />
+				<property name="value" value="EE02" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:id_origen" />
+				<property name="value" value="ES_ORGANO_AAAA_ID_ESP" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:tipo_acceso" />
+				<property name="value" value="Limitado" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:codigo_causa_limitacion" />
+				<property name="value" value="A" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:tipo_dictamen" />
+				<property name="value" value="EP" />
+			</bean>
+			<bean class="es.caib.gdib.ws.common.types.Property">
+				<property name="qname" value="eni:plazo_accion_dictaminada" />
+				<property name="value" value="0" />
+			</bean>
+	</util:list>
+
+	<bean id="nodeDocumentIntegrityNombreFormato" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="document.txt" />
+		<property name="type" value="${node.type.document}" />
+		<property name="properties" ref="propertiesFinallyDocumentIntegrityNombreFormato" />
+		<property name="content" ref="contentType" />
+	</bean>
+
+</beans>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="ReusableServiceReqSequence" xmlns="http://ws.apache.org/ns/synapse">
+  <parameter name="reqService"/>
+  <parameter name="serviceHeaderString"/>
+  <parameter name="gdibOperation"/>
+  <sequence>
+    <log>
+      <property name="### Secuencia ReusableServiceReqSequence ###" value="!!!!!!!!!!!!!!!!!!!!!!!!!!! Entrando en la secuencia ReusableServiceReqSequence !!!!!!!!!!!!!!!!!!!!!!!!!!!"/>
+    </log>
+    <property expression="$func:serviceHeaderString"
+      name="serviceHeaderOm" scope="default" type="OM" xmlns:ns="http://org.apache.synapse/xsd"/>
+    <property expression="$func:reqService" name="reqServiceOm"
+      scope="default" type="OM"/>
+    <switch source="$func:gdibOperation">
+      <case regex="modifyNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:modifyNode/>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args/>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('reqServiceOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:modifyNode"/>
+        </enrich>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:modifyNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="modifyNode"/>
+      </case>
+      <case regex="authorizeNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:authorizeNode/>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args/>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('reqServiceOm')"/>
+          <target xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:authorizeNode"/>
+        </enrich>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:authorizeNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="authorizeNode"/>
+      </case>
+      <case regex="removeAuthority">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:removeAuthority/>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args/>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('reqServiceOm')"/>
+          <target xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:removeAuthority"/>
+        </enrich>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:removeAuthority"/>
+        </enrich>
+        <header name="Action" scope="default" value="removeAuthority"/>
+      </case>
+      <default>
+        <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+        <payloadFactory media-type="json">
+          <format>{&#xd;
+	"exception":{&#xd;
+		"code": "COD_080",&#xd;
+		"description": "La operacion $1 no esta soportada por la plantilla de secuencia ReusableNodeReqSequence."&#xd;
+	}&#xd;
+} </format>
+          <args>
+            <arg evaluator="xml" expression="$func:gdibOperation"/>
+          </args>
+        </payloadFactory>
+        <log>
+          <property name="### Enviar respuesta ###" value="Antes de enviar respuesta - Excepcion"/>
+        </log>
+        <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+        <respond description="Excepcion - Enviar respuesta"/>
+      </default>
+    </switch>
+    <log level="full"/>
+    <log>
+      <property name="### Invocar servicio ###" value="Antes de invocar"/>
+    </log>
+    <call>
+      <endpoint>
+        <address format="soap11" trace="enable" uri="https://afirmades.caib.es:4430/alfresco/webservice/gdib/repository">
+          <enableAddressing version="submission"/>
+          <timeout>
+            <duration>20000</duration>
+            <responseAction>fault</responseAction>
+          </timeout>
+          <suspendOnFailure>
+            <errorCodes>-1</errorCodes>
+            <initialDuration>0</initialDuration>
+            <progressionFactor>1.0</progressionFactor>
+            <maximumDuration>0</maximumDuration>
+          </suspendOnFailure>
+          <markForSuspension>
+            <errorCodes>-1</errorCodes>
+          </markForSuspension>
+        </address>
+      </endpoint>
+    </call>
+    <log>
+      <property name="### Invocar servicio ###" value="Despues de invocar"/>
+    </log>
+    <header action="remove" name="Action" scope="default"/>
+    <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+    <log level="full"/>
+  </sequence>
+</template>

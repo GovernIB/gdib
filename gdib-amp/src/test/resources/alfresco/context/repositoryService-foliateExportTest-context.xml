@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<import resource="classpath:alfresco/context/repositoryService-context.xml"/>
+
+	<bean id="nodeExpedientFoliate" parent="nodeExpedient" >
+		<property name="properties">
+			<map>
+				<entry key="{http://www.alfresco.org/model/content/1.0}title" value="expediente" />
+				<entry key="eni:id" value="${node.property.id}" />
+				<entry key="{http://www.administracionelectronica.gob.es/model/eni/1.0}cod_clasificacion" value="${node.type.expedient.property.codigo_clasif}" />
+				<entry key="eni:fecha_inicio" value="2016-02-15" />
+				<entry key="eni:fecha_fin_exp" value="2016-02-25" />
+				<entry key="eni:estado_exp" value="E01" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="agrupationNode" class="es.caib.gdib.ws.common.types.Node">
+		<property name="type" value="cm:folder" />
+	</bean>
+
+	<bean id="indiceElectronicoManager" class="es.caib.gdib.ws.common.types.IndiceElectronicoManager"/>
+	
+</beans>

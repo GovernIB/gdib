@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" xmlns:intf="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+
+   <wsdl:message name="getProcessResponseRequest">
+
+      <wsdl:part name="dssXML" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProcessResponseResponse">
+
+      <wsdl:part name="getProcessResponseReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="AsynchronousProcessing">
+
+      <wsdl:operation name="getProcessResponse" parameterOrder="dssXML">
+
+         <wsdl:input message="impl:getProcessResponseRequest" name="getProcessResponseRequest"/>
+
+         <wsdl:output message="impl:getProcessResponseResponse" name="getProcessResponseResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="DSSAsyncRequestStatusSoapBinding" type="impl:AsynchronousProcessing">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getProcessResponse">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getProcessResponseRequest">
+
+            <wsdlsoap:body namespace="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getProcessResponseResponse">
+
+            <wsdlsoap:body namespace="urn:oasis:names:tc:dss:1.0:profiles:asynchronousprocessing:1.0" use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AsynchronousProcessingService">
+
+      <wsdl:port binding="impl:DSSAsyncRequestStatusSoapBinding" name="DSSAsyncRequestStatus">
+
+         <wsdlsoap:address location="https://afirmades.caib.es:4430/firma/services/DSSAsyncRequestStatus"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

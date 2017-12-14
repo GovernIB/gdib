@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://www.springframework.org/schema/util
+          http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<import resource="classpath:alfresco/context/repositoryService-context.xml"/>
+
+	<bean id="alfrescoFolder" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="folder" />
+		<property name="type" value="cm:folder" />
+	</bean>
+
+	<bean id="nodeWithAspects" parent="nodeDocument">
+		<property name="aspects">
+			<list>
+				<value>gdib:borrador</value>
+				<value>cm:rateable</value>
+				<value>cm:versionable</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="nodeWithAspectsUnknown" parent="nodeDocument">
+		<property name="aspects">
+			<list>
+				<value>unknom</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="nodeDocumentSign" parent="nodeDocument">
+		<property name="sign" ref="signDataHandler" />
+	</bean>
+
+	<bean id="subNodeExpedient" parent="nodeExpedient">
+		<property name="name" value="subExpediente" />
+	</bean>
+
+	<bean id="nodeExpedientContent" parent="nodeExpedient">
+		<property name="content" ref="contentType" />
+	</bean>
+
+	<bean id="nodeExpedientSign" parent="nodeExpedient">
+		<property name="sign" ref="signDataHandler" />
+	</bean>
+
+	<util:list id="propertiesPhysicalExpedient">
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="{http://www.alfresco.org/model/content/1.0}title" />
+			<property name="value" value="expediente" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:organo" />
+			<property name="value" value="${node.property.organo}" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:origen" />
+			<property name="value" value="1" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="{http://www.administracionelectronica.gob.es/model/eni/1.0}cod_clasificacion" />
+			<property name="value" value="${node.type.expedient.property.codigo_clasif}" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:id_tramite" />
+			<property name="value" value="id_tramite" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:soporte" />
+			<property name="value" value="Caja" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:loc_archivo_central" />
+			<property name="value" value="archivo central" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:loc_archivo_general" />
+			<property name="value" value="archivo general" />
+		</bean>
+	</util:list>
+
+	<bean id="nodePhysicalExpedient" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="expedienteFisico" />
+		<property name="type" value="${node.type.expedient}" />
+		<property name="properties" ref="propertiesPhysicalExpedient" />
+	</bean>
+
+	<util:list id="propertiesPhysicalDocument" >
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="{http://www.alfresco.org/model/content/1.0}title" />
+			<property name="value" value="document" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="{http://www.administracionelectronica.gob.es/model/eni/1.0}cod_clasificacion" />
+			<property name="value" value="${node.type.expedient.property.codigo_clasif}" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:organo" />
+			<property name="value" value="${node.property.organo}" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:origen" />
+			<property name="value" value="1" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:csv" />
+			<property name="value" value="valor_csv" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:tipoFirma" />
+			<property name="value" value="TF01" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:perfil_firma" />
+			<property name="value" value="EPES" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:nombre_formato" />
+			<property name="value" value="nombre" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:extension_formato" />
+			<property name="value" value="extension" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:estado_elaboracion" />
+			<property name="value" value="EE01" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:tipo_doc_ENI" />
+			<property name="value" value="TD01" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:soporte" />
+			<property name="value" value="Caja" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:loc_archivo_central" />
+			<property name="value" value="archivo central" />
+		</bean>
+		<bean class="es.caib.gdib.ws.common.types.Property">
+			<property name="qname" value="eni:loc_archivo_general" />
+			<property name="value" value="archivo general" />
+		</bean>
+	</util:list>
+
+	<bean id="nodePhysicalDocumento" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="document.txt" />
+		<property name="type" value="${node.type.document}" />
+		<property name="properties" ref="propertiesPhysicalDocument" />
+	</bean>
+
+	<bean id="emptyNodeDocument" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="document.txt" />
+		<property name="type" value="${node.type.document}" />
+	</bean>
+
+	<bean id="alfrescoDocument" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="document.txt" />
+		<property name="type" value="cm:content" />
+	</bean>
+
+</beans>

@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Expurgar expediente</shortname>
+  <description>Expurgar expediente</description>
+  <family>Expurgar</family>
+  <url>/gdib/expurgo/expurgar</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+</webscript>

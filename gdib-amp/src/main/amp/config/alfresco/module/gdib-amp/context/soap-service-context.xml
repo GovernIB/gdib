@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean name="repositoryServiceSoap" class="es.caib.gdib.ws.impl.RepositoryServiceSoapPortImpl" scope="prototype">
+		<property name="nodeService" ref="NodeService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="permissionService" ref="PermissionService" />
+		<property name="authenticationService" ref="AuthenticationService" />
+		<property name="fileFolderService" ref="FileFolderService" />
+		<property name="versionService" ref="VersionService" />
+		<property name="signatureService" ref="internalSignatureService" />
+		<property name="utils" ref="gdibUtils"/>
+		<property name="exUtils" ref="exUtils"/>
+		<property name="contentService" ref="ContentService" />
+		<property name="tempFolder" value="$gdib{gdib.repository.temp.folder.uuid}" />
+		<property name="repositoryDisableCheck" value="$gdib{gdib.repository.disable.check}" />
+		<property name="subTypeDocUtil" ref="subTypeDocUtil" />
+		<property name="exportUtils" ref="exportUtils" />
+		<property name="importUtils" ref="importUtils" />
+		<property name="searchLimit" value="$gdib{gdib.repository.search.limit}"/>
+		<property name="eniIdNoReplace" value="$gdib{gdib.createNode.dispatchDocument.eni_id.noReplace}" />
+		<property name="copyService" ref="CopyService" />
+		<property name="addEniExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.eniIndexV10.addExchangeFiles}" />
+		<property name="addIntExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.caibIndexV10.addExchangeFiles}" />
+	</bean>
+
+	<bean name="AuthTransRepo" class="es.caib.gdib.ws.impl.authtrans.AuthTransRepositoryServiceSoapPortImpl" scope="prototype">
+		<property name="txnHelper" ref="retryingTransactionHelper" />
+		<property name="authenticationService" ref="AuthenticationService" />
+		<!-- <property name="context" ref="webApplicationContext" /> -->
+	</bean>
+
+	<bean name="AuthTransMigr" class="es.caib.gdib.ws.impl.authtrans.AuthTransMigrationServiceSoapPortImpl" scope="prototype">
+		<property name="txnHelper" ref="retryingTransactionHelper" />
+		<property name="authenticationService" ref="AuthenticationService" />
+		<!-- <property name="context" ref="webApplicationContext" /> -->
+	</bean>
+
+	<bean name="migrationServiceSoap" class="es.caib.gdib.ws.impl.MigrationServiceSoapPortImpl">
+		<property name="nodeService" ref="NodeService"/>
+		<property name="gdibRepositoryService" ref="repositoryServiceSoap" />
+		<property name="gdibUtils" ref="gdibUtils"/>
+		<property name="exUtils" ref="exUtils"/>
+		<property name="authenticationService" ref="AuthenticationService" />
+		<property name="transactionService" ref="TransactionService" />
+		<property name="searchService" ref="SearchService" />
+	</bean>
+
+	<bean name="exUtils" class="es.caib.gdib.utils.ExUtils"></bean>
+
+	<bean name="gdibUtils" class="es.caib.gdib.utils.GdibUtils">
+		<property name="authenticationService" ref="AuthenticationService" />
+		<property name="namespaceService" ref="NamespaceService" />
+		<property name="fileFolderService" ref="FileFolderService" />
+		<property name="dictionaryService" ref="DictionaryService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="unsecureContentService" ref="contentService" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="versionService" ref="VersionService" />
+		<property name="lockService" ref="LockService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="permissionService" ref="PermissionService" />
+		<property name="categoryService" ref="CategoryService" />
+		<property name="exUtils" ref="exUtils" />
+		<property name="gdibAmpPropertiesAplicationFilter" ref="gdibAmpPropertiesAplicationFilter" />
+		<property name="gdibAmpPropertiesESBOperationFilter" ref="gdibAmpPropertiesESBOperationFilter" />
+		<property name="rootCT" value="$gdib{gdib.repository.classification.table.root.uuid}" />
+		<property name="rootTemplate" value="$gdib{gdib.repository.expedient.template.uuid}" />
+		<property name="caibDocumentMetadata" value="$gdib{gdib.documento.metadatos.eni}" />
+		<property name="caibExpedienteMetadata" value="$gdib{gdib.expediente.metadatos.eni}" />
+		<property name="rootDM" value="$gdib{gdib.repository.dm.uuid}" />
+		<property name="rootMigration" value="$gdib{gdib.repository.migration.uuid}" />
+		<property name="repositoryDisableCheck" value="$gdib{gdib.repository.disable.check}" />
+		<property name="authorityService" ref="AuthorityService" />
+		<property name="ccUtils" ref="ccUtils" />
+		<property name="repositoryClassificationTableMode" value="$gdib{gdib.repository.classification.table.mode.rm}" />
+		<property name="registroCentralSeries" value="$gdib{gdib.repository.serie.registro.central}" />
+		<property name="signatureService" ref="internalSignatureService" />
+		<property name="noModifyCaibDocumentMetadata" value="$gdib{gdib.documento.metadatos.eni.modify}" />
+		<property name="noModifyCaibExpedienteMetadata" value="$gdib{gdib.expediente.metadatos.eni.modify}" />
+		<property name="inDMPathCheckActive" value="$gdib{gdib.repository.inDMPath.check.active}" />
+
+	</bean>
+
+	<!-- Servicio interno de firma electrónica -->
+	<bean name="internalSignatureService" class="es.caib.gdib.ws.impl.AfirmaV6SignatureServiceImpl">
+		<property name="afirmaIntegraDefaultProperties" ref="gdibAmpPropertiesAfirmaServiceFilter" />
+	</bean>
+	<!-- Servicio interno de firma electrónica -->
+
+	<!-- Factoría para la creación de utilidades de firma de índices electrónicos -->
+	<bean name="indexSignerFactory" class="es.caib.gdib.utils.AdministrativeProcessingIndexSignerFactory">
+		<property name="defaultSignatureService" ref="internalSignatureService"/>
+		<property name="fileIndexSignatureProperties" ref="gdibAmpPropertiesFileIndexSignatureFilter" />
+	</bean>
+	<!-- Fin Factoría para la creación de utilidades de firma de índices electrónicos -->
+
+	<!-- Beans relacionados con Indice electronico en sus dos versiones ENI y GDIB -->
+	<bean name="indiceElectronicoManager" class="es.caib.gdib.ws.common.types.IndiceElectronicoManager" >
+		<property name="exUtils" ref="exUtils" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="foliateUtils" ref="foliateUtils" />
+		<property name="foliateEniUtils" ref="foliateEniUtils" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="indexSignerFactory" ref="indexSignerFactory" />
+	</bean>
+
+	<bean name="foliateEniUtils" class="es.caib.gdib.utils.FoliateEniUtils">
+		<property name="nodeService" ref="NodeService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="exUtils" ref="exUtils" />
+		<property name="addExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.eniIndexV10.addExchangeFiles}" />
+	</bean>
+
+	<bean name="foliateUtils" class="es.caib.gdib.utils.FoliateUtils">
+		<property name="nodeService" ref="NodeService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="exUtils" ref="exUtils" />
+		<property name="addExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.caibIndexV10.addExchangeFiles}" />
+	</bean>
+	<!-- Fin -->
+
+	<bean name="ccUtils" class="es.caib.gdib.utils.CuadroClasificacionUtils">
+		<property name="nodeService" ref="NodeService" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="exUtils" ref="exUtils" />
+		<property name="rootRM" value="$gdib{gdib.repository.classification.table.root.uuid}" />
+	</bean>
+
+	<!-- Beans relacionados con el export a RM  -->
+	<bean name="exportUtils" class="es.caib.gdib.rm.utils.ExportUtils">
+		<property name="nodeService" ref="NodeService" />
+		<property name="fileFolderService" ref="FileFolderService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="exporterService" ref="ExporterService" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="ccUtils" ref="ccUtils" />
+		<property name="destDir" value="$gdib{gdib.repository.rm.export.destDir}" />
+		<property name="tmpDir" value="$gdib{gdib.repository.temp.folder.uuid}" />
+	</bean>
+	<!-- FIN: Beans relacionados con el export a RM  -->
+
+	<!-- Beans relacionados con el import a RM  -->
+	<bean name="importUtils" class="es.caib.gdib.rm.utils.ImportUtils">
+		<property name="nodeService" ref="NodeService" />
+		<property name="importerService" ref="ImporterService"/>
+		<property name="utils" ref="gdibUtils" />
+		<property name="searchService" ref="SearchService" />
+		<property name="destDir" value="$gdib{gdib.repository.rm.import.destDir}" />
+		<property name="rmImportPackageHandlerFactory" ref="rmImportPackageHandlerFactory" />
+	</bean>
+
+	<bean name="rmImportPackageHandler" class="es.caib.gdib.rm.RMImportPackageHandler" scope="prototype">
+		<property name="nodeService" ref="NodeService" />
+		<property name="contentService" ref="contentService" />
+		<property name="sourceDir" value="${dir.contentstore}" />
+	</bean>
+
+	<bean name="rmImportPackageHandlerFactory" class="es.caib.gdib.rm.RMImportPackageHandlerFactory">
+    	<lookup-method bean="rmImportPackageHandler" name="getRMImportPackageHandler" />
+	</bean>
+	<!-- FIN: Beans relacionados con el import a RM  -->
+
+	<bean name="subTypeDocUtil" class="es.caib.gdib.utils.SubTypeDocUtil">
+		<property name="exUtils" ref="exUtils" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="db_alfresco_datasource" value="$gdib{cuadro.db.driver}" />
+		<property name="db_alfresco_url" value="${cuadro.db.url}" />
+		<property name="db_alfresco_username" value="${cuadro.db.username}" />
+		<property name="db_alfresco_password" value="${cuadro.db.password}" />
+	</bean>
+
+</beans>

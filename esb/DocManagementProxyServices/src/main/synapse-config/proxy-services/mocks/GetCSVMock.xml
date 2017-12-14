@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="GetCSVMock" startOnLoad="true" trace="disable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target>
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+      <payloadFactory media-type="xml">
+        <format>
+          <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+            <S:Body>
+              <ns2:getCSVResponse xmlns:ns2="http://www.caib.es/gdib/repository/ws">
+                <ns2:result>6c1439af-9058-4898-937d-2d690a1a7991</ns2:result>
+              </ns2:getCSVResponse>
+            </S:Body>
+          </S:Envelope>
+        </format>
+        <args/>
+      </payloadFactory>
+      <header action="remove" name="To" scope="default"/>
+      <property name="RESPONSE" scope="default" type="STRING" value="true"/>
+      <property action="remove" name="NO_ENTITY_BODY" scope="axis2"/>
+      <respond/>
+    </inSequence>
+    <outSequence/>
+    <faultSequence>
+      <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_CODE')" name="CodigoError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_MESSAGE')" name="MensajeError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_DETAIL')" name="DetalleError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_EXCEPTION')" name="Excepcion"/>
+      </log>
+      <makefault description="GenerateException" version="soap11">
+        <code value="soap11Env:Server" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
+        <reason expression="get-property('ERROR_CODE')"/>
+        <detail expression="get-property('ERROR_MESSAGE')"/>
+      </makefault>
+    </faultSequence>
+  </target>
+</proxy>

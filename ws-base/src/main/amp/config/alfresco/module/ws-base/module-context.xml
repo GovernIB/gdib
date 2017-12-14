@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://www.springframework.org/schema/util
+          http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- Load properties -->
+	<bean id="wsBaseProperties"
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    		<property name="locations">
+		        <list>
+		        	<value>classpath:alfresco/module/ws-base/properties/ws-base.properties</value>
+		        	<value>classpath*:ws-base.properties</value>
+		        </list>
+    		</property>
+    		<property name="ignoreResourceNotFound" value="true" />
+    		<property name="placeholderPrefix" value="$base{" />
+        	<property name="placeholderSuffix" value="}" />
+	</bean>
+
+	<!-- servicio de autenticacion -->
+	<bean id="wsAuthentication" class="es.rsits.ws.auth.WSAuthentication">
+		<property name="authenticationService" ref="authenticationService" />
+	</bean>
+
+	<!-- servicio de transacciones -->
+	<bean id="wsTransact" class="es.rsits.ws.transaction.WSTransaction">
+		<property name="transactionService" ref="TransactionService" />
+	</bean>
+
+	<!-- servicio de auditoria -->
+	<bean id="wsAudit" class="es.rsits.ws.audit.WSAudit" autowire="byType">
+		<property name="auditTaskExecutor" ref="auditTaskExecutor" />
+	</bean>
+
+	<!-- Datasource de base de datos de auditoria -->
+	<bean id="wsAuditDAO" class="es.rsits.ws.audit.dao.impl.WSAuditDaoImpl">
+		<property name="dataSource" ref="gdibDataSource" />
+	</bean>
+
+    <bean id="gdibDataSource" class="org.alfresco.config.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/dataSource</value>
+        </property>
+        <property name="defaultObject">
+            <ref bean="defaultGdibDataSource" />
+        </property>
+    </bean>
+
+	<bean id="defaultGdibDataSource" parent="baseGdibDefaultDataSource" />
+
+    <bean id="baseGdibDefaultDataSource" parent="baseDefaultDataSource">
+        <property name="driverClassName">
+            <value>$base{audit.db.driver}</value>
+        </property>
+        <property name="url">
+            <value>$base{audit.db.url}</value>
+        </property>
+        <property name="username">
+            <value>$base{audit.db.username}</value>
+        </property>
+        <property name="password">
+            <value>$base{audit.db.password}</value>
+        </property>
+        <property name="initialSize" >
+            <value>$base{audit.db.pool.initial}</value>
+        </property>
+        <property name="maxActive" >
+            <value>$base{audit.db.pool.max}</value>
+        </property>
+    </bean>
+	<!-- Fin DataSource  -->
+
+	<!-- ThreadPool para la insercion en base de datos de auditoria asincrono -->
+	<bean id="auditTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	    <property name="corePoolSize" value="5" />
+	    <property name="maxPoolSize" value="10" />
+	    <property name="queueCapacity" value="25" />
+	</bean>
+
+	<!-- Fin ThreadPool PARA EL THREADPOOL -->
+
+	<bean id="alfrescoAuthHandler" class="es.rsits.ws.handlers.AlfrescoAuthHandler">
+		<property name="wSAuth" ref="wsAuthentication" />
+		<property name="activeHandler" value="$base{gdib.autentication.active}" />
+	</bean>
+
+	<bean id="auditHandler" class="es.rsits.ws.handlers.AuditHandler" init-method="initIt">
+		<property name="wsAudit" ref="wsAudit" />
+		<property name="activeHandler" value="$base{gdib.audit.active}" />
+		<property name="db_audit_driver" value="$base{audit.db.driver}" />
+		<property name="db_audit_url" value="$base{audit.db.url}" />
+		<property name="db_audit_username" value="$base{audit.db.username}" />
+		<property name="db_audit_password" value="$base{audit.db.password}" />
+	</bean>
+
+	<bean id="transactionHandler" class="es.rsits.ws.handlers.TransactionHandler">
+		<property name="wsTransact" ref="wsTransact" />
+		<property name="activeHandler" value="$base{gdib.audit.active}" />
+	</bean>
+
+	<bean id="exceptionHandler" class="es.rsits.ws.handlers.ExceptionHandler">
+		<property name="activeHandler" value="$base{gdib.exception.active}" />
+	</bean>
+
+</beans>

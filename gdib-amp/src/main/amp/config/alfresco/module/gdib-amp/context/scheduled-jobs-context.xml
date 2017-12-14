@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Expired Documents -->
+	<bean id="expiredDocuments"
+		class="es.caib.gdib.schedulejobs.ExpiredDocuments">
+		<property name="nodeService" ref="NodeService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="typeDoc" value="$gdib{expire.type_doc}" />
+		<property name="attrib" value="$gdib{expire.attrib}" />
+		<property name="changeAttrib" value="$gdib{expire.changeattrib}" />
+		<property name="attribValue" value="$gdib{expire.attribvalue}" />
+		<property name="luceneQuery" value="$gdib{expire.lucene.query}" />
+		<property name="active" value="$gdib{expire.active}" />
+	</bean>
+
+	<bean id="expiredDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>es.caib.gdib.schedulejobs.ExpiredDocumentsJob</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter">
+                    <ref bean="expiredDocuments" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+	<!-- Trigger para lanzar el cronjob -->
+     <bean id="expiredDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="expiredDocumentsJobDetail" />
+        </property>
+        <property name="scheduler">
+            <ref bean="schedulerFactory" />
+        </property>
+        <property name="cronExpression">
+            <value>$gdib{expire.cron}</value>
+        </property>
+    </bean>
+    <!-- Fin Expired Documents -->
+
+    <!-- Resealing Documents -->
+    <bean id="resealDocuments"
+		class="es.caib.gdib.schedulejobs.ResealDocuments">
+		<property name="resealDocumentsPropertiesFilter" ref="resealDocumentsPlaceHolderPopertiesFilter" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="utils" ref="gdibUtils"/>
+		<property name="exUtils" ref="exUtils"/>
+		<property name="subTypeDocUtil" ref="subTypeDocUtil" />
+		<property name="typeDoc" value="$gdib{reseal.type_doc}" />
+		<property name="active" value="$gdib{reseal.active}" />
+		<property name="signatureTypeArchivedToUpgrade" value="$gdib{reseal.signature_types_archived_to_upgrade}" />
+		<property name="signatureService" ref="internalSignatureService" />
+		<property name="txnHelper" ref="retryingTransactionHelper" />
+	</bean>
+
+	<bean id="resealDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>es.caib.gdib.schedulejobs.ResealDocumentsJob</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter">
+                    <ref bean="resealDocuments" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="resealDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="resealDocumentsJobDetail" />
+        </property>
+        <property name="scheduler">
+            <ref bean="schedulerFactory" />
+        </property>
+        <property name="cronExpression">
+            <value>$gdib{reseal.cron}</value>
+        </property>
+    </bean>
+
+	<bean id="resealDocumentsPlaceHolderPopertiesFilter" class="es.caib.gdib.utils.FilterPlaceholderProperties">
+		<constructor-arg index="0" type="String" value="reseal"/>
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+		        <list>
+		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-reseal.properties</value>
+		        	<value>classpath*:schedule-job-reseal.properties</value>
+		        </list>
+    		</property>
+	</bean>
+
+    <!-- Fin Resealing Documents -->
+
+	<!-- Expurgate Documents -->
+    <bean id="expurgateDocuments"
+		class="es.caib.gdib.schedulejobs.ExpurgateDocuments">
+		<property name="expurgateDocumentsPropertiesFilter" ref="expurgateDocumentsPlaceHolderPopertiesFilter" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="dictionaryService" ref="DictionaryService" />
+		<property name="subTypeDocUtil" ref="subTypeDocUtil" />
+		<property name="active" value="$gdib{expurgate.active}" />
+	</bean>
+
+	<bean id="expurgateDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass">
+            <value>es.caib.gdib.schedulejobs.ExpurgateDocumentsJob</value>
+        </property>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter">
+                    <ref bean="expurgateDocuments" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="expurgateDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="expurgateDocumentsJobDetail" />
+        </property>
+        <property name="scheduler">
+            <ref bean="schedulerFactory" />
+        </property>
+        <property name="cronExpression">
+            <value>$gdib{expurgate.cron}</value>
+        </property>
+    </bean>
+
+	<bean id="expurgateDocumentsPlaceHolderPopertiesFilter" class="es.caib.gdib.utils.FilterPlaceholderProperties">
+		<constructor-arg index="0" type="String" value="expurgate"/>
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+		        <list>
+		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-expurgate.properties</value>
+		        	<value>classpath*:schedule-job-expurgate.properties</value>
+		        </list>
+    		</property>
+	</bean>
+
+    <!-- Fin Expurgate Documents -->
+</beans>

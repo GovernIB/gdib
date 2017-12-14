@@ -1,0 +1,7 @@
+<webscript>
+    <shortname>Registra un expediente</shortname>
+    <description>Registra un expediente, poniendo su estado a Ingresado</description>
+    <url>/gdib/expedient/register?nodeRef={nodeRef}</url>
+    <authentication>user</authentication>
+    <format default="json"></format>
+</webscript>

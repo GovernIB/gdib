@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="DSSAfirmaSign" startOnLoad="true" statistics="enable"
+  trace="enable" transports="http" xmlns="http://ws.apache.org/ns/synapse">
+  <target>
+    <endpoint>
+      <address trace="disable" uri="https://afirmades.caib.es:4430/afirmaws/services/DSSAfirmaSign"/>
+    </endpoint>
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+    </inSequence>
+    <outSequence>
+      <send/>
+    </outSequence>
+    <faultSequence/>
+  </target>
+  <parameter name="disableREST">true</parameter>
+  <parameter name="disableSOAP12">true</parameter>
+</proxy>

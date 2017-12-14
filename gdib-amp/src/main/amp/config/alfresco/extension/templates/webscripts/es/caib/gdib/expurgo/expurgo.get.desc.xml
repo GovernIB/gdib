@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Expurgo</shortname>
+  <description>Lista expurgo</description>
+  <family>Expurgo</family>
+  <url>/gdib/expurgo</url>
+  <url>/gdib/expurgo</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+</webscript>

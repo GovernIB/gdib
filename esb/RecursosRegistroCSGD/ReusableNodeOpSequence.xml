@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="ReusableNodeOpSequence" xmlns="http://ws.apache.org/ns/synapse">
+  <parameter name="nodeId"/>
+  <parameter name="serviceHeaderString"/>
+  <parameter name="gdibOperation"/>
+  <sequence>
+    <log>
+      <property name="### Secuencia ReusableNodeIdSequence ###" value="!!!!!!!!!!!!!!!!!!!!!!!!!!! Entrando en la secuencia ReusableNodeIdSequence !!!!!!!!!!!!!!!!!!!!!!!!!!!"/>
+    </log>
+    <property expression="$func:serviceHeaderString"
+      name="serviceHeaderOm" scope="default" type="OM" xmlns:ns="http://org.apache.synapse/xsd"/>
+    <switch source="$func:gdibOperation">
+      <case regex="lockNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:lockNode>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:lockNode>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:lockNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="lockNode"/>
+      </case>
+      <case regex="unlockNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:unlockNode>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:unlockNode>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:unlockNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="unlockNode"/>
+      </case>
+      <case regex="removeNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:removeNode>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:removeNode>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:removeNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="removeNode"/>
+      </case>
+      <case regex="exportNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:exportNode>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:exportNode>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:exportNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="exportNode"/>
+      </case>
+      <case regex="getNodeVersionList">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:getNodeVersionList>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:getNodeVersionList>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:getNodeVersionList"/>
+        </enrich>
+        <header name="Action" scope="default" value="getNodeVersionList"/>
+      </case>
+      <case regex="foliateNode">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:foliateNode>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:foliateNode>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:foliateNode"/>
+        </enrich>
+        <header name="Action" scope="default" value="foliateNode"/>
+      </case>
+      <case regex="openFile">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:openFile>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:openFile>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:openFile"/>
+        </enrich>
+        <header name="Action" scope="default" value="openFile"/>
+      </case>
+      <case regex="closeFile">
+        <payloadFactory media-type="xml">
+          <format>
+            <soapenv:Envelope
+              xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+              <soapenv:Body>
+                <ws:closeFile>
+                  <ws:nodeId>$1</ws:nodeId>
+                </ws:closeFile>
+              </soapenv:Body>
+            </soapenv:Envelope>
+          </format>
+          <args>
+            <arg evaluator="xml" expression="$func:nodeId"/>
+          </args>
+        </payloadFactory>
+        <enrich>
+          <source clone="true"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+          <target action="child"
+            xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:closeFile"/>
+        </enrich>
+        <header name="Action" scope="default" value="closeFile"/>
+      </case>
+      <default>
+        <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+        <payloadFactory media-type="json">
+          <format>{&#xd;
+	"exception":{&#xd;
+		"code": "COD_080",&#xd;
+		"description": "La operacion $1 no esta soportada por la plantilla de secuencia ReusableNodeIdSequence."&#xd;
+	}&#xd;
+} </format>
+          <args>
+            <arg evaluator="xml" expression="$func:gdibOperation"/>
+          </args>
+        </payloadFactory>
+        <log>
+          <property name="### Enviar respuesta ###" value="Antes de enviar respuesta - Excepcion"/>
+        </log>
+        <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+        <respond description="Excepcion - Enviar respuesta"/>
+      </default>
+    </switch>
+    <log level="full"/>
+    <log>
+      <property name="### Invocar servicio ###" value="Antes de invocar"/>
+    </log>
+    <call>
+      <endpoint>
+        <address format="soap11" trace="enable" uri="https://afirmades.caib.es:4430/alfresco/webservice/gdib/repository">
+          <enableAddressing version="submission"/>
+          <timeout>
+            <duration>20000</duration>
+            <responseAction>fault</responseAction>
+          </timeout>
+          <suspendOnFailure>
+            <errorCodes>-1</errorCodes>
+            <initialDuration>0</initialDuration>
+            <progressionFactor>1.0</progressionFactor>
+            <maximumDuration>0</maximumDuration>
+          </suspendOnFailure>
+          <markForSuspension>
+            <errorCodes>-1</errorCodes>
+          </markForSuspension>
+        </address>
+      </endpoint>
+    </call>
+    <log>
+      <property name="### Invocar servicio ###" value="Despues de invocar"/>
+    </log>
+    <header action="remove" name="Action" scope="default"/>
+    <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+    <log level="full"/>
+  </sequence>
+</template>

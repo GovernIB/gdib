@@ -1,0 +1,132 @@
+Script para crear datos de prueba para las consultas en base de datos de los datos que se obtienen para los documentos y expediente
+segun la serie documental a la que pertenecen y segun el subtipo de documento dentro de la serie documental
+
+DROP TABLE subtypedocinfo;
+DROP TABLE subtypedoc;
+DROP TABLE documentaryseries;
+
+CREATE TABLE documentaryseries
+(
+    code_clasificacion varchar(50) primary key,
+    description varchar(200)
+);
+ALTER TABLE documentaryseries
+  OWNER TO alfresco;
+
+
+INSERT INTO documentaryseries (code_clasificacion, description)
+    VALUES ('S0001', 'Solicitudes de tarjeta sanitaria');
+INSERT INTO documentaryseries (code_clasificacion, description)
+    VALUES ('S0002', 'Contratacion de profesionales');
+INSERT INTO documentaryseries (code_clasificacion, description)
+    VALUES ('S0003', 'Serie de prueba 3');
+
+SELECT * FROM documentaryseries;
+
+CREATE TABLE subtypedoc
+(
+    code_clasificacion varchar(50) references documentaryseries (code_clasificacion ),
+    code_subtype varchar(50) DEFAULT '@defecto',
+    description varchar(200),
+    CONSTRAINT pk_subtypedoc PRIMARY KEY (code_clasificacion)
+);
+ALTER TABLE subtypedoc
+  OWNER TO alfresco;
+
+INSERT INTO subtypedoc (code_clasificacion, description)
+    VALUES ('S0001', 'subtipo serie S0001');
+
+SELECT * FROM subtypedoc;
+
+CREATE TABLE subtypedocinfo
+(
+    code_clasificacion varchar(50)  references documentaryseries (code_clasificacion ),
+    code_subtype varchar(50) DEFAULT '@defecto',
+    lopd varchar (50),
+    confidentiality varchar (50),
+    accesstype varchar(50),
+    causelimitationcode varchar (50),
+    normative varchar(50),
+    reutilizationcond varchar (50),
+    valuetype varchar (50),
+    term int,
+    secundaryvalue varchar (50),
+    dictumtype varchar (50),
+    dictatedaction varchar (50),
+    termdictatedaction varchar (50),
+    vital_document boolean,
+    designationclass varchar (50),
+    classificationtype varchar (50),
+    resealing varchar (50),
+    CONSTRAINT pk_subtypedocinfo PRIMARY KEY (code_clasificacion)
+);
+ALTER TABLE subtypedocinfo
+  OWNER TO alfresco;
+
+INSERT INTO subtypedocinfo (code_clasificacion, lopd, confidentiality, accesstype, causelimitationcode, normative, reutilizationcond, valuetype, term, secundaryvalue, dictumtype, dictatedaction, termdictatedaction, vital_document, designationclass, classificationtype, resealing)
+    VALUES ('S0001', 'Basico', 'Bajo','Libre','M', '2015/13','condicion prueba', 'Fiscal', 3000, 'Si', 'CP', 'Conservacion Permanente', '3000', true, 'Prueba', 'Funcional', '150');
+
+INSERT INTO subtypedocinfo (code_clasificacion, lopd, confidentiality, accesstype, causelimitationcode, normative, reutilizationcond, valuetype, term, secundaryvalue, dictumtype, dictatedaction, termdictatedaction, vital_document, designationclass, classificationtype, resealing)
+    VALUES ('S0002', 'Medio', 'Medio','Libre','M','2015/12','condicion prueba', 'Administrativo', 4500, 'No', 'ET', 'Eliminacion', '4500', false, 'Prueba2', 'Funcional', '200');
+
+INSERT INTO subtypedocinfo (code_clasificacion, lopd, confidentiality, accesstype, causelimitationcode, normative, reutilizationcond, valuetype, term, secundaryvalue, dictumtype, dictatedaction, termdictatedaction, vital_document, designationclass, classificationtype, resealing)
+    VALUES ('S0003', 'Alto', 'Alto','Limitado','A','2015/11', '', 'Juridico' , 2000, 'SC', 'ET', 'Eliminacion total', '2000', false, 'Prueba3', 'funcional' , '180');
+
+
+SELECT * FROM subtypedocinfo;
+
+DROP TABLE gdibauditoria;
+
+CREATE TABLE gdibauditoria
+    (
+    id serial NOT NULL,
+    username character varying(50),
+    application character varying(100),
+    operationtype character varying(15),
+    operation character varying(50),
+    esboperation character varying(50),
+    executiondate date,
+    executiontime character varying(10),
+    authenticationtype character varying(10),
+    ip character varying(20),
+    mac character varying(20),
+    applicantdocument character varying(150),
+    applicantname character varying(150),
+    publicservantdocument character varying(150),
+    publicservantname character varying(150),
+    publicservantorganization character varying(150),
+    expedient character varying(150),
+    CONSTRAINT gdibauditoria_pkey PRIMARY KEY (id)
+    )
+WITH (
+    OIDS=FALSE
+    );
+
+DROP TABLE gdibauditoria_error;
+
+CREATE TABLE gdibauditoria_error
+    (
+    id serial NOT NULL,
+    code character varying(15),
+    message character varying(300),
+    username character varying(50),
+    application character varying(100),
+    operationtype character varying(15),
+    operation character varying(50),
+    esboperation character varying(50),
+    executiondate date,
+    executiontime character varying(10),
+    authenticationtype character varying(10),
+    ip character varying(20),
+    mac character varying(20),
+    applicantdocument character varying(150),
+    applicantname character varying(150),
+    publicservantdocument character varying(150),
+    publicservantname character varying(150),
+    publicservantorganization character varying(150),
+    expedient character varying(150),
+    CONSTRAINT gdibauditoria_error_pkey PRIMARY KEY (id)
+    )
+WITH (
+    OIDS=FALSE
+	);

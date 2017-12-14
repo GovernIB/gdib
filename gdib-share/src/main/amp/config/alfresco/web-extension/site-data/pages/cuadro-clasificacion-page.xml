@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page>
+  <id>cuadro-clasificacion-page</id>
+  <title-id>page.cuadro-clasificacion-page.title</title-id>
+  <description-id>page.cuadro-clasificacion-page.description</description-id>
+  <authentication>user</authentication>
+  <template-instance>cuadro-clasificacion-page</template-instance>
+
+  <components>
+
+      <!-- Cuadro Clasificacion -->
+      <component>
+         <region-id>cuadro-clasificacion</region-id>
+         <url>/components/cuadro-clasificacion</url>
+      </component>
+
+   </components>
+
+</page>

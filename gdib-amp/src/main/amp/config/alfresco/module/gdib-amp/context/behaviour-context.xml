@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://www.springframework.org/schema/util
+          http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<bean id="es.caib.gidb.policy.recordFolderEventHandler" class="es.caib.gdib.behavior.CAIBRecordFolderBehavior"
+		init-method="registerEventHandlers">
+		<property name="eventManager" ref="policyComponent" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="actionService" ref="ActionService" />
+		<property name="authorityService" ref="AuthorityService" />
+		<property name="personService" ref="PersonService" />
+		<property name="groupEmailTo" value="$gdib{gdib.rm.estado_archivo.change.email.group.to}" />
+		<property name="emailNotifications" value="$gdib{gdib.rm.estado_archivo.change.send.email.notifications}" />
+		<property name="policyBehaviourFilter" ref="policyBehaviourFilter" />
+	</bean>
+
+	<bean id="es.caib.gidb.policy.documentEventHandler" class="es.caib.gdib.behavior.CAIBDocumentBehavior"
+		init-method="registerEventHandlers" depends-on="caib-model.dictionaryBootstrap">
+		<property name="eventManager" ref="policyComponent" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="actionService" ref="ActionService" />
+		<property name="authorityService" ref="AuthorityService" />
+		<property name="personService" ref="PersonService" />
+		<property name="groupEmailTo" value="$gdib{gdib.rm.estado_archivo.change.email.group.to}" />
+		<property name="emailNotifications" value="$gdib{gdib.rm.estado_archivo.change.send.email.notifications}" />
+	</bean>
+
+    <alias name="caibRecordService" alias="recordService"/>
+    <bean id="caibRecordService" parent="rm.baseBehaviour" class="es.caib.gdib.behavior.CAIBRecordServiceImpl"
+			init-method="init">
+		<property name="identifierService" ref="recordsManagementIdentifierService" />
+		<property name="extendedPermissionService" ref="ExtendedPermissionService" />
+		<property name="extendedSecurityService" ref="ExtendedSecurityService" />
+		<property name="policyComponent" ref="policyComponent" />
+		<property name="filePlanService" ref="FilePlanService" />
+		<property name="ownableService" ref="OwnableService" />
+		<property name="notificationHelper" ref="recordsManagementNotificationHelper" />
+		<property name="capabilityService" ref="CapabilityService" />
+		<property name="ruleService" ref="RuleService" />
+		<property name="fileFolderService" ref="FileFolderService" />
+		<property name="recordFolderService" ref="RecordFolderService" />
+		<property name="filePlanRoleService" ref="FilePlanRoleService" />
+		<property name="permissionService" ref="permissionService" />
+		<property name="versionService" ref="VersionService" />
+		<property name="relationshipService" ref="RelationshipService" />
+		<property name="recordsManagementContainerType" ref="rma.recordsManagementContainer" />
+	</bean>
+
+</beans>

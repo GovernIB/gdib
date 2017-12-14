@@ -1,0 +1,32 @@
+<extension>
+	<modules>
+		<module>
+			<id>Caib :: Document Details Page :: Verify Document Signature</id>
+			<auto-deploy>true</auto-deploy>
+			<components>
+				<component>
+					<scope>template</scope>
+					<region-id>document-metadata</region-id>
+					<source-id>document-details</source-id>
+					<sub-components>
+						<sub-component id="caib-document-signature" index="-1">
+							<evaluations>
+                           		<evaluation id="subcomponent-type-evaluator">
+                               		<evaluators>
+                                   		<evaluator type="isType.subcomponent.evaluator">
+                                    		<params>
+        										<type>gdib:documentoMigrado;eni:documento</type>
+    										</params>
+                                   		</evaluator>
+                               		</evaluators>
+                               		<render>false</render>
+                           		</evaluation>
+                        	</evaluations>
+							<url>/gdib/components/document-details/verifydocumentsignature</url>
+						</sub-component>
+					</sub-components>
+				</component>
+			</components>
+		</module>
+	</modules>
+</extension>

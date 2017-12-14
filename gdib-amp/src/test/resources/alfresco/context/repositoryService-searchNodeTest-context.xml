@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<import resource="classpath:alfresco/context/repositoryService-context.xml"/>
+
+	<bean id="nodeDocument2" parent="nodeDocument">
+		<property name="name" value="document2.txt" />
+	</bean>
+
+	<bean id="nodeDocumentSign" parent="nodeDocument">
+		<property name="sign" ref="signDataHandler" />
+	</bean>
+
+	<bean id="cmFolder" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="folder" />
+		<property name="type" value="cm:folder" />
+	</bean>
+
+</beans>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="validateDocument" startOnLoad="true" trace="enable"
+  transports="http" xmlns="http://ws.apache.org/ns/synapse">
+  <target faultSequence="conf:/repository/esb/registry/sequences/ExceptionSequence">
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="FORCE_SC_ACCEPTED" scope="axis2" type="STRING" value="false"/>
+      <property name="csgdOperation" scope="default" type="STRING" value="validateDocument"/>
+      <property name="typeRestrictions" scope="default" type="STRING" value="eni:documento,gdib:documentoMigrado"/>
+      <property name="afirmaAppName" scope="default" type="STRING" value="ricoh.test"/>
+      <property name="afirmaAppUtUser" scope="default" type="STRING" value="usuario"/>
+      <property name="afirmaAppUtPass" scope="default" type="STRING" value="12345"/>
+      <log level="full"/>
+      <property
+        expression="json-eval($.validateDocRequest.serviceHeader)"
+        name="serviceHeader" scope="default" type="STRING"/>
+      <script function="parseServiceHeader"
+        key="conf:/repository/esb/registry/js/serviceHeaderUtils.js" language="js"/>
+      <log>
+        <property expression="get-property('errorMessage')" name="### Cabecera correcta ?? ###"/>
+      </log>
+      <log>
+        <property expression="get-property('username')" name="### Usuario cabecera Property ###"/>
+      </log>
+      <filter xpath="not(boolean(get-property('serviceHeaderOk')))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+          <payloadFactory media-type="json">
+            <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}                 
+		            	</format>
+            <args>
+              <arg evaluator="xml" expression="get-property('errorMessage')"/>
+            </args>
+          </payloadFactory>
+          <respond/>
+        </then>
+        <else/>
+      </filter>
+      <payloadFactory media-type="json">
+        <format>
+           		{
+				  "getDocumentRequest": {
+				    "serviceHeader": {
+				      "serviceVersion": "1.0",
+				      "auditInfo": {
+				        "applicant": {
+				          "document": "$1",
+				          "name": "$2"
+				        },
+				        "publicServant": {
+				        	"identificationData": {
+					          "document": "$3",
+					          "name": "$4"
+					        },
+					        "organization": "$5"
+				        },
+				        "file": {
+				          "id": "$6",
+				          "proceedings": {
+				          	"id": "$7", 
+				          	"name": "$8" 
+				          }
+				        },
+				        "application": "$9",
+				        "esbOperation": "$10"
+				      },
+				      "securityInfo": {
+				        "user": "$11",
+				        "$12": "$13"
+				      },
+				      "restrictions": {
+				      	"types": "$14"
+				      }
+				    },
+				    "param": {
+				      "documentId": { 
+				      	"nodeId": "$15",
+				      	"csv": "$16", 
+				      	"migratedDocId": {
+				      		"externalId": "$17",
+				      		"applicationId": "$18" 
+				      	}
+				      },
+				      "content": "true"
+				    }
+				  }
+				}                 
+           	   </format>
+        <args>
+          <arg evaluator="xml" expression="get-property('serviceHeaderApplicantDoc')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderApplicantName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderPublicServantDoc')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderPublicServantName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderOrgAuthor')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileId')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileProcId')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderFileProcName')"/>
+          <arg evaluator="xml" expression="get-property('serviceHeaderAppName')"/>
+          <arg evaluator="xml" expression="get-property('csgdOperation')"/>
+          <arg evaluator="xml" expression="get-property('username')"/>
+          <arg evaluator="xml" expression="get-property('secToken')"/>
+          <arg evaluator="xml" expression="get-property('password')"/>
+          <arg evaluator="xml" expression="get-property('typeRestrictions')"/>
+          <arg evaluator="json" expression="$.validateDocRequest.param.documentId.nodeId"/>
+          <arg evaluator="json" expression="$.validateDocRequest.param.documentId.csv"/>
+          <arg evaluator="json" expression="$.validateDocRequest.param.documentId.migratedDocId.externalId"/>
+          <arg evaluator="json" expression="$.validateDocRequest.param.documentId.migratedDocId.applicationId"/>
+        </args>
+      </payloadFactory>
+      <call/>
+      <filter regex="200" source="get-property('axis2', 'HTTP_SC')">
+        <then>
+          <!-- Invocar @firma -->
+          <property expression="json-eval($.getDocumentResult)"
+            name="getDocRes" scope="default" type="STRING"/>
+          <script function="extractContentAndSignatureGetDocResp"
+            key="conf:/repository/esb/registry/js/getDocumentUtils.js" language="js"/>
+          <log>
+            <property expression="get-property('signatureType')" name="### signatureType ###"/>
+          </log>
+          <log>
+            <property expression="get-property('docType')" name="### docType ###"/>
+          </log>
+          <log>
+            <property expression="get-property('signatureFound')" name="### signatureFound ###"/>
+          </log>
+          <log>
+            <property expression="get-property('contentRequired')" name="### contentRequired ###"/>
+          </log>
+          <log>
+            <property expression="get-property('contentFound')" name="### contentFound ###"/>
+          </log>
+          <log>
+            <property
+              expression="get-property('docSignatureContentFound')" name="### docSignatureContentFound ###"/>
+          </log>
+          <log>
+            <property expression="get-property('valCertSignatureFound')" name="### valCertSignatureFound ###"/>
+          </log>
+          <filter xpath="get-property('respServiceOk')">
+            <then>
+              <!-- Se prepara la informaci?n del documento contenida en la respuesta del servicio en la propiedad documentResp -->
+              <property name="afirmaRequest" scope="default"
+                type="STRING" value=""/>
+              <script function="extractDocumentInfo"
+                key="conf:/repository/esb/registry/js/getDocumentUtils.js" language="js"/>
+              <class name="es.caib.archivodigital.esb.services.mediators.afirma.GenerateAfirmaDSSVerifySignatureRequestMediator"/>
+              <payloadFactory media-type="xml">
+                <format>
+                  <soapenv:Envelope
+                    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <soapenv:Body>
+                      <soapint:verify
+                        soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapint="http://soapinterop.org/">
+                        <soapint:arg0
+                          xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:string">valor</soapint:arg0>
+                      </soapint:verify>
+                    </soapenv:Body>
+                  </soapenv:Envelope>
+                </format>
+                <args/>
+              </payloadFactory>
+              <enrich>
+                <source clone="true" xpath="get-property('afirmaRequest')"/>
+                <target
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:soapint="http://soapinterop.org/" xpath="$body/soapint:verify/soapint:arg0"/>
+              </enrich>
+              <class name="es.caib.archivodigital.esb.services.mediators.wss.UsernameTokenRestMediator">
+                <property name="password" value="afirmaAppUtPass"/>
+                <property name="username" value="afirmaAppUtUser"/>
+              </class>
+              <header name="Action" scope="default" value="verify"/>
+              <call/>
+              <header action="remove" name="Action" scope="default"/>
+              <header action="remove" name="wsse:Security"
+                scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+              <property
+                expression="$body/soapint:verifyResponse/verifyReturn"
+                name="afirmaResponse" scope="default" type="STRING" xmlns:soapint="http://soapinterop.org/"/>
+              <log>
+                <property
+                  expression="boolean(get-property('afirmaResponse'))" name="### afirmaResponse ###"/>
+              </log>
+              <class name="es.caib.archivodigital.esb.services.mediators.afirma.ParseAfirmaDSSVerifySignatureResponseMediator"/>
+              <log>
+                <property
+                  expression="get-property('afirmaServiceRespOk')" name="### afirmaServiceRespOk ###"/>
+              </log>
+              <log>
+                <property
+                  expression="get-property('signsDetInfoAfirmaResponse')" name="### signsDetInfoAfirmaResponse ###"/>
+              </log>
+              <xslt key="conf:/repository/esb/registry/xslt/validateDocXMLResponse.xslt">
+                <property
+                  expression="get-property('afirmaServiceRespOk')" name="afirmaServiceRespOk"/>
+                <property
+                  expression="get-property('dssResultAfirmaResponse')" name="dssResultAfirmaResponse"/>
+                <property expression="get-property('documentResp')" name="documentResp"/>
+                <property
+                  expression="get-property('signsDetInfoAfirmaResponse')" name="signsDetInfoAfirmaResponse"/>
+              </xslt>
+              <log level="full"/>
+            </then>
+            <else>
+              <property name="exceptionHttpStatusCode" scope="default"
+                type="STRING" value="404"/>
+              <property name="exceptionCode" scope="default"
+                type="STRING" value="COD_020"/>
+              <property
+                expression="get-property('respServiceErrorMessage')"
+                name="exceptionDesc" scope="default" type="STRING"/>
+            </else>
+          </filter>
+        </then>
+        <else>
+          <property expression="get-property('axis2', 'HTTP_SC')"
+            name="exceptionHttpStatusCode" scope="default" type="STRING"/>
+          <property expression="json-eval($.exception.code)"
+            name="exceptionCode" scope="default" type="STRING"/>
+          <property expression="json-eval($.exception.description)"
+            name="exceptionDesc" scope="default" type="STRING"/>
+        </else>
+      </filter>
+      <filter regex="false" source="boolean(get-property('exceptionCode'))">
+        <then>
+          <property name="HTTP_SC" scope="axis2" type="STRING" value="200"/>
+        </then>
+        <else>
+          <property expression="get-property('exceptionHttpStatusCode')"
+            name="HTTP_SC" scope="axis2" type="STRING"/>
+          <payloadFactory media-type="json">
+            <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}                 
+           	   </format>
+            <args>
+              <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+              <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+            </args>
+          </payloadFactory>
+        </else>
+      </filter>
+      <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
+      <respond/>
+    </inSequence>
+    <outSequence/>
+  </target>
+  <parameter name="disableSOAP12">true</parameter>
+  <parameter name="disableSOAP11">true</parameter>
+</proxy>

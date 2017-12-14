@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Registro en RM</shortname>
+  <description>Registro en RMº</description>
+  <family>Preregistro</family>
+  <url>/gdib/prereg/registrar</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+</webscript>

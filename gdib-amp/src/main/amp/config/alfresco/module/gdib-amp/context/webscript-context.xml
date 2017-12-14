@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+	<bean id="webscript.es.caib.gdib.checkdocumentsignature.get"
+			class="es.caib.gdib.scripts.signature.CheckDocumentSignature"
+			parent="webscript">
+		<property name="utils" ref="gdibUtils" />
+		<property name="nodeService" ref="NodeService" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasif.get" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacion"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasif.post" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacion"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasif.delete" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacion"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasifseriedocumental.get" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSerieDocumental"
+		parent="webscript">
+		<property name="nodeService" ref="NodeService" />
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+		<property name="rootDM" value="$gdib{gdib.repository.dm.uuid}" />
+		<property name="rootRM" value="$gdib{gdib.repository.classification.table.root.uuid}" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasifseriedocumental.delete" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSerieDocumental"
+		parent="webscript">
+		<property name="nodeService" ref="NodeService" />
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+		<property name="rootDM" value="$gdib{gdib.repository.dm.uuid}" />
+		<property name="rootRM" value="$gdib{gdib.repository.classification.table.root.uuid}" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasifsubtypedoc.get" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSubtypeDoc"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasifsubtypedoc.post" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSubtypeDoc"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<bean id="webscript.es.caib.gdib.cuadroclasif.cuadroclasifsubtypedoc.delete" class="es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSubtypeDoc"
+		parent="webscript">
+		<property name="cuadroClasif" ref="subTypeDocUtil" />
+	</bean>
+
+	<!-- RootObject para ejecutar el metodo de expurgo realizado en el ExpurgoUtils como una funcion de javascript utilizada
+	en el expurgo.post.js -->
+	<bean id="expurgoUtils" parent="baseJavaScriptExtension" class="es.caib.gdib.rm.utils.ExpurgoUtils">
+		<property name="nodeService" ref="NodeService" />
+        <property name="extensionName">
+            <value>expurgo</value>
+        </property>
+    </bean>
+
+</beans>

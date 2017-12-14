@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="CreateNodeMock" startOnLoad="true" trace="disable"
+  transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+  <target>
+    <inSequence>
+      <property name="FORCE_ERROR_ON_SOAP_FAULT" scope="default"
+        type="STRING" value="true"/>
+      <property name="messageType" scope="axis2" type="STRING" value="application/xml"/>
+      <property
+        expression="boolean($body/ws:createAndGetNode/ws:node/ws:type/text())"
+        name="retrieveNode" scope="default" type="BOOLEAN" xmlns:ws="http://www.caib.es/gdib/repository/ws"/>
+      <log>
+        <property expression="get-property('retrieveNode')" name="### Recuperar nodo - Mockup ###"/>
+      </log>
+      <log>
+        <property
+          expression="$body/ws:createAndGetNode/ws:node/ws:type/text()"
+          name="### Tipo nodo - Mockup ###" xmlns:ws="http://www.caib.es/gdib/repository/ws"/>
+      </log>
+      <filter regex="true" source="get-property('retrieveNode')">
+        <then>
+          <payloadFactory media-type="xml">
+            <format>
+              <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+                <S:Body>
+                  <ns2:createAndGetNodeResponse xmlns:ns2="http://www.caib.es/gdib/repository/ws">
+                    <ns2:result>
+                      <ns2:id>6c1439af-9058-4898-937d-2d690a1a7991</ns2:id>
+                      <ns2:type>eni:documento</ns2:type>
+                      <ns2:name>documentTest.txt</ns2:name>
+                      <ns2:aspects>rn:renditioned</ns2:aspects>
+                      <ns2:aspects>cm:versionable</ns2:aspects>
+                      <ns2:aspects>eni:interoperable</ns2:aspects>
+                      <ns2:aspects>eni:transferible</ns2:aspects>
+                      <ns2:aspects>cm:auditable</ns2:aspects>
+                      <ns2:aspects>cm:thumbnailModification</ns2:aspects>
+                      <ns2:properties>
+                        <ns2:qname>eni:denominacion_clase</ns2:qname>
+                        <ns2:value>denominacion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:termino_punto_acceso</ns2:qname>
+                        <ns2:value>termino punto acceso</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:created</ns2:qname>
+                        <ns2:value>Fri Jul 08 09:01:42 CEST 2016</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>calc:site</ns2:qname>
+                        <ns2:value>local</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:valor_secundario</ns2:qname>
+                        <ns2:value>valor secundario</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:interesados_exp</ns2:qname>
+                        <ns2:value>[interesados]</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:cond_reutilizacion</ns2:qname>
+                        <ns2:value>cond_reutilizacion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tipo_doc_ENI</ns2:qname>
+                        <ns2:value>TD01</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>calc:path</ns2:qname>
+                        <ns2:value>/Company Home/Sites/local/documentLibrary/expedient/documentTest.txt</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:descripcion</ns2:qname>
+                        <ns2:value>descripcion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:soporte</ns2:qname>
+                        <ns2:value>Digital</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:organo</ns2:qname>
+                        <ns2:value>organo</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:fecha_inicio</ns2:qname>
+                        <ns2:value>Wed Jul 06 00:00:00 CEST 2016</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tipo_valor</ns2:qname>
+                        <ns2:value>Administrativo</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:estado_archivo</ns2:qname>
+                        <ns2:value>Preingreso</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:resolucion</ns2:qname>
+                        <ns2:value>resolucion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>calc:fileSize</ns2:qname>
+                        <ns2:value>927</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:id_tramite</ns2:qname>
+                        <ns2:value>id tramite</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:content</ns2:qname>
+                        <ns2:value>contentUrl=store://2016/7/8/9/5/43ba8628-4560-4398-bd70-2a5e37120a4a.bin|mimetype=text/plain|size=927|encoding=UTF-8|locale=en_US_|id=3026</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:id_punto_acceso</ns2:qname>
+                        <ns2:value>id punto acceso</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:fecha_fin_exp</ns2:qname>
+                        <ns2:value>Fri Jul 29 00:00:00 CEST 2016</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:esquema_punto_acceso</ns2:qname>
+                        <ns2:value>esquema</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tamano_logico</ns2:qname>
+                        <ns2:value>54321</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:estado_elaboracion</ns2:qname>
+                        <ns2:value>EE01</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:app_tramite_doc</ns2:qname>
+                        <ns2:value>aplicacion tramite documento</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:profundidad_color</ns2:qname>
+                        <ns2:value>profundidad</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:confidencialidad</ns2:qname>
+                        <ns2:value>Bajo</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:creator</ns2:qname>
+                        <ns2:value>admin</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:autoVersion</ns2:qname>
+                        <ns2:value>true</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:codigo_causa_limitacion</ns2:qname>
+                        <ns2:value>A</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:loc_archivo_central</ns2:qname>
+                        <ns2:value>archivo central</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:def_csv</ns2:qname>
+                        <ns2:value>csv</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:origen</ns2:qname>
+                        <ns2:value>1</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:versionLabel</ns2:qname>
+                        <ns2:value>1.1</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:lopd</ns2:qname>
+                        <ns2:value>Basico</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:plazo</ns2:qname>
+                        <ns2:value>135</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:cod_clasificacion</ns2:qname>
+                        <ns2:value>clasificacion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tipo_dictamen</ns2:qname>
+                        <ns2:value>CP</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:extension_formato</ns2:qname>
+                        <ns2:value>extension formato</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tipo_clasificacion</ns2:qname>
+                        <ns2:value>SIA</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:lastThumbnailModification</ns2:qname>
+                        <ns2:value>[doclib:1467961533096, pdf:1467961692739]</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:v_nti</ns2:qname>
+                        <ns2:value>v-nti</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:fase_archivo</ns2:qname>
+                        <ns2:value>Archivo activo</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:categoria</ns2:qname>
+                        <ns2:value>Serie</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:accion_dictaminada</ns2:qname>
+                        <ns2:value>accion</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:plazo_accion_dictaminada</ns2:qname>
+                        <ns2:value>12345</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:modified</ns2:qname>
+                        <ns2:value>Fri Jul 08 09:05:30 CEST 2016</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:modifier</ns2:qname>
+                        <ns2:value>admin</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:documento_vital</ns2:qname>
+                        <ns2:value>false</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:loc_archivo_general</ns2:qname>
+                        <ns2:value>localizacion archiivo general</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:autoVersionOnUpdateProps</ns2:qname>
+                        <ns2:value>false</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:id_origen</ns2:qname>
+                        <ns2:value>id origen</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:idioma</ns2:qname>
+                        <ns2:value>español</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:subtipo_doc</ns2:qname>
+                        <ns2:value>subtipo</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:id</ns2:qname>
+                        <ns2:value>ES_123456789_2016_6c1439af90584898937d2d690a1a16</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:unidades</ns2:qname>
+                        <ns2:value>unidades</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:tipo_acceso</ns2:qname>
+                        <ns2:value>Libre</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:name</ns2:qname>
+                        <ns2:value>documentTest.txt</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:nombre_formato</ns2:qname>
+                        <ns2:value>nombre formato</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:estado_exp</ns2:qname>
+                        <ns2:value>E01</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>cm:initialVersion</ns2:qname>
+                        <ns2:value>true</ns2:value>
+                      </ns2:properties>
+                      <ns2:properties>
+                        <ns2:qname>eni:normativa</ns2:qname>
+                        <ns2:value>normativa</ns2:value>
+                      </ns2:properties>
+                      <ns2:content>
+                        <ns2:mimetype>text/plain</ns2:mimetype>
+                        <ns2:data>VGhpcyBhcmNoaXZlIHdhcyBkb3dubG9hZGVkIGZyb20gdGhlIHdlYiBzaXRlOiB3d3cub3BlbmRsbC5jb20KCioqKioqKioqClRyb3VibGVzaG9vdGluZyB0aXBzCioqKioqKioqCioqKioqKioqClE6IFdoZXJlIHNob3VsZCBpIHB1dCB0aGUgZmlsZSBpIGp1c3QgZG93bmxvYWQ/CkE6IFRoZXJlIGFyZSBmZXcgcGxhY2VzIGNvbW1vbmx5IHVzZSB0byB0byBwdXQgdGhlIGRsbCxvY3ggYW5kIHZ4ZCBmaWxlOgoJLSBmb3IgMzJiaXQgZGxsOiBjOlxXaW5kb3dzXHN5c3RlbTMyIG9yIGM6XFdpbmRvd3Mgb3IgdGhlIHJvb3QgZGlyZWN0b3J5IG9mIHRoZSBhZmZlY3RlZCBhcHBsaWNhdGlvbgoJLSBmb3IgMTZiaXQgZGxsOiBjOlxXaW5kb3dzXHN5c3RlbSBvciBjOlxXaW5kb3dzIG9yIHRoZSByb290IGRpcmVjdG9yeSBvZiB0aGUgYWZmZWN0ZWQgYXBwbGljYXRpb24KClE6IElmIGFmdGVyIGV4dHJhY3RpbmcgdGhlIGRsbCB0aGUgaXNzdWUgaXMgc3RpbGwgdGhlIHNhbWUsIHdoYXQgY2FuIGkgZG8/CkE6IFRyeSB0byB1bmluc3RhbGwgYW5kIHJlaW5zdGFsbCB0aGUgYWZmZWN0ZWQgYXBwbGljYXRpb24gbWF5IGhlbHAuCgoqKioqKioqKgpEaXNjbGFpbWVyCioqKioqKioqCkZvciBkb2N1bWVudHMgYW5kIGZpbGVzIGF2YWlsYWJsZSBmcm9tIHRoaXMgc2VydmVyLCB3ZSBkbyBub3Qgd2FycmFudCBvciBhc3N1bWUgYW55IGxlZ2FsIGxpYWJpbGl0eS4KQWxsIGZpbGVzIGF2YWlsYWJsZSBvbiB0aGlzIHdlYnNpdGUgbWlnaHQgaGF2ZSBDb3B5cmlnaHQgYW5kL29yIHJlc3RyaWN0aW9ucyBpbiB1c2UuCgpQbGVhc2UgZmVlbCBmcmVlIHRvIGNvbnRhY3QgdGhlIGxlZ2FsIG93bmVyIG9mIHRoZSBmaWxlIHJlZ2FyZGluZyB0aGUgY29weXJpZ2h0IGFuZCB0aGUgcmVzdHJpY3Rpb24gaW4gdXNlIGZvciBtb3JlIGluZm9ybWF0aW9uLgoK</ns2:data>
+                        <ns2:encoding>UTF-8</ns2:encoding>
+                      </ns2:content>
+                      <ns2:sign
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                    </ns2:result>
+                  </ns2:createAndGetNodeResponse>
+                </S:Body>
+              </S:Envelope>
+            </format>
+            <args/>
+          </payloadFactory>
+        </then>
+        <else>
+          <payloadFactory media-type="xml">
+            <format>
+              <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+                <S:Body>
+                  <ns2:createNodeResponse xmlns:ns2="http://www.caib.es/gdib/repository/ws">
+                    <ns2:result>6c1439af-9058-4898-937d-2d690a1a7991</ns2:result>
+                  </ns2:createNodeResponse>
+                </S:Body>
+              </S:Envelope>
+            </format>
+            <args/>
+          </payloadFactory>
+        </else>
+      </filter>
+      <header action="remove" name="To" scope="default"/>
+      <property name="RESPONSE" scope="default" type="STRING" value="true"/>
+      <property action="remove" name="NO_ENTITY_BODY" scope="axis2"/>
+      <respond/>
+    </inSequence>
+    <outSequence/>
+    <faultSequence>
+      <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_CODE')" name="CodigoError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_MESSAGE')" name="MensajeError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_DETAIL')" name="DetalleError"/>
+      </log>
+      <log level="custom" separator=",">
+        <property expression="get-property('ERROR_EXCEPTION')" name="Excepcion"/>
+      </log>
+      <makefault description="GenerateException" version="soap11">
+        <code value="soap11Env:Server" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
+        <reason expression="get-property('ERROR_CODE')"/>
+        <detail expression="get-property('ERROR_MESSAGE')"/>
+      </makefault>
+    </faultSequence>
+  </target>
+</proxy>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="MoveNodeSequence" xmlns="http://ws.apache.org/ns/synapse">
+  <parameter name="nodeId"/>
+  <parameter name="targetParent"/>
+  <parameter name="serviceHeaderString"/>
+  <sequence>
+    <log>
+      <property name="### Secuencia MoveNodeSequence ###" value="!!!!!!!!!!!!!!!!!!!!!!!!!!! Entrando en la secuencia MoveNodeSequence !!!!!!!!!!!!!!!!!!!!!!!!!!!"/>
+    </log>
+    <property expression="$func:serviceHeaderString"
+      name="serviceHeaderOm" scope="default" type="OM" xmlns:ns="http://org.apache.synapse/xsd"/>
+    <payloadFactory media-type="xml">
+      <format>
+        <soapenv:Envelope
+          xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.caib.es/gdib/repository/ws">
+          <soapenv:Body>
+            <ws:moveNode>
+              <ws:nodeId>$1</ws:nodeId>
+              <ws:newParent>$2</ws:newParent>
+            </ws:moveNode>
+          </soapenv:Body>
+        </soapenv:Envelope>
+      </format>
+      <args>
+        <arg evaluator="xml" expression="$func:nodeId"/>
+        <arg evaluator="xml" expression="$func:targetParent"/>
+      </args>
+    </payloadFactory>
+    <enrich>
+      <source clone="true"
+        xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="get-property('serviceHeaderOm')"/>
+      <target action="child"
+        xmlns:ws="http://www.caib.es/gdib/repository/ws" xpath="$body/ws:moveNode"/>
+    </enrich>
+    <header name="Action" scope="default" value="moveNode"/>
+    <log level="full"/>
+    <log>
+      <property name="### Invocar servicio ###" value="Antes de invocar"/>
+    </log>
+    <call>
+      <endpoint>
+        <address format="soap11" trace="enable" uri="https://afirmades.caib.es:4430/alfresco/webservice/gdib/repository">
+          <enableAddressing version="submission"/>
+          <timeout>
+            <duration>20000</duration>
+            <responseAction>fault</responseAction>
+          </timeout>
+          <suspendOnFailure>
+            <errorCodes>-1</errorCodes>
+            <initialDuration>0</initialDuration>
+            <progressionFactor>1.0</progressionFactor>
+            <maximumDuration>0</maximumDuration>
+          </suspendOnFailure>
+          <markForSuspension>
+            <errorCodes>-1</errorCodes>
+          </markForSuspension>
+        </address>
+      </endpoint>
+    </call>
+    <log>
+      <property name="### Invocar servicio ###" value="Despues de invocar"/>
+    </log>
+    <header action="remove" name="Action" scope="default"/>
+    <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+    <log level="full"/>
+  </sequence>
+</template>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page>
+  <id>preregistro-page</id>
+  <title-id>page.preregistro-page.title</title-id>
+  <description-id>page.preregistro-page.description</description-id>
+  <authentication>user</authentication>
+  <template-instance>preregistro-page</template-instance>
+
+  <components>
+
+      <!-- Cuadro Clasificacion -->
+      <component>
+         <region-id>preregistro</region-id>
+         <url>/components/preregistro</url>
+      </component>
+
+   </components>
+
+</page>

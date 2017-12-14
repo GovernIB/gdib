@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><artifacts>
+    <artifact name="borrarAlfrescoGDIB" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/borrarAlfrescoGDIB.xml</file>
+    </artifact>
+    <artifact name="borrarGetNodeLoginEclipse" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/borrarGetNodeLoginEclipse.xml</file>
+    </artifact>
+    <artifact name="createFile" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/createFile.xml</file>
+    </artifact>
+    <artifact name="validateDocument" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/validateDocument.xml</file>
+    </artifact>
+    <artifact name="getDocument" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/getDocument.xml</file>
+    </artifact>
+    <artifact name="easyDocumentSearch" groupId="com.example.CaibAlfrescoProject.proxy-service" version="1.0.0" type="synapse/proxy-service" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/proxy-services/easyDocumentSearch.xml</file>
+    </artifact>
+    <artifact name="GetNodeSequence" groupId="com.example.CaibAlfrescoProject.template" version="1.0.0" type="synapse/sequenceTemplate" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/templates/GetNodeSequence.xml</file>
+    </artifact>
+    <artifact name="ExceptionSequence" groupId="com.example.CaibAlfrescoProject.template" version="1.0.0" type="synapse/sequenceTemplate" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/templates/ExceptionSequence.xml</file>
+    </artifact>
+    <artifact name="ReusableNodeOpSequence" groupId="com.example.CaibAlfrescoProject.template" version="1.0.0" type="synapse/sequenceTemplate" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/templates/ReusableNodeOpSequence.xml</file>
+    </artifact>
+</artifacts>

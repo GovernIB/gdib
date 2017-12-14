@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><artifacts>
+    <artifact name="DSSAfirmaArchiveRetrieval_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSAfirmaArchiveRetrieval.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSAfirmaSign_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSAfirmaSign.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSAfirmaVerify_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSAfirmaVerify.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSAfirmaVerifyCertificate_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSAfirmaVerifyCertificate.wsdl</file>
+            <path>/_system/governance/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSAsyncRequestStatus_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSAsyncRequestStatus.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSBatchVerifyCertificate_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSBatchVerifyCertificate.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="DSSBatchVerifySignature_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>DSSBatchVerifySignature.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="GetInfoCertificate_wsdl" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>GetInfoCertificate.wsdl</file>
+            <path>/_system/config/repository/esb/registry/wsdl</path>
+            <mediaType>application/wsdl+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="UTFromRestGD" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>UTFromRestGD.xml</file>
+            <path>/_system/config/repository/esb/registry/wsPolicy</path>
+            <mediaType>application/wspolicy+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="UTHashedPassFromRestGD" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>UTHashedPassFromRestGD.xml</file>
+            <path>/_system/config/repository/esb/registry/wsPolicy</path>
+            <mediaType>application/wspolicy+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createChildFileXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createChildFileXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createDocumentXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createDocumentXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createDraftDocumentXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createDraftDocumentXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createFileXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createFileXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createFolderXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createFolderXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="generateENIDocument_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>generateENIDocument.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getDocumentXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getDocumentXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getDocVersionListXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getDocVersionListXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getEcmAutTicketXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getEcmAutTicketXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getFileVersionListXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getFileVersionListXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getFileXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getFileXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getFolderXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getFolderXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getMigrationDocXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getMigrationDocXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getMigrationInfoXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getMigrationInfoXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="parseDocumentXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>parseDocumentXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="parseFileXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>parseFileXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="searchDocumentXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>searchDocumentsXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="searchFilesXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>searchFilesXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="validateDocXMLResponse_xslt" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>validateDocXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="createAndSetNodeUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>createAndSetNodeUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getDocumentUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getDocumentUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="luceneQueryUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>luceneQueryUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="migrationRepoUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>migrationRepoUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="permissionsNodeUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>permissionsNodeUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="serviceHeaderUtils" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>serviceHeaderUtils.js</file>
+            <path>/_system/config/repository/esb/registry/js</path>
+            <mediaType>application/javascript</mediaType>
+        </item>
+    </artifact>
+    <artifact name="CreateNodeSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>CreateNodeSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="ExceptionSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>ExceptionSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="GetMigrationNodeSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>GetMigrationNodeSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="LinkNodeSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>LinkNodeSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="GetNodeSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>GetNodeSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="ReusableNodeOpSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>ReusableNodeOpSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="ReusableServiceReqSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>ReusableServiceReqSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="SearchNodeSequence" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>SearchNodeSequence.xml</file>
+            <path>/_system/config/repository/esb/registry/sequences</path>
+            <mediaType>application/vnd.wso2.template</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getDocByCSVXMLResponse" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getDocByCSVXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+    <artifact name="getNumDocsReturnedByCSVXMLResponse" groupId="es.caib.archivodigital.esb.services.resource" version="1.0.0" type="registry/resource" serverRole="GovernanceRegistry">
+        <item>
+            <file>getNumDocsReturnedByCSVXMLResponse.xslt</file>
+            <path>/_system/config/repository/esb/registry/xslt</path>
+            <mediaType>application/xslt+xml</mediaType>
+        </item>
+    </artifact>
+</artifacts>

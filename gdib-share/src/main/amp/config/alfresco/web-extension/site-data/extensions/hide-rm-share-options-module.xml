@@ -1,0 +1,657 @@
+<extension>
+	<modules>
+		<module>
+			<id>Caib :: Ocultar opciones del RM</id>
+			<version>1.0</version>
+			<auto-deploy>true</auto-deploy>
+			<configurations>
+
+				<config evaluator="string-compare" condition="DocumentLibrary">
+
+					<indicators>
+
+						<!-- Record Folder is Closed -->
+						<indicator id="rm-closed" index="10"
+							icon="../../../rm/components/documentlibrary/indicators/rm-closed-16.png">
+							<evaluator>evaluator.rm.indicator.closed</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</indicator>
+
+						<!-- Record Folder is Open -->
+						<indicator id="rm-open" index="10"
+							icon="../../../rm/components/documentlibrary/indicators/rm-open-16.png">
+							<evaluator>evaluator.rm.indicator.open</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</indicator>
+
+					</indicators>
+
+				</config>
+
+				<config evaluator="string-compare" condition="DocLibActions">
+					<actions>
+
+						<action id="rm-document-download" type="link"
+							label="actions.document.download" icon="document-download">
+							<param name="href">{downloadUrl}</param>
+							<evaluator>evaluator.rm.common.isElectronicRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-delete" type="javascript" label="actions.document.delete"
+							icon="folder-delete">
+							<param name="function">onActionDelete</param>
+							<evaluator>evaluator.rm.action.delete</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-copy-record-to" type="javascript"
+							label="actions.document.copy-to"
+							icon="../../../rm/components/documentlibrary/actions/rm-copy-record-to">
+							<param name="function">onActionCopyTo</param>
+							<evaluator>evaluator.rm.action.copyRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-copy-unfiledrecord-to" type="javascript"
+							label="actions.document.copy-to"
+							icon="../../../rm/components/documentlibrary/actions/rm-copy-record-to">
+							<param name="function">onActionCopyUnfiledRecordTo</param>
+							<evaluator>evaluator.rm.action.copyUnfiledRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-copy-recordfolder-to" type="javascript"
+							label="actions.document.copy-to" icon="folder-copy-to">
+							<param name="function">onActionCopyTo</param>
+							<evaluator>evaluator.rm.action.copyRecordFolder</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-copy-unfiledrecordfolder-to" type="javascript"
+							label="actions.document.copy-to" icon="folder-copy-to">
+							<param name="function">onActionCopyUnfiledRecordFolderTo</param>
+							<evaluator>evaluator.rm.action.copyUnfiledRecordFolder
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-copy-recordcategory-to" type="javascript"
+							label="actions.document.copy-to" icon="folder-copy-to">
+							<param name="function">onActionCopyTo</param>
+							<evaluator>evaluator.rm.action.copyRecordCategory</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-move-record-to" type="javascript"
+							label="actions.document.move-to"
+							icon="../../../rm/components/documentlibrary/images/move-record-to">
+							<param name="function">onActionMoveTo</param>
+							<evaluator>evaluator.rm.action.moveRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-move-unfiledrecord-to" type="javascript"
+							label="actions.document.move-to"
+							icon="../../../rm/components/documentlibrary/images/move-record-to">
+							<param name="function">onActionMoveToUnfiled</param>
+							<evaluator>evaluator.rm.action.moveUnfiledRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-move-recordfolder-to" type="javascript"
+							label="actions.document.move-to" icon="folder-move-to">
+							<param name="function">onActionMoveTo</param>
+							<evaluator>evaluator.rm.action.moveRecordFolder</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-move-unfiledrecordfolder-to" type="javascript"
+							label="actions.document.move-to" icon="folder-move-to">
+							<param name="function">onActionMoveToUnfiled</param>
+							<evaluator>evaluator.rm.action.moveUnfiledRecordFolder
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-move-recordcategory-to" type="javascript"
+							label="actions.document.move-to" icon="folder-move-to">
+							<param name="function">onActionMoveTo</param>
+							<evaluator>evaluator.rm.action.moveRecordCategory</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- View record category details -->
+
+						<action id="rm-record-category-view-details" type="pagelink"
+							label="actions.view-details" icon="folder-view-details">
+							<param name="page">rm-record-category-details?nodeRef={node.nodeRef}
+							</param>
+						</action>
+
+						<!-- View record folder details -->
+						<action id="rm-record-folder-view-details" type="pagelink"
+							label="actions.view-details" icon="folder-view-details">
+							<param name="page">rm-record-folder-details?nodeRef={node.nodeRef}
+							</param>
+						</action>
+
+						<!-- Edit properties page -->
+						<action id="rm-edit-details" type="pagelink" label="actions.edit-details"
+							icon="folder-edit-metadata">
+							<param name="page">edit-metadata?nodeRef={node.nodeRef}</param>
+							<evaluator>evaluator.rm.action.edit-details</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Link to -->
+						<action id="rm-link-to" type="javascript" label="actions.link-to"
+							icon="../../../rm/components/documentlibrary/actions/rm-link-to">
+							<param name="function">onActionLinkTo</param>
+							<evaluator>evaluator.rm.action.link-to</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- unlink from -->
+						<action id="rm-unlink-from" type="javascript" label="actions.unlink-from"
+							icon="../../../rm/components/documentlibrary/actions/rm-unlink-from">
+							<param name="function">onActionUnlinkFrom</param>
+							<evaluator>evaluator.rm.action.unlink-from</evaluator>
+							<evaluator>evaluator.rm.action.unlink-from-checkparents
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- File to -->
+						<action id="rm-file-to" type="javascript" label="actions.file-to"
+							icon="../../../rm/components/documentlibrary/actions/rm-file-to">
+							<param name="function">onActionFileTo</param>
+							<evaluator>evaluator.rm.action.file-to</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Manage permissions -->
+						<action id="rm-manage-permissions" type="pagelink"
+							label="actions.document.manage-permissions" icon="folder-manage-permissions">
+							<param name="page">{managePermissionsUrl}</param>
+							<evaluator>evaluator.rm.action.manage-permissions</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Manage rules (filed) -->
+						<action id="rm-manage-rules-filed" type="pagelink"
+							label="actions.folder.rules"
+							icon="../../../rm/components/documentlibrary/actions/folder-manage-rules">
+							<param name="page">folder-rules?nodeRef={node.nodeRef}&amp;unfiled=false
+							</param>
+							<evaluator>evaluator.rm.action.manage-rules</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Manage rules (unfiled) -->
+						<action id="rm-manage-rules-unfiled" type="pagelink"
+							label="actions.folder.rules"
+							icon="../../../rm/components/documentlibrary/actions/folder-manage-rules">
+							<param name="page">folder-rules?nodeRef={node.nodeRef}&amp;unfiled=true
+							</param>
+							<evaluator>evaluator.rm.action.manage-rules</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- View Audit Log -->
+						<action id="rm-view-audit-log" type="javascript"
+							label="actions.view-audit-log"
+							icon="../../../rm/components/documentlibrary/actions/rm-view-audit-log">
+							<param name="function">onActionViewAuditLog</param>
+							<evaluator>evaluator.rm.action.view-audit-log</evaluator>
+						</action>
+
+						<!-- Close Folder -->
+						<action id="rm-close-folder" type="javascript" label="actions.close-folder"
+							icon="../../../rm/components/documentlibrary/actions/rm-close-folder">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">closeRecordFolder</param>
+							<param name="message">message.close</param>
+							<evaluator>evaluator.rm.action.close-folder</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Open Folder -->
+						<action id="rm-open-folder" type="javascript" label="actions.open-folder"
+							icon="../../../rm/components/documentlibrary/actions/rm-open-folder">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">openRecordFolder</param>
+							<param name="message">message.open-folder</param>
+							<evaluator>evaluator.rm.action.open-folder</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Reviewed -->
+						<action id="rm-reviewed" type="javascript" label="actions.reviewed"
+							icon="../../../rm/components/documentlibrary/actions/rm-reviewed">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">reviewed</param>
+							<param name="message">message.reviewed</param>
+							<evaluator>evaluator.rm.action.reviewed</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Review All -->
+						<action id="rm-review-all" type="javascript" label="actions.review-all"
+							icon="../../../rm/components/documentlibrary/actions/rm-review-all">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">reviewed</param>
+							<param name="message">message.review-all</param>
+							<evaluator>evaluator.rm.action.review-all</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Cutoff -->
+						<action id="rm-cutoff" type="javascript" label="actions.cutoff"
+							icon="../../../rm/components/documentlibrary/actions/rm-cutoff">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">cutoff</param>
+							<param name="message">message.cutoff</param>
+							<evaluator>evaluator.rm.action.cutoff</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Destroy -->
+						<action id="rm-destroy" type="javascript" label="actions.destroy"
+							icon="../../../rm/components/documentlibrary/actions/rm-destroy">
+							<param name="function">onActionDestroy</param>
+							<evaluator>evaluator.rm.action.destroy</evaluator>
+						</action>
+
+						<!-- Transfer -->
+						<action id="rm-transfer" type="javascript" label="actions.transfer"
+							icon="../../../rm/components/documentlibrary/actions/rm-transfer">
+							<param name="function">onActionTransfer</param>
+							<evaluator>evaluator.rm.action.transfer</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Accession -->
+						<action id="rm-accession" type="javascript" label="actions.accession"
+							icon="../../../rm/components/documentlibrary/actions/rm-accession">
+							<param name="function">onActionAccession</param>
+							<evaluator>evaluator.rm.action.accession</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Undo Cutoff -->
+						<action id="rm-undo-cutoff" type="javascript" label="actions.undo-cutoff"
+							icon="../../../rm/components/documentlibrary/actions/rm-undo-cutoff">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">unCutoff</param>
+							<param name="message">message.undo-cutoff</param>
+							<evaluator>evaluator.rm.action.undo-cutoff</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Edit Disposition As Of Date -->
+						<action id="rm-edit-disposition-as-of-date" type="javascript"
+							label="actions.edit-disposition-as-of-date"
+							icon="../../../rm/components/documentlibrary/actions/rm-edit-disposition-as-of-date">
+							<param name="function">onActionEditDispositionAsOf</param>
+							<evaluator>evaluator.rm.action.edit-disposition-as-of-date
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Download Electronic Record -->
+						<action id="rm-download" type="link" label="actions.download"
+							icon="../../../rm/components/documentlibrary/actions/rm-download">
+							<param name="href">{downloadUrl}</param>
+							<evaluator>evaluator.rm.common.isElectronicRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Edit Review As Of Date -->
+						<action id="rm-edit-review-as-of-date" type="javascript"
+							label="actions.edit-review-as-of-date"
+							icon="../../../rm/components/documentlibrary/actions/rm-edit-review-as-of-date">
+							<param name="function">onActionEditReviewAsOf</param>
+							<evaluator>evaluator.rm.action.edit-review-as-of-date</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Declare Record -->
+						<action id="rm-declare" type="javascript" label="actions.declare"
+							icon="../../../rm/components/documentlibrary/actions/rm-declare">
+							<param name="function">onActionDeclare</param>
+							<evaluator>evaluator.rm.action.declare</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Undeclare Record -->
+						<action id="rm-undeclare" type="javascript" label="actions.undeclare"
+							icon="../../../rm/components/documentlibrary/actions/rm-undeclare">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">undeclareRecord</param>
+							<param name="message">message.undeclare</param>
+							<evaluator>evaluator.rm.action.undeclare</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Add Record Metadata -->
+						<action id="rm-add-record-metadata" type="javascript"
+							label="actions.add-record-metadata"
+							icon="../../../rm/components/documentlibrary/actions/rm-add-record-metadata">
+							<param name="function">onActionAddRecordMetadata</param>
+							<evaluator>evaluator.rm.action.add-record-metadata</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Split Email -->
+						<action id="rm-split-email" type="javascript" label="actions.split-email"
+							icon="../../../rm/components/documentlibrary/actions/rm-split-email">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">splitEmail</param>
+							<param name="message">message.split-email</param>
+							<evaluator>evaluator.rm.action.split-email</evaluator> <!-- undeclared record, mimetype = message/rfc822 -->
+						</action>
+
+						<!-- Download Zip -->
+						<action id="rm-download-zip" type="link" label="actions.download-zip"
+							icon="../../../rm/components/documentlibrary/actions/rm-download-zip">
+							<param name="href">{transfersZipUrl}</param>
+							<evaluator>evaluator.rm.action.download-zip</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- File Report -->
+						<action id="rm-file-report" type="javascript" label="actions.file-report"
+							icon="../../../rm/components/documentlibrary/actions/rm-file-report">
+							<param name="function">onActionFileTransferReport</param>
+							<param name="action">fileReport</param>
+							<param name="success">fileReportSuccess</param>
+							<param name="failure">fileReportFailure</param>
+							<evaluator>evaluator.rm.action.fileTransferReport</evaluator>
+						</action>
+
+						<!-- Transfer Complete -->
+						<action id="rm-transfer-complete" type="javascript"
+							label="actions.transfer-complete"
+							icon="../../../rm/components/documentlibrary/actions/rm-transfer-complete">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">transferComplete</param>
+							<param name="message">message.transfer-complete</param>
+							<evaluator>evaluator.rm.action.transfer-complete</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<action id="rm-accession-complete" type="javascript"
+							label="actions.transfer-complete"
+							icon="../../../rm/components/documentlibrary/actions/rm-transfer-complete">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">accessionComplete</param>
+							<param name="message">message.transfer-complete</param>
+							<evaluator>evaluator.rm.action.accession-complete</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Reject record -->
+						<action id="rm-reject" type="javascript" label="actions.reject"
+							icon="../../../rm/components/documentlibrary/actions/rm-reject">
+							<param name="function">onActionReject</param>
+							<evaluator>evaluator.rm.action.reject</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Request Info -->
+						<action id="rm-request-info" type="javascript" label="actions.request-info"
+							icon="../../../rm/components/documentlibrary/actions/rm-request-info">
+							<param name="function">onActionRequestInfo</param>
+							<evaluator>evaluator.rm.action.request-info</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- File destruction report -->
+						<action id="rm-file-destruction-report" type="javascript"
+							label="actions.file-destruction-report"
+							icon="../../../rm/components/documentlibrary/actions/rm-destruction-report">
+							<param name="function">onActionFileDestructionReport</param>
+							<param name="action">fileReport</param>
+							<param name="success">fileReportSuccess</param>
+							<param name="failure">fileReportFailure</param>
+							<evaluator>evaluator.rm.action.fileDestructionReport</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- End retention -->
+						<action id="rm-end-retention" type="javascript" label="actions.end-retention"
+							icon="../../../rm/components/documentlibrary/actions/rm-hide-record">
+							<param name="function">onActionRecordsManagementRepoAction</param>
+							<param name="action">retain</param>
+							<param name="message">message.end-retention</param>
+							<evaluator>evaluator.rm.action.endRetention</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Add to Hold -->
+						<action id="rm-add-to-hold" type="javascript" label="actions.add-to-hold"
+							icon="../../../rm/components/documentlibrary/actions/rm-add-to-hold">
+							<param name="function">onActionAddToHold</param>
+							<evaluator>evaluator.rm.action.addToHold</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Remove from Hold -->
+						<action id="rm-remove-from-hold" type="javascript"
+							label="actions.remove-from-hold"
+							icon="../../../rm/components/documentlibrary/actions/rm-remove-from-hold">
+							<param name="function">onActionRemoveFromHold</param>
+							<evaluator>evaluator.rm.action.removeFromHold</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- File hold report -->
+						<action id="rm-file-hold-report" type="javascript"
+							label="actions.file-hold-report"
+							icon="../../../rm/components/documentlibrary/actions/rm-destruction-report">
+							<param name="function">onActionFileHoldReport</param>
+							<param name="action">fileReport</param>
+							<param name="success">fileReportSuccess</param>
+							<param name="failure">fileReportFailure</param>
+							<evaluator>evaluator.rm.action.fileHoldReport</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Delete Hold -->
+						<action id="rm-delete-hold" type="javascript" label="actions.delete.hold"
+							icon="../../../components/documentlibrary/actions/folder-delete">
+							<param name="function">onHoldDelete</param>
+							<evaluator>evaluator.rm.action.deleteHold</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Edit Hold -->
+						<action id="rm-edit-hold" type="pagelink" label="action.edit.hold"
+							icon="folder-edit-metadata">
+							<param name="page">edit-metadata?nodeRef={node.nodeRef}</param>
+							<evaluator>evaluator.rm.action.editHold</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- DM Actions -->
+
+						<!-- Declare As Record -->
+						<action id="rm-create-record" type="javascript" label="actions.create-record"
+							icon="../../../rm/components/documentlibrary/actions/rm-create-record">
+							<param name="function">onActionSimpleRepoAction</param>
+							<param name="action">create-record</param>
+							<param name="success">onCreateRecordSuccess</param>
+							<param name="successMessage">message.create-record.success</param>
+							<param name="failureMessage">message.create-record.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
+							<!-- Can only create the record if editable by current user, is not
+								locked, is not a working copy, is not synced, is not reject as record and
+								the rm site exists -->
+							<evaluator>evaluator.doclib.action.editableByCurrentUser
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isLocked
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.indicator.isSynced
+							</evaluator>
+							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
+							</evaluator>
+							<evaluator>evaluator.doclib.action.siteBased</evaluator>
+							<evaluator>evaluator.rm.doclib.action.rmSiteExists</evaluator>
+							<evaluator>evaluator.rm.doclib.isUserRecordContributor
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Declare As Version Record -->
+						<action id="rm-declare-as-version-record" type="javascript"
+							label="actions.declare-as-version-record"
+							icon="../../../rm/components/documentlibrary/actions/rm-declare-version-record">
+							<param name="function">onActionSimpleRepoAction</param>
+							<param name="action">declare-as-version-record</param>
+							<param name="success">onCreateRecordSuccess</param>
+							<param name="successMessage">message.declare-version-as-record.success
+							</param>
+							<param name="failureMessage">message.declare-version-as-record.failure
+							</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
+							<!-- Can only create the record if editable by current user, is not
+								locked, is not a working copy, is not synced, is not reject as record and
+								the rm site exists -->
+							<evaluator>evaluator.doclib.action.editableByCurrentUser
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isLocked
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.indicator.isSynced
+							</evaluator>
+							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
+							</evaluator>
+							<evaluator>evaluator.rm.doclib.action.hasVersionableAspect
+							</evaluator>
+							<evaluator>evaluator.doclib.action.siteBased</evaluator>
+							<evaluator>evaluator.rm.doclib.action.rmSiteExists</evaluator>
+							<evaluator>evaluator.rm.doclib.isUserRecordContributor
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Hide Record -->
+						<action id="rm-hide-record" type="javascript" label="actions.hide-record"
+							icon="../../../rm/components/documentlibrary/actions/rm-hide-record">
+							<param name="function">onHideRecordAction</param>
+							<param name="action">hide-record</param>
+							<param name="success">onHideRecordSuccess</param>
+							<param name="successMessage">message.hide-record.success</param>
+							<param name="failureMessage">message.hide-record.failure</param>
+							<evaluator>evaluator.rm.action.hide</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Move record in a collab site -->
+						<action id="dm-move-record" type="javascript" label="actions.move-dm-record"
+							icon="../../../components/documentlibrary/actions/document-move-to">
+							<param name="function">onActionDmMoveTo</param>
+							<param name="action">move-dm-record</param>
+							<param name="successMessage">message.moveDmRecord.success</param>
+							<param name="failureMessage">message.moveDmRecord.failure</param>
+							<param name="targetNodeRef">{targetNodeRef}</param>
+							<evaluator>evaluator.rm.action.moveDmRecord</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Recorded version configuration -->
+						<action id="dm-recorded-version-config" type="javascript"
+							label="actions.recorded-version-config"
+							icon="../../../rm/components/documentlibrary/actions/rm-recorded-version-config">
+							<param name="function">onRecordedVersionConfig</param>
+							<param name="action">recorded-version-config</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
+							<!-- Can only configure recorded version if editable by current user,
+								is not locked, is not a working copy, is not synced, is not reject as record,
+								rm site exists and has the versionable aspect -->
+							<evaluator>evaluator.doclib.action.editableByCurrentUser
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isLocked
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
+							</evaluator>
+							<evaluator negate="true">evaluator.doclib.indicator.isSynced
+							</evaluator>
+							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
+							</evaluator>
+							<evaluator>evaluator.rm.doclib.action.hasVersionableAspect
+							</evaluator>
+							<evaluator>evaluator.doclib.action.siteBased</evaluator>
+							<evaluator>evaluator.rm.doclib.action.rmSiteExists</evaluator>
+							<evaluator>evaluator.rm.doclib.isUserRecordContributor
+							</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+						<!-- Add relationship -->
+						<action id="rm-add-relationship" type="javascript"
+							label="actions.add-relationship"
+							icon="../../../rm/components/documentlibrary/actions/rm-add-relationship">
+							<param name="function">onAddRelationship</param>
+							<evaluator>evaluator.rm.action.editReferences</evaluator>
+							<evaluator>evaluator.doclib.action.disableAction</evaluator>
+						</action>
+
+					</actions>
+
+				</config>
+
+			</configurations>
+			<components>
+				<!-- Hide categories -->
+				<component>
+					<scope>template</scope>
+					<region-id>tree</region-id>
+					<source-id>documentlibrary</source-id>
+					<sub-components>
+						<!-- Replace with RM specific tree -->
+						<sub-component id="default">
+							<evaluations>
+								<evaluation id="rm-tree">
+									<url>/rm/components/documentlibrary/tree</url>
+								</evaluation>
+							</evaluations>
+						</sub-component>
+						<!-- Add RM File Plan filter -->
+						<sub-component id="rm-fileplan">
+							<evaluations>
+								<!-- <evaluation id="rm-fileplan"> -->
+								<!-- <url>/rm/components/documentlibrary/fileplan</url> -->
+								<!-- </evaluation> -->
+								<evaluation id="rm-hide">
+									<render>false</render>
+								</evaluation>
+							</evaluations>
+						</sub-component>
+						<!-- Add RM Saved Search filter -->
+						<sub-component id="rm-savedsearch">
+							<evaluations>
+								<!-- <evaluation id="rm-savedsearch"> -->
+								<!-- <url>/rm/components/documentlibrary/savedsearch</url> -->
+								<!-- </evaluation> -->
+								<evaluation id="rm-hide">
+									<render>false</render>
+								</evaluation>
+							</evaluations>
+						</sub-component>
+					</sub-components>
+				</component>
+			</components>
+		</module>
+	</modules>
+</extension>

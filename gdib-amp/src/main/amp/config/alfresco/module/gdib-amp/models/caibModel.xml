@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="eni:documentmodel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+	<!-- Optional meta-data about the model -->
+	<description>Modelo documental para la gestión en CAIB</description>
+	<author>RICOH</author>
+	<version>0.1</version>
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+	</imports>
+
+	<namespaces>
+		<namespace uri="http://www.administracionelectronica.gob.es/model/eni/1.0" prefix="eni" />
+		<namespace uri="http://www.caib.es/model/gdib/1.0" prefix="gdib" />
+	</namespaces>
+
+	<types>
+		<type name="eni:expediente">
+			<title>Expediente</title>
+			<parent>cm:folder</parent>
+			<properties>
+				<!-- Descripcion: Código de la aplicación de trámite que generó el expediente -->
+				<property name="eni:app_tramite_exp">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+				</property>
+			</properties>
+			<mandatory-aspects>
+				<aspect>eni:interoperable</aspect>
+				<aspect>eni:transferible</aspect>
+			</mandatory-aspects>
+		</type>
+
+		<type name="eni:agregacionDoc">
+			<title>Agregacion Documental</title>
+			<parent>cm:folder</parent>
+		</type>
+
+		<type name="eni:docBase">
+			<title>Documento base</title>
+			<parent>cm:content</parent>
+			<properties>
+				<!-- Descripcion: Código de la aplicación de trámite que generó el documento -->
+				<property name="eni:app_tramite_doc">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+				</property>
+			</properties>
+			<mandatory-aspects>
+				<aspect>eni:interoperable</aspect>
+			</mandatory-aspects>
+		</type>
+
+		<type name="eni:documento">
+			<title>Documento CAIB</title>
+			<parent>eni:docBase</parent>
+			<mandatory-aspects>
+				<aspect>eni:transferible</aspect>
+			</mandatory-aspects>
+		</type>
+
+		<type name="gdib:documentoMigrado">
+			<title>Documento CAIB-Valcert</title>
+			<parent>eni:docBase</parent>
+			<properties>
+				<!-- Descripcion: Fecha en la que fue migrado el doc del SGD Valcert -->
+				<property name="gdib:fecha_migracion">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Código unico del documento en el SGD Valcert -->
+				<property name="gdib:codigo">
+					<type>d:int</type>
+					<mandatory>true</mandatory>
+				</property>
+
+				<!-- Descripcion: Fecha en la que se inició la custodia del documento -->
+				<property name="gdib:fecha_custodia">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Indica si el documento ha caducado -->
+				<property name="gdib:vigente">
+					<type>d:boolean</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Fecha limite tras la cual el doc no será Vigente -->
+				<property name="gdib:fecha_fin_vigencia">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Nombre del tipo de documento -->
+				<property name="gdib:tipo_documental">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Código identificador generado externamente por alguna aplicación de trámite -->
+				<property name="gdib:codigo_externo">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+				</property>
+
+				<!-- Descripcion: Fecha en la que se creó el documento -->
+				<property name="gdib:fecha_creacion">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Fecha en la que se eliminó el documento -->
+				<property name="gdib:fecha_eliminacion">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Fecha en la que el documento fue purgado del sistema -->
+				<property name="gdib:fecha_purgado">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Tipo de documento según tipología de CAIB: PDF firmado, s-mime, XAdES y documento no firmado -->
+				<property name="gdib:clase">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>PDF_FIRMADO</value>
+									<value>SMIME</value>
+									<value>XADES</value>
+									<value>SIN_FIRMAR</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Secuencia alfanumérica que idéntica la reserva de custodia de un documento y de una aplicación sobre el sistema -->
+				<property name="gdib:hash">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+			</properties>
+		</type>
+
+		<type name="gdib:firma">
+			<title>Firma base</title>
+			<parent>cm:content</parent>
+		</type>
+
+		<type name="gdib:firmaValCert">
+			<title>Firma Valcert</title>
+			<parent>gdib:firma</parent>
+		</type>
+
+		<type name="gdib:firmaMigracion">
+			<title>Firma Migracion</title>
+			<parent>gdib:firma</parent>
+			<mandatory-aspects>
+				<aspect>gdib:firmadoMigracion</aspect>
+			</mandatory-aspects>
+		</type>
+
+		<type name="gdib:zipMigracion">
+			<title>Zip Migracion</title>
+			<parent>cm:content</parent>
+		</type>
+		
+		<type name="gdib:indiceExpediente">
+			<title>Indice de Expediente</title>
+			<parent>cm:content</parent>
+			<properties>
+				<!-- Descripcion: Tipo de índice de expediente -->
+				<property name="gdib:tipo_indice">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Interno v1.0</value>
+									<value>Intercambio ENI v1.0</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</type>		
+	</types>
+
+	<aspects>
+		<!--  EXPURGO -->
+		<aspect name="eni:marca_expurgo">
+			<title>Marcado para expurgo</title>
+			<properties>
+				<property name="eni:fecha_marca_expurgo">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</aspect>
+		<!-- TRANSFERENCIA -->
+		<aspect name="eni:transferible">
+			<title>Transferible</title>
+			<properties>
+				<!-- Descripcion:  Tipo de entidad que se está describiendo -->
+				<!--     DOC: X  -->
+				<!--     EXP: X  -->
+				<property name="eni:categoria">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Serie</value>
+									<value>Expediente</value>
+									<value>Documento simple</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Nivel de sensibilidad según la clasificación de la LOPD -->
+				<!--     DOC: X  -->
+				<!--     EXP: X  -->
+				<property name="eni:lopd">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Basico</value>
+									<value>Medio</value>
+									<value>Alto</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Nivel de confidencialidad de la información contenida en el documento acorde con el ENS -->
+				<!--     DOC: X  -->
+				<!--     EXP: X  -->
+				<property name="eni:confidencialidad">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Bajo</value>
+									<value>Medio</value>
+									<value>Alto</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  El documento se rige por el régimen general de libre acceso o sujeto a alguna de las limitaciones recogidas en la legislación o normativa de aplicación -->
+				<!--     DOC: X  -->
+				<!--     EXP: X  -->
+				<property name="eni:tipo_acceso">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Libre</value>
+									<value>Limitado</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Asigna una codificación a la causa de limitación de acceso que facilita las consiguientes acciones automáticas precisas sobre el documento -->
+				<!--     DOC: X  -->
+				<!--     EXP:    -->
+				<property name="eni:codigo_causa_limitacion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>A</value>
+									<value>B</value>
+									<value>C</value>
+									<value>D</value>
+									<value>E</value>
+									<value>F</value>
+									<value>G</value>
+									<value>H</value>
+									<value>I</value>
+									<value>J</value>
+									<value>K</value>
+									<value>L</value>
+									<value>M</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Fase de archivo correspondiente al ciclo de vida del expediente que se transfiere -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:fase_archivo">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Archivo activo</value>
+									<value>Archivo semiactivo</value>
+									<value>Archivo historico</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Fecha en que se considera finalizado el expediente -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:fecha_fin_exp">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion:  Determina el estado de la fase semi-activa e histórica en la que se encuentra un expediente -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:estado_archivo">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Preingreso</value>
+									<value>Ingresado</value>
+									<value>Pendiente de eliminacion total</value>
+									<value>Pendiente de eliminacion parcial</value>
+									<value>Pendiente de transferencia</value>
+									<value>Eliminado</value>
+									<value>Transferido</value>
+									<value>Enviado</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Referencia a la ley o norma específica que afecta al expediento o documento en cuanto a su régimen de acceso -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:normativa">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Indica bajo qué condiciones un expediente o documento de acceso libre es reutilizable. -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:cond_reutilizacion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Identifica los diferentes valores primarios de expedientes y documentos especificados en la Tabla de valoración. -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:tipo_valor">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Administrativo</value>
+									<value>Fiscal</value>
+									<value>Juridico</value>
+									<value>Otros</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Determinación del plazo de prescripción de los valores primarios. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:plazo">
+					<type>d:int</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Determinación de la existencia de valores secundarios en los documentos cuya consecuencia será la conservación permanente. -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:valor_secundario">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Sí</value>
+									<value>No</value>
+									<value>Sin cobertura de calificación</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Decisión emitida por la autoridad calificadora que debe aplicarse sobre los documentos a lo largo de su ciclo de vida y una vez realizada su valoración. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:tipo_dictamen">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>CP</value>
+									<value>EP</value>
+									<value>ET</value>
+									<value>PD</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Acción concreta que se aplica al documento en base al dictamen adoptado por una autoridad calificadora. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:accion_dictaminada">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Plazo en el que se tiene que ejecutar la acción concreta que se aplica al documento. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:plazo_accion_dictaminada">
+					<type>d:int</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Calificación de un documento como esencial/vital. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:documento_vital">
+					<type>d:boolean</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Indicador en lenguaje natural que identifica de forma unívoca la clase asignada dentro de un cuadro de clasificación. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:denominacion_clase">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Indica si los valores de clasificación corresponden a una clasificación funcional o administrativa. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:tipo_clasificacion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>SIA</value>
+									<value>Funcional</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</aspect>
+
+		<!-- FIRMA -->
+		<aspect name="eni:firmadoBase">
+			<title>FirmableBase</title>
+			<properties>
+				<!-- Descripcion:  Perfil empleado en una firma con certificado electrónico -->
+				<property name="eni:perfil_firma">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>BES</value> <!-- XADES, CADES, PADES -->
+									<value>EPES</value> <!-- XADES, CADES, PADES -->
+									<value>T</value> <!-- XADES, CADES -->
+									<value>C</value> <!-- XADES, CADES -->
+									<value>X</value> <!-- XADES, CADES -->
+									<value>XL</value> <!-- XADES, CADES -->
+									<value>A</value> <!-- XADES, CADES -->
+									<value>BASELINE B-Level</value> <!-- XADES, CADES, PADES -->
+									<value>BASELINE LT- Level</value> <!-- XADES, CADES, PADES -->
+									<value>BASELINE LTA-Level</value> <!-- XADES, CADES, PADES -->
+									<value>BASELINE T- Level</value> <!-- PADES -->
+									<value>LTV</value> <!-- PADES -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Fecha en la que debe ser sellado el documento -->
+				<property name="eni:fecha_sellado">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Valor del Código Seguro de Verificación empleado para firmar el documento -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:csv">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Denominación normalizada del tipo de firma -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:tipoFirma">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>TF01</value> <!-- CSV -->
+									<value>TF02</value> <!-- XAdES internally detached signature -->
+									<value>TF03</value> <!-- XAdES enveloped signature -->
+									<value>TF04</value> <!-- CAdES detached/explicit signature -->
+									<value>TF05</value> <!-- CAdES attached/implicit signature -->
+									<value>TF06</value> <!-- PAdES -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</aspect>
+
+
+		<aspect name="gdib:firmadoMigracion">
+			<title>Firma Migracion</title>
+			<parent>eni:firmadoBase</parent>
+		</aspect>
+
+		<aspect name="eni:firmado">
+			<title>Firmable</title>
+			<parent>eni:firmadoBase</parent>
+			<properties>
+				<!-- Descripcion:  Donde esta contenida la firma electronica del documento -->
+				<property name="eni:firma">
+					<type>d:content</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="gdib:transformado">
+			<title>Transformado</title>
+			<properties>
+				<!-- Descripcion:  Fecha en la que se transformo el documento -->
+				<property name="gdib:fecha_transformacion">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Fecha en la que fue extraído el documento del sistema de Custodia ValCert -->
+				<property name="gdib:fecha_migracion_valcert">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Código unico del documento en el SGD Valcert -->
+				<property name="gdib:codigo_valcert">
+					<type>d:int</type>
+					<mandatory>true</mandatory>
+				</property>
+
+				<!-- Descripcion: Nombre del tipo de documento -->
+				<property name="gdib:tipo_documental_valcert">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Código identificador generado externamente por alguna aplicación de trámite -->
+				<property name="gdib:codigo_externo_valcert">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+				</property>
+
+				<!-- Descripcion: Tipo de documento según tipología de CAIB: PDF firmado, s-mime, XAdES y documento no firmado -->
+				<property name="gdib:clase_valcert">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>PDF_FIRMADO</value>
+									<value>SMIME</value>
+									<value>XADES</value>
+									<value>SIN_FIRMAR</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Donde esta contenida la firma electronica heredada de Valcert -->
+				<property name="gdib:firma_valcert">
+					<type>d:content</type>
+					<mandatory>false</mandatory>
+				</property>
+				<!-- Descripcion:  Donde esta contenido el Zip con los datos de la firma de Migracion -->
+				<property name="gdib:zipMigracion">
+					<type>d:content</type>
+					<mandatory>false</mandatory>
+				</property>
+				<!-- Descripcion:  uuid del nuevo nodo transformado y migrado al DM -->
+				<property name="gdib:transform_uuid">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</aspect>
+
+		<!-- INTEROPERABILIDAD ENI -->
+		<aspect name="eni:interoperable">
+			<title>Interoperable_ENI</title>
+			<properties>
+				<!-- Descripcion:  Identificador de la entidad en el sistema. Formato: ES_CAIB_AAAA_UUID -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:id">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion:  Identificador normalizado de la administración generadora del documento o que realiza la captura -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:organo">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion:  Identificador normalizado de la versión de la Norma Técnica de Interoperabilidad -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:v_nti">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion:  Indica si el contenido del documento fue creado por el ciudadano o por una administración. 0=Ciudadano.1=Administración -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:origen">
+					<type>d:int</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value> <!-- Administracion -->
+									<value>0</value> <!-- Ciudadano -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Identificador normalizado del documento origen al que corresponde la copia. Formato: ES_Organo_AAAA_UUID -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:id_origen">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion:  Indica el estado de la situación de elaboración de un documento, a saber, original o los distintos tipos. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:estado_elaboracion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>EE01</value> <!-- Original -->
+									<value>EE02</value> <!-- Copia electrónica auténtica con cambio de formato -->
+									<value>EE03</value> <!-- Copia electrónica auténtica de documento papel -->
+									<value>EE04</value> <!-- Copia electrónica parcial auténtica -->
+									<value>EE99</value> <!-- Otros -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Indica el tipo de documento -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:tipo_doc_ENI">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<index enabled="true">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<!-- Documentos de decision -->
+									<value>TD01</value> <!-- Resolución -->
+									<value>TD02</value> <!-- Acuerdo -->
+									<value>TD03</value> <!-- Contrato -->
+									<value>TD04</value> <!-- Convenio -->
+									<value>TD05</value> <!-- Declaración -->
+									<!-- Documentos de transmision -->
+									<value>TD06</value> <!-- Comunicación -->
+									<value>TD07</value> <!-- Notificación -->
+									<value>TD08</value> <!-- Publicación -->
+									<value>TD09</value> <!-- Acuse de recibo -->
+									<!-- Dcoumentos de constancia -->
+									<value>TD10</value> <!-- Acta -->
+									<value>TD11</value> <!-- Certificado -->
+									<value>TD12</value> <!-- Diligencia -->
+									<!-- Documentos de juicio -->
+									<value>TD13</value> <!-- Informe -->
+									<!-- Documentos de ciudadano -->
+									<value>TD14</value> <!-- Solicitud -->
+									<value>TD15</value> <!-- Denuncia -->
+									<value>TD16</value> <!-- Alegación -->
+									<value>TD17</value> <!-- Recursos -->
+									<value>TD18</value> <!-- Comunicación ciudadano -->
+									<value>TD19</value> <!-- Factura -->
+									<value>TD20</value> <!-- Otros incautados -->
+									<!-- OTros -->
+									<value>TD99</value> <!-- Otros -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Fecha de captura del documento o apertura del expediente en el sistema -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:fecha_inicio">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Identificador único codificado que determina una categoría en el Cuadro de Clasificación de CAIB -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:cod_clasificacion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Denominación del formato lógico del fichero contenido en el documento electrónico -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:nombre_formato">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Extensión del formato lógico del fichero contenido en el documento electrónico -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:extension_formato">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Referencia a la disposición normativa que define la creación y uso  del CSV correspondiente -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:def_csv">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<index enabled="false">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+
+				<!-- Descripcion: Medida de la capacidad para capturar los detalles del documento original, a menudo cuantificada en píxeles por pulgada -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:resolucion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<index enabled="false">
+						<atomic>false</atomic>
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+
+				<!-- Descripcion: Idioma o lengua utilizada en un documento, hablada o usada por un agente al realizar una actividad -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:idioma">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+
+				<!-- Descripcion: Estado del expediente en el momento de traslado -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:estado_exp">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>E01</value> <!-- Abierto -->
+									<value>E02</value> <!-- Cerrado -->
+									<value>E03</value> <!-- Índice para remisión cerrado -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Identificador del interesado/s en el expediente -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:interesados_exp">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion: Tamaño lógico del documento o expediente (para este último, calculado como el número de unidades que lo componen) -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:tamano_logico">
+					<type>d:long</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Información adicional -->
+				<!--     DOC: X -->
+				<!--     EXP: X -->
+				<property name="eni:descripcion">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Objeto físico donde se almacena un expediente (papel o electrónico) -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:soporte">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Digital</value>
+									<value>CD-ROM</value>
+									<value>DVD</value>
+									<value>Disco duro externo</value>
+									<value>Memoria USB</value>
+									<value>Caja</value>
+									<value>Otros</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion: Localización física del expediente en el archivo central (Número de instalación o caja remitida al archivo general) -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:loc_archivo_central">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Localización física del expediente en el archivo general (Número de instalación o caja en el archivo general) -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:loc_archivo_general">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Elemento de medida utilizado para registrar las dimensiones de un documento físico o el tamaño o duración lógica de un documento digital. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:unidades">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Tipo documental específico establecido por los procedimientos del Govern -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:subtipo_doc">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Identificador único del procedimiento administrativo con el que se relaciona el expediente -->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="eni:id_tramite">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Profundidad de color o escala de grises o resolución cromática de una imagen digitalizada. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:profundidad_color">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Palabra clave que describe el contenido del documento o de la regulación. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:termino_punto_acceso">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Identificador asignado a una palabra clave dentro de un esquema de puntos de acceso. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:id_punto_acceso">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion: Referencia al esquema del que el punto de acceso se ha extraído. Condicionado al uso de taxonomías de las que se extrae los metadatos “Término punto de acceso” o “ID de punto de acceso”. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:esquema_punto_acceso">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="gdib:borrador">
+			<title>Borrador</title>
+		</aspect>
+
+		<!-- REGISTRO -->
+		<aspect name="eni:registrable">
+			<title>Registrable</title>
+			<properties>
+				<!-- Descripcion:  Tipo de asiento registral -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:tipo_asiento_registral">
+					<type>d:int</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>0</value> <!-- Registro de entrada -->
+									<value>1</value> <!-- Registro de salida -->
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+
+				<!-- Descripcion:  Código de la Entidad Registral de origen o de destino del documento -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:codigo_oficina_registro">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion:  Fecha y hora de entrada del documento en la entidad registral de origen o de destino -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:fecha_asiento_registral">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
+
+				<!-- Descripcion:  Número de registro del documento en el registro general de la entidad de origen o de destino -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="eni:numero_asiento_registral">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</aspect>
+
+		<!-- DOCS TRASLADADOS -->
+		<aspect name="gdib:trasladado">
+			<title>Trasladado</title>
+			<properties>
+				<!-- Descripcion: Fecha en la que se produce el traslado de un documento desde/hacia registro. -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="gdib:fecha_traslado">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion: Nombre de la aplicación que solicita el traslado de un documento desde/hacia registro -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="gdib:autor_traslado">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion: Identificador del expediente, subexpediente o agrupación documental donde es trasladado un documento desde/hacia registro -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="gdib:destino_traslado">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion: Identificador del documento trasladado en su nueva localización -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="gdib:id_nodo_nueva_loc">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+
+				<!-- Descripcion: Localización de origen del documento a trasladar (Ej.: “Registro de Salida” o “Expediente”) -->
+				<!--     DOC: X -->
+				<!--     EXP:   -->
+				<property name="gdib:tipo_destino">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+			</properties>
+
+		</aspect>
+
+		<!-- Expedientes Enlazados -->
+		<aspect name="gdib:enlazado">
+			<title>Expedientes Enlazados</title>
+			<properties>
+				<property name="gdib:exp_enlazado">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+				</property>
+			</properties>
+		</aspect>
+
+		<!-- Documentos históricos -->
+		<aspect name="gdib:historico">
+			<title>Aspecto para indicar que el nodo es un historico</title>
+		</aspect>
+
+	</aspects>
+
+</model>

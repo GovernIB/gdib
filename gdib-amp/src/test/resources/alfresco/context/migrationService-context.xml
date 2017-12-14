@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+          http://www.springframework.org/schema/util
+          http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<import resource="classpath:alfresco/context/test-context.xml" />
+
+	<!-- Contenido de un fichero -->
+	<bean id="contentDataSource" class="javax.activation.FileDataSource"
+		lazy-init="true">
+		<constructor-arg value="src/test/resources/testFiles/migrado.txt" />
+	</bean>
+
+	<bean id="contentDataHandler" class="javax.activation.DataHandler"
+		lazy-init="true">
+		<constructor-arg ref="contentDataSource" />
+	</bean>
+
+	<bean id="contentType" class="es.caib.gdib.ws.common.types.Content">
+		<property name="mimetype" value="text/plain" />
+		<property name="encoding" value="UTF-8" />
+		<property name="data" ref="contentDataHandler" />
+	</bean>
+	<!-- FIN Contenido de un fichero -->
+
+	<!-- Contenido de un fichero.firma -->
+	<bean id="contentDataSourceFirma" class="javax.activation.FileDataSource"
+		lazy-init="true">
+		<constructor-arg value="src/test/resources/testFiles/migrado.txt.firma" />
+	</bean>
+
+	<bean id="contentDataHandlerFirma" class="javax.activation.DataHandler"
+		lazy-init="true">
+		<constructor-arg ref="contentDataSourceFirma" />
+	</bean>
+	<!-- Contenido de un fichero.firma -->
+
+	<!-- Contenido de un fichero.FirmaMigracion -->
+	<bean id="contentDataSourceFirmaMigracion" class="javax.activation.FileDataSource"
+		lazy-init="true">
+		<constructor-arg value="src/test/resources/testFiles/migrado.txt.firmaMigracion" />
+	</bean>
+
+	<bean id="contentDataHandlerFirmaMigracion" class="javax.activation.DataHandler"
+		lazy-init="true">
+		<constructor-arg ref="contentDataSourceFirmaMigracion" />
+	</bean>
+	<!-- Contenido de un fichero.FirmaMigracion -->
+
+	<!-- Contenido de un fichero.ZipMigracion.zip -->
+	<bean id="contentDataSourceZipMigracion" class="javax.activation.FileDataSource"
+		lazy-init="true">
+		<constructor-arg value="src/test/resources/testFiles/migrado.txt.zipMigracion.zip" />
+	</bean>
+
+	<bean id="contentDataHandlerZipMigracion" class="javax.activation.DataHandler"
+		lazy-init="true">
+		<constructor-arg ref="contentDataSourceZipMigracion" />
+	</bean>
+	<!-- Contenido de un fichero.ZipMigracion.zip -->
+
+	<util:map id="propertiesExpedient">
+		<entry key="{http://www.alfresco.org/model/content/1.0}title" value="expediente" />
+		<entry key="eni:organo" value="${node.property.organo}" />
+		<entry key="{http://www.administracionelectronica.gob.es/model/eni/1.0}cod_clasificacion" value="${node.type.expedient.property.codigo_clasif}" />
+		<entry key="eni:fecha_inicio" value="2016-02-15" />
+		<entry key="eni:estado_exp" value="E01" />
+	</util:map>
+
+	<bean id="nodeExpedient" class="es.caib.gdib.ws.common.types.Node">
+		<property name="name" value="expedient" />
+		<property name="type" value="${node.type.expedient}" />
+		<property name="properties" ref="propertiesExpedient" />
+	</bean>
+
+</beans>
