@@ -65,7 +65,8 @@ API Rest per atacar als Serveis de GDIB a traves del BUS de Serveis
   Per usar l'API de Rest de GDIB s'ha d'incloure la següent dependència:
   
   
-  ```<dependency>
+  ```
+  <dependency>
      <groupId>es.caib.arxiudigital</groupId>
      <artifactId>arxiudigital-apirest</artifactId>
      <version>1.0.5</version>
