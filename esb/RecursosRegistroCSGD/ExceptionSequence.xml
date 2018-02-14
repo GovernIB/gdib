@@ -38,6 +38,20 @@
       <property expression="get-property('exceptionMessage')"
         name="### Mensaje error informado en excepcion ###" xmlns:ns="http://org.apache.synapse/xsd"/>
     </log>
+    <script language="js"><![CDATA[var notScapedString = new String(mc.getProperty("exceptionMessage"));         
+		var escapedJSONString = notScapedString.replace(/\\n/g, "\\n")
+                                      .replace(/\\'/g, "\\'")
+                                      .replace(/\\"/g, '\\"')
+                                      .replace(/\\&/g, "\\&")
+                                      .replace(/\\r/g, "\\r")
+                                      .replace(/\\t/g, "\\t")
+                                      .replace(/\\b/g, "\\b")
+                                      .replace(/\\f/g, "\\f");
+		mc.setProperty("exceptionMessage", escapedJSONString);]]></script>
+    <log level="custom" separator=",">
+      <property expression="get-property('exceptionMessage')"
+        name="### Mensaje error escapado ###" xmlns:ns="http://org.apache.synapse/xsd"/>
+    </log>
     <payloadFactory media-type="json">
       <format>
              	{
