@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Preregistro</shortname>
+  <description>Lista preregistro</description>
+  <family>Preregistro</family>
+  <url>/gdib/prereg</url>
+  <url>/gdib/prereg</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+</webscript>

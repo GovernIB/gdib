@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>Cuadro Clasificacion</shortname>
+  <description>Java-backed implementation of Cuadro clasificacion</description>
+  <family>Cuadro Clasificacion</family>
+  <url>/gdib/cuadro</url>
+  <url>/gdib/cuadro.json</url>
+  <url>/gdib/cuadro.html</url>
+  <format default="html">extension</format>
+  <authentication>user</authentication>
+</webscript>
+

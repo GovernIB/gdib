@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Cuadro Clasificacion - Serie Documental</shortname>
+  <description>Webscript para recuperar todas las series documentales</description>
+  <family>Cuadro Clasificacion</family>
+  <url>/gdib/cuadro/seriedocumental</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+</webscript>
+

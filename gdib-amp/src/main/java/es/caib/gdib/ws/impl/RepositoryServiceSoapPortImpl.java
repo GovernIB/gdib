@@ -19,18 +19,11 @@ import java.util.UUID;
 
 import javax.activation.DataHandler;
 import javax.jws.WebService;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.Status;
-import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
 import org.alfresco.repo.content.MimetypeMap;
-import org.alfresco.repo.security.authentication.AuthenticationException;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.service.cmr.model.FileExistsException;
@@ -92,9 +85,7 @@ import es.caib.gdib.ws.common.types.SearchResults;
 import es.caib.gdib.ws.common.types.SignatureFormat;
 import es.caib.gdib.ws.common.types.SignatureValidationReport;
 import es.caib.gdib.ws.common.types.ValidationStatus;
-import es.caib.gdib.ws.common.types.header.GdibSecurity;
 import es.caib.gdib.ws.exception.GdibException;
-import es.caib.gdib.ws.exception.GdibTransactionException;
 import es.caib.gdib.ws.iface.RepositoryServiceSoapPort;
 import es.caib.gdib.ws.iface.SignatureService;
 
@@ -126,7 +117,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	private static final String EXCHANGE = "Exchange";
 
 	private static final String INTERNAL = "Internal";
-
+	
+	
+	
+	
     /**
      * Localización de ficheros temporales
      * */
@@ -153,6 +147,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     @Value("$gdib{gdib.repository.custody.exp.caibIndexV10.addExchangeFiles}")
 	private String addIntExchangeFilesPropValue;
+    
+    @Value("$gdib{gdib.rm.preregistro.active}")
+	private boolean preingreso;
 
 	/**
      * Límite de resultados obtenidos en la búsqueda
@@ -1142,6 +1139,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				}
 				LOGGER.debug("Última comprobación integridad del nodo.");
 				utils.checkNodeIntegrity(node);
+				verifySubtypeDoc(node);				
 			}
 		}
 		LOGGER.debug("Preparación para la llamada al servicio");
@@ -1276,6 +1274,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        	NodeRef parentNodeRef = nodeService.getPrimaryParent(nodeRef).getParentRef();
 				checkDocClassification(node,parentNodeRef);
 				utils.checkNodeIntegrity(newNode);
+				verifySubtypeDoc(newNode);
 
 	        	long initSign = System.currentTimeMillis();
 		        // (26/09): Se debe llamar al método checkSignature cuando un documento pasa de estado borrador a definitivo, dado que es el
@@ -2013,6 +2012,26 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			}
 		}
 	}
+	
+	 /**
+     * Verificar subtipo documental
+     * */
+    public void verifySubtypeDoc(Node node) throws GdibException{
+    	
+    	String subtipoDoc = utils.getProperty(node.getProperties(), EniModelUtilsInterface.PROP_SUBTIPO_DOC_QNAME);
+    	if (subtipoDoc != null && ! "".equals(subtipoDoc)){
+    		List<SubTypeDocInfo> subtipos = subTypeDocUtil.getAllSubtypedoc();
+        	boolean encontrado = false;
+        	Iterator<SubTypeDocInfo> it = subtipos.iterator();
+    		while (it.hasNext()&& !encontrado) {
+    			SubTypeDocInfo info = it.next();			
+    			if ( info.getSubtypeDoc().equals(subtipoDoc) )
+    				encontrado = true;
+    		}
+    		if (!encontrado)
+    			exUtils.checkMetadataException(EniModelUtilsInterface.PROP_SUBTIPO_DOC);
+    	}    	
+    }
 
 	/**
 	 * Cierra un expediente que se encuentre en el DM para enviarlo al RM.
@@ -2105,7 +2124,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		// Se modifica el estado de tramitación del expediente, asignándole el valor “Cerrado”.
 		properties.put(ConstantUtils.PROP_ESTADO_EXP_QNAME, ConstantUtils.ESTADO_EXP_E02);
 		// Se modifica el estado de archivo del expediente, asignándole el valor “preingreso”.
-		properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_PREINGRESO);
+		
+		if ( preingreso ){
+			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_PREINGRESO);
+		}else{
+			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_INGRESADO);
+		}
 		// Se modifica la fase de archivo del expediente, asignándole el valor "Archivo historico".
 		properties.put(ConstantUtils.PROP_FASE_ARCHIVO_QNAME, ConstantUtils.FASE_ARCHIVO_HISTORICO);
 		// Se modifica la fecha fin de expediente, asignadole la fecha actual
@@ -2291,7 +2315,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
         // limite de resultados por búsqueda, paginas y resultados encontrados
         int limit = Integer.parseInt(searchLimit);
-        long numResultados = nodes.getNumberFound();
+        long numResultados = nodes.length();
+        if (numResultados == -1) numResultados = nodes.getNumberFound();
+        
         int numPaginas = new Double(numResultados / limit).intValue();
         if  ( numResultados % limit != 0 )
         	numPaginas++;
@@ -2302,9 +2328,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         // esos resultados serían incorrectos... y no aparecerían en la búsqueda, pero no se puede capar por permisos
         for ( int i = pagina*limit; i < pagina*limit+limit; i++){
         	if ( i < numResultados){
-        		NodeRef nodeRef = nodes.getNodeRef(i);
-        		if ( utils.inDMPath(nodeRef) ){
-        			resultado.add(_internal_getNode(nodeRef,false,false));
+        		try{
+        			NodeRef nodeRef = nodes.getNodeRef(i);
+        			if ( utils.inDMPath(nodeRef) ){
+        				resultado.add(_internal_getNode(nodeRef,false,false));
+        			}
+        		}catch(Exception excpt){
+        			//do nothing. Bypass IndexOutOfBounds or other exceptions 
         		}
         	}
         }

@@ -1,0 +1,10 @@
+<webscript>
+  <shortname>Cuadro Clasificacion - Serie Documental</shortname>
+  <description>Webscript para eliminar series documentales</description>
+  <family>Cuadro Clasificacion</family>
+  <url>/gdib/cuadro/seriedocumental/{code_clasificacion}</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+</webscript>
+

@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Cuadro Clasificacion - Functiones</shortname>
+  <description>Webscript para obtener las funciones creadas en el repositorio</description>
+  <family>Cuadro Clasificacion</family>
+  <url>/gdib/cuadro/functions</url>
+  <format default="json">extension</format>
+  <authentication runas="admin">user</authentication>
+</webscript>
+

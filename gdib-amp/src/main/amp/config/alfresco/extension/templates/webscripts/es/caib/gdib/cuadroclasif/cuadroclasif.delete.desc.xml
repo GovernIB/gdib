@@ -1,0 +1,10 @@
+<webscript>
+  <shortname>Cuadro Clasificacion DELETE</shortname>
+  <description>Java-backed implementation of Cuadro clasificacion, DELETE row</description>
+  <family>Cuadro Clasificacion</family>
+  <url>/gdib/cuadro/{code_clasificacion}/{code_subtype}</url>
+  <format default="json">extension</format>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+</webscript>
+
