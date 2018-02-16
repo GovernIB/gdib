@@ -193,7 +193,8 @@ public class ExportUtils {
 					ContentModel.TYPE_FOLDER);
 
 			// Movemos a una carpeta temporal renombrando todos los nodos
-			LOGGER.debug("Renombramos todos los nombres de los documentos por el ENI:ID");
+			LOGGER.debug("Renombramos los nombres que colisionen.");
+			List<String> colision = new ArrayList<String>();
 			// A la hora de renombrar, tengo que tener encuenta si es un documento del expediente, si es
 			// el indice electronico interno o de intercambio, o si es un documento de un expediente de exportacion (indice para remision cerrado)
 			for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
@@ -214,15 +215,25 @@ public class ExportUtils {
 					String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
 					String newName = "";
 					moveNodeToRM = Boolean.FALSE;
-
+					
+					newName = getNewName(colision,name, eniId);
+					
 					System.out.println("Nodo no copiado aun. Tipo del nodo: " + nodeType.toString() + "; eni:id -> " + eniId);
 
 					if (utils.isType(nodeType, ConstantUtils.TYPE_DOCUMENTO_QNAME)){
-						newName = DOC_PREFIX + nodeId.replaceAll("-", ConstantUtils.BLANK);
+						/*
+						int posExtension = name.lastIndexOf(".");
+						if ( posExtension != -1 ){
+							newName = name.substring(0, posExtension)+"_"+eniId+name.substring(posExtension,name.length());
+						}else{
+							newName = name+eniId;
+						}*/
+						
+						//newName = DOC_PREFIX + nodeId.replaceAll("-", ConstantUtils.BLANK);
 						moveNodeToRM = Boolean.TRUE;
 					} else if(utils.isType(nodeType, ConstantUtils.TYPE_FILE_INDEX_QNAME)){
 						// indie electronico interno o de intercambio
-						newName = name.toString();
+						// newName = name.toString();
 						moveNodeToRM = Boolean.TRUE;
 					}
 
@@ -262,6 +273,21 @@ public class ExportUtils {
 		}
 	}
 
+private static String getNewName(List<String> colision, String name, String eni) {		
+		String newName=name;
+		if ( colision.contains(name) ){
+			int posExtension = name.lastIndexOf(".");
+			if ( posExtension != -1 ){
+				newName = name.substring(0, posExtension)+"_"+eni+name.substring(posExtension,name.length());
+			}else{
+				newName = name+"_"+eni;
+			}
+			newName = getNewName(colision,newName, eni);
+		}		
+		colision.add(newName);		
+		return newName;
+	}
+
 	/**
 	 * Crea una copia de un Nodo expediente de alfresco en el RM. Respetando todos los datos inlcuido el UUID.
 	 * Tambien se crea la estructura de carpetas con la fecha de incorporacion del expediente el RM
@@ -287,7 +313,7 @@ public class ExportUtils {
 				props.put(ContentModel.PROP_TITLE, folder);
 				QName name = utils.createNameQName(folder);
 				rmSeries = nodeService.createNode(rmSeries, ContentModel.ASSOC_CONTAINS, name,
-						RecordsManagementModel.TYPE_RECORD_FOLDER, props).getChildRef();
+						RecordsManagementModel.TYPE_RECORD_CATEGORY, props).getChildRef();
 			}
 		}
 
