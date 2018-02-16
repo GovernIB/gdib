@@ -364,12 +364,15 @@ public class GdibUtils {
 
     	// si el documento es final tengo que realizar mas comprobaciones
     	if ( this.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME ))
+    	{
     		this.checkMetadataIntegrityDocument(node.getProperties());
-
-    	else if(this.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME ))
+    	}else if(this.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME )){
     		this.checkMetadataIntegrityExpedient(node.getProperties());
+    	}
 
     }
+    
+   
 
 	/**
 	 * Se encarga de rellenar los metadatos que se tiene que rellenar automaticamente. Rellenando valores por defecto si no

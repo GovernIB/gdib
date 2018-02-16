@@ -108,7 +108,13 @@ public class CAIBDocumentBehavior {
 		{
 			String subject = I18NUtil.getMessage("gdib.rm.documento.estado_archivo.change.email.subject");
 			String name = (String)nodeService.getProperty(doc, ContentModel.PROP_NAME);
-			String body = I18NUtil.getMessage("gdib.rm.documento.estado_archivo.change.email.body", new Object[]{name, doc.getId(), estadoArchivoBefore, estadoArchivoAfter} );
+			
+			String body;
+			if ( !estadoArchivoAfter.equals(estadoArchivoBefore) ){
+				body= I18NUtil.getMessage("gdib.rm.documento.estado_archivo.change.email.body", new Object[]{name, doc.getId(), estadoArchivoBefore, estadoArchivoAfter} );
+			}else{
+				body = I18NUtil.getMessage("gdib.rm.documento.estado_archivo.change.email.body2", new Object[]{name, doc.getId()} );
+			}
 
 	        Action mailAction = actionService.createAction(MailActionExecuter.NAME);
 	        mailAction.setParameterValue(MailActionExecuter.PARAM_SUBJECT, subject);

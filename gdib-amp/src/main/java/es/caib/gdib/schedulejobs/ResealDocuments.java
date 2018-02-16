@@ -536,11 +536,44 @@ public class ResealDocuments {
         } else {
             // documento eni
         	LOGGER.debug("Es un nodo de documento ENI");
-            Content content = utils.getContent(node, ConstantUtils.PROP_FIRMA_QNAME);
-			if(content == null){
+        	
+        	String signatureTypeProp;
+        	Content firma = null;
+
+        	LOGGER.debug("Se inicia la validación de la firma electrónica del documento " + node.getId());
+        	Object signatureTypePropO = nodeService.getProperty(node, EniModelUtilsInterface.PROP_TIPO_FIRMA_QNAME);
+        	if ( signatureTypePropO != null )
+        		signatureTypeProp = signatureTypePropO.toString();
+        	else{
+        		throw new GdibException("Propiedad "+EniModelUtilsInterface.PROP_TIPO_FIRMA+" incorrecto para "+node.getId()+".");
+        	}
+        	LOGGER.debug("Tipo de firma ENI: " + signatureTypeProp);
+        	if(signatureTypeProp == null){
+        		throw new GdibException("La propiedad o metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " del documento " +
+        				node.getId() + " no ha sido establecida.");
+        	}
+
+        	EniSignatureType eniSignatureType = EniSignatureType.valueOf(signatureTypeProp);
+        	if(eniSignatureType == null){
+        		throw new GdibException("La propiedad o metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " del documento " +
+        				node.getId() + " tiene un valor no admitido: " + signatureTypeProp + ".");
+        	}
+        	
+        	if(!EniSignatureType.TF01.equals(eniSignatureType) &&
+    				!EniSignatureType.TF04.equals(eniSignatureType)){
+    			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
+        		LOGGER.debug("Firma implicita");
+    			firma = utils.getContent(node, ConstantUtils.PROP_CONTENT);
+    		} else {
+    			//Firma electrónica explicita
+    			LOGGER.debug("Firma explicita");
+    			firma = utils.getContent(node, ConstantUtils.PROP_FIRMA_QNAME);
+    		}        	
+            
+			if(firma == null){
 				throw new GdibException("No se ha podido recuperar la firma del nodo ("+node.getId()+")");
 			}
-			signature = utils.getByteArrayFromHandler(content.getData());
+			signature = utils.getByteArrayFromHandler(firma.getData());
         }
 
         String signatureForm = (String) nodeService.getProperty(node, ConstantUtils.PROP_PERFIL_FIRMA_QNAME);
@@ -564,6 +597,7 @@ public class ResealDocuments {
 	private byte[] doResealSignature(String nodeId, byte[] signature, String signatureType, String signatureForm) throws GdibException {
 		byte[] res = null;
 		SignatureFormat finalSignatureFormat = null;
+		boolean implicit = false;
 
 		if(signature == null){
 			throw new GdibException("Error resellando el documento " + nodeId + ", no fue informada firma electronica del documento.");
@@ -576,6 +610,11 @@ public class ResealDocuments {
 					+signatureType+", Modo: " + signatureForm + ").");
 		}
 
+		if(!EniSignatureType.TF01.equals(eniSignatureType) &&
+				!EniSignatureType.TF04.equals(eniSignatureType)){
+			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
+    		implicit = true;
+		}      	
 
 		if(EniSignatureType.TF02.equals(eniSignatureType) || EniSignatureType.TF03.equals(eniSignatureType)){
 			finalSignatureFormat = SignatureFormat.XAdES_A;
@@ -706,8 +745,36 @@ public class ResealDocuments {
 
         } else {
             try{
+            	//Comprobamos que sea implicita o explicita para actualizar el contenido o la firma
+            	String signatureTypeProp;
+            	Object signatureTypePropO = nodeService.getProperty(node, EniModelUtilsInterface.PROP_TIPO_FIRMA_QNAME);
+            	if ( signatureTypePropO != null )
+            		signatureTypeProp = signatureTypePropO.toString();
+            	else{
+            		throw new GdibException("Propiedad "+EniModelUtilsInterface.PROP_TIPO_FIRMA+" incorrecto para "+node.getId()+".");
+            	}
+            	LOGGER.debug("Tipo de firma ENI: " + signatureTypeProp);
+            	if(signatureTypeProp == null){
+            		throw new GdibException("La propiedad o metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " del documento " +
+            				node.getId() + " no ha sido establecida.");
+            	}
+            	EniSignatureType eniSignatureType = EniSignatureType.valueOf(signatureTypeProp);
+            	if(eniSignatureType == null){
+            		throw new GdibException("La propiedad o metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " del documento " +
+            				node.getId() + " tiene un valor no admitido: " + signatureTypeProp + ".");
+            	}
+            	
+            	//Si no es firma implicita se actualiza la prop. firma, sino la prop. contenido
+            	QName qfirma = ConstantUtils.PROP_FIRMA_QNAME;
+            	
+            	if(!EniSignatureType.TF01.equals(eniSignatureType) &&
+        				!EniSignatureType.TF04.equals(eniSignatureType)){
+        			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
+            		qfirma = ConstantUtils.PROP_CONTENT;
+        		}
+            	
             	LOGGER.debug("Es un nodo de eni, guardo la nueva firma como metadato firma");
-                utils.setUnsecureDataHandler(node, ConstantUtils.PROP_FIRMA_QNAME, signature, MimetypeMap.MIMETYPE_BINARY);
+                utils.setUnsecureDataHandler(node, qfirma, signature, MimetypeMap.MIMETYPE_BINARY);
                 LOGGER.debug("Firma actualizada");
             }catch(IOException exception){
                 throw exUtils.setContentException(node.getId(),exception);
