@@ -1,0 +1,8 @@
+<webscript> 
+<shortname>Limpiar preingreso</shortname> 
+<description>Elimina los expedientes en preingreso</description> 
+<url>/org/caib/cleanPreingreso</url> 
+<format default="html">argument</format> 
+<authentication>user</authentication> 
+<transaction>required</transaction> 
+</webscript>
