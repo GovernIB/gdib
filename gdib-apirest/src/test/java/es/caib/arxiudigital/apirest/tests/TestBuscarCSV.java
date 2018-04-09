@@ -34,8 +34,8 @@ public class TestBuscarCSV {
 
       
       String csvDuplicado = "c5c05668abd17f67a3b35612082bcd2cd60f8a9455af6b0c2a8dd52bc25d1875";
-      String csvUnico = "b9d4ac99a64eecdac13d37001ae8626249377b520e748ce169039fb279712d50";
-      String csvBorrador = "0d26c0916cdd2313694a8f1061440931eb5532ca052369fccd573d42d92f4abd";
+      //String csvUnico = "b9d4ac99a64eecdac13d37001ae8626249377b520e748ce169039fb279712d50";
+      //String csvBorrador = "0d26c0916cdd2313694a8f1061440931eb5532ca052369fccd573d42d92f4abd";
       
       
       String csv = csvDuplicado;
@@ -62,7 +62,7 @@ public class TestBuscarCSV {
     		  
     		  Documento documento =  resultado.getElementoDevuelto();
     		  
-    		  // documento.getContent() -> Cadena de caracteres, codificada en base64, que representa el contenido.
+    		   documento.getContent(); // -> Cadena de caracteres, codificada en base64, que representa el contenido.
     		  // documento.getName() -> Nombre del documento
     		  // documento.getMetadataCollection() -> Colección de metadatos
     		  // 

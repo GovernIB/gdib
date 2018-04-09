@@ -78,7 +78,12 @@ public class Expediente extends Nodo{
 	}
 
 
-	public List<Nodo> getChilds() {
+	public void setAspects(List<Aspectos> aspects) {
+    this.aspects = aspects;
+  }
+
+
+  public List<Nodo> getChilds() {
 		return childs;
 	}
 

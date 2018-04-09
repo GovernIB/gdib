@@ -12,6 +12,7 @@ public enum Aspectos {
 	BORRADOR 		("gdib:borrador"),
 	FIRMADOMIGRACION ("gdib:firmadoMigracion"),
 	TRANSFORMADO 	("gdib:transformado"),
+	EXPURGO ("eni:marca_expurgo"),
 	TRASLADADO 		("gdib:trasladado");
 	
     private String value;

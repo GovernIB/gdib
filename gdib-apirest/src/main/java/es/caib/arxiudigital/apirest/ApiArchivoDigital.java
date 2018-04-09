@@ -2215,7 +2215,7 @@ public class ApiArchivoDigital {
     expediente.setId(fileNode.getId());
     expediente.setName(fileNode.getName());
     expediente.setType(fileNode.getType());
-    // expediente.ses(nodo.getAspects());
+    expediente.setAspects(fileNode.getAspects());
     expediente.setMetadataCollection(MetadataUtils.generarMapaMetadatos(fileNode.getMetadataCollection()));
     expediente.setChilds(convetertirListaNodo(fileNode.getChildObjects()));
 
