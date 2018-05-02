@@ -47,13 +47,13 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Prueba base" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Prueba base" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">2</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.num_threads">5</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1519124160000</longProp>
         <longProp name="ThreadGroup.end_time">1519124160000</longProp>
@@ -534,6 +534,363 @@
           <hashTree/>
         </hashTree>
       </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Creación documento 10Mb" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1519124160000</longProp>
+        <longProp name="ThreadGroup.end_time">1519124160000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <stringProp name="TestPlan.comments">Creación documento 10Mb</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create File" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;createFileRequest&quot;: {&#xd;
+    &quot;serviceHeader&quot;: {&#xd;
+      &quot;serviceVersion&quot;: &quot;1.0&quot;,&#xd;
+      &quot;auditInfo&quot;:{&#xd;
+      	&quot;application&quot;:&quot;RIPEA&quot;&#xd;
+      },&#xd;
+      &quot;securityInfo&quot;: {&#xd;
+        &quot;user&quot;: &quot;${user}&quot;,&#xd;
+        &quot;password&quot;: &quot;${password}&quot;&#xd;
+      }&#xd;
+    },&#xd;
+     &quot;param&quot;: {&#xd;
+      &quot;file&quot;: {&#xd;
+	      &quot;name&quot;: &quot;EXP_PBAE_${__UUID()}_${__threadNum}&quot;,&#xd;
+	      &quot;metadataCollection&quot;:[&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:app_tramite_exp&quot;,&#xd;
+				&quot;value&quot;:&quot;PINBAL&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:organo&quot;,&#xd;
+				&quot;value&quot;:[&#xd;
+					&quot;organo1&quot;,&#xd;
+					&quot;organo2&quot;&#xd;
+				]&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:origen&quot;,&#xd;
+				&quot;value&quot;:&quot;0&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:cod_clasificacion&quot;,&#xd;
+				&quot;value&quot;:&quot;S0001&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:id_tramite&quot;,&#xd;
+				&quot;value&quot;:&quot;organo1_PRO_234567801&quot;&#xd;
+			}&#xd;
+		],&#xd;
+		&quot;aspects&quot;:[&#xd;
+			&quot;eni:interoperable&quot;,&#xd;
+			&quot;eni:transferible&quot;&#xd;
+		]&#xd;
+	 },&#xd;
+	 &quot;retrieveNode&quot;: &quot;true&quot;&#xd;
+    }&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${servicesHost}</stringProp>
+          <stringProp name="HTTPSampler.port">${servicesPort}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${servicesProtocol}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">${contentEncoding}</stringProp>
+          <stringProp name="HTTPSampler.path">${servicesRootPath}/createFile</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Create File</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Establecimiento cabeceras HTTP" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Accept</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+            <stringProp name="TestPlan.comments">Establecimiento cabeceras HTTP</stringProp>
+          </HeaderManager>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Comprobación respuesta" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1660584649">COD_000</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="TestPlan.comments">Verifica que la respuesta retornada es correcta</stringProp>
+            <stringProp name="Assertion.scope">all</stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extracción UUID expediente" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">fileId</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.createFileResult.resParam.id</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            <stringProp name="TestPlan.comments">Extracción UUID expediente</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Create Document - 10Mb" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="TestPlan.comments">Create Document - 10Mb</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </LoopController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Generate CSV" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+  &quot;generateDocCSVRequest&quot;: {&#xd;
+    &quot;serviceHeader&quot;: {&#xd;
+      &quot;serviceVersion&quot;: &quot;1.0&quot;,&#xd;
+      &quot;auditInfo&quot;:{&#xd;
+      	&quot;application&quot;:&quot;RIPEA&quot;&#xd;
+      },&#xd;
+      &quot;securityInfo&quot;: {&#xd;
+        &quot;user&quot;: &quot;${user}&quot;,&#xd;
+        &quot;password&quot;: &quot;${password}&quot;&#xd;
+      }&#xd;
+    }&#xd;
+  }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${servicesHost}</stringProp>
+            <stringProp name="HTTPSampler.port">${servicesPort}</stringProp>
+            <stringProp name="HTTPSampler.protocol">${servicesProtocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">${contentEncoding}</stringProp>
+            <stringProp name="HTTPSampler.path">${servicesRootPath}/generateDocCSV</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="TestPlan.comments">Generate CSV</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Establecimiento cabeceras HTTP" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+              <stringProp name="TestPlan.comments">Establecimiento cabeceras HTTP</stringProp>
+            </HeaderManager>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Comprobación respuesta" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1660584649">COD_000</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+              <stringProp name="TestPlan.comments">Verifica que la respuesta retornada es correcta</stringProp>
+              <stringProp name="Assertion.scope">all</stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extracción CSV documento" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">docCsv</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.generateDocCSVResult.resParam</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+              <stringProp name="TestPlan.comments">Extracción CSV documento</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create document" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+  &quot;createDocumentRequest&quot;: {&#xd;
+    &quot;serviceHeader&quot;: {&#xd;
+      &quot;serviceVersion&quot;: &quot;1.0&quot;,&#xd;
+      &quot;auditInfo&quot;:{&#xd;
+      	&quot;application&quot;:&quot;RIPEA&quot;&#xd;
+      },&#xd;
+      &quot;securityInfo&quot;: {&#xd;
+        &quot;user&quot;: &quot;${user}&quot;,&#xd;
+        &quot;password&quot;: &quot;${password}&quot;&#xd;
+      }&#xd;
+    },&#xd;
+    &quot;param&quot;: {&#xd;
+    	 &quot;parent&quot;: &quot;${fileId}&quot;,&#xd;
+      &quot;document&quot;: {&#xd;
+	      &quot;name&quot;: &quot;documento_definitivo-${__UUID()}-${__threadNum}.pdf&quot;,&#xd;
+	      &quot;metadataCollection&quot;:[&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:app_tramite_doc&quot;,&#xd;
+				&quot;value&quot;:&quot;PINBAL&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:organo&quot;,&#xd;
+				&quot;value&quot;:[&#xd;
+					&quot;organo1&quot;,&#xd;
+					&quot;organo2&quot;&#xd;
+				]&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:estado_elaboracion&quot;,&#xd;
+				&quot;value&quot;:&quot;EE01&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:origen&quot;,&#xd;
+				&quot;value&quot;:&quot;1&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:cod_clasificacion&quot;,&#xd;
+				&quot;value&quot;:&quot;S0001&quot;&#xd;
+			},			&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:tipo_doc_ENI&quot;,&#xd;
+				&quot;value&quot;:&quot;TD12&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:nombre_formato&quot;,&#xd;
+				&quot;value&quot;:&quot;PDF&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:extension_formato&quot;,&#xd;
+				&quot;value&quot;:&quot;.pdf&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:csv&quot;,&#xd;
+				&quot;value&quot;:&quot;${docCsv}&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:tipoFirma&quot;,&#xd;
+				&quot;value&quot;:&quot;TF06&quot;&#xd;
+			},&#xd;
+			{&#xd;
+				&quot;qname&quot;:&quot;eni:perfil_firma&quot;,&#xd;
+				&quot;value&quot;:&quot;BES&quot;&#xd;
+			}&#xd;
+		],&#xd;
+		&quot;aspects&quot;:[&#xd;
+			&quot;eni:interoperable&quot;,&#xd;
+			&quot;eni:firmado&quot;&#xd;
+		],&#xd;
+		&quot;binaryContents&quot;: [&#xd;
+			{&#xd;
+				&quot;binaryType&quot;: &quot;CONTENT&quot;,&#xd;
+	            	&quot;mimetype&quot;: &quot;application/pdf&quot;,&#xd;
+	            	&quot;content&quot;: &quot;${docContent}&quot;,&#xd;
+	            	&quot;encoding&quot;: &quot;UTF-8&quot;&#xd;
+	         }&#xd;
+      	]&#xd;
+	 },&#xd;
+	 &quot;retrieveNode&quot;: &quot;true&quot;&#xd;
+    }&#xd;
+  }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${servicesHost}</stringProp>
+            <stringProp name="HTTPSampler.port">${servicesPort}</stringProp>
+            <stringProp name="HTTPSampler.protocol">${servicesProtocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">${contentEncoding}</stringProp>
+            <stringProp name="HTTPSampler.path">${servicesRootPath}/createDocument</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout">30000</stringProp>
+            <stringProp name="HTTPSampler.response_timeout">240000</stringProp>
+            <stringProp name="TestPlan.comments">Create document</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Establecimiento cabeceras HTTP" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+              <stringProp name="TestPlan.comments">Establecimiento cabeceras HTTP</stringProp>
+            </HeaderManager>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Incorporación documento a petición" enabled="true">
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="script">import org.apache.commons.io.FileUtils;
+import org.apache.commons.codec.binary.Base64;
+
+String file = FileUtils.readFileToString(new File(&quot;C:/trabajo/des/pruebas/archivos/prueba-10mb-firmado.pdf&quot;),&quot;UTF-8&quot;);
+vars.put(&quot;docContent&quot;,new String(Base64.encodeBase64(file.getBytes(&quot;UTF-8&quot;))));</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Comprobación respuesta" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1660584649">COD_000</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+              <stringProp name="TestPlan.comments">Verifica que la respuesta retornada es correcta</stringProp>
+              <stringProp name="Assertion.scope">all</stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extracción UUID documento" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">docId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.createDocumentResult.resParam.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+              <stringProp name="TestPlan.comments">Extracción CSV documento</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
@@ -571,6 +928,42 @@
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
