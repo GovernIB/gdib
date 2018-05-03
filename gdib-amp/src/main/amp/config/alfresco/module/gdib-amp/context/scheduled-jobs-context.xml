@@ -46,7 +46,7 @@
 
     <!-- Resealing Documents -->
     <bean id="resealDocuments"
-		class="es.caib.gdib.schedulejobs.ResealDocuments">
+		class="es.caib.gdib.schedulejobs.ResealDocuments" parent="baseJavaScriptExtension">
 		<property name="resealDocumentsPropertiesFilter" ref="resealDocumentsPlaceHolderPopertiesFilter" />
 		<property name="nodeService" ref="NodeService" />
 		<property name="searchService" ref="SearchService" />
@@ -58,6 +58,7 @@
 		<property name="signatureTypeArchivedToUpgrade" value="$gdib{reseal.signature_types_archived_to_upgrade}" />
 		<property name="signatureService" ref="internalSignatureService" />
 		<property name="txnHelper" ref="retryingTransactionHelper" />
+		<property name="extensionName" value="resealDocuments" />
 	</bean>
 
 	<bean id="resealDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
