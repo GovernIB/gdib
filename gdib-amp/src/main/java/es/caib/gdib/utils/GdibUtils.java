@@ -492,12 +492,12 @@ public class GdibUtils {
 
 		// si "eni:estado_elaboracoin" es EE02, EE03 o EE04 - "eni:id_origen" debe estar informado
 		if ((ConstantUtils.ESTADO_ELABORACION_02.equals(this.getProperty(properties, ConstantUtils.PROP_ESTADO_ELABORACION_QNAME))
-				|| ConstantUtils.ESTADO_ELABORACION_03.equals(this.getProperty(properties, ConstantUtils.PROP_ESTADO_ELABORACION_QNAME))
+				/*|| ConstantUtils.ESTADO_ELABORACION_03.equals(this.getProperty(properties, ConstantUtils.PROP_ESTADO_ELABORACION_QNAME))*/
 				|| ConstantUtils.ESTADO_ELABORACION_04.equals(this.getProperty(properties,	ConstantUtils.PROP_ESTADO_ELABORACION_QNAME)))
 				&&
 				this.getProperty(properties, ConstantUtils.PROP_ID_ORIGEN_QNAME) == null) {
 			throw exUtils.checkMetadataIntegrityException(ConstantUtils.PROP_ESTADO_ELABORACION_QNAME,
-					ConstantUtils.ESTADO_ELABORACION_02 + " or " + ConstantUtils.ESTADO_ELABORACION_03 + " or " + ConstantUtils.ESTADO_ELABORACION_04,
+					ConstantUtils.ESTADO_ELABORACION_02 + /*" or " + ConstantUtils.ESTADO_ELABORACION_03 +*/ " or " + ConstantUtils.ESTADO_ELABORACION_04,
 					ConstantUtils.PROP_ID_ORIGEN_QNAME);
 		}
 

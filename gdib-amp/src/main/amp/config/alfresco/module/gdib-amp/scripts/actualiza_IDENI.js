@@ -2,14 +2,14 @@ main();
 
 function main(){
 	if(document.hasAspect("eni:interoperable")){
-		logger.log("Cambiamos la propiedad idEni al doc: " +  document.nodeRef);
+		logger.error("Cambiamos la propiedad idEni al doc: " +  document.nodeRef);
 		cambiarIdENI();
 	}
 }
 
 function cambiarIdENI(){
 	var id = "ES" + "_" + calcularOrgano() + "_" + calcularAnnoActual() + "_" + calcularRandom();
-	logger.log("NUEVO ID: " + id);
+	logger.error("NUEVO ID: " + id);
 
 	document.properties["eni:id"] = id;
 	document.save();
@@ -45,7 +45,7 @@ function calcularOrgano(){
 	var organo = document.properties["eni:organo"];
 	var res = null;
 
-	if(organo.length == 0){
+	if(organo == null || organo.length == 0){
 		res = "A04003003"; // valor por defecto, == ORGANO_DEFAULT_VALUE = "A04003003" del proyecto de migracion
 	}else if(organo instanceof Array){
 		res = organo[0];

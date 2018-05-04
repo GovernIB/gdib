@@ -12,9 +12,11 @@ import javax.activation.DataHandler;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
+import org.alfresco.repo.processor.BaseProcessorExtension;
 import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.repo.transaction.RetryingTransactionHelper.RetryingTransactionCallback;
 import org.alfresco.service.cmr.repository.ContentIOException;
+import org.alfresco.service.cmr.repository.ContentReader;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
@@ -42,7 +44,7 @@ import es.caib.gdib.ws.common.types.SignatureFormat;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
 
-public class ResealDocuments {
+public class ResealDocuments extends BaseProcessorExtension {
 
 
     private static final Logger LOGGER = Logger.getLogger(ResealDocuments.class);
@@ -766,11 +768,16 @@ public class ResealDocuments {
             	
             	//Si no es firma implicita se actualiza la prop. firma, sino la prop. contenido
             	QName qfirma = ConstantUtils.PROP_FIRMA_QNAME;
+            	String mime = MimetypeMap.MIMETYPE_BINARY;
             	
             	if(!EniSignatureType.TF01.equals(eniSignatureType) &&
         				!EniSignatureType.TF04.equals(eniSignatureType)){
         			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
             		qfirma = ConstantUtils.PROP_CONTENT;
+            		ContentReader cr = utils.getContentReader(node,qfirma);
+            		if  (cr != null && cr.getMimetype() != null ){
+            			mime = cr.getMimetype();
+            		}
         		}
             	
             	LOGGER.debug("Es un nodo de eni, guardo la nueva firma como metadato firma");
