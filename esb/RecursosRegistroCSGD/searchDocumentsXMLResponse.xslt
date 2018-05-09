@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0" xmlns:syn="http://ws.apache.org/ns/synapse" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ws="http://www.caib.es/gdib/repository/ws" version="2.0" exclude-result-prefixes="fn xsd soapenv syn ws">
      <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
+     <xsl:param name="pageNumber"/>
      <xsl:variable name="numeroTotalResultados" select="//ws:searchNodeResponse/ws:result/ws:numResultados/text()"/>	 
      <xsl:variable name="eniUriNsLength" select="fn:string-length('{http://www.administracionelectronica.gob.es/model/eni/1.0}')" />
      <xsl:variable name="gdibUriNsLength" select="fn:string-length('{http://www.caib.es/model/gdib/1.0}')" />
@@ -20,9 +21,14 @@
              <xsl:if test="$numeroTotalResultados > 0">
              	<csgd:resParam>
 	             	<csgd:totalNumberOfResults><xsl:value-of select="$numeroTotalResultados"/></csgd:totalNumberOfResults>
-	             	<xsl:if test="fn:boolean(//ws:searchNodeResponse/ws:result/ws:numPaginas/text())">
-						<csgd:pageNumber><xsl:value-of select="//ws:searchNodeResponse/ws:result/ws:numPaginas/text()"/></csgd:pageNumber>
-					</xsl:if>
+	             	<xsl:choose>
+			     		<xsl:when test="fn:boolean($pageNumber)">
+			     			<csgd:pageNumber><xsl:value-of select="$pageNumber"/></csgd:pageNumber>
+			     		</xsl:when>
+			     		<xsl:otherwise>
+			     			<csgd:pageNumber>0</csgd:pageNumber>
+			     		</xsl:otherwise>
+			     	</xsl:choose>
 	             	<xsl:for-each select="//ws:searchNodeResponse/ws:result/ws:resultados" >
 	             		<csgd:documents>
 				            <csgd:id>
