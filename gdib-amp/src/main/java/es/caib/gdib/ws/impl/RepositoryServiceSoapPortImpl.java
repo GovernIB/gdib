@@ -362,7 +362,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         NodeRef nodeRef = _internal_createNode(parentRef,name,type,props);
         if  (content != null && content.getMimetype() != null && content.getData() != null ){
             try{
+            	long startCreate = System.currentTimeMillis();
             	utils.setDataHandler(nodeRef,ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
+            	long endCreate = System.currentTimeMillis();
+            	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");            	
+            	Date d1 = new Date(startCreate);
+            	Date d2 = new Date(endCreate);
+            	LOGGER.info(nodeRef.getId() + ": LLamada a servicio copiar contenido al sistema de ficheros  "+(endCreate-startCreate)+"ms entre "+sdf.format(d1)+" y "+sdf.format(d2)+".");
             }catch(IOException exception){
                 throw exUtils.setContentException(nodeRef.getId(),exception);
             }
@@ -389,14 +395,22 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     private NodeRef _internal_createNode(NodeRef parentRef, QName name, QName type, Map<QName,Serializable> props) throws GdibException {
     	if(props.get(ConstantUtils.PROP_NAME) == null)
     		props.put(ConstantUtils.PROP_NAME, name.getLocalName());
-
+    	long startCreate = System.currentTimeMillis();
+        
         ChildAssociationRef createdChildRef = nodeService.createNode(parentRef,
                 ContentModel.ASSOC_CONTAINS,
                 name,
                 type,
                 props);
-
-        return createdChildRef != null?createdChildRef.getChildRef():null;
+        long endCreate = System.currentTimeMillis();
+        NodeRef ret =  createdChildRef != null?createdChildRef.getChildRef():null;
+        if ( ret != null ){
+        	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+        	Date d1 = new Date(startCreate);
+        	Date d2 = new Date(endCreate);
+        	LOGGER.info(ret + ": LLamada a servicio crear nodo de Alfresco de "+(endCreate-startCreate)+"ms entre "+sdf.format(d1)+" y "+sdf.format(d2)+".");
+        }
+        return ret;
     }
 
     /**

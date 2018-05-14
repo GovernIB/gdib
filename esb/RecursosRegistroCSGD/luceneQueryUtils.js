@@ -378,7 +378,7 @@ function buildDocLuceneQuery(mc) {
 
 function dateRange(prop, date1, date2){
 	if (date1 == null || (date1 != null && date1 == '')){
-		date1 = '\"1000\\-01\\-01\"';
+		date1 = '1000\\-01\\-01T00:00:00.000Z';
 	}
 	
 	if (date2 == null || (date2 != null && date2 == '')){
@@ -387,4 +387,3 @@ function dateRange(prop, date1, date2){
 
 	return prop+':[' + date1 + ' TO ' + date2 + ']';
 }
-
