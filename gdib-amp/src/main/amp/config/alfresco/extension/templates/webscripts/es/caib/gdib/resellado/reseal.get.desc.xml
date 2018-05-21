@@ -1,0 +1,8 @@
+<webscript> 
+<shortname>resellado</shortname> 
+<description>resella un documento especificado en la url por el argumento nodeId </description> 
+<url>/org/caib/resealTest</url> 
+<format default="html">argument</format> 
+<authentication>user</authentication> 
+<transaction>required</transaction> 
+</webscript>
