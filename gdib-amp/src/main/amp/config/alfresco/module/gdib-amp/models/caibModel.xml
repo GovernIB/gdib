@@ -561,6 +561,10 @@
 					<type>d:text</type>
 					<mandatory>false</mandatory>
 					<multiple>false</multiple>
+					<index enabled="true">
+						<tokenised>false</tokenised>
+						<facetable>false</facetable>
+					</index>
 				</property>
 
 				<!-- Descripcion: Denominación normalizada del tipo de firma -->
