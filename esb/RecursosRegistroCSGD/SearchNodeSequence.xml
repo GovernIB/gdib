@@ -60,12 +60,16 @@
     <header action="remove" name="Action" scope="default"/>
     <header action="remove" name="wsse:Security" scope="default" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
     <!-- Se parsea la respuesta -->
-    <switch source="$func:nodeType">
+    <switch source="$func:nodeType" xmlns:ns="http://org.apache.synapse/xsd">
       <case regex="documento">
-        <xslt key="conf:/repository/esb/registry/xslt/searchDocumentsXMLResponse.xslt"/>
+        <xslt key="conf:/repository/esb/registry/xslt/searchDocumentsXMLResponse.xslt">
+          <property expression="$func:pageNumber" name="pageNumber"/>
+        </xslt>
       </case>
       <case regex="eni:expediente">
-        <xslt key="conf:/repository/esb/registry/xslt/searchFilesXMLResponse.xslt"/>
+        <xslt key="conf:/repository/esb/registry/xslt/searchFilesXMLResponse.xslt">
+          <property expression="$func:pageNumber" name="pageNumber"/>
+        </xslt>
       </case>
       <default/>
     </switch>

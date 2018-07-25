@@ -495,8 +495,10 @@ public class ResealDocuments extends BaseProcessorExtension {
      * @throws ContentIOException
      * @throws IOException
      */
-    protected void resealDocument(NodeRef node, String typeDoc) throws GdibException{
-        // genero la firma sobre los documentos --> metodo que devuelve la nueva firma evolucionada (byte[])
+    public void resealDocument(NodeRef node, String typeDoc) throws GdibException{
+        if ( jobRunDate == null )
+        	jobRunDate = new Date();
+    	// genero la firma sobre los documentos --> metodo que devuelve la nueva firma evolucionada (byte[])
         byte[] resealSignature = resealSignature(node);
 
         // modifico la firma de los documentos y los metadatos
@@ -773,15 +775,17 @@ public class ResealDocuments extends BaseProcessorExtension {
             	if(!EniSignatureType.TF01.equals(eniSignatureType) &&
         				!EniSignatureType.TF04.equals(eniSignatureType)){
         			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
+            		LOGGER.debug("Firma implicita!" );
             		qfirma = ConstantUtils.PROP_CONTENT;
             		ContentReader cr = utils.getContentReader(node,qfirma);
             		if  (cr != null && cr.getMimetype() != null ){
+            			LOGGER.debug("Cambio el mime!" );
             			mime = cr.getMimetype();
             		}
         		}
             	
             	LOGGER.debug("Es un nodo de eni, guardo la nueva firma como metadato firma");
-                utils.setUnsecureDataHandler(node, qfirma, signature, MimetypeMap.MIMETYPE_BINARY);
+                utils.setUnsecureDataHandler(node, qfirma, signature, mime);
                 LOGGER.debug("Firma actualizada");
             }catch(IOException exception){
                 throw exUtils.setContentException(node.getId(),exception);
