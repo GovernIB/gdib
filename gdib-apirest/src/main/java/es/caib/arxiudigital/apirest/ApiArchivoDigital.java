@@ -202,8 +202,8 @@ public class ApiArchivoDigital {
   }
 
   /**
-   * @param url
-   * @param cabecera
+   * @param urlBase
+   * @param cabeceraPeticion
    */
   public ApiArchivoDigital(String urlBase, CabeceraPeticion cabeceraPeticion) {
     super();
@@ -641,7 +641,7 @@ public class ApiArchivoDigital {
   /**
    * Antic getDocument
    * @param uuid
-   * @param content
+   * @param retrieveContent
    * @return
    * @throws IOException
    */
@@ -2268,12 +2268,21 @@ public class ApiArchivoDigital {
           .setCodigoResultado(result.getSearchFilesResult().getResult().getCode());
       resultadoBusqueda.setMsjResultado(result.getSearchFilesResult().getResult()
           .getDescription());
-      resultadoBusqueda.setNumeroTotalResultados(result.getSearchFilesResult().getResParam()
-          .getTotalNumberOfResults());
-      resultadoBusqueda.setNumeroPagina(result.getSearchFilesResult().getResParam()
-          .getPageNumber());
-      resultadoBusqueda.setListaResultado(convertir_A_ListaExpediente(result
-          .getSearchFilesResult().getResParam().getFiles()));
+
+      if(resultadoBusqueda.getCodigoResultado().equals(CodigosResultadoPeticion.LISTA_VACIA)){
+
+        resultadoBusqueda.setNumeroTotalResultados(0);
+        resultadoBusqueda.setNumeroPagina(1);
+        resultadoBusqueda.setListaResultado(new ArrayList<Expediente>());
+      }else{
+        resultadoBusqueda.setNumeroTotalResultados(result.getSearchFilesResult().getResParam()
+                .getTotalNumberOfResults());
+        resultadoBusqueda.setNumeroPagina(result.getSearchFilesResult().getResParam()
+                .getPageNumber());
+        resultadoBusqueda.setListaResultado(convertir_A_ListaExpediente(result
+                .getSearchFilesResult().getResParam().getFiles()));
+      }
+
     } else {
       ResultadoSimple rtdoSimple = obtenerResultadoExcepcionJSON(output);
       resultadoBusqueda.setCodigoResultado(rtdoSimple.getCodigoResultado());
