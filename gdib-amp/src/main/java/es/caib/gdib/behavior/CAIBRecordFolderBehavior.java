@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.alfresco.model.ContentModel;
+import org.alfresco.model.ApplicationModel;
 import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
 import org.alfresco.repo.action.executer.MailActionExecuter;
 import org.alfresco.repo.node.NodeServicePolicies;
@@ -47,7 +48,7 @@ public class CAIBRecordFolderBehavior {
 	private static final String PREFIX_GROUP = "GROUP_";
 
 	public void registerEventHandlers() {
-
+		
 		eventManager.bindClassBehaviour(NodeServicePolicies.OnUpdatePropertiesPolicy.QNAME,
 				RecordsManagementModel.TYPE_RECORD_FOLDER,
 				new JavaBehaviour(this, "onUpdateDocumentProperties", NotificationFrequency.TRANSACTION_COMMIT));

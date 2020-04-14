@@ -1,134 +1,301 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>es.caib.archivodigital.sgd</groupId>
-    <artifactId>gdib-amp</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>gdib-amp Repository AMP project</name>
-    <packaging>amp</packaging>
-    <description>Manages the lifecycle of the gdib-amp Repository AMP (Alfresco Module Package)</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.caib.archivodigital.sgd</groupId>
+	<artifactId>gdib-amp</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>gdib-amp Repository AMP project</name>
+	<description>Manages the lifecycle of the gdib-amp Repository AMP (Alfresco Module Package)</description>
+	<packaging>amp</packaging>
+	<!-- <parent> <groupId>org.alfresco.maven</groupId> <artifactId>alfresco-sdk-parent</artifactId> 
+		<version>2.1.1</version> </parent> -->
+	<!-- SDK properties have sensible defaults in the SDK parent, but you can 
+		override the properties below to use another version. For more available 
+		properties see the alfresco-sdk-parent POM. -->
+	<properties>
+		<!-- The following are default values for data location and Alfresco Community 
+			version. Uncomment if you need to change (Note. current default version for 
+			Enterprise edition is 5.0.1) <alfresco.version>5.0.d</alfresco.version> <alfresco.data.location>/absolute/path/to/alf_data_dev</alfresco.data.location> -->
 
-    <parent>
-        <groupId>org.alfresco.maven</groupId>
-        <artifactId>alfresco-sdk-parent</artifactId>
-        <version>2.1.1</version>
-    </parent>
+		<!-- This control the root logging level for all apps uncomment and change, 
+			defaults to WARN <app.log.root.level>WARN</app.log.root.level> -->
 
-    <!--
-        SDK properties have sensible defaults in the SDK parent,
-        but you can override the properties below to use another version.
-        For more available properties see the alfresco-sdk-parent POM.
-       -->
-    <properties>
-        <!-- The following are default values for data location and Alfresco Community version.
-             Uncomment if you need to change (Note. current default version for Enterprise edition is 5.0.1)
-          <alfresco.version>5.0.d</alfresco.version>
-          <alfresco.data.location>/absolute/path/to/alf_data_dev</alfresco.data.location> -->
+		<!-- Set the enviroment to use, this controls which properties will be 
+			picked in src/test/properties for embedded run, defaults to the 'local' environment. 
+			See SDK Parent POM for more info. <env>local</env> -->
+		<app.amp.output.folder>${project.build.directory}/amp</app.amp.output.folder>
+		  <maven.compiler.target>1.8</maven.compiler.target>
+  <maven.compiler.source>1.8</maven.compiler.source>
+		
+	</properties>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/amp</directory>
+				<targetPath>${app.amp.output.folder}</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.alfresco.maven.plugin</groupId>
+				<artifactId>alfresco-maven-plugin</artifactId>
+				<version>2.1.1</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <alias>test-database</alias>
+                            <name>postgres:9.4.12</name>
+                            <run>
+                                <ports>
+                                    <port>database.port:5432</port>
+                                </ports>
+                                <env>
+                                    <POSTGRES_PASSWORD>alfresco</POSTGRES_PASSWORD>
+                                    <POSTGRES_USER>alfresco</POSTGRES_USER>
+                                    <POSTGRES_DB>alfresco-test</POSTGRES_DB>
+                                </env>
+                                <cmd>
+                                    <shell>-c max_connections=300</shell>
+                                </cmd>
+                                <wait>
+                                    <log>database system is ready to accept connections</log>
+                                    <time>20000</time>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			  <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <db.name>alfresco-test</db.name>
+                        <db.driver>org.postgresql.Driver</db.driver>
+                        <db.url>jdbc:postgresql://localhost:${database.port}/alfresco-test</db.url>
+                        <dir.root>${project.build.directory}/alf-data-test</dir.root>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+	<!-- Here we realize the connection with the Alfresco selected platform 
+		(e.g.version and edition) -->
+	<!-- <dependencyManagement> <dependencies> -->
+	<!-- Setup what versions of the different Alfresco artifacts that will be 
+		used (depends on alfresco.version), so we don't have to specify version in 
+		any of the dependency definitions in our POM. For more info see: http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies -->
+	<!-- <dependency> <groupId>${alfresco.groupId}</groupId> <artifactId>alfresco-platform-distribution</artifactId> 
+		<version>${alfresco.version}</version> <type>pom</type> <scope>import</scope> 
+		</dependency> </dependencies> </dependencyManagement> -->
 
-        <!-- This control the root logging level for all apps uncomment and change, defaults to WARN
-            <app.log.root.level>WARN</app.log.root.level>
-        -->
+	<dependencies>
+		<!-- Following dependencies are needed for compiling Java code in src/main/java; 
+			<scope>provided</scope> is inherited for each of the following; for more 
+			info, please refer to alfresco-platform-distribution POM -->
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-repository</artifactId>
+			<version>6.37</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <!-- Set the enviroment to use, this controls which properties will be picked in src/test/properties
-             for embedded run, defaults to the 'local' environment. See SDK Parent POM for more info.
-        <env>local</env>
-        -->
-
-    </properties>
-
-    <!-- Here we realize the connection with the Alfresco selected platform
-        (e.g.version and edition) -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version),
-                 so we don't have to specify version in any of the dependency definitions in our POM.
-                 For more info see:
-                    http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
-            -->
-            <dependency>
-                <groupId>${alfresco.groupId}</groupId>
-                <artifactId>alfresco-platform-distribution</artifactId>
-                <version>${alfresco.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <dependencies>
-        <!-- Following dependencies are needed for compiling Java code in src/main/java;
-             <scope>provided</scope> is inherited for each of the following;
-             for more info, please refer to alfresco-platform-distribution POM -->
-        <dependency>
-            <groupId>${alfresco.groupId}</groupId>
-            <artifactId>alfresco-repository</artifactId>
-        </dependency>
-
-        <!-- BBDD postgres -->
+		<dependency>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-remote-api</artifactId>
+			<version>6.23</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- BBDD postgres -->
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.2-1002.jdbc4</version>
 		</dependency>
-
-  		<!-- API Integr@ -->
+  <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>9.4.1212</version>
+        <scope>test</scope>
+    </dependency>
+		<!-- API Integr@ -->
 		<dependency>
 			<groupId>es.gob.afirma</groupId>
-			<artifactId>integra</artifactId>
-			<version>1.3.1</version>
+			<artifactId>Integra-commons</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+				<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-utils</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+				<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-ws</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+				<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-pdf-bc</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+		<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-xml</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+		<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-encryption</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+		<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-sign-operations</artifactId>
+			<version>2.2.1_000</version>
+		</dependency>
+		<dependency>
+			<groupId>es.gob.afirma</groupId>
+			<artifactId>Integra-ocsp-rfc3161</artifactId>
+			<version>2.2.1_000</version>
 		</dependency>
 		<!-- Fin API Integr@ -->
 
 		<dependency>
-		  <groupId>org.alfresco</groupId>
-		  <artifactId>alfresco-rm-server</artifactId>
-		  <version>2.3</version>
-		  <classifier>classes</classifier>
+			<groupId>org.alfresco</groupId>
+			<artifactId>alfresco-rm-server</artifactId>
+			<version>2.3</version>
+			<classifier>classes</classifier>
 		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+  <dependency>
+        <groupId>com.tradeshift</groupId>
+        <artifactId>junit-remote</artifactId>
+        <version>3</version>
+        <type>jar</type>
+        <exclusions>
+            <exclusion>
+                <artifactId>servlet-api</artifactId>
+                <groupId>javax.servlet</groupId>
+            </exclusion>
+        </exclusions>
+        <scope>test</scope>
+        
+    </dependency>
+<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.0.6.RELEASE</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+<groupId>javax.annotation</groupId>
+<artifactId>javax.annotation-api</artifactId>
+<version>1.3.2</version>
+</dependency>
+<dependency>
+<groupId>javax.xml.bind</groupId>
+<artifactId>jaxb-api</artifactId>
+<version>2.3.1</version>
+</dependency>
+<dependency>
+<groupId>org.glassfish.jaxb</groupId>
+<artifactId>jaxb-runtime</artifactId>
+<version>2.3.2</version>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.0.1</version>
+    <scope>provided</scope>
+</dependency>
+</dependencies>
 
-    <profiles>
-        <!--
-            Brings in the extra Enterprise specific repository classes,
-            if the 'enterprise' profile has been activated, needs to be activated manually.
-            -->
-        <profile>
-            <id>enterprise</id>
-            <dependencies>
-                <dependency>
-                    <groupId>${alfresco.groupId}</groupId>
-                    <artifactId>alfresco-enterprise-repository</artifactId>
-                    <version>${alfresco.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
+	<profiles>
+		<!-- Brings in the extra Enterprise specific repository classes, if the 
+			'enterprise' profile has been activated, needs to be activated manually. -->
+		<profile>
+			<id>enterprise</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.alfresco</groupId>
+					<artifactId>alfresco-enterprise-repository</artifactId>
+					<version>6.2</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
 
-        <!--
-            If the 'amp-to-war' profile is enabled then make sure to bring in the alfresco-rad module,
-            which has the H2 scripts and other RAD features.
+		<!-- If the 'amp-to-war' profile is enabled then make sure to bring in 
+			the alfresco-rad module, which has the H2 scripts and other RAD features. 
+			TODO: TO INVESTIGATE: This dependency is already defined in the parent SDK 
+			pom in the 'amp-to-war' profile but this does not work, it is not include... -->
+		<profile>
+			<id>amp-to-war</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.alfresco.maven</groupId>
+					<artifactId>alfresco-rad</artifactId>
+					<version>${maven.alfresco.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
 
-            TODO: TO INVESTIGATE: This dependency is already defined in the parent SDK pom in the 'amp-to-war' profile
-                  but this does not work, it is not include...
-		-->
-        <profile>
-            <id>amp-to-war</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.alfresco.maven</groupId>
-                    <artifactId>alfresco-rad</artifactId>
-                    <version>${maven.alfresco.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
+		<profile>
+			<id>local</id>
+		</profile>
 
-        <profile>
-        	<id>local</id>
-        </profile>
-
-    </profiles>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -144,23 +311,39 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>alfresco-private-repository</id>
-			<url>https://artifacts.alfresco.com/nexus/content/groups/private</url>
+			<id>alfresco-enterprise-repository</id>
+			<url>http://artifacts.alfresco.com/nexus/content/groups/private/</url>
 		</repository>
 		<repository>
-			 <id>maven.central</id>
-			 <url>http://repo1.maven.org/maven2/</url>
-			 <releases>
-			  <checksumPolicy>fail</checksumPolicy>
-			  <updatePolicy>always</updatePolicy>
-			  <enabled>true</enabled>
-			 </releases>
-			 <snapshots>
-			  <checksumPolicy>fail</checksumPolicy>
-			  <updatePolicy>always</updatePolicy>
-			  <enabled>false</enabled>
-			 </snapshots>
+			<id>jboss</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
 		</repository>
+		<repository>
+			<id>maven.central</id>
+			<url>https://repo1.maven.org/maven2/</url>
+			<releases>
+				<checksumPolicy>fail</checksumPolicy>
+				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<checksumPolicy>fail</checksumPolicy>
+				<updatePolicy>always</updatePolicy>
+				<enabled>false</enabled>
+			</snapshots>
+			
+		</repository>
+		<!-- Modificacions Parche de Toni Nadal per poder fer upgrade de firmes xades -->
+		<repository>
+       <id>github-governib-maven</id>
+       <name>GitHub GovernIB Maven Repository</name>
+       <url>http://governib.github.io/maven/maven/</url>
+    </repository>
+    <repository>
+       <id>spring-plugins-repository</id>
+       <name>Spring Plugins Repository</name>
+       <url>http://repo.spring.io/plugins-release/</url>
+    </repository>
 	</repositories>
 
 </project>

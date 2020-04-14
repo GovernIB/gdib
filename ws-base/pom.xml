@@ -9,11 +9,11 @@
     <packaging>amp</packaging>
     <description>Manages the lifecycle of the ws-base Repository AMP (Alfresco Module Package)</description>
 
-    <parent>
+    <!-- <parent>
         <groupId>org.alfresco.maven</groupId>
         <artifactId>alfresco-sdk-parent</artifactId>
         <version>2.1.1</version>
-    </parent>
+    </parent> -->
 
     <!--
         SDK properties have sensible defaults in the SDK parent,
@@ -33,17 +33,39 @@
              for embedded run, defaults to the 'local' environment. See SDK Parent POM for more info.
         <env>local</env>
         -->
+                <app.amp.output.folder>${project.build.directory}/amp</app.amp.output.folder>
+        		  <maven.compiler.target>1.8</maven.compiler.target>
+  <maven.compiler.source>1.8</maven.compiler.source>
+        
     </properties>
-
+ <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/amp</directory>
+                <targetPath>${app.amp.output.folder}</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>alfresco-maven-plugin</artifactId>
+                <version>2.1.1</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
     <!-- Here we realize the connection with the Alfresco selected platform
-        (e.g.version and edition) -->
+        (e.g.version and edition)
     <dependencyManagement>
-        <dependencies>
+        <dependencies> -->
             <!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version),
                  so we don't have to specify version in any of the dependency definitions in our POM.
                  For more info see:
                     http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
-            -->
+            
             <dependency>
                 <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-platform-distribution</artifactId>
@@ -52,21 +74,21 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
+    </dependencyManagement> -->
 
     <dependencies>
         <!-- Following dependencies are needed for compiling Java code in src/main/java;
              <scope>provided</scope> is inherited for each of the following;
-             for more info, please refer to alfresco-platform-distribution POM -->
+             for more info, please refer to alfresco-platform-distribution POM
         <dependency>
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
-        </dependency>
+        </dependency>-->
 
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
+			<version>1.10.8</version>
 		</dependency>
 
 		<!-- BBDD postgres -->
@@ -75,15 +97,84 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.2-1002.jdbc4</version>
 		</dependency>
-
+  <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-repository</artifactId>
+            <version>7.134.1</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-remote-api</artifactId>
+            <version>7.107.1</version>
+            <scope>provided</scope>
+        </dependency>
+       <!--  <dependency>
 			<groupId>es.rsits</groupId>
 			<artifactId>common-utils</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-    </dependencies>
+			<scope>provided</scope>
+		</dependency> -->
+		<dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-rt</artifactId>
+        <version>2.3.1</version>
+        <type>pom</type>
+    </dependency>
 
+    <dependency>
+        <groupId>javax.xml.ws</groupId>
+        <artifactId>jaxws-api</artifactId>
+        <version>2.3.1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-ri</artifactId>
+        <version>2.3.0</version>
+        <type>pom</type>
+    </dependency>
+		    <dependency>
+<groupId>javax.annotation</groupId>
+<artifactId>javax.annotation-api</artifactId>
+<version>1.3.2</version>
+</dependency>
+<dependency>
+<groupId>javax.xml.bind</groupId>
+<artifactId>jaxb-api</artifactId>
+<version>2.3.1</version>
+</dependency>
+<dependency>
+<groupId>org.glassfish.jaxb</groupId>
+<artifactId>jaxb-runtime</artifactId>
+<version>2.3.2</version>
+</dependency>
+<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.0.6.RELEASE</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+ <repositories>
+        <repository>
+            <id>alfresco-public</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
     <profiles>
         <!--
             Brings in the extra Enterprise specific repository classes,

@@ -11,23 +11,26 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<spring.version>3.2.10.RELEASE</spring.version>
+		<spring.version>5.0.4.RELEASE</spring.version>
+		        		  <maven.compiler.target>1.8</maven.compiler.target>
+  <maven.compiler.source>1.8</maven.compiler.source>
+		
 	</properties>
 	
-	<parent>
+	<!-- <parent>
         <groupId>org.alfresco.maven</groupId>
         <artifactId>alfresco-sdk-parent</artifactId>
         <version>2.1.1</version>
     </parent>
-    
-    <dependencyManagement>
-        <dependencies>
+     -->
+   <!--  <dependencyManagement>
+        <dependencies>-->
             <!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version),
                  so we don't have to specify version in any of the dependency definitions in our POM.
                  For more info see:
                     http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
             -->
-            <dependency>
+          <!--   <dependency>
                 <groupId>${alfresco.groupId}</groupId>
                 <artifactId>alfresco-platform-distribution</artifactId>
                 <version>${alfresco.version}</version>
@@ -35,18 +38,18 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
+    </dependencyManagement>-->
 
 	<dependencies>
-		 <dependency>
+		 <!-- <dependency>
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
-             
+              -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -55,7 +58,18 @@
 			<version>${spring.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
+    <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-repository</artifactId>
+            <version>6.37</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-remote-api</artifactId>
+            <version>6.23</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -63,4 +77,11 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	
+    <repositories>
+        <repository>
+            <id>alfresco-public</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
 </project>

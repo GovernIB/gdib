@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
+import javax.xml.soap.Name;
 import javax.xml.soap.Node;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
@@ -142,7 +143,7 @@ public class WSUtils {
 					Node soapNode = (Node) it2.next();
 					if (soapNode instanceof SOAPElement) {
 						SOAPElement element = (SOAPElement) soapNode;
-						QName elementQname = element.getElementQName();
+						QName elementQname = (QName) element.getElementName();
 						if (QNAME_WSSE_USERNAMETOKEN.equals(elementQname)) {
 							SOAPElement usernameTokenElement = element;
 							return getFirstChildElementValue(usernameTokenElement, search);
@@ -166,7 +167,7 @@ public class WSUtils {
 	 */
 	private static String getFirstChildElementValue(SOAPElement soapElement, QName qNameToFind) {
 		String value = null;
-		Iterator<?> it = soapElement.getChildElements(qNameToFind);
+		Iterator<?> it = soapElement.getChildElements((Name) qNameToFind);
 		while (it.hasNext()) {
 			SOAPElement element = (SOAPElement) it.next(); // use first
 			value = element.getValue();

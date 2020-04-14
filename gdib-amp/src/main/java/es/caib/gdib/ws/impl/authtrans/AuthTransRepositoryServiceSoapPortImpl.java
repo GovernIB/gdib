@@ -8,7 +8,7 @@ import org.alfresco.repo.security.authentication.AuthenticationException;
 import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.repo.transaction.RetryingTransactionHelper.RetryingTransactionCallback;
 import org.alfresco.service.cmr.security.AuthenticationService;
-import org.apache.axis.utils.StringUtils;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -544,13 +544,13 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 	private void doAuthentication(String username, String password) throws GdibException {
 		try {
 			// si el usuario viene vacio, se tiene que validar el ticket de autenticacion de alfresco
-			if(StringUtils.isEmpty(username)){
+			if(username.isEmpty()){
 				if(password==null)
 					throw new GdibException("You need authentication to perfom this operation");
 				authenticationService.validate(password);
 			}else{
 				// y sino realizar la autenticacion normal de usuario y password
-				if(StringUtils.isEmpty(password)){
+				if(password.isEmpty()){
 					throw new GdibException("Username and Password are mandatory");
 				}
 				// login con usuario y password

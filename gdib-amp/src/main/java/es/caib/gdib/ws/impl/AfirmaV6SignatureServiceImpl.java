@@ -16,6 +16,7 @@ import es.gob.afirma.integraFacade.pojo.SignatureFormatEnum;
 import es.gob.afirma.integraFacade.pojo.UpgradeSignatureRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureResponse;
+import es.gob.afirma.integraFacade.pojo.XmlSignatureModeEnum;
 import es.gob.afirma.utils.DSSConstants;
 
 public class AfirmaV6SignatureServiceImpl implements SignatureService {
@@ -134,7 +135,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		byte [] res = null;
 		ServerSignerRequest serSigReq;
 		SignatureFormatEnum dssSignatureFormat;
-		String dssXmlSignatureMode;
+		XmlSignatureModeEnum dssXmlSignatureMode;
 		
 		res = null;
 		
@@ -151,8 +152,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		serSigReq.setKeySelector(getOperationServerCertAlias());
 		serSigReq.setApplicationId(getOperationAfirmaAppId());		
 		serSigReq.setSignatureFormat((dssSignatureFormat == null?SignatureFormatEnum.XAdES_BES:dssSignatureFormat));		
-		serSigReq.setXmlSignatureMode((dssXmlSignatureMode == null || dssXmlSignatureMode.isEmpty()?
-				DSSConstants.XmlSignatureMode.ENVELOPED:dssXmlSignatureMode));
+		serSigReq.setXmlSignatureMode((dssXmlSignatureMode == null ?
+				XmlSignatureModeEnum.ENVELOPED:dssXmlSignatureMode));
 		serSigReq.setIgnoreGracePeriod(false);
 		if(signaturePoliciyIdentifier != null && !signaturePoliciyIdentifier.isEmpty()){
 			serSigReq.setSignaturePolicyIdentifier(signaturePoliciyIdentifier);
@@ -193,7 +194,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 					+ "para evolucionar una firma electrónica al formato " + upgradedSignatureFormat.getName() + ".");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
-		LOGGER.debug("SersigRes transactionId: " + serSigRes.getIdTransaction());
+		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
 		if (serSigRes.getResult() == null) {
 			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operación para "
@@ -324,7 +325,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaSign de la plataforma @firma.");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
-		LOGGER.debug("SersigRes transactionId: " + serSigRes.getIdTransaction());
+		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
 		if (serSigRes.getResult() == null) {
 			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operación.");
@@ -397,7 +398,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 				res = SignatureFormatEnum.CAdES_X2;
 				break;
 			case CAdES_XL:
-				res = SignatureFormatEnum.CAdes_XL;
+				res = SignatureFormatEnum.CAdES_XL;
 				break;
 			case CAdES_XL1:
 				res = SignatureFormatEnum.CAdES_XL1;
@@ -450,6 +451,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			case PAdES_LTV:
 				res = SignatureFormatEnum.PAdES_LTV;
 				break;
+			
+		
 		}
 
 		return res;
@@ -487,20 +490,19 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	 * @param xmlSignatureMode modo de firma electrónica XML: ENVELOPED, ENVELOPING o DETACHED.
 	 * @return modo de firma electrónica XML requerido por el API Integr@ de @firma.
 	 */
-	private static String translateXmlSignatureMode(XmlSignatureMode xmlSignatureMode) {
-		String res;
+	private static XmlSignatureModeEnum translateXmlSignatureMode(XmlSignatureMode xmlSignatureMode) {
+		XmlSignatureModeEnum res;
 		
-		res = null;
-		
+		res = null;		
 		switch(xmlSignatureMode){
 			case DETACHED:
-				res = DSSConstants.XmlSignatureMode.DETACHED;
+				res = XmlSignatureModeEnum.DETACHED;
 				break;
 			case ENVELOPED:
-				res = DSSConstants.XmlSignatureMode.ENVELOPED;
+				res = XmlSignatureModeEnum.ENVELOPED;
 				break;
 			case ENVELOPING:
-				res = DSSConstants.XmlSignatureMode.ENVELOPING;
+				res = XmlSignatureModeEnum.ENVELOPING;
 				break;
 		}
 		

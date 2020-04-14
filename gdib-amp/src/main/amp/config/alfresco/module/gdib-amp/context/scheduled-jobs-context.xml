@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+          http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Expired Documents -->
 	<bean id="expiredDocuments"
@@ -17,29 +17,24 @@
 		<property name="active" value="$gdib{expire.active}" />
 	</bean>
 
-	<bean id="expiredDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass">
-            <value>es.caib.gdib.schedulejobs.ExpiredDocumentsJob</value>
-        </property>
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="jobExecuter">
-                    <ref bean="expiredDocuments" />
-                </entry>
-            </map>
+	 <bean id="expiredDocumentsSchedulerAccessor" class="org.alfresco.schedule.AlfrescoSchedulerAccessorBean" > 
+        <property name="scheduler" ref="schedulerFactory"/>
+        <property name="triggers">
+            <list>
+                <bean id="expiredDocumentsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                    <property name="cronExpression" value="$gdib{expire.cron}"/>
+                    <property name="jobDetail" ref="expiredDocumentsJobDetail"/>
+                </bean>
+            </list>
         </property>
     </bean>
 
-	<!-- Trigger para lanzar el cronjob -->
-     <bean id="expiredDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
-        <property name="jobDetail">
-            <ref bean="expiredDocumentsJobDetail" />
-        </property>
-        <property name="scheduler">
-            <ref bean="schedulerFactory" />
-        </property>
-        <property name="cronExpression">
-            <value>$gdib{expire.cron}</value>
+    <bean id="expiredDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="es.caib.gdib.schedulejobs.ExpiredDocumentsJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter" value-ref="expiredDocuments"/>
+            </map>
         </property>
     </bean>
     <!-- Fin Expired Documents -->
@@ -61,28 +56,24 @@
 		<property name="extensionName" value="resealDocuments" />
 	</bean>
 
-	<bean id="resealDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass">
-            <value>es.caib.gdib.schedulejobs.ResealDocumentsJob</value>
-        </property>
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="jobExecuter">
-                    <ref bean="resealDocuments" />
-                </entry>
-            </map>
+	<bean id="resealDocumentsSchedulerAccessor" class="org.alfresco.schedule.AlfrescoSchedulerAccessorBean">
+        <property name="scheduler" ref="schedulerFactory"/>
+        <property name="triggers">
+            <list>
+                <bean id="resealDocumentsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                    <property name="cronExpression" value="$gdib{reseal.cron}"/>
+                    <property name="jobDetail" ref="resealDocumentsJobDetail"/>
+                </bean>
+            </list>
         </property>
     </bean>
 
-    <bean id="resealDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
-        <property name="jobDetail">
-            <ref bean="resealDocumentsJobDetail" />
-        </property>
-        <property name="scheduler">
-            <ref bean="schedulerFactory" />
-        </property>
-        <property name="cronExpression">
-            <value>$gdib{reseal.cron}</value>
+    <bean id="resealDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="es.caib.gdib.schedulejobs.ResealDocumentsJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter" value-ref="resealDocuments"/>
+            </map>
         </property>
     </bean>
 
@@ -112,28 +103,24 @@
 		<property name="active" value="$gdib{expurgate.active}" />
 	</bean>
 
-	<bean id="expurgateDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass">
-            <value>es.caib.gdib.schedulejobs.ExpurgateDocumentsJob</value>
-        </property>
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="jobExecuter">
-                    <ref bean="expurgateDocuments" />
-                </entry>
-            </map>
+	<bean id="expurgateDocumentsSchedulerAccessor" class="org.alfresco.schedule.AlfrescoSchedulerAccessorBean">
+        <property name="scheduler" ref="schedulerFactory"/>
+        <property name="triggers">
+            <list>
+                <bean id="expurgateDocumentsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                    <property name="cronExpression" value="$gdib{expurgate.cron}"/>
+                    <property name="jobDetail" ref="expurgateDocumentsJobDetail"/>
+                </bean>
+            </list>
         </property>
     </bean>
 
-    <bean id="expurgateDocumentsTrigger" class="org.alfresco.util.CronTriggerBean">
-        <property name="jobDetail">
-            <ref bean="expurgateDocumentsJobDetail" />
-        </property>
-        <property name="scheduler">
-            <ref bean="schedulerFactory" />
-        </property>
-        <property name="cronExpression">
-            <value>$gdib{expurgate.cron}</value>
+    <bean id="expurgateDocumentsJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="es.caib.gdib.schedulejobs.ExpurgateDocumentsJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter" value-ref="expurgateDocuments"/>
+            </map>
         </property>
     </bean>
 

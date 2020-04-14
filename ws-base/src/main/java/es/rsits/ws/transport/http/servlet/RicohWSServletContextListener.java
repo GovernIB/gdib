@@ -1,5 +1,4 @@
 package es.rsits.ws.transport.http.servlet;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.MalformedURLException;
@@ -74,7 +73,7 @@ public class RicohWSServletContextListener implements ServletContextAttributeLis
 
             // Parse the descriptor file and build endpoint infos
             DeploymentDescriptorParser<ServletAdapter> parser = new DeploymentDescriptorParser<ServletAdapter>(
-                classLoader,new ServletResourceLoader(context), createContainer(context), new ServletAdapterList());
+                classLoader,new ServletResourceLoader(context), createContainer(context), new ServletAdapterList(context));
             String propPath = props.getProperty(PROP_PATH);
             String realPath = context.getRealPath(propPath);
             String filter = props.getProperty(PROP_FILTER);
