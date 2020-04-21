@@ -244,16 +244,19 @@
 <groupId>javax.annotation</groupId>
 <artifactId>javax.annotation-api</artifactId>
 <version>1.3.2</version>
+<scope>provided</scope>
 </dependency>
 <dependency>
 <groupId>javax.xml.bind</groupId>
 <artifactId>jaxb-api</artifactId>
 <version>2.3.1</version>
+<scope>provided</scope>
 </dependency>
 <dependency>
 <groupId>org.glassfish.jaxb</groupId>
 <artifactId>jaxb-runtime</artifactId>
 <version>2.3.2</version>
+<scope>provided</scope>
 </dependency>
 <dependency>
     <groupId>javax.servlet</groupId>
@@ -261,6 +264,75 @@
     <version>3.0.1</version>
     <scope>provided</scope>
 </dependency>
+
+<!-- Afegim aquestes dependencies com a provided, perquè no s'afegeixin els .jar al generar el fitxer .amp -->
+<dependency>
+    <groupId>jakarta.activation</groupId>
+    <artifactId>jakarta.activation-api</artifactId>
+    <version>1.2.1</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.activation</groupId>
+    <artifactId>activation</artifactId>
+    <version>1.1</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>commons-discovery</groupId>
+    <artifactId>commons-discovery</artifactId>
+    <version>0.5</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>com.sun.istack</groupId>
+    <artifactId>istack-commons-runtime</artifactId>
+    <version>3.0.8</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>xalan</groupId>
+    <artifactId>serializer</artifactId>
+    <version>2.7.2</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.jvnet.staxex</groupId>
+    <artifactId>stax-ex</artifactId>
+    <version>1.8.1</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.activation</groupId>
+    <artifactId>javax.activation-api</artifactId>
+    <version>1.2.0</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.glassfish.jaxb</groupId>
+    <artifactId>txw2</artifactId>
+    <version>2.3.2</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.security</groupId>
+    <artifactId>wss4j</artifactId>
+    <version>1.6.19</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>xml-apis</groupId>
+    <artifactId>xml-apis</artifactId>
+    <version>1.4.01</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>jakarta.xml.bind</groupId>
+    <artifactId>jakarta.xml.bind-api</artifactId>
+    <version>2.3.2</version>
+    <scope>provided</scope>
+</dependency>
+
 </dependencies>
 
 	<profiles>
