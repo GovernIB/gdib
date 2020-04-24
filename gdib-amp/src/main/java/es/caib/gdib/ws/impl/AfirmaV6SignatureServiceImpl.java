@@ -451,6 +451,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			case PAdES_LTV:
 				res = SignatureFormatEnum.PAdES_LTV;
 				break;
+		default:
+			break;
 			
 		
 		}

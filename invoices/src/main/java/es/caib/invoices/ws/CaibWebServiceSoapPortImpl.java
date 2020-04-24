@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import es.caib.invoices.ws.alfresco.WSAlfrescoUtils;
-import es.rsits.ws.auth.WSAuthentication;
 import es.rsits.ws.exception.WSException;
 
 /**

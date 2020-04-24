@@ -2,7 +2,7 @@ package es.caib.gdib.behavior;
 
 import static org.alfresco.module.org_alfresco_module_rm.version.RecordableVersionModel.PROP_VERSIONED_NODEREF;
 import static org.alfresco.module.org_alfresco_module_rm.version.RecordableVersionModel.PROP_VERSION_LABEL;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,8 +84,8 @@ import org.alfresco.service.namespace.RegexQNamePattern;
 import org.alfresco.util.EqualsHelper;
 import org.alfresco.util.ParameterCheck;
 import org.alfresco.util.PropertyMap;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.extensions.surf.util.I18NUtil;
@@ -1029,7 +1029,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             for (Version previousVersion : previousVersions)
             {
                 // look for the associated record
-                final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSION_RECORD);
+                final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSIONED_NODEREF);
                 if (previousRecord != null)
                 {
                     versionRecord = previousRecord;
@@ -1736,4 +1736,22 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             }
         }
     }
+
+	@Override
+	public void complete(NodeRef arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createRecord(NodeRef arg0, NodeRef arg1, NodeRef arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createRecord(NodeRef arg0, NodeRef arg1, NodeRef arg2, boolean arg3) {
+		// TODO Auto-generated method stub
+		
+	}
 }

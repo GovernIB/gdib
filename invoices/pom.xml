@@ -9,12 +9,7 @@
     <packaging>amp</packaging>
     <description>Manages the lifecycle of the invoices Repository AMP (Alfresco Module Package)</description>
 
-    <parent>
-        <groupId>org.alfresco.maven</groupId>
-        <artifactId>alfresco-sdk-parent</artifactId>
-        <version>2.1.1</version>
-    </parent>
-
+    
     <!-- 
         SDK properties have sensible defaults in the SDK parent,
         but you can override the properties below to use another version.
@@ -35,26 +30,44 @@
         <env>local</env>
         -->
         
-        <spring.version>3.2.10.RELEASE</spring.version>
+        <spring.version>5.1.8.RELEASE</spring.version>
+        <app.amp.output.folder>${project.build.directory}/amp</app.amp.output.folder>
+            <!-- Properties used in dependency declarations, you don't need to change these -->
+        <alfresco.groupId>org.alfresco</alfresco.groupId>
+        <alfresco.bomDependencyArtifactId>acs-community-packaging</alfresco.bomDependencyArtifactId>
+        <alfresco.platform.version>6.2.0-ea</alfresco.platform.version>
+        <alfresco.share.version>6.2.0</alfresco.share.version>
+     	<maven.compiler.target>11</maven.compiler.target>
+ 		<maven.compiler.source>11</maven.compiler.source>
         
     </properties>
-
+    <build>
+  <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>${project.build.directory}/config</targetPath>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/amp</directory>
+                <targetPath>${app.amp.output.folder}</targetPath>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>alfresco-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+        </build>
     <!-- Here we realize the connection with the Alfresco selected platform 
         (e.g.version and edition) -->
     <dependencyManagement>
         <dependencies>
-            <!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version),
-                 so we don't have to specify version in any of the dependency definitions in our POM.
-                 For more info see:
-                    http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
-            -->
-            <dependency>
-                <groupId>${alfresco.groupId}</groupId>
-                <artifactId>alfresco-platform-distribution</artifactId>
-                <version>${alfresco.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+         
         </dependencies>
     </dependencyManagement>
 
@@ -64,8 +77,20 @@
              for more info, please refer to alfresco-platform-distribution POM -->
         <dependency>
             <groupId>${alfresco.groupId}</groupId>
-            <artifactId>alfresco-repository</artifactId>
-        </dependency>        
+            <artifactId>alfresco-remote-api</artifactId>
+            <scope>provided</scope>
+            <version>7.107.1</version>
+            <exclusions>
+            <exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+			</exclusion>
+			   <exclusion>
+					<groupId>xpp3</groupId>
+					<artifactId>xpp3</artifactId>
+			</exclusion>
+			</exclusions>
+        </dependency>
         
         <dependency>
 			<groupId>org.springframework</groupId>
@@ -142,5 +167,25 @@
 			<id>alfresco-private-repository</id>
 			<url>https://artifacts.alfresco.com/nexus/content/groups/private</url>
 		</repository>
+		  <repository>
+                     <id>central</id>
+                     <url>https://repo1.maven.org/maven2</url>
+                     <snapshots>
+                         <enabled>false</enabled>
+                     </snapshots>
+                     <releases>
+                         <enabled>true</enabled>
+                     </releases>
+                 </repository>
+        <repository>
+                     <id>Maven-Central-Repository</id>
+                     <url>https://repo1.maven.org/maven2</url>
+                     <snapshots>
+                         <enabled>false</enabled>
+                     </snapshots>
+                     <releases>
+                         <enabled>true</enabled>
+                     </releases>
+                 </repository>
 	</repositories>
 </project>

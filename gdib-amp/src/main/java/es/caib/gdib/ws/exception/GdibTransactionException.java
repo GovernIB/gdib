@@ -1,6 +1,5 @@
 package es.caib.gdib.ws.exception;
 
-import javax.xml.ws.WebFault;
 
 public class GdibTransactionException extends Exception {
 

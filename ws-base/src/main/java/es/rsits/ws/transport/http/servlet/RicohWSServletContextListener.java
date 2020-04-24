@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 import com.sun.istack.NotNull;
 import com.sun.xml.ws.api.server.BoundEndpoint;
 import com.sun.xml.ws.api.server.Container;
@@ -32,10 +33,12 @@ import com.sun.xml.ws.transport.http.servlet.ServletAdapter;
 import com.sun.xml.ws.transport.http.servlet.ServletAdapterList;
 import com.sun.xml.ws.transport.http.servlet.WSServlet;
 import com.sun.xml.ws.transport.http.servlet.WSServletDelegate;
+import javax.xml.ws.WebFault;
+
 /**
  * WSServletContextListener modificado por RICOH SPAIN IT SERVICES.
  *
- * Accede a JAWS_ROOT_FOLDER y filtra
+ * Accede a JAXWS_ROOT_FOLDER y filtra
  *
  *
  * */
@@ -88,7 +91,7 @@ public class RicohWSServletContextListener implements ServletContextAttributeLis
 	            File [] contexts = folder.listFiles();
 	            URL sunJaxWsXml = null ;
 	            List<ServletAdapter> adapters =null;
-
+	            
 	            // Cargamos todos los context que cumplan que terminen en JAXWS_FILTER y esten situados en JAXWS_ROOT_FOLDER
 	            for(int i = 0 ; i < contexts.length; i++){
 	            	if ( contexts[i].getName().endsWith(filter)){

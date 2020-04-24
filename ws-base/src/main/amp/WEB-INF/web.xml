@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
    
    <display-name>Alfresco</display-name>
 
@@ -36,9 +36,9 @@
    <context-param><description>Vaadin production mode</description><param-name>productionMode</param-name><param-value>true</param-value></context-param>
 
    <filter>
-      <description>Cleans security context before authentication via the CMIS services or filters. Mapped only for CMIS</description>
-      <filter-name>CMIS security context cleaning filter</filter-name>
-      <filter-class>org.alfresco.web.app.servlet.CmisSecurityContextCleanerFilter</filter-class>
+      <description>Cleans the security context after the request was processed</description>
+      <filter-name>Clear security context filter</filter-name>
+      <filter-class>org.alfresco.web.app.servlet.ClearSecurityContextFilter</filter-class>
    </filter>
 
    <filter>
@@ -97,68 +97,24 @@
       </init-param>
       -->
    </filter>
-   
-   <!-- CORS Filter Begin -->
-   <!--<filter>
-      <filter-name>CORS</filter-name>
-      <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
-      <init-param>
-         <param-name>cors.allowGenericHttpRequests</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.allowOrigin</param-name>
-         <param-value>http://localhost:8081</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.allowSubdomains</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.supportedMethods</param-name>
-         <param-value>GET, HEAD, POST, PUT, DELETE, OPTIONS</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.supportedHeaders</param-name>
-         <param-value>origin, authorization, x-file-size, x-file-name, content-type, accept, x-file-type</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.supportsCredentials</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <init-param>
-         <param-name>cors.maxAge</param-name>
-         <param-value>3600</param-value>
-      </init-param>
-   </filter>-->
-   <!-- CORS Filter End -->
+
+   <filter>
+      <description>CSRF Token filter. Checks for a session based CSRF token in request headers (or form parameters) based on config.</description>
+      <filter-name>CSRF Token Filter</filter-name>
+      <filter-class>org.springframework.extensions.webscripts.servlet.CSRFFilter</filter-class>
+   </filter>
 
    <!-- Enterprise filter placeholder -->
+
+   <filter-mapping>
+      <filter-name>Clear security context filter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
 
    <filter-mapping>
       <filter-name>Global Localization Filter</filter-name>
       <url-pattern>/*</url-pattern>
       <dispatcher>REQUEST</dispatcher>
-   </filter-mapping>
-   
-   <!-- CORS Filter Mappings Begin -->
-   <!--<filter-mapping>
-      <filter-name>CORS</filter-name>
-      <url-pattern>/api/*</url-pattern>
-      <url-pattern>/service/*</url-pattern>
-      <url-pattern>/s/*</url-pattern>
-      <url-pattern>/cmisbrowser/*</url-pattern>
-   </filter-mapping>-->
-   <!-- CORS Filter Mappings End -->
- 
-   <filter-mapping>
-      <filter-name>CMIS security context cleaning filter</filter-name>
-      <url-pattern>/cmisws/*</url-pattern>
-   </filter-mapping>
-
-   <filter-mapping>
-      <filter-name>CMIS security context cleaning filter</filter-name>
-      <url-pattern>/cmisatom/*</url-pattern>
    </filter-mapping>
 
    <filter-mapping>
@@ -238,21 +194,65 @@
       <url-pattern>/wcs/api/solr/*</url-pattern>
    </filter-mapping>
 
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/service/enterprise/admin/*</url-pattern>
+   </filter-mapping>
+
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/s/enterprise/admin/*</url-pattern>
+   </filter-mapping>
+   
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/service/admin/*</url-pattern>
+   </filter-mapping>
+
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/s/admin/*</url-pattern>
+   </filter-mapping>
+   
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/wcservice/enterprise/admin/*</url-pattern>
+   </filter-mapping>
+
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/wcs/enterprise/admin/*</url-pattern>
+   </filter-mapping>
+   
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/wcservice/admin/*</url-pattern>
+   </filter-mapping>
+
+   <filter-mapping>
+      <filter-name>CSRF Token Filter</filter-name>
+      <url-pattern>/wcs/admin/*</url-pattern>
+   </filter-mapping>
+
+   <!-- Metrics filter -->
+   <filter>
+      <filter-name>ServletMetricsFilter</filter-name>
+      <filter-class>org.alfresco.repo.web.filter.beans.BeanProxyFilter</filter-class>
+      <init-param>
+         <param-name>beanName</param-name>
+         <param-value>servletMetricsReporter</param-value>
+      </init-param>
+   </filter>
+    <filter-mapping>
+        <filter-name>ServletMetricsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
    <!-- Enterprise filter-mapping placeholder -->
-
-   <listener>
-      <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-   </listener>
    
    <!-- Spring Context Loader listener - can disable loading of context if runtime config changes are needed -->
    <listener>
       <listener-class>org.alfresco.web.app.ContextLoaderListener</listener-class>
-   </listener>
-
-   <!-- Web Application Context listener - session create/destroy debugging and bootstrap Spring init -->
-   <listener>
-      <listener-class>org.alfresco.web.app.ContextListener</listener-class>
    </listener>
 
    <!-- WebDAV session listener - ensures that no locked resources is left after session expires -->
@@ -260,10 +260,10 @@
       <listener-class>org.alfresco.repo.webdav.WebDAVSessionListener</listener-class>
    </listener>
 
-   <!-- Web Services context listener for OpenCMIS -->
+   <!-- CORS session listener - enables and configures CORS -->
    <listener>
-        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
-   </listener> 
+      <listener-class>org.alfresco.web.app.servlet.CORSContextListener</listener-class>
+   </listener>
 
    <listener>
       <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
@@ -297,7 +297,7 @@
 
    <servlet>
       <servlet-name>apiServlet</servlet-name>
-      <servlet-class>org.springframework.extensions.webscripts.servlet.WebScriptServlet</servlet-class>
+      <servlet-class>org.alfresco.repo.web.scripts.AlfrescoWebScriptServlet</servlet-class>
       <init-param>
          <param-name>authenticator</param-name>
          <param-value>webscripts.authenticator.remoteuser</param-value>
@@ -306,10 +306,10 @@
    
    <servlet>
       <servlet-name>wcapiServlet</servlet-name>
-      <servlet-class>org.springframework.extensions.webscripts.servlet.WebScriptServlet</servlet-class>
+      <servlet-class>org.alfresco.repo.web.scripts.AlfrescoWebScriptServlet</servlet-class>
       <init-param>
          <param-name>authenticator</param-name>
-         <param-value>webscripts.authenticator.webclient</param-value>
+         <param-value>webscripts.authenticator.remoteuser</param-value>
       </init-param>
    </servlet>
 
@@ -599,8 +599,7 @@
       <env-entry-type>java.lang.String</env-entry-type>
       <env-entry-value/> <!-- Empty value included for JBoss compatibility -->
    </env-entry>
-   
-   <!-- adaptado a 5.1 -->
+  <!-- WS-BASE -->
 
 	<listener>
 		<listener-class>es.rsits.ws.transport.http.servlet.RicohWSServletContextListener</listener-class>
@@ -617,6 +616,5 @@
         <servlet-name>webService</servlet-name>
         <url-pattern>/webservice/*</url-pattern>
     </servlet-mapping>
-
 
 </web-app>

@@ -12,8 +12,12 @@
 
 	<properties>
 		<spring.version>5.0.4.RELEASE</spring.version>
-		        		  <maven.compiler.target>1.8</maven.compiler.target>
-  <maven.compiler.source>1.8</maven.compiler.source>
+   		<maven.compiler.target>11</maven.compiler.target>
+  		<maven.compiler.source>11</maven.compiler.source>
+        <alfresco.groupId>org.alfresco</alfresco.groupId>
+        <alfresco.bomDependencyArtifactId>acs-community-packaging</alfresco.bomDependencyArtifactId>
+        <alfresco.platform.version>6.2.0-ea</alfresco.platform.version>
+        <alfresco.share.version>6.2.0</alfresco.share.version>
 		
 	</properties>
 	
@@ -47,28 +51,27 @@
         </dependency>
               -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
 			<scope>provided</scope>
 		</dependency>
-    <dependency>
-            <groupId>org.alfresco</groupId>
-            <artifactId>alfresco-repository</artifactId>
-            <version>6.37</version>
-            <scope>provided</scope>
-        </dependency>
+     <!-- The main Alfresco Repo dependency for compiling Java code in src/main/java -->
         <dependency>
-            <groupId>org.alfresco</groupId>
+            <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-remote-api</artifactId>
-            <version>6.23</version>
             <scope>provided</scope>
+            <version>7.107.1</version>
+            <exclusions>
+            <exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+			</exclusion>
+			   <exclusion>
+					<groupId>xpp3</groupId>
+					<artifactId>xpp3</artifactId>
+			</exclusion>
+			</exclusions>
         </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -76,12 +79,67 @@
 			<version>${spring.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		  <!--
+        Java EE API replacements for JDK 11
+    -->
+    <!-- JAXB for Java 11 -->
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>2.4.0-b180830.0438</version>
+    </dependency>
+    <!-- JAXWS for Java 11 -->
+    <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-rt</artifactId>
+        <version>2.3.1</version>
+        <type>pom</type>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>rt</artifactId>
+        <version>2.3.1</version>
+    </dependency>
 	</dependencies>
 	
-    <repositories>
+     <repositories>
         <repository>
             <id>alfresco-public</id>
             <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
         </repository>
+        <repository>
+            <id>alfresco-public-snapshots</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+        <!-- Alfresco Enterprise Edition Artifacts, put username/pwd for server in settings.xml -->
+        <repository>
+            <id>alfresco-private-repository</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/private</url>
+        </repository>
+        <repository>
+                     <id>central</id>
+                     <url>https://repo1.maven.org/maven2</url>
+                     <snapshots>
+                         <enabled>false</enabled>
+                     </snapshots>
+                     <releases>
+                         <enabled>true</enabled>
+                     </releases>
+                 </repository>
+        <repository>
+                     <id>Maven-Central-Repository</id>
+                     <url>https://repo1.maven.org/maven2</url>
+                     <snapshots>
+                         <enabled>false</enabled>
+                     </snapshots>
+                     <releases>
+                         <enabled>true</enabled>
+                     </releases>
+                 </repository>
     </repositories>
 </project>

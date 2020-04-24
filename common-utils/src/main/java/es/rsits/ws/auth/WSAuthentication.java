@@ -7,7 +7,7 @@ import javax.xml.ws.handler.MessageContext;
 
 import org.alfresco.repo.security.authentication.AuthenticationException;
 import org.alfresco.service.cmr.security.AuthenticationService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import es.rsits.ws.exception.WSException;
 
