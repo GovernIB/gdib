@@ -1029,7 +1029,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             for (Version previousVersion : previousVersions)
             {
                 // look for the associated record
-                final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSIONED_NODEREF);
+                final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get("RecordVersion");
                 if (previousRecord != null)
                 {
                     versionRecord = previousRecord;
