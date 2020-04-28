@@ -69,6 +69,6 @@
 	<!-- Endpoint Servicio migracion Gdib -->
 	<endpoint name="gdibMigrationServiceSoapPort" implementation="es.caib.gdib.ws.impl.MigrationServiceSoapPortImpl"
 		wsdl="" url-pattern="/webservice/gdib/migration" enable-mtom="true"> <handler-chains
-		xmlns="http://java.sun.com/xml/ns/javaee"> <handler-chain> <handler> <handler-class>org.apache.chemistry.opencmis.server.impl.webservices.AuthHandler</handler-class>
+		xmlns="http://java.sun.com/xml/ns/javaee"> <handler-chain> <handler> <handler-class>es.rsits.ws.handlers.AlfrescoAuthHandler</handler-class>
 		</handler> </handler-chain> </handler-chains> </endpoint>
 </endpoints>

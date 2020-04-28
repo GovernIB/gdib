@@ -54,26 +54,27 @@
             </resource>
         </resources>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+                <source>11</source>
+                <target>11</target>
+            </configuration>                
+        </plugin>
             <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>alfresco-maven-plugin</artifactId>
                 <version>2.2.0</version>
                 <extensions>true</extensions>
             </plugin>
+          
         </plugins>
     </build>
     <!-- Here we realize the connection with the Alfresco selected platform 
         (e.g.version and edition) -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version),
-                 so we don't have to specify version in any of the dependency definitions in our POM.
-                 For more info see:
-                    http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
-            -->
-            
-        </dependencies>
-    </dependencyManagement>
+  
 
     <dependencies>
         <!-- Following dependencies are needed for compiling Java code in src/main/java;
@@ -81,19 +82,80 @@
              for more info, please refer to alfresco-platform-distribution POM -->
         
 
-     
 		<dependency>
 			<groupId>org.alfresco</groupId>
 			<artifactId>alfresco-governance-services-enterprise-repo</artifactId>
 			<version>3.3.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.alfresco</groupId>
 			<artifactId>alfresco-governance-services-community-repo</artifactId>
 			<version>3.3.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 	
-
+		<dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-commons</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-commons-pdf-bc</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-commons-xml</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-encryption</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-ocsp-rfc3161</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-sign-operations</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-utils</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.gob.afirma</groupId>
+            <artifactId>Integra-ws</artifactId>
+            <version>2.2.1_000</version>
+            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<groupId>sun-jaxws</groupId>
+            		<artifactId>stax-ex</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>2.5</version>
+    <scope>provided</scope>
+</dependency>
         <!-- The main Alfresco Repo dependency for compiling Java code in src/main/java -->
         <dependency>
             <groupId>${alfresco.groupId}</groupId>
@@ -113,23 +175,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <!--
-            Brings in the extra Enterprise specific repository classes,
-            if the 'enterprise' profile has been activated, needs to be activated manually.
-            -->
-        <profile>
-            <id>enterprise</id>
-            <dependencies>
-                <dependency>
-                    <groupId>${alfresco.groupId}</groupId>
-                    <artifactId>alfresco-enterprise-repository</artifactId>
-                    <version>${alfresco.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
      <repositories>
         <repository>
             <id>alfresco-public</id>
@@ -168,6 +213,17 @@
                          <enabled>true</enabled>
                      </releases>
                  </repository>
-    </repositories>
+        <repository>
+          <id>github-governib-maven</id>
+          <name>GitHub GovernIB Maven Repository</name>
+          <url>https://governib.github.io/maven/maven/</url>
+        </repository>
+        
+    <repository>
+        <id>adobe-public</id>
+        <url>https://repo.adobe.com/nexus/content/repositories/public/</url>
+    </repository>
+</repositories>
+        
     
 </project>
