@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Documento - Panel de verificacion de firma</shortname>
+  <description>Documento - Panel de verificacion de firma - Donde podremos verificar la firma de un documuneto</description>
+  <url>/gdib/components/document-details/verifydocumentsignature</url>
+</webscript>

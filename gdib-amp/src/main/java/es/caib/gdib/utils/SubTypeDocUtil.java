@@ -35,7 +35,6 @@ public class SubTypeDocUtil {
 	private ExUtils exUtils;
 	private GdibUtils utils;
 
-
 	/**
 	 * Relleno las propiedades heredadas de la serie documental a las propiedades del nodo
 	 *
@@ -104,7 +103,7 @@ public class SubTypeDocUtil {
 			if(conn != null){
 				StringBuffer stb_SELECT = new StringBuffer();
 
-				stb_SELECT.append("SELECT code_clasificacion, description FROM documentaryseries; ");
+				stb_SELECT.append("SELECT code_clasificacion, description FROM documentaryseries");
 
 				ps = conn.prepareStatement(stb_SELECT.toString());
 				LOGGER.debug("getAllDocumentalSeries :: SQL query :: " + ps.toString());
@@ -149,7 +148,7 @@ public class SubTypeDocUtil {
 			if(conn != null){
 				StringBuffer stb_SELECT = new StringBuffer();
 
-				stb_SELECT.append("SELECT * FROM subtypedoc; ");
+				stb_SELECT.append("SELECT * FROM subtypedoc");
 
 				ps = conn.prepareStatement(stb_SELECT.toString());
 				LOGGER.debug("getAllSubtypedoc :: SQL query :: " + ps.toString());
@@ -375,7 +374,7 @@ public class SubTypeDocUtil {
 	 */
 	public List<SubTypeDocInfo> getReselladoInfo() throws GdibException{
 
-		List<SubTypeDocInfo> res = null;
+		List<SubTypeDocInfo> res = new ArrayList<SubTypeDocInfo>();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -386,19 +385,19 @@ public class SubTypeDocUtil {
 			if(conn != null){
 				StringBuffer stb_SELECT = new StringBuffer();
 
-				stb_SELECT.append("SELECT code_clasificacion, code_subtype, resealing FROM subtypedocinfo; ");
+				stb_SELECT.append("SELECT code_clasificacion, code_subtype, resealing FROM subtypedocinfo");
 
 				ps = conn.prepareStatement(stb_SELECT.toString());
 				LOGGER.debug("getReselladoInfo :: SQL query :: " + ps.toString());
 				rs =  ps.executeQuery();
-
-				res = new ArrayList<SubTypeDocInfo>();
-				while(rs.next()){
-					SubTypeDocInfo info = new SubTypeDocInfo(rs.getString(1), rs.getString(2));
-					info.setResealing(rs.getString(3));
-					res.add(info);
-				}
-
+				if(rs != null)
+				{
+					while(rs.next()){
+						SubTypeDocInfo info = new SubTypeDocInfo(rs.getString(1), rs.getString(2));
+						info.setResealing(rs.getString(3));
+						res.add(info); 
+					}
+				}			
 			} else{
 				throw  new GdibException("La conexion a la base de datos se ha generado nula.");
 			}
@@ -406,6 +405,7 @@ public class SubTypeDocUtil {
 		} catch (SQLException e) {
 			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
 			throw  new GdibException("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
+			//ORA-00933 comando SQL no terminado correctamente
 		} finally {
 			try {
 				ps.close();
@@ -830,6 +830,7 @@ public class SubTypeDocUtil {
 		Properties props = new Properties();
 		props.setProperty("user", getDb_alfresco_username());
 		props.setProperty("password", getDb_alfresco_password());
+		
 
 
 		try {

@@ -33,12 +33,17 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        	<pluginManagement>
         <plugins>
             <!-- Compress JavaScript files and store as *-min.js -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
             </plugin>
+        </plugins>
+        </pluginManagement>
+        <plugins>
+         
              <plugin>
                 <groupId>org.alfresco.maven.plugin</groupId>
                 <artifactId>alfresco-maven-plugin</artifactId>
