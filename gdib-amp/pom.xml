@@ -42,9 +42,9 @@
     </properties>
  <build>
         <resources>
-            <resource>
+             <resource>
                 <directory>src/main/resources</directory>
-                <targetPath>${project.build.directory}/config</targetPath>
+                <targetPath>${app.amp.output.folder}/config</targetPath>
                 <filtering>true</filtering>
             </resource>
             <resource>
