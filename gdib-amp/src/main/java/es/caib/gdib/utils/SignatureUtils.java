@@ -25,6 +25,11 @@ public class SignatureUtils {
 	private static final String PADES_DSS_URI_SIGNATURE_TYPE = "urn:afirma:dss:1.0:profile:XSS:forms:PAdES";
 	private static final String OOXML_DSS_URI_SIGNATURE_TYPE = "urn:afirma:dss:1.0:profile:XSS:forms:OOXML";
 
+	//NuevosFormatos
+	private static final String PDF_DSS_URI_PADESBASELINE= "http://uri.etsi.org/103172/v2.1.1#";
+	private static final String CADES_DSS_URI_CADESBASELINE= "http://uri.etsi.org/103173/v2.1.1#";
+	private static final String XADES_DSS_URI_XADESBASELINE= "http://uri.etsi.org/103171/v2.1.1#";
+	//private static final String ASIC_DSS_URI_ASICASELINE= "http://uri.etsi.org/103172/v2.1.1#";
 	//DSS SignatureForm identifiers (@firma v6.1.1)
 	private static final String BASICO_DSS_URI_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:PAdES:1.2.1:forms:Basico";
 	private static final String BES_DSS_URI_SIGNATURE_FORM = "urn:oasis:names:tc:dss:1.0:profiles:AdES:forms:BES";
@@ -135,6 +140,7 @@ public class SignatureUtils {
 		SignatureFormat res = SignatureFormat.UNRECOGNIZED;
 
 		switch(signatureType){
+			case XADES_DSS_URI_XADESBASELINE:
 			case XADES_1_4_2_DSS_URI_SIGNATURE_TYPE:
 			case XADES_DSS_URI_SIGNATURE_TYPE:
 			case XADES_1_2_2_DSS_URI_SIGNATURE_TYPE:
@@ -177,6 +183,7 @@ public class SignatureUtils {
 				}
 				break;
 			case CADES_DSS_URI_SIGNATURE_TYPE:
+			case CADES_DSS_URI_CADESBASELINE:
 				res = SignatureFormat.CAdES;
 				switch(signatureForm){
 					case BES_DSS_URI_SIGNATURE_FORM:
@@ -218,6 +225,7 @@ public class SignatureUtils {
 				res = SignatureFormat.PDF;
 				break;
 			case PADES_DSS_URI_SIGNATURE_TYPE:
+			case PDF_DSS_URI_PADESBASELINE:
 				res = SignatureFormat.PAdES;
 				switch(signatureForm){
 				case BASICO_DSS_URI_SIGNATURE_FORM:

@@ -99,20 +99,37 @@ public class ImportUtils {
 			// obtenemos el nodo que contiene el XML descriptor del contenido del expediente
 			LOGGER.debug("Obtengo el xml descriptor con la estructura de carpetas del expediente");
 			NodeRef xmlRef = getXMLDescriptorFromExpedient(expedient);
+			if(xmlRef != null)
+				LOGGER.debug(" NodeRef xmlRef = getXMLDescriptorFromExpedient(expedient); xmlRef = "+xmlRef.toString());
+			else
+				LOGGER.debug("xMlRef Is null");
 			Content contentXmlDescriptor = utils.getContent(xmlRef, ConstantUtils.PROP_CONTENT);
-
+			if(contentXmlDescriptor != null)
+				LOGGER.debug(" Content contentXmlDescriptor = utils.getContent(xmlRef, ConstantUtils.PROP_CONTENT); contentXmlDescriptor= "+contentXmlDescriptor.toString());
+			else
+				LOGGER.debug("contentXmlDescriptor is null ");
+			
 			// parseamos el xml
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			LOGGER.debug("calling factory new instance");
+
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			LOGGER.debug("calling documentBuilder from factory");
+			
 			Document doc = dBuilder.parse(contentXmlDescriptor.getData().getInputStream());
-
+			LOGGER.debug("Doc = dbBuilder.parse");
+			
 			doc.getDocumentElement().normalize();
+			LOGGER.debug("doc.getelement.normalize");
 			String path = doc.getElementsByTagName("view:exportOf").item(0).getTextContent();
-
+			LOGGER.debug("path= " + path);
 			// buscamos el path dentro de alfresco
 			LOGGER.debug("Busco la ruta donde se va a reabrir el expediente");
 			expedienteDM = searchPath(path);
-
+			if(expedienteDM != null)
+				LOGGER.debug(expedienteDM.toString());
+			else
+				LOGGER.debug("expedientDM is null.");
 		} catch (ParserConfigurationException e) {
 			throw new GdibException("Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM " + expedient.getId() + ". " + e.getMessage());
 		} catch (SAXException e) {
@@ -130,14 +147,26 @@ public class ImportUtils {
 	 */
 	private NodeRef getXMLDescriptorFromExpedient(NodeRef expedient){
 		String expedientName = (String)nodeService.getProperty(expedient, ConstantUtils.PROP_NAME);
-
+		LOGGER.debug(expedientName);
+		
 		List<ChildAssociationRef> listNodes = nodeService.getChildAssocs(expedient);
+		LOGGER.debug(listNodes.toString());
 		for (ChildAssociationRef childAssoc : listNodes) {
+			if(childAssoc != null)
+				LOGGER.debug(childAssoc.toString());
+			else
+				LOGGER.debug("node nul");
 			NodeRef son = childAssoc.getChildRef();
+			LOGGER.debug("son.toString="+son.toString());
 			String sonName = (String)nodeService.getProperty(son, ConstantUtils.PROP_NAME);
+			LOGGER.debug("SonName  = " + sonName);
+			LOGGER.debug("trying sonName("+sonName+" contains expedientName("+expedientName+")");
 			if(sonName.contains(expedientName))
+			{
 				return son;
+			}
 		}
+		LOGGER.debug("returned nul" );
 		return null;
 	}
 

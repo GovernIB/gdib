@@ -88,8 +88,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.extensions.surf.util.I18NUtil;
 
+import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.utils.ConstantUtils;
 
 /**
@@ -111,6 +113,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
 {
     /** Logger */
     private static Log logger = LogFactory.getLog(CAIBRecordServiceImpl.class);
+	private static final Logger LOGGER =  Logger.getLogger(CAIBRecordServiceImpl.class);
 
     /** transation data key */
     private static final String IGNORE_ON_UPDATE = "ignoreOnUpdate";
@@ -387,7 +390,6 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
     )
     public void onRemoveAspect(NodeRef nodeRef, QName aspect)
     {
-
         if (nodeService.hasAspect(nodeRef, ASPECT_RECORD))
         {
             ContentData contentData = (ContentData) nodeService.getProperty(nodeRef, ContentModel.PROP_CONTENT);
@@ -505,6 +507,9 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                 catch (AlfrescoRuntimeException e)
                 {
                     // do nothing but log error
+                	LOGGER.debug("CATAPUM");
+                	LOGGER.debug(e.getMessage());
+                	LOGGER.debug(e.getStackTrace());
                     if (logger.isDebugEnabled())
                     {
                         logger.debug("Unable to file pending record.", e);
@@ -537,7 +542,11 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             nodeService.getType(childAssocRef.getParentRef()).equals(ContentModel.TYPE_FOLDER))
         {
             // ..then remove the extended readers and writers up the tree for this remaining node
-            extendedSecurityService.removeExtendedSecurity(childAssocRef.getChildRef(), extendedSecurityService.getExtendedReaders(childAssocRef.getChildRef()), extendedSecurityService.getExtendedWriters(childAssocRef.getChildRef()), true);
+            /*extendedSecurityService.removeExtendedSecurity(childAssocRef.getChildRef(),
+            			extendedSecurityService.getExtendedReaders(childAssocRef.getChildRef()), 
+            			extendedSecurityService.getExtendedWriters(childAssocRef.getChildRef()), true);
+            */
+            extendedSecurityService.remove(childAssocRef.getChildRef());
         }
     }
 
@@ -736,6 +745,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
     @Override
     public boolean isRecordMetadataProperty(QName property)
     {
+
         boolean result = false;
         PropertyDefinition propertyDefinition = dictionaryService.getProperty(property);
         if (propertyDefinition != null)
@@ -897,8 +907,10 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                                 Set<String> combinedWriters = new HashSet<String>(writers);
                                 combinedWriters.add(owner);
                                 combinedWriters.add(AuthenticationUtil.getFullyAuthenticatedUser());
-
-                                extendedSecurityService.addExtendedSecurity(nodeRef, readers, combinedWriters);
+                            	extendedSecurityService.set(nodeRef, readers, combinedWriters);
+                            	
+                            	
+                                //extendedSecurityService.addExtendedSecurity(nodeRef, readers, combinedWriters);
                             }
                             finally
                             {
@@ -1003,8 +1015,9 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                     throw new AlfrescoRuntimeException("Can't create recorded version, because copy fails.", e);
                 }
 
-                // set extended security on record
-                extendedSecurityService.addExtendedSecurity(record, readers, writers);
+                // set extended security on recordç
+                extendedSecurityService.set(record,readers,writers);
+                //extendedSecurityService.addExtendedSecurity(record, readers, writers);
 
                 return record;
             }
@@ -1029,6 +1042,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             for (Version previousVersion : previousVersions)
             {
                 // look for the associated record
+                //final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSION_RECORD);
                 final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get("RecordVersion");
                 if (previousRecord != null)
                 {
@@ -1738,20 +1752,19 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
     }
 
 	@Override
-	public void complete(NodeRef arg0) {
+	public void createRecord(NodeRef filePlan, NodeRef nodeRef, NodeRef locationNodeRef, boolean isLinked) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void createRecord(NodeRef arg0, NodeRef arg1, NodeRef arg2) {
+	public void createRecord(NodeRef filePlan, NodeRef nodeRef, NodeRef locationNodeRef) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void createRecord(NodeRef arg0, NodeRef arg1, NodeRef arg2, boolean arg3) {
+	public void complete(NodeRef nodeRef) {
 		// TODO Auto-generated method stub
-		
 	}
+
+
 }

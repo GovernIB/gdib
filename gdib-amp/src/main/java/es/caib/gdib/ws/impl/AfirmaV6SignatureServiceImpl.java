@@ -10,6 +10,9 @@ import es.caib.gdib.ws.common.types.XmlSignatureMode;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
 import es.gob.afirma.integraFacade.IntegraFacadeWSDSS;
+import es.gob.afirma.integraFacade.pojo.AsynchronousResponse;
+import es.gob.afirma.integraFacade.pojo.InvalidAsyncResponse;
+import es.gob.afirma.integraFacade.pojo.PendingRequest;
 import es.gob.afirma.integraFacade.pojo.ServerSignerRequest;
 import es.gob.afirma.integraFacade.pojo.ServerSignerResponse;
 import es.gob.afirma.integraFacade.pojo.SignatureFormatEnum;
@@ -30,7 +33,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	private static final String AFIRMA_APP_ID_PROP_NAME = "afirmaAppId";
 	
 	/**
-	 * Formatos de firma electr√≥nica CAdES admitidos para generaci√≥n.
+	 * Formatos de firma electrÛnica CAdES admitidos para generaciÛn.
 	 */
 	private static SignatureFormat [] SUPPORTED_CADES_FORMATS = {SignatureFormat.CAdES_BES, 
 			SignatureFormat.CAdES_EPES,	SignatureFormat.CAdES_T, SignatureFormat.CAdES_X, 
@@ -38,7 +41,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			SignatureFormat.CAdES_XL1, SignatureFormat.CAdES_XL2, SignatureFormat.CAdES_A};
 	
 	/**
-	 * Formatos de firma electr√≥nica XAdES admitidos para generaci√≥n.
+	 * Formatos de firma electrÛnica XAdES admitidos para generaciÛn.
 	 */
 	private static SignatureFormat [] SUPPORTED_XADES_FORMATS = {SignatureFormat.XAdES_BES, 
 			SignatureFormat.XAdES_EPES,	SignatureFormat.XAdES_T, SignatureFormat.XAdES_X, 
@@ -46,26 +49,26 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			SignatureFormat.XAdES_XL1, SignatureFormat.XAdES_XL2, SignatureFormat.XAdES_A};
 	
 	/**
-	 * Formatos de firma electr√≥nica PAdES admitidos para generaci√≥n.
+	 * Formatos de firma electrÛnica PAdES admitidos para generaciÛn.
 	 */
 	private static SignatureFormat [] SUPPORTED_PADES_FORMATS = {SignatureFormat.PAdES_Basic, 
 			SignatureFormat.PAdES_BES,SignatureFormat.PAdES_EPES,SignatureFormat.PAdES_LTV};
 	
 	/**
-	 * Valor por defecto de par√°metros de configuraci√≥n para la integraci√≥n con @firma, mediante Integr@. Los param√©tros est√°n establecidos en el archivo gdib-amp.properties (Prefijo: gdib.afirma).
+	 * Valor por defecto de par·metros de configuraciÛn para la integraciÛn con @firma, mediante Integr@. Los parametros est·n establecidos en el archivo gdib-amp.properties (Prefijo: gdib.afirma).
 	 *   
 	 *   - Alias de certificado de servidor.
-	 *   - Identificador de aplicaci√≥n @firma.
+	 *   - Identificador de aplicaciÛn @firma.
 	 */
 	private FilterPlaceholderProperties afirmaIntegraDefaultProperties;
 
 	/**
-	 * Alias del certificado de servidor empleado en la generaci√≥n de firma.
+	 * Alias del certificado de servidor empleado en la generaciÛn de firma.
 	 */
 	private String serverCertAlias;
 	
 	/**
-	 * Identificador de la aplicaci√≥n @firma empleada para la integraci√≥n.
+	 * Identificador de la aplicaciÛn @firma empleada para la integraciÛn.
 	 */
 	private String afirmaAppId;
 	
@@ -78,7 +81,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr√≥nica CAdES: Documento nulo o vac√≠o.");
+			throw new GdibException("Firma electrÛnica CAdES: Documento nulo o vacÌo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_CADES_FORMATS);
@@ -108,7 +111,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr√≥nica PAdES: Documento nulo o vac√≠o.");
+			throw new GdibException("Firma electrÛnica PAdES: Documento nulo o vacÌo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_PADES_FORMATS);
@@ -140,7 +143,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr√≥nica XML: Documento nulo o vac√≠o.");
+			throw new GdibException("Firma electrÛnica XML: Documento nulo o vacÌo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_XADES_FORMATS);
@@ -173,46 +176,54 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Evoluci√≥n de firma electr√≥nica: Firma electr√≥nica nula o vac√≠a.");
+			throw new GdibException("EvoluciÛn de firma electrÛnica: Firma electrÛnica nula o vacÌa.");
 		}
 		
 		dssSignatureFormat = translateSignatureFormat(upgradedSignatureFormat);
 		
 		if(dssSignatureFormat == null){
-			throw new GdibException("Formato de firma electr√≥nica " + upgradedSignatureFormat.getName() + " no soportado  para evolucionar una firma electr√≥nica.");
+			throw new GdibException("Formato de firma electrÛnica " + upgradedSignatureFormat.getName() + " no soportado  para evolucionar una firma electrÛnica.");
 		}
 		
 		upgSigReq = new UpgradeSignatureRequest();
 		upgSigReq.setSignature(signature);
 		upgSigReq.setApplicationId(getOperationAfirmaAppId());
 		upgSigReq.setSignatureFormat(dssSignatureFormat);
+		upgSigReq.setIgnoreGracePeriod(true);
+		
 		ServerSignerResponse serSigRes = IntegraFacadeWSDSS.getInstance().upgradeSignature(upgSigReq);
-
-		LOGGER.debug("Resultado evoluci√≥n firma:");
+		
+		
+		
+		
+		LOGGER.debug("Resultado evoluciÛn firma:");
 		if (serSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci√≥n del servicio DSSAfirmaVerify de la plataforma @firma "
-					+ "para evolucionar una firma electr√≥nica al formato " + upgradedSignatureFormat.getName() + ".");
+			throw new GdibException("No se obtuvo respuesta en la invocaciÛn del servicio DSSAfirmaVerify de la plataforma @firma "
+					+ "para evolucionar una firma electrÛnica al formato " + upgradedSignatureFormat.getName() + ".");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
 		if (serSigRes.getResult() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operaci√≥n para "
-					+ "evolucionar una firma electr√≥nica al formato " + upgradedSignatureFormat.getName() + ".");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operaciÛn para "
+					+ "evolucionar una firma electrÛnica al formato " + upgradedSignatureFormat.getName() + ".");
 		}
 		
 		LOGGER.debug("SersigRes Result major: " + serSigRes.getResult().getResultMajor());
 	    LOGGER.debug("SersigRes Result minor: " + serSigRes.getResult().getResultMinor());
 	    LOGGER.debug("SersigRes Result message: " + serSigRes.getResult().getResultMessage());
 		
+
+		
+		
 		if (!"urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals(serSigRes.getResult().getResultMajor())) {
-			throw new GdibException("Se obtuvo una respuesta err√©onea en la invocaci√≥n del servicio DSSAfirmaSign de la plataforma @firma para evolucionar una firma electr√≥nica al formato " + 
-					upgradedSignatureFormat.getName() + ". \n\t C√≥digo (Major): " + serSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + 
+			throw new GdibException("Se obtuvo una respuesta errÛnea en la invocaciÛn del servicio DSSAfirmaSign de la plataforma @firma para evolucionar una firma electrÛnica al formato " + 
+					upgradedSignatureFormat.getName() + ". \n\t CÛdigo (Major): " + serSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + 
 					serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + serSigRes.getResult().getResultMessage() + ".");
 		}
 
 		if (serSigRes.getSignature() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye la firma electr√≥nica evolucionada al "
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye la firma electrÛnica evolucionada al "
 					+ "formato " + upgradedSignatureFormat.getName() + ".");
 		}
 
@@ -227,18 +238,18 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		VerifySignatureRequest verSigReq;
 		VerifySignatureResponse verSigRes;
 		res = null;
-		LOGGER.debug("Iniciando servicio de validaci√≥n de firma electr√≥nica...");
-		LOGGER.debug("Validando par√°metros de entrada...");
+		LOGGER.debug("Iniciando servicio de validaciÛn de firma electrÛnica...");
+		LOGGER.debug("Validando par·metros de entrada...");
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Validaci√≥n de firma electr√≥nica: Firma electr√≥nica nula o vac√≠a.");
+			throw new GdibException("ValidaciÛn de firma electrÛnica: Firma electrÛnica nula o vacÌa.");
 		}
 		
 		if(document == null || document.length == 0){
-			LOGGER.debug("El documento informado en la operaci√≥n de validaci√≥n de firma electr√≥nica es vac√≠o, se procede a validar una firma impl√≠cita.");
+			LOGGER.debug("El documento informado en la operaciÛn de validaciÛn de firma electrÛnica es vacÌo, se procede a validar una firma implÌcita.");
 		}
-		LOGGER.debug("Par√°metros de entrada validados...");
-		LOGGER.debug("Formando petici√≥n servicio DSSAfirmaVerify ...");
+		LOGGER.debug("Par·metros de entrada validados...");
+		LOGGER.debug("Formando peticiÛn servicio DSSAfirmaVerify ...");
 		verSigReq = new VerifySignatureRequest();
 
 		verSigReq.setSignature(signature);
@@ -247,20 +258,20 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			verSigReq.setDocument(document);
 		}
 		verSigReq.setSignature(signature);		
-		LOGGER.debug("Petici√≥n servicio DSSAfirmaVerify formada.");
+		LOGGER.debug("PeticiÛn servicio DSSAfirmaVerify formada.");
 		
 		LOGGER.debug("Invocando servicio DSSAfirmaVerify ...");
 		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
 		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
 
 		if (verSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci√≥n del servicio DSSAfirmaVerify de la plataforma @firma "
-					+ "para validar una firma electr√≥nica.");
+			throw new GdibException("No se obtuvo respuesta en la invocaciÛn del servicio DSSAfirmaVerify de la plataforma @firma "
+					+ "para validar una firma electrÛnica.");
 		}
 		LOGGER.debug("SersigRes signatureFormat: " + verSigRes.getSignatureFormat());
 		if (verSigRes.getResult() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operaci√≥n para "
-					+ "validar una firma electr√≥nica.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operaciÛn para "
+					+ "validar una firma electrÛnica.");
 		}
 		
 		LOGGER.debug("SersigRes Result major: " + verSigRes.getResult().getResultMajor());
@@ -274,10 +285,10 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	    	
 	    	String signatureType = verSigRes.getSignatureFormat().substring(0, index);
 	    	res.setSignatureType(signatureType);
-	    	LOGGER.debug("Familia a la que pertenece la firma electr√≥nica validada: " + signatureType);
+	    	LOGGER.debug("Familia a la que pertenece la firma electrÛnica validada: " + signatureType);
 	    	if(index != -1){
 	    		String signatureForm = verSigRes.getSignatureFormat().substring(index+1,verSigRes.getSignatureFormat().length());
-	    		LOGGER.debug("Formato avanzado de la firma electr√≥nica validada: " + signatureForm);
+	    		LOGGER.debug("Formato avanzado de la firma electrÛnica validada: " + signatureForm);
 	    		res.setSignatureForm(signatureForm);
 	    		
 	    	}
@@ -291,18 +302,18 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			res.setDetailedValidationStatus(verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:RequesterError".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C√≥digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + 
+			res.setDetailedValidationStatus("CÛdigo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:ResponderError".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C√≥digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + 
+			res.setDetailedValidationStatus("CÛdigo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:InsufficientInformation".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C√≥digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + 
+			res.setDetailedValidationStatus("CÛdigo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:Warning".equals(verSigRes.getResult().getResultMajor())){			
-			res.setDetailedValidationStatus("C√≥digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + 
+			res.setDetailedValidationStatus("CÛdigo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		}
 
@@ -310,10 +321,10 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	}
 	
 	/**
-	 * Solicita la generaci√≥n de una firma de servidor delegada a la plataforma @firma mediante la invocaci√≥n del servicio DSSAfirmaSign.
-	 * @param ServerSignerRequest caracter√≠sticas de la firma electr√≥nica: formato, certificado firmante, etc..
-	 * @return firma electr√≥nica generada.
-	 * @throws GdibException si ocurre alg√∫n error en la invocaci√≥n del servicio DSSAfirmaSign de la plataforma @firma o se retorna error desde la plataforma.
+	 * Solicita la generaciÛn de una firma de servidor delegada a la plataforma @firma mediante la invocaciÛn del servicio DSSAfirmaSign.
+	 * @param ServerSignerRequest caracterÌsticas de la firma electrÛnica: formato, certificado firmante, etc..
+	 * @return firma electrÛnica generada.
+	 * @throws GdibException si ocurre alg√∫n error en la invocaciÛn del servicio DSSAfirmaSign de la plataforma @firma o se retorna error desde la plataforma.
 	 */
 	private static byte[] sign(ServerSignerRequest serSigReq) throws GdibException {
 		byte[] res = null;
@@ -322,13 +333,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 
 		LOGGER.debug("Resultado firma de servidor delegada en @firma:");
 		if (serSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci√≥n del servicio DSSAfirmaSign de la plataforma @firma.");
+			throw new GdibException("No se obtuvo respuesta en la invocaciÛn del servicio DSSAfirmaSign de la plataforma @firma.");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
 		if (serSigRes.getResult() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operaci√≥n.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operaciÛn.");
 		}
 		
 		LOGGER.debug("SersigRes Result major: " + serSigRes.getResult().getResultMajor());
@@ -336,13 +347,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	    LOGGER.debug("SersigRes Result message: " + serSigRes.getResult().getResultMessage());
 		
 		if (!"urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals(serSigRes.getResult().getResultMajor())) {
-			throw new GdibException("Se obtuvo una respuesta err√©onea en la invocaci√≥n del servicio DSSAfirmaSign de la plataforma @firma. \n\t C√≥digo (Major): " + 
-					serSigRes.getResult().getResultMajor() + " \n\t C√≥digo (Minor): " + serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + 
+			throw new GdibException("Se obtuvo una respuesta errÛnea en la invocaciÛn del servicio DSSAfirmaSign de la plataforma @firma. \n\t CÛdigo (Major): " + 
+					serSigRes.getResult().getResultMajor() + " \n\t CÛdigo (Minor): " + serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + 
 					serSigRes.getResult().getResultMessage() + ".");
 		}
 
 		if (serSigRes.getSignature() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye la firma electr√≥nica.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye la firma electrÛnica.");
 		}
 
 		res = serSigRes.getSignature();
@@ -353,7 +364,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	
 	/**
 	 * Verifica que el formato de firma solicitado se encuentra entre los admitidos.
-	 * @param signatureFormat formato de firma electr√≥nica.
+	 * @param signatureFormat formato de firma electrÛnica.
 	 * @param allowedSignatureFormats conjunto de formatos de firma admitidos.
 	 * @throws GdibException si el formato de firma no se encuentra entre los habilitados. 
 	 */
@@ -364,14 +375,14 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 		
 		if(!found){
-			throw new GdibException("El formato de firma electr√≥nica " + signatureFormat.getName() + " no est√° soportado para la operaci√≥n solicitada.");
+			throw new GdibException("El formato de firma electrÛnica " + signatureFormat.getName() + " no est· soportado para la operaciÛn solicitada.");
 		}
 	}
 	
 	/**
-	 * Obtiene el identificador DSS del formato de firma electr√≥nica requerido por el API Integr@ de @firma.
-	 * @param signatureFormat formato de firma para el que se desea obtener el identificador DSS del formato de firma electr√≥nica.
-	 * @return formato de firma electr√≥nica requerido por el API Integr@ de @firma.
+	 * Obtiene el identificador DSS del formato de firma electrÛnica requerido por el API Integr@ de @firma.
+	 * @param signatureFormat formato de firma para el que se desea obtener el identificador DSS del formato de firma electrÛnica.
+	 * @return formato de firma electrÛnica requerido por el API Integr@ de @firma.
 	 */
 	private static SignatureFormatEnum translateSignatureFormat(SignatureFormat signatureFormat) {
 		SignatureFormatEnum res;
@@ -488,9 +499,9 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	}
 
 	/**
-	 * Obtiene el identificador DSS del formato de firma electr√≥nica requerido por el API Integr@ de @firma.
-	 * @param xmlSignatureMode modo de firma electr√≥nica XML: ENVELOPED, ENVELOPING o DETACHED.
-	 * @return modo de firma electr√≥nica XML requerido por el API Integr@ de @firma.
+	 * Obtiene el identificador DSS del formato de firma electrÛnica requerido por el API Integr@ de @firma.
+	 * @param xmlSignatureMode modo de firma electrÛnica XML: ENVELOPED, ENVELOPING o DETACHED.
+	 * @return modo de firma electrÛnica XML requerido por el API Integr@ de @firma.
 	 */
 	private static XmlSignatureModeEnum translateXmlSignatureMode(XmlSignatureMode xmlSignatureMode) {
 		XmlSignatureModeEnum res;

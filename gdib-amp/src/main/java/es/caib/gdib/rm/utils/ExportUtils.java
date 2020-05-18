@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.alfresco.service.cmr.view.Location;
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -210,12 +212,12 @@ public class ExportUtils {
 				//			--> DOC_+UUID Alfresco
 
 				String nodeId = nodeRef.getId();
-				System.out.println("Nodo a copiar " + nodeId);
+				LOGGER.debug("Nodo a copiar " + nodeId);
 				if(!processedNodes.contains(nodeId)){
 					QName nodeType = nodeService.getType(nodeRef);
 					String name = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
-					String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
 					String newName = "";
+					String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
 					moveNodeToRM = Boolean.FALSE;
 					
 					newName = getNewName(colision,name, eniId);
@@ -251,8 +253,9 @@ public class ExportUtils {
 			// Movemos el exp al destino (Necesitamos conservar el uid del expediente)
 			LOGGER.debug("Movemos el expediente al RM");
 			NodeRef rmSeries = ccUtils.getDocumentarySeries((String) nodeService.getProperty(expediente, ConstantUtils.PROP_COD_CLASIFICACION_QNAME));
-			NodeRef rmExpedient = createRMExpedient(expediente, rmSeries);
 
+			NodeRef rmExpedient = createRMExpedient(expediente, rmSeries);
+			
 			// Movemos los nodos de la carpeta temporal al expediente
 			LOGGER.debug("Movemos los documentos de la carpeta temporal al expediente creado en el RM");
 			for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
@@ -265,17 +268,17 @@ public class ExportUtils {
 					(ByteArrayOutputStream) exportHandler.getXML_outputStream());
 
 			// Borramos la carpetata temporal
-			LOGGER.debug("Borramos la carpeta temporal");
+			LOGGER.debug("NO Borramos la carpeta temporal");
 			nodeService.deleteNode(tmpParentFileInfo.getNodeRef());
 
 			return rmExpedient;
 
-		} catch (FileExistsException | FileNotFoundException | ContentIOException | UnsupportedEncodingException e) {
+		} catch (FileExistsException | FileNotFoundException | ContentIOException | UnsupportedEncodingException  e) {
 			throw new GdibException("Ha ocurrido un error moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
 		}
 	}
 
-private static String getNewName(List<String> colision, String name, String eni) {		
+	private static String getNewName(List<String> colision, String name, String eni) {		
 		String newName=name;
 		if ( colision.contains(name) ){
 			int posExtension = name.lastIndexOf(".");
@@ -316,9 +319,11 @@ private static String getNewName(List<String> colision, String name, String eni)
 				QName name = utils.createNameQName(folder);
 				rmSeries = nodeService.createNode(rmSeries, ContentModel.ASSOC_CONTAINS, name,
 						RecordsManagementModel.TYPE_RECORD_CATEGORY, props).getChildRef();
+				
+				LOGGER.debug("Creating rmSeries "+folder+" value "+rmSeries.toString());
 			}
 		}
-
+		
 		// recupero la informacion del nodo expediente
 		// aspectos, properties, nombre y uuid
 		List<QName> aspects = utils.transformListStringToQname(utils.getAspects(expedient));
@@ -341,12 +346,13 @@ private static String getNewName(List<String> colision, String name, String eni)
 		props.putAll(utils.transformMapStringToQname(properties));
 		// TODO Verificar con Iñaki, cuando se crean los nodos en RM, la fecha de creacion
 		props.remove(ContentModel.PROP_CREATED);
+		NodeRef rmExpedient = null;
 		ChildAssociationRef createdChildRef = nodeService.createNode(rmSeries, ContentModel.ASSOC_CONTAINS, nameQname,
-				type, props);
-		NodeRef rmExpedient = createdChildRef.getChildRef();
-		// le aplico los datos recuperados anteriormente
+					type, props);
+		rmExpedient = createdChildRef.getChildRef();
+			// le aplico los datos recuperados anteriormente
 		utils.addAspects(rmExpedient, aspects);
-
+		
 		// devuelvo la copia del expediente en el RM
 		return rmExpedient;
 	}
@@ -367,17 +373,17 @@ private static String getNewName(List<String> colision, String name, String eni)
 		// TODO parsear los documentos que son de tipo thumbnail
 		if(nodeService.exists(nodeRef) && !nodeService.getType(nodeRef).equals(ContentModel.TYPE_THUMBNAIL))
 		{
+
 			List<QName> aspects = utils.transformListStringToQname(utils.getAspects(nodeRef));
 			List<Property> properties = utils.getProperties(nodeRef);
 			QName type = nodeService.getType(nodeRef);
+			
 			String uuid = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NODE_UUID);
 			String nodeRefName = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
 			ContentDataWithId content = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_CONTENT);
 			ContentDataWithId signature = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_FIRMA_QNAME);
-
 			// elimino el nodo para tener libre el uuid
 			nodeService.deleteNode(nodeRef);
-
 			// creo el nuevo nodo en el RM
 			QName nameQname = utils.createNameQName(nodeRefName);
 			Map<QName, Serializable> props = new HashMap<QName, Serializable>();
@@ -386,16 +392,18 @@ private static String getNewName(List<String> colision, String name, String eni)
 			props.put(ContentModel.PROP_TITLE, nodeRefName);
 			props.put(ConstantUtils.PROP_CONTENT, content);
 			props.put(ConstantUtils.PROP_FIRMA_QNAME, signature);
+			//http://www.alfresco.org/model/cointent/1.0}indice-in-
 			props.put(ContentModel.PROP_AUTO_VERSION_PROPS, true);
 			// guardo las propiedades del nodo previo
 			props.putAll(utils.transformMapStringToQname(properties));
-
 			ChildAssociationRef createdChildRef = nodeService.createNode(rmExpedient, ContentModel.ASSOC_CONTAINS,
-					nameQname, type, props);
+						nameQname, type, props);
+				
 			NodeRef docRM = createdChildRef.getChildRef();
-
-			// le aplico los datos recuperados anteriormente
-			utils.addAspects(docRM, aspects);
+				// le aplico los datos recuperados anteriormente
+			utils.addAspects(docRM, aspects);		
+			
+			
 		}
 	}
 
@@ -458,4 +466,5 @@ private static String getNewName(List<String> colision, String name, String eni)
 	public void setCcUtils(CuadroClasificacionUtils ccUtils) {
 		this.ccUtils = ccUtils;
 	}
+
 }
