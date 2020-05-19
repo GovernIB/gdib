@@ -1,0 +1,629 @@
+<extension>
+    <modules>
+        <module>
+            <id>Caib :: Configurar los formularios de los tipos de datos de Caib </id>
+            <version>1.0</version>
+            <auto-deploy>true</auto-deploy>
+            <configurations>
+
+				<!-- Eni:documento node-type -->
+                <config evaluator="node-type"
+                        condition="eni:documento">
+                    <forms>
+                        <form>
+				            <field-visibility>
+				            	<show id="cm:name" />
+								<show id="cm:title" force="true" />
+								<show id="mimetype" />
+								<show id="cm:author" force="true" />
+								<show id="size" for-mode="view" />
+								<show id="cm:creator" for-mode="view" />
+								<show id="cm:created" for-mode="view" />
+								<show id="cm:modifier" for-mode="view" />
+								<show id="cm:modified" for-mode="view" />
+
+								<!-- tags and categories -->
+								<show id="cm:taggable" for-mode="edit" force="true" />
+								<show id="cm:categories" />
+								<!-- cm:dublincore aspect -->
+								<show id="cm:publisher" />
+								<show id="cm:contributor" />
+								<show id="cm:type" />
+								<show id="cm:identifier" />
+								<show id="cm:dcsource" />
+								<show id="cm:coverage" />
+								<show id="cm:rights" />
+								<show id="cm:subject" />
+
+								<!-- cm:complianceable aspect -->
+								<show id="cm:removeAfter" />
+
+								<!-- cm:effectivity aspect -->
+								<show id="cm:from" />
+								<show id="cm:to" />
+
+								<!-- cm:summarizable aspect -->
+								<show id="cm:summary" />
+
+								<!-- cm:translatable aspect -->
+								<show id="cm:translations" />
+
+								<!-- cm:localizable aspect -->
+								<show id="cm:locale" />
+
+								<!-- cm:ownable aspect -->
+								<show id="cm:owner" />
+
+								<!-- cm:attachable aspect -->
+								<show id="cm:attachments" />
+
+								<!-- cm:emailed aspect -->
+								<show id="cm:originator" />
+								<show id="cm:addressee" />
+								<show id="cm:addressees" />
+								<show id="cm:sentdate" />
+								<show id="cm:subjectline" />
+
+								<!-- exif:exif aspect -->
+								<show id="exif:dateTimeOriginal" />
+								<show id="exif:pixelXDimension" />
+								<show id="exif:pixelYDimension" />
+								<show id="exif:exposureTime" />
+								<show id="exif:fNumber" />
+								<show id="exif:flash" />
+								<show id="exif:focalLength" />
+								<show id="exif:isoSpeedRatings" />
+								<show id="exif:manufacturer" />
+								<show id="exif:model" />
+								<show id="exif:software" />
+								<show id="exif:orientation" />
+								<show id="exif:xResolution" />
+								<show id="exif:yResolution" />
+								<show id="exif:resolutionUnit" />
+
+								<!-- audio:audio aspect -->
+								<show id="audio:album" />
+								<show id="audio:artist" />
+								<show id="audio:composer" />
+								<show id="audio:engineer" />
+								<show id="audio:genre" />
+								<show id="audio:trackNumber" />
+								<show id="audio:releaseDate" />
+								<show id="audio:sampleRate" />
+								<show id="audio:sampleType" />
+								<show id="audio:channelType" />
+								<show id="audio:compressor" />
+
+								<!-- cm:indexControl aspect -->
+								<show id="cm:isIndexed" />
+								<show id="cm:isContentIndexed" />
+
+								<!-- cm:geographic aspect -->
+								<show id="cm:latitude" />
+								<show id="cm:longitude" />
+
+								<!-- surf:widget aspect -->
+								<show id="surf:widgetType" />
+								<show id="surf:mid" />
+								<show id="surf:label" />
+
+								<show id="eni:app_tramite_doc" />
+
+							<!-- gdib:transformado -->
+								<show id="gdib:fecha_transformacion" />
+								<show id="gdib:fecha_migracion_valcert" />
+								<show id="gdib:codigo_valcert" />
+								<show id="gdib:tipo_documental_valcert" />
+								<show id="gdib:codigo_externo_valcert" />
+								<show id="gdib:clase_valcert" />
+								<show id="gdib:transform_uuid" />
+
+							<!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:id_origen" />
+                            	<show id="eni:estado_elaboracion" />
+                            	<show id="eni:tipo_doc_ENI" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:nombre_formato" />
+                            	<show id="eni:extension_formato" />
+                            	<show id="eni:def_csv" />
+                            	<show id="eni:resolucion" />
+                            	<show id="eni:idioma" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:subtipo_doc" />
+                            	<show id="eni:profundidad_color" />
+                            	<show id="eni:termino_punto_acceso" />
+                            	<show id="eni:id_punto_acceso" />
+                            	<show id="eni:esquema_punto_acceso" />
+
+                            <!-- eni:registrable -->
+								<show id="eni:tipo_asiento_registral" />
+                            	<show id="eni:codigo_oficina_registro" />
+                            	<show id="eni:fecha_asiento_registral" />
+                            	<show id="eni:numero_asiento_registral" />
+
+                            <!-- eni:transferible -->
+                            	<show id="eni:categoria" />
+
+							<!-- gdib:trasladado -->
+								<show id="gdib:fecha_traslado" />
+								<show id="gdib:autor_traslado" />
+								<show id="gdib:destino_traslado" />
+								<show id="gdib:id_nodo_nueva_loc" />
+								<show id="gdib:tipo_destino" />
+
+							<!-- eni:firmadoBase -->
+								<show id="eni:perfil_firma" />
+								<show id="eni:fecha_sellado" />
+								<show id="eni:csv" />
+								<show id="eni:tipoFirma" />
+
+				            </field-visibility>
+							<appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<field id="eni:id" set="interoperable" read-only="true"/>
+                            	<field id="eni:organo" set="interoperable"/>
+                            	<field id="eni:v_nti" set="interoperable" read-only="true"/>
+                            	<field id="eni:origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:id_origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:estado_elaboracion" set="interoperable" read-only="true"/>
+                            	<field id="eni:tipo_doc_ENI" set="interoperable"/>
+                            	<field id="eni:fecha_inicio" set="interoperable"/>
+                            	<field id="eni:cod_clasificacion" set="interoperable" read-only="true"/>
+                            	<field id="eni:nombre_formato" set="interoperable"/>
+                            	<field id="eni:extension_formato" set="interoperable"/>
+                            	<field id="eni:def_csv" set="interoperable" read-only="true"/>
+                            	<field id="eni:resolucion" set="interoperable"/>
+                            	<field id="eni:idioma" set="interoperable"/>
+                            	<field id="eni:tamano_logico" set="interoperable"/>
+                            	<field id="eni:descripcion" set="interoperable"/>
+                            	<field id="eni:unidades" set="interoperable"/>
+                            	<field id="eni:profundidad_color" set="interoperable"/>
+                            	<field id="eni:termino_punto_acceso" set="interoperable"/>
+                            	<field id="eni:id_punto_acceso" set="interoperable"/>
+                            	<field id="eni:esquema_punto_acceso" set="interoperable"/>
+                            	<field id="eni:subtipo_doc" set="interoperable"  read-only="true"/>
+
+								<set id="registrable" label-id="label.set.eni.registrable"
+									appearance="panel" />
+								<field id="eni:tipo_asiento_registral" set="registrable"/>
+                            	<field id="eni:codigo_oficina_registro" set="registrable"/>
+                            	<field id="eni:fecha_asiento_registral" set="registrable"/>
+                            	<field id="eni:numero_asiento_registral" set="registrable"/>
+
+
+								<set id="transferible" label-id="label.set.eni.transferible"
+									appearance="panel" />
+								<field id="eni:categoria" set="transferible" read-only="true"/>
+
+								<set id="transformado" label-id="label.set.gdib.transformado"
+									appearance="panel" />
+								<field id="gdib:fecha_transformacion" set="transformado" read-only="true"/>
+								<field id="gdib:fecha_migracion_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:codigo_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:tipo_documental_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:codigo_externo_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:clase_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:transform_uuid" set="transformado" read-only="true"/>
+
+								<set id="trasladado" label-id="label.set.gdib.trasladado"
+									appearance="panel" />
+								<field id="gdib:fecha_traslado" set="trasladado" read-only="true"/>
+								<field id="gdib:autor_traslado" set="trasladado" read-only="true"/>
+								<field id="gdib:destino_traslado" set="trasladado" read-only="true"/>
+								<field id="gdib:id_nodo_nueva_loc" set="trasladado" read-only="true"/>
+								<field id="gdib:tipo_destino" set="trasladado" read-only="true"/>
+
+								<set id="firmadoBase" label-id="label.set.gdib.firmadoBase"
+									appearance="panel" />
+								<field id="eni:perfil_firma" set="firmadoBase" read-only="true"/>
+								<field id="eni:fecha_sellado" set="firmadoBase" read-only="true"/>
+								<field id="eni:csv" set="firmadoBase" read-only="true"/>
+								<field id="eni:tipoFirma" set="firmadoBase" read-only="true"/>
+
+							</appearance>
+				         </form>
+
+                    </forms>
+                </config>
+
+				<!-- gdib:documentoMigrado node-type -->
+                <config evaluator="node-type"
+                        condition="gdib:documentoMigrado">
+                    <forms>
+                        <form>
+				            <field-visibility>
+				            	<show id="cm:name" />
+								<show id="cm:title" force="true" />
+								<show id="mimetype" />
+								<show id="cm:author" force="true" />
+								<show id="size" for-mode="view" />
+								<show id="cm:creator" for-mode="view" />
+								<show id="cm:created" for-mode="view" />
+								<show id="cm:modifier" for-mode="view" />
+								<show id="cm:modified" for-mode="view" />
+
+								<!-- tags and categories -->
+								<show id="cm:taggable" for-mode="edit" force="true" />
+								<show id="cm:categories" />
+
+								<!-- cm:dublincore aspect -->
+								<show id="cm:publisher" />
+								<show id="cm:contributor" />
+								<show id="cm:type" />
+								<show id="cm:identifier" />
+								<show id="cm:dcsource" />
+								<show id="cm:coverage" />
+								<show id="cm:rights" />
+								<show id="cm:subject" />
+
+								<!-- cm:complianceable aspect -->
+								<show id="cm:removeAfter" />
+
+								<!-- cm:effectivity aspect -->
+								<show id="cm:from" />
+								<show id="cm:to" />
+
+								<!-- cm:summarizable aspect -->
+								<show id="cm:summary" />
+
+								<!-- cm:translatable aspect -->
+								<show id="cm:translations" />
+
+								<!-- cm:localizable aspect -->
+								<show id="cm:locale" />
+
+								<!-- cm:ownable aspect -->
+								<show id="cm:owner" />
+
+								<!-- cm:attachable aspect -->
+								<show id="cm:attachments" />
+
+								<!-- cm:emailed aspect -->
+								<show id="cm:originator" />
+								<show id="cm:addressee" />
+								<show id="cm:addressees" />
+								<show id="cm:sentdate" />
+								<show id="cm:subjectline" />
+
+								<!-- exif:exif aspect -->
+								<show id="exif:dateTimeOriginal" />
+								<show id="exif:pixelXDimension" />
+								<show id="exif:pixelYDimension" />
+								<show id="exif:exposureTime" />
+								<show id="exif:fNumber" />
+								<show id="exif:flash" />
+								<show id="exif:focalLength" />
+								<show id="exif:isoSpeedRatings" />
+								<show id="exif:manufacturer" />
+								<show id="exif:model" />
+								<show id="exif:software" />
+								<show id="exif:orientation" />
+								<show id="exif:xResolution" />
+								<show id="exif:yResolution" />
+								<show id="exif:resolutionUnit" />
+
+								<!-- audio:audio aspect -->
+								<show id="audio:album" />
+								<show id="audio:artist" />
+								<show id="audio:composer" />
+								<show id="audio:engineer" />
+								<show id="audio:genre" />
+								<show id="audio:trackNumber" />
+								<show id="audio:releaseDate" />
+								<show id="audio:sampleRate" />
+								<show id="audio:sampleType" />
+								<show id="audio:channelType" />
+								<show id="audio:compressor" />
+
+								<!-- cm:indexControl aspect -->
+								<show id="cm:isIndexed" />
+								<show id="cm:isContentIndexed" />
+
+								<!-- cm:geographic aspect -->
+								<show id="cm:latitude" />
+								<show id="cm:longitude" />
+
+								<!-- surf:widget aspect -->
+								<show id="surf:widgetType" />
+								<show id="surf:mid" />
+								<show id="surf:label" />
+
+								<show id="eni:app_tramite_doc" />
+
+							<!-- gdib:documentoMigrado -->
+								<show id="gdib:fecha_migracion" />
+								<show id="gdib:codigo" />
+								<show id="gdib:fecha_custodia" />
+								<show id="gdib:vigente" />
+								<show id="gdib:fecha_fin_vigencia" />
+								<show id="gdib:tipo_documental" />
+								<show id="gdib:codigo_externo" />
+								<show id="gdib:fecha_creacion" />
+								<show id="gdib:fecha_eliminacion" />
+								<show id="gdib:fecha_purgado" />
+								<show id="gdib:clase" />
+								<show id="gdib:hash" />
+
+							<!-- gdib:transformado -->
+								<show id="gdib:fecha_transformacion" />
+								<show id="gdib:fecha_migracion_valcert" />
+								<show id="gdib:codigo_valcert" />
+								<show id="gdib:tipo_documental_valcert" />
+								<show id="gdib:codigo_externo_valcert" />
+								<show id="gdib:clase_valcert" />
+								<show id="gdib:transform_uuid" />
+
+							<!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:id_origen" />
+                            	<show id="eni:estado_elaboracion" />
+                            	<show id="eni:tipo_doc_ENI" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:nombre_formato" />
+                            	<show id="eni:extension_formato" />
+                            	<show id="eni:def_csv" />
+                            	<show id="eni:resolucion" />
+                            	<show id="eni:idioma" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:subtipo_doc" />
+                            	<show id="eni:profundidad_color" />
+                            	<show id="eni:termino_punto_acceso" />
+                            	<show id="eni:id_punto_acceso" />
+                            	<show id="eni:esquema_punto_acceso" />
+
+                            <!-- eni:registrable -->
+								<show id="eni:tipo_asiento_registral" />
+                            	<show id="eni:codigo_oficina_registro" />
+                            	<show id="eni:fecha_asiento_registral" />
+                            	<show id="eni:numero_asiento_registral" />
+
+                            <!-- eni:transferible -->
+                            	<show id="eni:categoria" />
+
+				            </field-visibility>
+							<appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<!-- field id="eni:id" set="interoperable" read-only="true"/ -->
+								<field id="eni:id" set="interoperable" />
+                            	<field id="eni:organo" set="interoperable"/>
+                            	<!--
+                            	<field id="eni:v_nti" set="interoperable" read-only="true"/>
+                            	<field id="eni:origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:id_origen" set="interoperable" read-only="true"/>
+                            	-->
+                            	<field id="eni:v_nti" set="interoperable"/>
+                            	<field id="eni:origen" set="interoperable"/>
+                            	<field id="eni:id_origen" set="interoperable"/>
+                            	<!-- field id="eni:estado_elaboracion" set="interoperable" read-only="true"/ -->
+                            	<field id="eni:estado_elaboracion" set="interoperable"/>
+                            	<field id="eni:tipo_doc_ENI" set="interoperable"/>
+                            	<field id="eni:fecha_inicio" set="interoperable"/>
+                            	<!--field id="eni:cod_clasificacion" set="interoperable" read-only="true"/ -->
+                            	<field id="eni:cod_clasificacion" set="interoperable" />
+                            	<field id="eni:nombre_formato" set="interoperable"/>
+                            	<field id="eni:extension_formato" set="interoperable"/>
+                            	<!--field id="eni:def_csv" set="interoperable" read-only="true"/ -->
+                            	<field id="eni:def_csv" set="interoperable" />
+                            	<field id="eni:resolucion" set="interoperable"/>
+                            	<field id="eni:idioma" set="interoperable"/>
+                            	<field id="eni:tamano_logico" set="interoperable"/>
+                            	<field id="eni:descripcion" set="interoperable"/>
+                            	<field id="eni:unidades" set="interoperable"/>
+                            	<field id="eni:profundidad_color" set="interoperable"/>
+                            	<field id="eni:termino_punto_acceso" set="interoperable"/>
+                            	<field id="eni:id_punto_acceso" set="interoperable"/>
+                            	<field id="eni:esquema_punto_acceso" set="interoperable"/>
+                            	<!--field id="eni:subtipo_doc" set="interoperable"  read-only="true"/ -->
+                            	<field id="eni:subtipo_doc" set="interoperable" />
+
+								<set id="registrable" label-id="label.set.eni.registrable"
+									appearance="panel" />
+								<field id="eni:tipo_asiento_registral" set="registrable"/>
+                            	<field id="eni:codigo_oficina_registro" set="registrable"/>
+                            	<field id="eni:fecha_asiento_registral" set="registrable"/>
+                            	<field id="eni:numero_asiento_registral" set="registrable"/>
+
+
+								<set id="transferible" label-id="label.set.eni.transferible"
+									appearance="panel" />
+								<!--field id="eni:categoria" set="transferible" read-only="true"/-->
+								<field id="eni:categoria" set="transferible" />
+								<set id="documentoMigrado" label-id="label.set.gdib.documentoMigrado"
+									appearance="panel" />
+									<!--
+								<field id="gdib:fecha_migracion" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:codigo" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:fecha_custodia" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:vigente" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:fecha_fin_vigencia" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:tipo_documental" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:codigo_externo" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:fecha_creacion" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:fecha_eliminacion" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:fecha_purgado" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:clase" set="documentoMigrado" read-only="true"/>
+								<field id="gdib:hash" set="documentoMigrado" read-only="true"/>
+									-->
+								<field id="gdib:fecha_migracion" set="documentoMigrado" />
+								<field id="gdib:codigo" set="documentoMigrado"/>
+								<field id="gdib:fecha_custodia" set="documentoMigrado"/>
+								<field id="gdib:vigente" set="documentoMigrado"/>
+								<field id="gdib:fecha_fin_vigencia" set="documentoMigrado" />
+								<field id="gdib:tipo_documental" set="documentoMigrado" />
+								<field id="gdib:codigo_externo" set="documentoMigrado" />
+								<field id="gdib:fecha_creacion" set="documentoMigrado" />
+								<field id="gdib:fecha_eliminacion" set="documentoMigrado" />
+								<field id="gdib:fecha_purgado" set="documentoMigrado" />
+								<field id="gdib:clase" set="documentoMigrado" />
+								<field id="gdib:hash" set="documentoMigrado" />
+
+
+								<set id="transformado" label-id="label.set.gdib.transformado"
+									appearance="panel" />
+								<!--
+								<field id="gdib:fecha_transformacion" set="transformado" read-only="true"/>
+								<field id="gdib:fecha_migracion_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:codigo_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:tipo_documental_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:codigo_externo_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:clase_valcert" set="transformado" read-only="true"/>
+								<field id="gdib:transform_uuid" set="transformado" read-only="true"/>
+								-->
+								<field id="gdib:fecha_transformacion" set="transformado" />
+								<field id="gdib:fecha_migracion_valcert" set="transformado" />
+								<field id="gdib:codigo_valcert" set="transformado" />
+								<field id="gdib:tipo_documental_valcert" set="transformado" />
+								<field id="gdib:codigo_externo_valcert" set="transformado" />
+								<field id="gdib:clase_valcert" set="transformado" />
+								<field id="gdib:transform_uuid" set="transformado" />
+
+							</appearance>
+				         </form>
+
+                    </forms>
+                </config>
+
+				<!-- rma:recordFolder node-type -->
+                <config evaluator="node-type"
+                        condition="rma:recordFolder">
+                	<forms>
+                        <form>
+                            <field-visibility>
+                            <!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:estado_exp" />
+                            	<show id="eni:interesados_exp" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:soporte" />
+                            	<show id="eni:loc_archivo_central" />
+                            	<show id="eni:loc_archivo_general" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:id_tramite" />
+
+                            <!-- eni:transferible -->
+                            	<show id="eni:categoria" />
+								<show id="eni:estado_archivo" />
+
+                            </field-visibility>
+                            <appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<field id="eni:id" set="interoperable" read-only="true"/>
+                            	<field id="eni:organo" set="interoperable"/>
+                            	<field id="eni:v_nti" set="interoperable" read-only="true"/>
+								<field id="eni:origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:fecha_inicio" set="interoperable"/>
+                            	<field id="eni:cod_clasificacion" set="interoperable" read-only="true"/>
+                            	<field id="eni:estado_exp" set="interoperable" read-only="true"/>
+								<field id="eni:tamano_logico" set="interoperable"/>
+                            	<field id="eni:interesados_exp" set="interoperable"/>
+                            	<field id="eni:descripcion" set="interoperable"/>
+                            	<field id="eni:soporte" set="interoperable"/>
+                            	<field id="eni:loc_archivo_central" set="interoperable"/>
+                            	<field id="eni:loc_archivo_general" set="interoperable"/>
+                            	<field id="eni:unidades" set="interoperable"/>
+                            	<field id="eni:id_tramite" set="interoperable"/>
+
+								<set id="transferible" label-id="label.set.eni.transferible"
+									appearance="panel" set="transferible"/>
+								<field id="eni:categoria" set="transferible" read-only="true"/>
+								<field id="eni:estado_archivo" set="transferible" read-only="true"/>
+
+							</appearance>
+                        </form>
+                    </forms>
+                </config>
+
+				<!-- eni:expediente node-type -->
+                <config evaluator="node-type"
+                        condition="eni:expediente">
+                	<forms>
+                        <form>
+                            <field-visibility>
+                            	<show id="cm:name" />
+								<show id="cm:title" force="true" />
+
+								<!-- tags and categories -->
+								<show id="cm:taggable" for-mode="edit" force="true" />
+								<show id="cm:categories" />
+
+								<!-- emailserver:aliasable aspect -->
+								<show id="emailserver:alias" />
+
+								<show id="eni:app_tramite_exp" />
+                            <!-- eni:interoperable -->
+                            	<show id="eni:id" />
+                            	<show id="eni:organo" />
+                            	<show id="eni:v_nti" />
+                            	<show id="eni:origen" />
+                            	<show id="eni:fecha_inicio" />
+                            	<show id="eni:cod_clasificacion" />
+                            	<show id="eni:estado_exp" />
+                            	<show id="eni:interesados_exp" />
+                            	<show id="eni:tamano_logico" />
+                            	<show id="eni:descripcion" />
+                            	<show id="eni:soporte" />
+                            	<show id="eni:loc_archivo_central" />
+                            	<show id="eni:loc_archivo_general" />
+                            	<show id="eni:unidades" />
+                            	<show id="eni:id_tramite" />
+
+                            <!-- eni:transferible -->
+                            	<show id="eni:categoria" />
+                            	<show id="eni:estado_archivo" />
+
+                            </field-visibility>
+                            <appearance>
+								<set id="interoperable" label-id="label.set.eni.interoperable"
+									appearance="panel" />
+								<field id="eni:id" set="interoperable" read-only="true"/>
+                            	<field id="eni:organo" set="interoperable"/>
+                            	<field id="eni:v_nti" set="interoperable" read-only="true"/>
+								<field id="eni:origen" set="interoperable" read-only="true"/>
+                            	<field id="eni:fecha_inicio" set="interoperable"/>
+                            	<field id="eni:cod_clasificacion" set="interoperable" read-only="true"/>
+                            	<field id="eni:estado_exp" set="interoperable" read-only="true"/>
+								<field id="eni:tamano_logico" set="interoperable"/>
+                            	<field id="eni:interesados_exp" set="interoperable"/>
+                            	<field id="eni:descripcion" set="interoperable"/>
+                            	<field id="eni:soporte" set="interoperable"/>
+                            	<field id="eni:loc_archivo_central" set="interoperable"/>
+                            	<field id="eni:loc_archivo_general" set="interoperable"/>
+                            	<field id="eni:unidades" set="interoperable"/>
+                            	<field id="eni:id_tramite" set="interoperable"/>
+
+								<set id="transferible" label-id="label.set.eni.transferible"
+									appearance="panel" />
+								<field id="eni:categoria" set="transferible" read-only="true"/>
+								<field id="eni:estado_archivo" set="transferible" read-only="true"/>
+
+                            </appearance>
+                        </form>
+                    </forms>
+                </config>
+
+            </configurations>
+        </module>
+    </modules>
+</extension>
