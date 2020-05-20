@@ -92,7 +92,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		serSigReq.setKeySelector(getOperationServerCertAlias());
 		serSigReq.setApplicationId(getOperationAfirmaAppId());		
 		serSigReq.setSignatureFormat((dssSignatureFormat == null?SignatureFormatEnum.CAdES_BES:dssSignatureFormat));		
-		serSigReq.setIgnoreGracePeriod(false);
+		serSigReq.setIgnoreGracePeriod(true);
 		if(signaturePoliciyIdentifier != null && !signaturePoliciyIdentifier.isEmpty()){
 			serSigReq.setSignaturePolicyIdentifier(signaturePoliciyIdentifier);
 		}
@@ -122,7 +122,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		serSigReq.setKeySelector(getOperationServerCertAlias());
 		serSigReq.setApplicationId(getOperationAfirmaAppId());		
 		serSigReq.setSignatureFormat((dssSignatureFormat == null?SignatureFormatEnum.PAdES_BES:dssSignatureFormat));		
-		serSigReq.setIgnoreGracePeriod(false);
+		serSigReq.setIgnoreGracePeriod(true);
 		if(signaturePoliciyIdentifier != null && !signaturePoliciyIdentifier.isEmpty()){
 			serSigReq.setSignaturePolicyIdentifier(signaturePoliciyIdentifier);
 		}
@@ -157,7 +157,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		serSigReq.setSignatureFormat((dssSignatureFormat == null?SignatureFormatEnum.XAdES_BES:dssSignatureFormat));		
 		serSigReq.setXmlSignatureMode((dssXmlSignatureMode == null ?
 				XmlSignatureModeEnum.ENVELOPED:dssXmlSignatureMode));
-		serSigReq.setIgnoreGracePeriod(false);
+		serSigReq.setIgnoreGracePeriod(true);
 		if(signaturePoliciyIdentifier != null && !signaturePoliciyIdentifier.isEmpty()){
 			serSigReq.setSignaturePolicyIdentifier(signaturePoliciyIdentifier);
 		}
