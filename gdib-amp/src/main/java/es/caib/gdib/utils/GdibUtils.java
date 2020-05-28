@@ -1898,6 +1898,7 @@ public class GdibUtils {
 	}
 
 	public void hasPermission(NodeRef node, CaibServicePermissions permissions) throws GdibException {
+		
 		for (String permission : permissions.getPermissions()) {
 			if(!PermissionService.UNLOCK.equals(permission)){
 				hasPermission(node, permission);
@@ -2272,8 +2273,10 @@ public class GdibUtils {
 			return;
 		boolean valid = false;
 		QName nodeType = nodeService.getType(nodeRef);
+		LOGGER.debug("Checking Restriction for NodeRef="+nodeRef.getId() + "; Actual type ="+nodeType);
 		for (String type:types){
 			QName qtype = createQName(type);
+			LOGGER.debug("Comparing " + qtype+ "  with our NodeType="+nodeType);
 			if ( qtype.equals(nodeType) ){
 				valid = true;
 				break;
@@ -2424,11 +2427,17 @@ public class GdibUtils {
      *
      * */
 	public String getCodClasificacion(NodeRef nodeRef) {
+		LOGGER.debug("Get Cod Classification for nodeRef : "+nodeRef.getId());
 		QName type = nodeService.getType(nodeRef);
 		NodeRef actualNode = nodeRef;
+		LOGGER.debug("Type of nodeRef "+nodeRef.getId()+ "  : " + type);
+		LOGGER.debug("searching for type = "+ConstantUtils.TYPE_EXPEDIENTE_QNAME);
+		LOGGER.debug("entering while" );
 		while  ( ! type.equals(ConstantUtils.TYPE_EXPEDIENTE_QNAME) ){
 			actualNode = nodeService.getPrimaryParent(actualNode).getParentRef();
+			LOGGER.debug("actualNodeID = "+actualNode.getId());
 			type = nodeService.getType(actualNode);
+			LOGGER.debug("type of ActualNode =  = "+type);
 		}
 		return nodeService.getProperty(actualNode, ConstantUtils.PROP_COD_CLASIFICACION_QNAME).toString();
 	}

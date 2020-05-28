@@ -482,23 +482,34 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             @Override
             public Void doWork()
             {
+            	LOGGER.debug("Calling onCreateChildAssoc with ChildAssocRef "+childAssocRef.getChildRef().getId() + "and parent "+childAssocRef.getParentRef()+" and bNew" +(bNew ? "true" : "false") );
+            	LOGGER.debug("onCreateCHild1");
                 onCreateChildAssociation.disable();
                 try
                 {
+                	LOGGER.debug("onCreateCHild2");
                     NodeRef nodeRef = childAssocRef.getChildRef();
+                    
                     if (nodeService.exists(nodeRef)   &&
                         !nodeService.hasAspect(nodeRef, ContentModel.ASPECT_TEMPORARY) &&
                         !nodeService.getType(nodeRef).equals(TYPE_RECORD_FOLDER) &&
                         !nodeService.getType(nodeRef).equals(TYPE_RECORD_CATEGORY))
                     {
+                    	LOGGER.debug("onCreateCHild3");
                         if (nodeService.hasAspect(nodeRef, ContentModel.ASPECT_NO_CONTENT))
                         {
+                        	LOGGER.debug("onCreateCHild4");
                             // we need to postpone filling until the NO_CONTENT aspect is removed
                             Set<NodeRef> pendingFilling = TransactionalResourceHelper.getSet("pendingFilling");
+                        	LOGGER.debug("onCreateCHild4.5");
+
                             pendingFilling.add(nodeRef);
+                        	LOGGER.debug("onCreateCHild4.99");
+
                         }
                         else
                         {
+                        	LOGGER.debug("onCreateCHild5");
                             // create and file the content as a record
                             file(nodeRef);
                         }
@@ -517,9 +528,10 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                 }
                 finally
                 {
+                	LOGGER.debug("onCreateCHild finally");
                     onCreateChildAssociation.enable();
                 }
-
+                LOGGER.debug("onCreateCHild return");
                 return null;
             }
         }, AuthenticationUtil.getSystemUserName());
@@ -1042,7 +1054,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             for (Version previousVersion : previousVersions)
             {
                 // look for the associated record
-                //final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSION_RECORD);
+            	//final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get(RecordableVersionServiceImpl.PROP_VERSION_RECORD);
                 final NodeRef previousRecord = (NodeRef)previousVersion.getVersionProperties().get("RecordVersion");
                 if (previousRecord != null)
                 {
@@ -1144,15 +1156,18 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
     public void makeRecord(NodeRef document)
     {
         ParameterCheck.mandatory("document", document);
-
+        LOGGER.debug("makeRecord ");
         ruleService.disableRules();
         disablePropertyEditableCheck();
+        LOGGER.debug("makeRecord before try");
         try
         {
             // get the record id
+        	LOGGER.debug("makeRecord 1");
             String recordId = identifierService.generateIdentifier(ASPECT_RECORD,
                                                                    nodeService.getPrimaryParent(document).getParentRef());
 
+            LOGGER.debug("makeRecord 2");
             // get the record name
             String name = (String)nodeService.getProperty(document, ContentModel.PROP_NAME);
 
@@ -1169,10 +1184,12 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             behaviourFilter.disableBehaviour();
             try
             {
+            	LOGGER.debug("makeRecord 3");
             	fileFolderService.rename(document, recordName);
             }
             finally
             {
+            	LOGGER.debug("makeRecord finally");
             	behaviourFilter.enableBehaviour();
             }
 
@@ -1185,13 +1202,16 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             Map<QName, Serializable> props = new HashMap<QName, Serializable>(2);
             props.put(PROP_IDENTIFIER, recordId);
             props.put(PROP_ORIGIONAL_NAME, name);
+            LOGGER.debug("makeRecord 4");
             nodeService.addAspect(document, RecordsManagementModel.ASPECT_RECORD, props);
 
             // remove versionable aspect(s)
             nodeService.removeAspect(document, RecordableVersionModel.ASPECT_VERSIONABLE);
         }
-        catch (FileNotFoundException e)
+        catch (Exception e)
         {
+        	LOGGER.debug("catching exception makeRecord");
+        	LOGGER.debug(e.getMessage());
             throw new AlfrescoRuntimeException("Unable to make record, because rename failed.", e);
         }
         finally
@@ -1239,20 +1259,23 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
     @Override
     public void file(NodeRef record)
     {
+    	LOGGER.debug("file 0");
         ParameterCheck.mandatory("item", record);
-
+        LOGGER.debug("file 1");
         // we only support filling of content items
         // TODO composite record support needs to file containers too
         QName type = nodeService.getType(record);
+        LOGGER.debug("TYPE ======== "+type.toString());
         if (ContentModel.TYPE_CONTENT.equals(type)  ||
             dictionaryService.isSubClass(type, ContentModel.TYPE_CONTENT))
         {
             // fire before file record policy
             beforeFileRecord.get(getTypeAndApsects(record)).beforeFileRecord(record);
-
+            LOGGER.debug("file 2");
             // check whether this item is already an item or not
             if (!isRecord(record))
             {
+            	LOGGER.debug("file 3");
                 // make the item a record
                 makeRecord(record);
             }
@@ -1260,13 +1283,16 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             // set filed date
             if (nodeService.getProperty(record, PROP_DATE_FILED) == null)
             {
+            	LOGGER.debug("file 4");
                 Calendar fileCalendar = Calendar.getInstance();
                 nodeService.setProperty(record, PROP_DATE_FILED, fileCalendar.getTime());
+                LOGGER.debug("file 5");
             }
 
             // file on file record policy
             onFileRecord.get(getTypeAndApsects(record)).onFileRecord(record);
         }
+        LOGGER.debug("file end");
     }
 
     /**

@@ -499,6 +499,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
    	 *
    	 * */
     private void _internal_ref(NodeRef target, NodeRef source) throws GdibException {
+    	LOGGER.debug("INTERNAL REF :: TARGET :::"+target.getStoreRef()+ "  " +target);
+    	LOGGER.debug("INTERNAL REF :: SOURCE :::"+source.getStoreRef()+"  "+source);
     	nodeService.addChild(target, source, ContentModel.ASSOC_CONTAINS , ContentModel.ASSOC_CHILDREN);
     }
 
@@ -1522,7 +1524,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        // comprobar los permisos - iguales para los dos casos
 	        utils.hasPermission(nodeRef, CaibServicePermissions.READ);
 	    	utils.hasPermission(parentRef, CaibServicePermissions.WRITE);
-
+	    	LOGGER.debug("hasPermission passed");
 	        String res = _internal_linkNode(parentRef, nodeRef, linkMode);
 
 	        LOGGER.info(nodeId+" enlazado a "+parentId+ " en "+(System.currentTimeMillis()-initMill)+"ms.");
@@ -1961,12 +1963,16 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			setFileContentArchivedMetadataCollection(newExpedientRef,properties,true);
 
 			// restauro los expedientes enlazados de todo el expediente
+			LOGGER.debug("beforeRestoreLInkedExpedient");
 			this.restoreLinkedExpedient(newExpedientRef);
 
 			// enlazo el expediente con el expediente en el RM
 			 // esto no se hace -> this.linkNode(nodeId, newExpedientRef.getId(), LINK_REF, gdibHeader);
+			LOGGER.debug("before Internal REF");
+			LOGGER.debug("NON CREATING CHILD ASSOC BETWEEN DM AND RM ");
 			_internal_ref(expedientRef, newExpedientRef);
 
+			LOGGER.debug("before loop with nodeService.deleteNNode");
 			// remove el nodo del indice electronico, recorro los hijos y busco el nodo cuyo nombre contiene la constante
 			// ConstantUtils.INTERNAL_INDEX_NAME_PREFIX = indice-
 			String eniId = (String)nodeService.getProperty(newExpedientRef, ConstantUtils.PROP_ID_QNAME);
@@ -1979,7 +1985,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				}
 			}
 
-
+			LOGGER.debug("retunrning newExpedient ref" + newExpedientRef.getId());
 			// devuelvo el nuevo id del expediente en el DM
 			return newExpedientRef.getId();
 	}

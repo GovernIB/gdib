@@ -281,7 +281,7 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 
 		// añado el aspecto de transformado a la lista de aspectos del nuevo nodo
 		node.getAspects().add(ConstantUtils.ASPECT_TRANSFORMADO_QNAME.toString());
-
+		
 		List<Property> mProperties = mNode.getProperties();
 		List<Property> properties = node.getProperties();
 		Date transformDate = new Date();
@@ -292,7 +292,7 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 		properties.add(new Property(ConstantUtils.PROP_TIPO_DOCUMENTAL_VALCERT_QNAME.toString(), utils.getProperty(mProperties, ConstantUtils.PROP_TIPO_DOCUMENTAL_QNAME)));
 		properties.add(new Property(ConstantUtils.PROP_CODIGO_EXTERNO_VALCERT_QNAME.toString(), utils.getProperty(mProperties, ConstantUtils.PROP_CODIGO_EXTERNO_QNAME)));
 		properties.add(new Property(ConstantUtils.PROP_CLASE_VALCERT_QNAME.toString(), utils.getProperty(mProperties, ConstantUtils.PROP_CLASE_QNAME)));
-
+		
 		/*
 		properties.put(ConstantUtils.PROP_FECHA_TRANSFORMACION_QNAME.toString(), ISO8601DateFormat.format(transformDate));
 		properties.put(ConstantUtils.PROP_FECHA_MIGRACION_VALCERT_QNAME.toString(), utils.getProperty(mProperties, ConstantUtils.PROP_FECHA_MIGRACION_QNAME));
@@ -352,14 +352,33 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 		nodeMetadata.addAll(utils.transformListPropertyStringToQname(utils.filterCalculatedProperties(mNode.getProperties())));		
 		//nodeMetadata.addAll(utils.transformListPropertyStringToQname(metadata));
 		// Añado props especificadas en la llamda, sobreescribiendo las del nodo original.
+		LOGGER.debug("TOTAL METADATA NEW PROPERTIES : "+metadata.size());
+		LOGGER.debug("<<<<<<<<<<<Lista Metadatos recibidos>>>>>>>>>>>>>> ");
+		for(Property prop : metadata)
+		{
+			LOGGER.debug("Prop "+prop.getQname());
+			LOGGER.debug("Value "+prop.getValue());
+			
+		}
+		LOGGER.debug("<<<<<<<<<<<<Lista nodeMetadata >>>>>>>");
+		
+		for(Property prop : nodeMetadata)
+		{
+			LOGGER.debug("Prop "+prop.getQname());
+			LOGGER.debug("Value "+prop.getValue());
+			
+		}
 		for(Property prop:metadata){
+			LOGGER.debug("trying nodeMetadata.indexOf("+prop.getQname()+")");
 			int pos = nodeMetadata.indexOf(prop);
+			LOGGER.debug("CHECKING INDEX = "+ pos);
 			if ( pos != -1 ){
 				nodeMetadata.get(pos).setValue(prop.getValue());
 			}else{
 				nodeMetadata.add(prop);
 			}
 		}
+		
 		node.setProperties(nodeMetadata);
 
 		// incluyo los aspectos necesarios
@@ -421,7 +440,10 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 			throws GdibException {
 		
 			// fileNumber --> ES_A04003003_2015_EXP_5c49e60af512dc9bc52eebdefb608b
-	
+			LOGGER.debug("RECEIVING METADATA >>");
+			for(Property prop : datanodetransform.getMetadata())
+				LOGGER.debug(""+prop.getQname()+ " " + prop.getValue());
+			
 			// obtengo el nodo a migrado
 			final MigrationNode mNode = this._internal_getMigrationNode(datanodetransform.getMigrationId(), true, true, true);
 	

@@ -188,6 +188,10 @@ public class ExpiredDocuments {
 	public void setSearchService(SearchService searchService) {
 		this.searchService = searchService;
 	}
+	
+	public void setDictionaryService(DictionaryService dictionaryService) {
+		this.dictionaryService = dictionaryService;
+	}
 
 	public void setTypeDoc(String typeDoc) {
 		this.typeDoc = typeDoc;

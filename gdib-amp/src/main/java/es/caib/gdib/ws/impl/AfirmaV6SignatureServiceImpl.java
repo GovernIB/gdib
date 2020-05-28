@@ -261,6 +261,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Petición servicio DSSAfirmaVerify formada.");
 		
 		LOGGER.debug("Invocando servicio DSSAfirmaVerify ...");
+		
 		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
 		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
 

@@ -9,7 +9,8 @@
 		class="es.caib.gdib.schedulejobs.ExpiredDocuments">
 		<property name="nodeService" ref="NodeService" />
 		<property name="searchService" ref="SearchService" />
-		<property name="typeDoc" value="$gdib{expire.type_doc}" />
+		<property name="dictionaryService" ref="DictionaryService" />
+ 		<property name="typeDoc" value="$gdib{expire.type_doc}" />
 		<property name="attrib" value="$gdib{expire.attrib}" />
 		<property name="changeAttrib" value="$gdib{expire.changeattrib}" />
 		<property name="attribValue" value="$gdib{expire.attribvalue}" />
