@@ -3,12 +3,16 @@ package es.caib.gdib.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import es.caib.gdib.ws.common.types.EemgdeSignatureProfile;
 import es.caib.gdib.ws.common.types.EniSignatureType;
 import es.caib.gdib.ws.common.types.SignatureFormat;
 import es.caib.gdib.ws.exception.GdibException;
+import es.caib.gdib.ws.impl.MigrationServiceSoapPortImpl;
 
 public class SignatureUtils {
+	private static final Logger LOGGER =  Logger.getLogger(SignatureUtils.class);
 
 	//DSS SignatureType identifiers (@firma v6.1.1)
 	private static final String CMS_DSS_URI_SIGNATURE_TYPE = "urn:ietf:rfc:3369";
@@ -27,7 +31,7 @@ public class SignatureUtils {
 
 	//NuevosFormatos
 	private static final String PDF_DSS_URI_PADESBASELINE= "http://uri.etsi.org/103172/v2.1.1#";
-	private static final String CADES_DSS_URI_CADESBASELINE= "http://uri.etsi.org/103173/v2.1.1#";
+	private static final String CADES_DSS_URI_CADESBASELINE= "http://uri.etsi.org/103173/v2.2.1#";
 	private static final String XADES_DSS_URI_XADESBASELINE= "http://uri.etsi.org/103171/v2.1.1#";
 	//private static final String ASIC_DSS_URI_ASICASELINE= "http://uri.etsi.org/103172/v2.1.1#";
 	//DSS SignatureForm identifiers (@firma v6.1.1)
@@ -267,7 +271,7 @@ public class SignatureUtils {
 	public static SignatureFormat eniSigntureFormatToInernalSignatureFormat(String signatureType, String signatureForm) throws GdibException {
 		// Por defecto definimos que el formato no está reconocido
 		SignatureFormat res;
-
+		LOGGER.debug("Checking EniSignaturFormatToInternalSignatueFormat with signatureTyp ="+signatureType+" and stringformat = " +signatureForm);
 		EniSignatureType eniSignatureType = EniSignatureType.valueOf(signatureType.toUpperCase());
 		
 		EemgdeSignatureProfile eemgdeSignatureProfile = EemgdeSignatureProfile.valueOf(signatureForm);
@@ -306,7 +310,7 @@ public class SignatureUtils {
 		if(signatureFormat == null){
 			throw new GdibException("Formato de firma ENI no informado.");
 		}
-
+		LOGGER.debug("Checking eniSigntureFormatToInernalSignatureFormat with signatureFormat =" + signatureFormat);
 		res = ENI_TRANSFORMED_FORMATS.get(signatureFormat);
 		
 		if(res == null){

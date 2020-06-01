@@ -57,7 +57,6 @@
 		<property name="fileFolderService" ref="FileFolderService" />
 		<property name="dictionaryService" ref="DictionaryService" />
 		<property name="contentService" ref="ContentService" />
-		<property name="unsecureContentService" ref="contentService" />
 		<property name="nodeService" ref="NodeService" />
 		<property name="versionService" ref="VersionService" />
 		<property name="lockService" ref="LockService" />

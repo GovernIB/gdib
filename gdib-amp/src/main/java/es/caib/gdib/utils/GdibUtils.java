@@ -102,7 +102,7 @@ public class GdibUtils {
     private FileFolderService fileFolderService;
     private DictionaryService dictionaryService;
     private ContentService contentService;
-    private ContentService unsecureContentService;
+   // private ContentService unsecureContentService;
     private NodeService nodeService;
     private AuthenticationService authenticationService;
     private VersionService versionService;
@@ -2091,7 +2091,7 @@ public class GdibUtils {
 	 * @throws IOException
 	 */
 	public void setUnsecureDataHandler(NodeRef node, QName prop, DataHandler data, String mimeType, String encoding) throws ContentIOException, IOException{
-		ContentWriter cW = unsecureContentService.getWriter(node, prop, true);
+		ContentWriter cW = contentService.getWriter(node, prop, true);
 		LOGGER.debug("Obtengo el contentWriter");
 		cW.setMimetype(mimeType);
 		if(StringUtils.isEmpty(encoding)){
@@ -2598,7 +2598,7 @@ public class GdibUtils {
 		nodeService.setProperty(node, ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date(0)));
 	}
 
-	public void setUnsecureContentService(ContentService unsecureContentService) {
-		this.unsecureContentService = unsecureContentService;
-	}
+	//public void setUnsecureContentService(ContentService unsecureContentService) {
+		//this.unsecureContentService = unsecureContentService;
+	//}
 }
