@@ -1971,7 +1971,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			LOGGER.debug("before Internal REF");
 			LOGGER.debug("NON CREATING CHILD ASSOC BETWEEN DM AND RM ");
 			//_internal_ref(expedientRef, newExpedientRef);
-			_internal_ref(newExpedientRef, expedientRef);
+			//_internal_ref(newExpedientRef, expedientRef);
 			LOGGER.debug("before loop with nodeService.deleteNNode");
 			// remove el nodo del indice electronico, recorro los hijos y busco el nodo cuyo nombre contiene la constante
 			// ConstantUtils.INTERNAL_INDEX_NAME_PREFIX = indice-
