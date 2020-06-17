@@ -525,6 +525,11 @@
                             	<show id="eni:categoria" />
 								<show id="eni:estado_archivo" />
 
+
+							<!--  gdib:reapertura -->
+								<show id="gdib:exp_original" />
+								
+
                             </field-visibility>
                             <appearance>
 								<set id="interoperable" label-id="label.set.eni.interoperable"
@@ -549,6 +554,10 @@
 									appearance="panel" set="transferible"/>
 								<field id="eni:categoria" set="transferible" read-only="true"/>
 								<field id="eni:estado_archivo" set="transferible" read-only="true"/>
+
+								<set id="reapertura" label-id="label.set.eni.reapertura" 
+									appearance="panel" />
+									<field id="gdib:exp_original" set="reapertura" read-only="true" />
 
 							</appearance>
                         </form>
@@ -593,6 +602,9 @@
                             	<show id="eni:categoria" />
                             	<show id="eni:estado_archivo" />
 
+							<!--  gdib:reapertura -->
+								<show id="gdib:exp_original" />
+								
                             </field-visibility>
                             <appearance>
 								<set id="interoperable" label-id="label.set.eni.interoperable"
@@ -617,7 +629,11 @@
 									appearance="panel" />
 								<field id="eni:categoria" set="transferible" read-only="true"/>
 								<field id="eni:estado_archivo" set="transferible" read-only="true"/>
-
+								
+								<set id="reapertura" label-id="label.set.eni.reapertura" 
+									appearance="panel" />
+									<field id="gdib:exp_original" set="reapertura" read-only="true" />
+									
                             </appearance>
                         </form>
                     </forms>

@@ -26,6 +26,15 @@
 					<type>d:text</type>
 					<mandatory>true</mandatory>
 				</property>
+				
+				<!-- Descripcion: Expediente de reapertura en caso de realizar re-open File-->
+				<!--     DOC:   -->
+				<!--     EXP: X -->
+				<property name="gdib:exp_original">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				
 			</properties>
 			<mandatory-aspects>
 				<aspect>eni:interoperable</aspect>
@@ -993,7 +1002,7 @@
 					<type>d:text</type>
 					<mandatory>false</mandatory>
 				</property>
-
+				
 				<!-- Descripcion: Profundidad de color o escala de grises o resolución cromática de una imagen digitalizada. -->
 				<!--     DOC: X -->
 				<!--     EXP:   -->
@@ -1143,6 +1152,7 @@
 				</property>
 			</properties>
 		</aspect>
+		
 
 		<!-- Documentos históricos -->
 		<aspect name="gdib:historico">

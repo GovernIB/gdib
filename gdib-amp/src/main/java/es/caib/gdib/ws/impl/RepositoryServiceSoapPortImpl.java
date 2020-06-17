@@ -1963,16 +1963,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			setFileContentArchivedMetadataCollection(newExpedientRef,properties,true);
 
 			// restauro los expedientes enlazados de todo el expediente
-			LOGGER.debug("beforeRestoreLInkedExpedient");
+			//LOGGER.debug("beforeRestoreLInkedExpedient");
 			this.restoreLinkedExpedient(newExpedientRef);
 
 			// enlazo el expediente con el expediente en el RM
-			 // esto no se hace -> this.linkNode(nodeId, newExpedientRef.getId(), LINK_REF, gdibHeader);
-			LOGGER.debug("before Internal REF");
-			LOGGER.debug("NON CREATING CHILD ASSOC BETWEEN DM AND RM ");
 			//_internal_ref(expedientRef, newExpedientRef);
-			//_internal_ref(newExpedientRef, expedientRef);
-			LOGGER.debug("before loop with nodeService.deleteNNode");
+
+			
 			// remove el nodo del indice electronico, recorro los hijos y busco el nodo cuyo nombre contiene la constante
 			// ConstantUtils.INTERNAL_INDEX_NAME_PREFIX = indice-
 			String eniId = (String)nodeService.getProperty(newExpedientRef, ConstantUtils.PROP_ID_QNAME);
@@ -1985,7 +1982,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				}
 			}
 
-			LOGGER.debug("retunrning newExpedient ref" + newExpedientRef.getId());
+			//LOGGER.debug("retunrning newExpedient ref" + newExpedientRef.getId());
 			// devuelvo el nuevo id del expediente en el DM
 			return newExpedientRef.getId();
 	}
@@ -2181,7 +2178,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    LOGGER.info("Indice de intercambio del expediente generado ("+exchangeIndexNodeRef.getId()+").");
 
 	    LOGGER.info("Se procede a realizar la transferencia a RM del expediente....");
-		// Se efectÃºa la transferencia a la fase semi- activa del expediente.
+		// Se efect�a la transferencia a la fase semi- activa del expediente.
 		NodeRef rmExpedient = exportUtils.exportExpediente(expedientRef);
 		LOGGER.info("Transferencia a RM del expedeinte " + expedientRef.getId() + " realizada ("+rmExpedient.getId()+").");
 

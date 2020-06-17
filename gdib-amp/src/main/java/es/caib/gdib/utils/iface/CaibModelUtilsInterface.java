@@ -167,4 +167,11 @@ public interface CaibModelUtilsInterface {
     public static final String ASPECT_HISTORICO = "historico";
     public static final QName ASPECT_HISTORICO_QNAME = QName.createQName(NS_CAIB, ASPECT_HISTORICO);
 
+    /**
+     * Desarrollo reopen file
+     */
+    public static final String PROP_EXP_REAPERTURA ="exp_original";
+    public static final QName PROP_EXP_REAPERTURA_QNAME= QName.createQName(NS_CAIB,PROP_EXP_REAPERTURA);
+
+    
 }

@@ -1,4 +1,4 @@
-<alfresco-config>
+ACH_APLICACIO_SERIE_APLICACIO_FK_I<alfresco-config>
 
 	<config evaluator="string-compare" condition="SitePages">
 		<pages>
