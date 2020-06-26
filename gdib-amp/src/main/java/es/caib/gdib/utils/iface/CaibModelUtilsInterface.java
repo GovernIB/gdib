@@ -172,6 +172,7 @@ public interface CaibModelUtilsInterface {
      */
     public static final String PROP_EXP_REAPERTURA ="exp_original";
     public static final QName PROP_EXP_REAPERTURA_QNAME= QName.createQName(NS_CAIB,PROP_EXP_REAPERTURA);
-
+    public static final String PROP_EXP_REABIERTO = "exp_reabierto";
+    public static final QName PROP_EXP_REABIERTO_QNAME= QName.createQName(NS_CAIB,PROP_EXP_REABIERTO);
     
 }

@@ -1,6 +1,7 @@
 package es.caib.gdib.rm.utils;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,19 @@ public class ImportUtils {
 		//TODO Trabajo de reopen File
 		nodeService.setProperty(openExpedient, ConstantUtils.PROP_EXP_REAPERTURA_QNAME, expediente.getStoreRef()+"/"+expediente.getId());
 		//
+		Serializable expedientes = nodeService.getProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME);
+		List<String> lint = new ArrayList<String>();
+		if(expedientes != null ){
+			if ( expedientes instanceof List){
+				lint = (List<String>) expedientes;
+			}else{
+				lint.add(openExpedient.getStoreRef()+"/"+openExpedient.getId());
+			}
+		}else
+		{
+			lint.add(openExpedient.getStoreRef()+"/"+openExpedient.getId());
+		}
+		nodeService.setProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME, (Serializable) lint);
 		return openExpedient;
 	}
 
