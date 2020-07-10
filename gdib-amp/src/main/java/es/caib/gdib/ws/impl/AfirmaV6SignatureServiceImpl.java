@@ -1,5 +1,9 @@
 package es.caib.gdib.ws.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import es.caib.gdib.utils.FilterPlaceholderProperties;
@@ -11,16 +15,26 @@ import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
 import es.gob.afirma.integraFacade.IntegraFacadeWSDSS;
 import es.gob.afirma.integraFacade.pojo.AsynchronousResponse;
+import es.gob.afirma.integraFacade.pojo.DataInfo;
+import es.gob.afirma.integraFacade.pojo.Detail;
+import es.gob.afirma.integraFacade.pojo.DetailLevelEnum;
+import es.gob.afirma.integraFacade.pojo.IndividualSignatureReport;
 import es.gob.afirma.integraFacade.pojo.InvalidAsyncResponse;
+import es.gob.afirma.integraFacade.pojo.OptionalParameters;
 import es.gob.afirma.integraFacade.pojo.PendingRequest;
+import es.gob.afirma.integraFacade.pojo.ProcessingDetail;
+import es.gob.afirma.integraFacade.pojo.Result;
 import es.gob.afirma.integraFacade.pojo.ServerSignerRequest;
 import es.gob.afirma.integraFacade.pojo.ServerSignerResponse;
 import es.gob.afirma.integraFacade.pojo.SignatureFormatEnum;
 import es.gob.afirma.integraFacade.pojo.UpgradeSignatureRequest;
+import es.gob.afirma.integraFacade.pojo.VerificationReport;
+import es.gob.afirma.integraFacade.pojo.VerifyCertificateRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureResponse;
 import es.gob.afirma.integraFacade.pojo.XmlSignatureModeEnum;
 import es.gob.afirma.utils.DSSConstants;
+import es.gob.afirma.utils.DSSConstants.ReportDetailLevel;
 
 public class AfirmaV6SignatureServiceImpl implements SignatureService {
 
@@ -55,7 +69,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			SignatureFormat.PAdES_BES,SignatureFormat.PAdES_EPES,SignatureFormat.PAdES_LTV};
 	
 	/**
-	 * Valor por defecto de parámetros de configuración para la integración con @firma, mediante Integr@. Los parametros están establecidos en el archivo gdib-amp.properties (Prefijo: gdib.afirma).
+	 * Valor por defecto de parómetros de configuración para la integración con @firma, mediante Integr@. Los parametros estón establecidos en el archivo gdib-amp.properties (Prefijo: gdib.afirma).
 	 *   
 	 *   - Alias de certificado de servidor.
 	 *   - Identificador de aplicación @firma.
@@ -81,7 +95,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electrónica CAdES: Documento nulo o vacío.");
+			throw new GdibException("Firma electrónica CAdES: Documento nulo o vacóo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_CADES_FORMATS);
@@ -111,7 +125,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electrónica PAdES: Documento nulo o vacío.");
+			throw new GdibException("Firma electrónica PAdES: Documento nulo o vacóo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_PADES_FORMATS);
@@ -143,7 +157,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electrónica XML: Documento nulo o vacío.");
+			throw new GdibException("Firma electrónica XML: Documento nulo o vacóo.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_XADES_FORMATS);
@@ -176,7 +190,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Evolución de firma electrónica: Firma electrónica nula o vacía.");
+			throw new GdibException("Evolución de firma electrónica: Firma electrónica nula o vacóa.");
 		}
 		
 		dssSignatureFormat = translateSignatureFormat(upgradedSignatureFormat);
@@ -237,22 +251,23 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		SignatureValidationReport res;
 		VerifySignatureRequest verSigReq;
 		VerifySignatureResponse verSigRes;
+
 		res = null;
 		LOGGER.debug("Iniciando servicio de validación de firma electrónica...");
-		LOGGER.debug("Validando parámetros de entrada...");
+		LOGGER.debug("Validando parómetros de entrada...");
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Validación de firma electrónica: Firma electrónica nula o vacía.");
+			throw new GdibException("Validación de firma electrónica: Firma electrónica nula o vacóa.");
 		}
 		
 		if(document == null || document.length == 0){
-			LOGGER.debug("El documento informado en la operación de validación de firma electrónica es vacío, se procede a validar una firma implícita.");
+			LOGGER.debug("El documento informado en la operación de validación de firma electrónica es vacóo, se procede a validar una firma implócita.");
 		}
-		LOGGER.debug("Parámetros de entrada validados...");
+		LOGGER.debug("Parómetros de entrada validados...");
 		LOGGER.debug("Formando petición servicio DSSAfirmaVerify ...");
 		verSigReq = new VerifySignatureRequest();
 
-		verSigReq.setSignature(signature);
+		//verSigReq.setSignature(signature);
 		verSigReq.setApplicationId(getOperationAfirmaAppId());
 		if(document != null){
 			verSigReq.setDocument(document);
@@ -261,13 +276,77 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Petición servicio DSSAfirmaVerify formada.");
 		
 		LOGGER.debug("Invocando servicio DSSAfirmaVerify ...");
-		
-		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
-		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
+		//Add optional Parameters for deep info
+		OptionalParameters optParam = new OptionalParameters(); 
+		optParam.setReturnProcessingDetails(true); 
+		optParam.setAdditionalReportOption(true);
+		optParam.setReturnReadableCertificateInfo(true); 
+		//optParam.setCertificateValidationLevel("1");
+		//optParam.setCertificateValidationLevel("test");
+		//optParam.setCertificateValidationLevel("urn:afirma:dss:1.0:profile:XSS:SignatureProperty:SignatureTimeStamp");
+		verSigReq.setOptionalParameters(optParam);
 
+		VerificationReport	reporte = new VerificationReport();
+		reporte.setReportDetailLevel(DetailLevelEnum.ALL_DETAILS);
+		reporte.setCheckCertificateStatus(true);
+		reporte.setIncludeCertificateValues(true);
+		reporte.setIncludeRevocationValues(true);
+		
+		verSigReq.setVerificationReport(reporte);
+		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
+		
+		//verSigRes.ge
+		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
+		
+		
 		if (verSigRes == null) {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
 					+ "para validar una firma electrónica.");
+		}
+		LOGGER.debug("Obteniendo datos detallados sobre validez");
+				
+		
+		List<IndividualSignatureReport> info = verSigRes.getVerificationReport();
+		LOGGER.debug("Size of List IndividualSignatureReport " + info.size());
+		for(IndividualSignatureReport a : info)
+		{
+			LOGGER.debug("Reading "+a.toString());
+			
+			String signReport = a.getDetailedReport();
+			LOGGER.debug("SignReport == "+signReport);
+			ProcessingDetail pd = a.getProcessingDetails();
+			List<Detail> ld = null;
+			if(pd != null)
+				ld = pd.getListValidDetail();
+			
+			if(ld != null)
+				for(Detail d : ld )
+					LOGGER.debug("VALID TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			List<Detail> ld2 = null;
+			if(pd != null)
+				ld2 = pd.getListIndeterminateDetail();
+			if(ld2 != null)
+				for(Detail d : ld2 )
+					LOGGER.debug("INDETERMINATED ---- TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			List<Detail> ld3 = null;
+			if(pd != null)
+				ld3 = pd.getListInvalidDetail();
+			if(ld2 != null)
+				for(Detail d : ld3 )
+					LOGGER.debug("INVALID ---- TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			
+			Map<String,Object> infoSet = a.getReadableCertificateInfo();
+			
+			//a.getProcessingDetails();
+			if(infoSet != null)
+			{	
+				for(Map.Entry<String, Object> it  : a.getReadableCertificateInfo().entrySet())
+					LOGGER.debug(it.getKey() + " -- "+it.getValue());
+			}else
+				LOGGER.debug("infoSet == null");
 		}
 		LOGGER.debug("SersigRes signatureFormat: " + verSigRes.getSignatureFormat());
 		if (verSigRes.getResult() == null) {
@@ -323,12 +402,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	
 	/**
 	 * Solicita la generación de una firma de servidor delegada a la plataforma @firma mediante la invocación del servicio DSSAfirmaSign.
-	 * @param ServerSignerRequest características de la firma electrónica: formato, certificado firmante, etc..
+	 * @param ServerSignerRequest caracterósticas de la firma electrónica: formato, certificado firmante, etc..
 	 * @return firma electrónica generada.
 	 * @throws GdibException si ocurre algÃºn error en la invocación del servicio DSSAfirmaSign de la plataforma @firma o se retorna error desde la plataforma.
 	 */
 	private static byte[] sign(ServerSignerRequest serSigReq) throws GdibException {
 		byte[] res = null;
+		
 		
 		ServerSignerResponse serSigRes = IntegraFacadeWSDSS.getInstance().sign(serSigReq);
 
@@ -376,7 +456,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 		
 		if(!found){
-			throw new GdibException("El formato de firma electrónica " + signatureFormat.getName() + " no está soportado para la operación solicitada.");
+			throw new GdibException("El formato de firma electrónica " + signatureFormat.getName() + " no estó soportado para la operación solicitada.");
 		}
 	}
 	

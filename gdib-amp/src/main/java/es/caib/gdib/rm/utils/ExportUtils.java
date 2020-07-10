@@ -367,7 +367,7 @@ public class ExportUtils {
 	 *            nodo expediente donde tengo que crear el documento
 	 * @throws GdibException
 	 */
-	private void createRMRecord(NodeRef nodeRef, NodeRef rmExpedient) throws GdibException {
+	public void createRMRecord(NodeRef nodeRef, NodeRef rmExpedient) throws GdibException {
 		// recupero toda la informacion del nodo
 		// aspectos, properties, contenido y firma, nombre y uuid
 		// TODO parsear los documentos que son de tipo thumbnail

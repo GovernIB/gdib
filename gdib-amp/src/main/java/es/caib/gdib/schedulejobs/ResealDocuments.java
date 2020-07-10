@@ -244,7 +244,7 @@ public class ResealDocuments extends BaseProcessorExtension {
                     	}
 					}
                 }
-                LOGGER.info( "NÃºmero de documentos obtenidos al ejecutar la consulta Lucene: " + queryResultLength + ".");
+                LOGGER.info( "Número de documentos obtenidos al ejecutar la consulta Lucene: " + queryResultLength + ".");
             } finally {
                 if (resultSet != null) {
                     resultSet.close();

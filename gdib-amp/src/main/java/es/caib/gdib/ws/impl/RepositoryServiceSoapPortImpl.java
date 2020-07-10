@@ -2139,9 +2139,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 		//Se procede a modificar las propiedades de archivo de los nodos hijos
 		Map<QName, Serializable> properties = new HashMap<QName, Serializable>();
-		// Se modifica el estado de tramitación del expediente, asignándole el valor Ã¢â‚¬Å“CerradoÃ¢â‚¬ï¿½.
+		// Se modifica el estado de tramitación del expediente, asignándole el valor cerrado.
 		properties.put(ConstantUtils.PROP_ESTADO_EXP_QNAME, ConstantUtils.ESTADO_EXP_E02);
-		// Se modifica el estado de archivo del expediente, asignándole el valor Ã¢â‚¬Å“preingresoÃ¢â‚¬ï¿½.
+		// Se modifica el estado de archivo del expediente, asignándole el valor preingreso
 		
 		if ( preingreso ){
 			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_PREINGRESO);

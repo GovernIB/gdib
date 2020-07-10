@@ -16,13 +16,17 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import es.caib.gdib.ws.common.types.SignatureFormat;
+import es.caib.gdib.ws.common.types.SignatureValidationReport;
 import es.caib.gdib.ws.common.types.XmlSignatureMode;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
+import es.gob.afirma.integraFacade.pojo.DetailLevelEnum;
+import es.gob.afirma.integraFacade.pojo.OptionalParameters;
+import es.gob.afirma.integraFacade.pojo.VerificationReport;
 
 
 /**
- * Clase responsable de efectuar una firma electr√≥nica XAdES v1.3.2 extendida de archivado (A), sobre un √≠ndice electr√≥nico interno del Govern de les Illes Balears v1.0.
+ * Clase responsable de efectuar una firma electrÛnica XAdES v1.3.2 extendida de archivado (A), sobre un Ìndice electrÛnico interno del Govern de les Illes Balears v1.0.
  * 
  * @author RICOH
  *
@@ -31,8 +35,8 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 
 	private static final Logger LOGGER =  Logger.getLogger(CaibIndexV10SignerImpl.class);
 	
-	//Constantes que representan nodos del √≠ndice electr√≥nico relacionados 
-	//con la generaci√≥n de la firma electr√≥nica	
+	//Constantes que representan nodos del Ìndice electrÛnico relacionados 
+	//con la generaciÛn de la firma electrÛnica	
 	private static final String CAIB_INDEX_NAMESPACE ="urn:es:caib:archivodigital:gestiondocumental:expediente-e:indice-e:1.0";
 
 	private static final String DIGITAL_SIGNATURE_NAMESPACE ="http://www.w3.org/2000/09/xmldsig#";
@@ -58,32 +62,32 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
     private static final Boolean DEFAULT_MOVE_SIGNATURE_ELEMENT = Boolean.TRUE;
     
     /**
-     * Formato de firma del la firma electr√≥nica del √≠ndice.
+     * Formato de firma del la firma electrÛnica del Ìndice.
      */
     private SignatureFormat indexSignatureFormat;
 	
     /**
-     * Identificador de la pol√≠tica de firma
+     * Identificador de la polÌtica de firma
      */
     private String signaturePolicyId;
     
     /**
-     * Modo en el que es generada una firma electr√≥nica XAdES.
+     * Modo en el que es generada una firma electrÛnica XAdES.
      */
     private XmlSignatureMode xadesSignatureMode;
     
     /**
-     * Tipo de firma que es informado en el √≠ndice.
+     * Tipo de firma que es informado en el Ìndice.
      */
     private String signatureTypeValue;
     
     /**
-     * Especifica si se desplazar√° el nodo de firma.
+     * Especifica si se desplazar· el nodo de firma.
      */
     private Boolean moveSignature;
     
     /**
-     * Par√°metros de configuraci√≥n.
+     * Par·metros de configuraciÛn.
      */
     private Properties confParams;
 	
@@ -112,7 +116,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
     	this.confParams = new Properties();
     	String propValue;
     	
-    	LOGGER.info("Utilidad de firma de indice inicializada con los siguientes par√°metros de configuraci√≥n: " + confParams.toString());
+    	LOGGER.info("Utilidad de firma de indice inicializada con los siguientes par·metros de configuraciÛn: " + confParams.toString());
     	
     	if(confParams != null && !confParams.isEmpty()){
     		this.confParams.putAll(confParams);
@@ -162,6 +166,11 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 		res = preSingProcess(document);
 		res = signatureService.signXadesDocument(res, this.indexSignatureFormat, this.xadesSignatureMode, this.signaturePolicyId);
 		
+
+		
+		SignatureValidationReport resValide=  signatureService.verifySignature(null,res);
+		
+		
 		if(this.moveSignature && XmlSignatureMode.ENVELOPED.equals(this.xadesSignatureMode)){
 			res = postSingProcess(res);
 		}
@@ -170,13 +179,13 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 	}
 
     /**
-	 * A√±ade el nodo XML caibexpind:firma al nodo ra√≠z del documento, previo a la realizaci√≥n de la firma del √≠ndice electr√≥nico, estableciendo el tipo de firma TF01 y un caracter espacio en blanco como contenido de la firma. 
-	 * @param document documento XML que representa el √≠ndice electr√≥nico de un expediente. 
+	 * AÒade el nodo XML caibexpind:firma al nodo raÌz del documento, previo a la realizaciÛn de la firma del Ìndice electrÛnico, estableciendo el tipo de firma TF01 y un caracter espacio en blanco como contenido de la firma. 
+	 * @param document documento XML que representa el Ìndice electrÛnico de un expediente. 
 	 * @return array de bytes que representa el contenido del documento XML modificado.
      * @throws ParserConfigurationException 
      * @throws IOException 
      * @throws SAXException 
-	 * @throws Exception si ocurre alg√∫n error al a√±adir el nodo XML caibexpind:firma al nodo ra√≠z del documento.
+	 * @throws Exception si ocurre alg√∫n error al aÒadir el nodo XML caibexpind:firma al nodo raÌz del documento.
 	 */
 	private byte[] preSingProcess(byte [] document) throws GdibException {
 		byte [] res = null;
@@ -185,8 +194,8 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 		try{
 			Document doc = XmlUtils.byteArrayToXmlDocument(document);
 
-			LOGGER.debug("Se inicia la incorporaci√≥n del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o, al nodo ra√≠z del documento.");
+			LOGGER.debug("Se inicia la incorporaciÛn del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacÌo, al nodo raÌz del documento.");
 			Element rootNode = doc.getDocumentElement();
 			XmlUtils.getPrefixesRecursive(rootNode, prefixes);
 			
@@ -194,12 +203,12 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 			
 			if(signatureNodeList.getLength() > 0){
 				excMsg = "Se encontro al menos un elemento XML /IndiceElectronico/firma. "
-						+ "No debe existir ninguno previo a la generaci√≥n de la firma.";
+						+ "No debe existir ninguno previo a la generaciÛn de la firma.";
 				LOGGER.error(excMsg);
 				throw new GdibException(excMsg);
 			}
 			LOGGER.debug("Se genera el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o.");
+					", con contenido vacÌo.");
 			String caibNamespacePrefix = (prefixes.get(CAIB_INDEX_NAMESPACE) == null?"":prefixes.get(CAIB_INDEX_NAMESPACE)+":");
 			Element signatureTypeNode = doc.createElementNS(CAIB_INDEX_NAMESPACE,caibNamespacePrefix+CAIB_SIGNATURE_TYPE_XML_ELEMENT);
 			signatureTypeNode.setTextContent(this.signatureTypeValue);
@@ -211,19 +220,19 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 			signatureNode.appendChild(signatureContentNode);
 			
 			LOGGER.debug("Nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o, generado correctamente.");
-			LOGGER.debug("Se a√±ade el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o, como hijo del nodo ra√≠z del documento.");
+					", con contenido vacÌo, generado correctamente.");
+			LOGGER.debug("Se aÒade el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacÌo, como hijo del nodo raÌz del documento.");
 			rootNode.appendChild(signatureNode);
-			LOGGER.debug("A√±adido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o, como hijo del nodo ra√≠z del documento.");
+			LOGGER.debug("AÒadido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacÌo, como hijo del nodo raÌz del documento.");
 			
 			LOGGER.debug("Actualizando contenido documento XML en memoria.");
 			//Se transforma el XML a un array de bytes
 			res = XmlUtils.xmlDocumentToByteArray(doc,INDEX_CHARSET);
 			
-			LOGGER.debug("Finalizada la incorporaci√≥n del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac√≠o, al nodo ra√≠z del documento con √©xito.");
+			LOGGER.debug("Finalizada la incorporaciÛn del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacÌo, al nodo raÌz del documento con √©xito.");
 		
 		} catch (TransformerException | UnsupportedEncodingException e){
 			excMsg = "Se produjo un error al transformar un documento XML en array de bytes: " + e.getMessage();
@@ -241,9 +250,9 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 	}
     
 	/**
-	 * Traslada el nodo ds:Signature desde el nodo ra√≠z del documento al nodo caibexpind:IndiceElectronico/caibexpind:firma/caibexpind:contenidoFirma. 
-	 * @param signature documento XML que representa el √≠ndice electr√≥nico de un expedeinte e incluye la firma XAdES-A v1.3.2 enveloped como hijo del 
-	 * nodo ra√≠z del documento.
+	 * Traslada el nodo ds:Signature desde el nodo raÌz del documento al nodo caibexpind:IndiceElectronico/caibexpind:firma/caibexpind:contenidoFirma. 
+	 * @param signature documento XML que representa el Ìndice electrÛnico de un expedeinte e incluye la firma XAdES-A v1.3.2 enveloped como hijo del 
+	 * nodo raÌz del documento.
 	 * @return array de bytes que representa el contenido del documento XML modificado.
 	 * @throws GdibException si ocurre alg√∫n error al trasladar el nodo ds:Signature.
 	 */
@@ -287,20 +296,20 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 					
 			LOGGER.debug("Nodo " + signatureNode.getTagName() + " recuperado del documento.");
 			
-			//Se a√±ade el nodo /caibexpind:IndiceElectronico/ds:Signature al nodo 
+			//Se aÒade el nodo /caibexpind:IndiceElectronico/ds:Signature al nodo 
 			// /caibexpind:IndiceElectronico/caibexpind:firma/caibexpind:contenidoFirma
 			Element signatureCloneNode = (Element) signatureNode.cloneNode(true);
 			
-			LOGGER.debug("A√±adiendo nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + ".");
+			LOGGER.debug("AÒadiendo nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + ".");
 			signatureContentNode.appendChild(signatureCloneNode);
 			
-			LOGGER.debug("Eliminando nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo ra√≠z del documento.");
+			LOGGER.debug("Eliminando nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo raÌz del documento.");
 			//Se elimina el nodo /caibexpind:IndiceElectronico/ds:Signature
 			rootNode.removeChild(signatureNode);
 	
 			LOGGER.debug("Actualizando contenido documento XML en memoria.");
-			//Se transforma el XML a un array de bytes
 			res = XmlUtils.xmlDocumentToByteArray(doc,INDEX_CHARSET);
+			//Se transforma el XML a un array de bytes
 			
 			LOGGER.debug("Traslado del nodo " + DS_SIGNATURE_XML_ELEMENT + " a su ruta definitiva, " + 
 					CAIB_SIGNATURE_CONTENT_XML_ELEMENT + ", finalizado con √©xito.");
