@@ -67,7 +67,16 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.QueryParser;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.DEREncodable;
+import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.extensions.surf.util.ISO8601DateFormat;
+import org.w3c.dom.Element;
 
 import es.caib.gdib.utils.iface.EniModelUtilsInterface;
 import es.caib.gdib.ws.common.types.Content;
@@ -653,8 +662,11 @@ public class GdibUtils {
 	            QName qname = createQName(prop.getQname());
 	            if(qname != null){
 	            	//Si la propiedad es multiple construimos un array
+	            	LOGGER.debug("searchign prop > "+qname);
 	            	if(dictionaryService.getProperty(qname).isMultiValued()){
+	            		LOGGER.debug("DictonaryServiceGetProperty("+qname+") is not null" );
 	            		String concatenedValue = prop.getValue().toString();
+	            		LOGGER.debug("prop.getValue().toString() is not null" );
 	            		List<String> values = null;
 	            		if(concatenedValue.startsWith("[")){
 	            			concatenedValue = concatenedValue.replace("[", "").replace("]", "");
@@ -666,9 +678,12 @@ public class GdibUtils {
 		            			values = Arrays.asList(trim(concatenedValue.split(ConstantUtils.CSV_SEPARATOR)));
 		            		}
 	            		}
+	            		LOGGER.debug("Got before PUT with values "+values );
 	            		props.put( qname, (Serializable) values );
 	            	} else{
+	            		LOGGER.debug("after dicService Get Property qname" + qname);
 	            		Serializable value = prop.getValue();
+	            		LOGGER.debug("after porp get value"+ (String) value);
 	            		props.put( qname, value  );
 	            	}
 	            }
@@ -1174,11 +1189,15 @@ public class GdibUtils {
 			Object prop = propertiesNode.get(property);
 			if (!property.getNamespaceURI().contains(ConstantUtils.NS_SYSTEM_MODEL) && prop != null) {
 				if (prop instanceof Date) {
+					LOGGER.debug(" READING DATETYPE "+formatQname(property));
 					//properties.put(formatQname(property), new SimpleDateFormat("yyyy-MM-dd").format(prop));
 					properties.add(new Property(formatQname(property), ISO8601DateFormat.format((Date) prop)));
 				} else if (prop instanceof java.util.ArrayList){
 					properties.add(new Property(formatQname(property), prop.toString().replace(", ", ",")));
 				} else {
+					LOGGER.debug(" READING NORMAL PROP "+formatQname(property));
+					if(prop == null)
+						LOGGER.debug("PROP IS NULL CLALING TOSTRING NPE");
 					properties.add(new Property(formatQname(property), prop.toString()));
 				}
 			}
@@ -2596,6 +2615,90 @@ public class GdibUtils {
 
 	public void updateResealDate(NodeRef node) {
 		nodeService.setProperty(node, ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date(0)));
+	}
+
+	/**
+	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
+	 * @param signature XML que contiene la firma en un índice
+	 * @return Serial number del certificado de la TSA
+	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
+	 * @throws IOException  Excepción lanzada si no consigue leer el XML
+	 */
+	public String parseTimeStampASN1(org.w3c.dom.Document signature) throws GdibException,IOException{
+
+		org.w3c.dom.NodeList completeCertificateRefs = signature.getElementsByTagName("xadesv141:ArchiveTimeStamp");
+        if(completeCertificateRefs.getLength() != 0)
+        {
+        	org.w3c.dom.Node certRefs = completeCertificateRefs.item(0);
+        	if(certRefs != null)
+        	{
+        		if(certRefs.hasChildNodes())
+        		{
+        			Element archivtimeStamp = (Element) certRefs;
+        			org.w3c.dom.Node timeStamp = archivtimeStamp.getElementsByTagName("xades:EncapsulatedTimeStamp").item(0);
+
+        			if(timeStamp != null)
+        			{
+        				String toDecode = timeStamp.getTextContent();
+        				if(toDecode == null)
+        					return "";
+        				
+        				byte[] valueDecoded = Base64.decode(toDecode.getBytes());
+        				ASN1InputStream bIn = new ASN1InputStream(valueDecoded);
+        				
+        				DERObject obj;
+        				try {
+        					while ((obj = bIn.readObject()) != null) {
+        					    ASN1Sequence asn1 = ASN1Sequence.getInstance(obj);
+
+        					    DEREncodable a = asn1.getObjectAt(1);
+        					    DERTaggedObject derTaggedObject = (DERTaggedObject) a;
+        					    
+        					    ASN1Sequence asn2 = ASN1Sequence.getInstance(derTaggedObject.getObject());
+        					    
+        					    for(int i=0;i<asn2.size();i++) {
+        					    	DEREncodable b = asn2.getObjectAt(i);
+        					    	if (b instanceof DERTaggedObject) {
+        					    		DERTaggedObject tag = ((DERTaggedObject) b);
+        					    		ASN1Sequence asn3 = ASN1Sequence.getInstance(tag.getObject());
+        					    		
+        					    		for(int j=0;j<asn3.size();j++) {
+        							    	DEREncodable c = asn3.getObjectAt(j);
+        							    	if (c instanceof DERSequence) {
+        							    		DERSequence seq = (DERSequence) c;
+        							    		for(int k=0;k<seq.size();k++) {
+        							    			DEREncodable d = seq.getObjectAt(k);
+        									    	System.out.println("        " + d.toString() + " " + d.getClass().getName());
+        									    	
+        									    	if(d instanceof ASN1Integer) {
+        									    		System.out.println("            <<<<<<<<<<" + d.toString() + ">>>>>>>>>>");
+        									    		LOGGER.debug("TSA CERT SERIAL > "+ d.toString());
+        									    		return d.toString();
+        									    	}
+        									    	
+        							    		}
+        							    		
+        							    	}
+        							    	
+        							    }
+        					    		
+        					    	}
+        					     }
+        					   
+        					}
+        				} catch (IOException e) {
+        					LOGGER.debug("Excepcion reading TSA Cert serial Number");
+        					throw new GdibException("Excepcion reading TSA Cert serial Number");
+        				}
+        			}
+        			
+        		}
+        	}
+        }
+		
+		return "";
+
+		
 	}
 
 	//public void setUnsecureContentService(ContentService unsecureContentService) {

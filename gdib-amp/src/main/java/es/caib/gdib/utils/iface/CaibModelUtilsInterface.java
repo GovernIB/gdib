@@ -95,13 +95,13 @@ public interface CaibModelUtilsInterface {
      */
     //Indica si un indice es valido (ultimo resellado, ya que anteriores se configura esta propiedad a NO)
     public static final String PROP_INDEX_VALID = "indice_valido";
-    public static final QName PROP_INDEX_VALID_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_TYPE);
+    public static final QName PROP_INDEX_VALID_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_VALID);
     //Indicador de identificador del certificado firmante
     public static final String PROP_INDEX_CERT = "identificador_certificado";
-    public static final QName PROP_INDEX_CERT_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_TYPE);
+    public static final QName PROP_INDEX_CERT_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_CERT);
     //Indicador de fecha de validez del certificado
-    public static final String PROP_INDEX_CERT_DATE_TYPE = "fecha_validez_certificado";
-    public static final QName PROP_INDEX_CERT_DATE_TYPE_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_TYPE);
+    public static final String PROP_INDEX_CERT_DATE = "fecha_validez_certificado";
+    public static final QName PROP_INDEX_CERT_DATE_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_CERT_DATE);
     
     
     /**

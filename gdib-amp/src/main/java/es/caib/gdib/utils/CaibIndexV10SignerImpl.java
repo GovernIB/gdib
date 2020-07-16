@@ -53,7 +53,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 
     private static final String DEFAULT_CAIB_SIGNATURE_TYPE_XML_ELEMENT_VALUE = "TF01";
     
-    private static final SignatureFormat DEFAULT_CAIB_INDEX_SIGNATURE_FORMAT = SignatureFormat.XAdES_T;
+    private static final SignatureFormat DEFAULT_CAIB_INDEX_SIGNATURE_FORMAT = SignatureFormat.XAdES_A;
     
     private static final String DEFAULT_SIGNATURE_POLICY_ID = null;
     
@@ -166,7 +166,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 		res = preSingProcess(document);
 		res = signatureService.signXadesDocument(res, this.indexSignatureFormat, this.xadesSignatureMode, this.signaturePolicyId);
 		
-
+		
 		
 		SignatureValidationReport resValide=  signatureService.verifySignature(null,res);
 		

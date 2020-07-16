@@ -50,6 +50,7 @@ import org.alfresco.service.cmr.version.VersionService;
 import org.alfresco.service.cmr.version.VersionType;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.transaction.TransactionService;
+import org.alfresco.util.ISO8601DateFormat;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.w3c.dom.Document;
 
 import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.rm.utils.ImportUtils;
@@ -71,6 +73,7 @@ import es.caib.gdib.utils.InputStreamDataSource;
 import es.caib.gdib.utils.SignatureUtils;
 import es.caib.gdib.utils.SubTypeDocInfo;
 import es.caib.gdib.utils.SubTypeDocUtil;
+import es.caib.gdib.utils.XmlUtils;
 import es.caib.gdib.utils.iface.EniModelUtilsInterface;
 import es.caib.gdib.ws.common.types.Content;
 import es.caib.gdib.ws.common.types.EemgdeSignatureProfile;
@@ -630,8 +633,6 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			default:
 				throw new GdibException("El tipo de índice " + indexType + " no es soportado.");
 			}
-
-
 			LOGGER.debug("Construir DataHandler a partir del XML firmado.");
 			// 3 Return DataHandler del XML firmado.
 			dh = indiceElectronicoManager.generateXML(signedXmlIndex);
@@ -1344,7 +1345,6 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      *   @throws GdibException si el nodo no pertenece al repositorio.
      *
      * */
-
     @Override
     public Node getNode(String nodeId, boolean withContent, boolean withSign, GdibHeader gdibHeader) throws GdibException {
 	    	long initMill = System.currentTimeMillis();
@@ -2166,6 +2166,24 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		DataHandler internalIndexHandler = _internal_foliate(expedientRef, AdministrativeProcessingIndexSignerFactory.CAIB_INDEX_V10);
 	    NodeRef internalIndexNodeRef = _internal_createNode(expedientRef, utils.createNameQName(internalIndexNodeName), ConstantUtils.TYPE_FILE_INDEX_QNAME, indexsProps);
 	    utils.setDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT, internalIndexHandler, MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
+		
+		try {
+			byte[] indexBArrayInternal = utils.getByteArrayFromHandler(utils.getDataHandler(internalIndexNodeRef,ContentModel.PROP_CONTENT));
+			Document dIndexInternal = XmlUtils.byteArrayToXmlDocument(indexBArrayInternal);
+			dIndexInternal.getDocumentElement().normalize();
+			String serialCertIdentr= utils.parseTimeStampASN1(dIndexInternal) ;
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
+				
+			
+		}catch(Exception e)
+		{
+			LOGGER.debug("Couldnt read TS token");
+		}
+		
+		
+	    
 	    LOGGER.info("Indice interno del expediente generado ("+internalIndexNodeRef.getId()+").");
 
 		String exchangeIndexNodeName =  ConstantUtils.EXCHANGE_INDEX_NAME_PREFIX + eniId + "-" + dateString + ".xml";
@@ -2177,6 +2195,23 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    utils.setDataHandler(exchangeIndexNodeRef, ContentModel.PROP_CONTENT, exchangeIndexHandler, MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
 	    LOGGER.info("Indice de intercambio del expediente generado ("+exchangeIndexNodeRef.getId()+").");
 
+
+		try {
+			byte[] indexBArrayExchange = utils.getByteArrayFromHandler(utils.getDataHandler(exchangeIndexNodeRef, ContentModel.PROP_CONTENT));
+			Document dIndexEchange = XmlUtils.byteArrayToXmlDocument(indexBArrayExchange);
+			dIndexEchange.getDocumentElement().normalize();
+			String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
+				
+			
+		}catch(Exception e)
+		{
+			LOGGER.debug("Couldnt read TS token");
+		}
+	    
+	    
 	    LOGGER.info("Se procede a realizar la transferencia a RM del expediente....");
 		// Se efectúa la transferencia a la fase semi- activa del expediente.
 		NodeRef rmExpedient = exportUtils.exportExpediente(expedientRef);

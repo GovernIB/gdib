@@ -221,8 +221,10 @@
 					<constraints>
 						<constraint type="LIST">
 							<parameter name="allowedValues">
-								<value>SI</value>
-								<value>NO</value>
+								<list>
+									<value>SI</value>
+									<value>NO</value>
+								</list>
 							</parameter>
 						</constraint>
 					</constraints>

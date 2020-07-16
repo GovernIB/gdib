@@ -242,7 +242,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 
 		res = serSigRes.getSignature();
-
+		
 		return res;
 	}
 
@@ -266,7 +266,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Parómetros de entrada validados...");
 		LOGGER.debug("Formando petición servicio DSSAfirmaVerify ...");
 		verSigReq = new VerifySignatureRequest();
-
+		
 		//verSigReq.setSignature(signature);
 		verSigReq.setApplicationId(getOperationAfirmaAppId());
 		if(document != null){
@@ -280,10 +280,9 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		OptionalParameters optParam = new OptionalParameters(); 
 		optParam.setReturnProcessingDetails(true); 
 		optParam.setAdditionalReportOption(true);
+		//optParam.setReturnSignedDataInfo(true); // UNCOMMENT TO GET ADITOINAL DATAINFO LIST
 		optParam.setReturnReadableCertificateInfo(true); 
-		//optParam.setCertificateValidationLevel("1");
-		//optParam.setCertificateValidationLevel("test");
-		//optParam.setCertificateValidationLevel("urn:afirma:dss:1.0:profile:XSS:SignatureProperty:SignatureTimeStamp");
+		
 		verSigReq.setOptionalParameters(optParam);
 
 		VerificationReport	reporte = new VerificationReport();
@@ -295,6 +294,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		verSigReq.setVerificationReport(reporte);
 		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
 		
+		
+		
 		//verSigRes.ge
 		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
 		
@@ -303,9 +304,16 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
 					+ "para validar una firma electrónica.");
 		}
-		LOGGER.debug("Obteniendo datos detallados sobre validez");
-				
+		/*LOGGER.debug("Obtaining Data info"); UNCOMMENT TO PARSE ADITIONAL DATA INFO
+		List<DataInfo> dataInfo = verSigRes.getSignedDataInfo();		
+		if(dataInfo == null)
+			LOGGER.debug("DataInfo List is null");
+		else
+		{
+			//ITERATE AND PARSE DATAINFO 
+		}*/
 		
+		LOGGER.debug("Obteniendo datos detallados sobre validez");
 		List<IndividualSignatureReport> info = verSigRes.getVerificationReport();
 		LOGGER.debug("Size of List IndividualSignatureReport " + info.size());
 		for(IndividualSignatureReport a : info)
