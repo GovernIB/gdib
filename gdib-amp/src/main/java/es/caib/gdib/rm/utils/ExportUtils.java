@@ -268,7 +268,7 @@ public class ExportUtils {
 					(ByteArrayOutputStream) exportHandler.getXML_outputStream());
 
 			// Borramos la carpetata temporal
-			LOGGER.debug("NO Borramos la carpeta temporal");
+			LOGGER.debug("Borramos la carpeta temporal");
 			nodeService.deleteNode(tmpParentFileInfo.getNodeRef());
 
 			return rmExpedient;

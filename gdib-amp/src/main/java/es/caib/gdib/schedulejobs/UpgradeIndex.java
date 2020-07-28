@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Formatter;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -126,7 +127,9 @@ public class UpgradeIndex {
 	public void run() throws GdibException {
 		List<NodeRef> upgradeDocs;
 		NodeRef nodeTmp = utils.idToNodeRef(tmpDir);
-		FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmpIndexFolder", ContentModel.TYPE_FOLDER);
+		FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmpIndexFolder", ContentModel.TYPE_FOLDER);	
+		
+		
 		NodeRef tmpFolder = tmpParentFileInfo.getNodeRef();
 		//Si ocurre algún error ( la carpeta solo debe crearse para llevar a cabo el trabajo temporal)
 		if(tmpFolder == null)
@@ -145,7 +148,10 @@ public class UpgradeIndex {
 
 		if (!CollectionUtils.isEmpty(upgradeDocs)) {
 			for (NodeRef doc : upgradeDocs) {
-
+				//GregorianCalendar calendar = new GregorianCalendar (); // creates a new calendar instance 
+				//int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+				//if (hour >= 8 && hour<23)
+					//break;
 				// DOC ES ÍNDICE ORIGINAL
 				try {
 					LOGGER.debug("Upgradeando el sello el documento: " + doc.getId());
@@ -160,12 +166,11 @@ public class UpgradeIndex {
 					List<ChildAssociationRef> listaHijos  = nodeService.getChildAssocs(rmParent, toSearch);
 					// copyToTemp
 					// Mover a carpeta temporal y devuelvo NodeRef de carpeta temporal
-					NodeRef tmpExpFolder = this.moveToTmp(rmParent,tmpParentFileInfo.getNodeRef());
+					NodeRef tmpExpFolder = this.moveToTmp(rmParent,tmpFolder);
 					// Actualizo firma y devuelvo NodeRefs de indices resellados
 					List<NodeRef> listIndexes= this.upgradeTSASeal(tmpExpFolder);
-					//Actualizo metadatos de los antiguos y nuevos
                     
-
+					//Actualizo los metadatos necesarios
 					for(ChildAssociationRef oldIndex : listaHijos)
 					{
 						nodeService.setProperty(oldIndex.getChildRef(),ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
@@ -182,31 +187,27 @@ public class UpgradeIndex {
 					
 					}
 					
-					// Return to original and change name
+					// Lo devuelvo al RM cambiandole el nombre
 					returnToRMExp(listIndexes,rmParent);
 					LOGGER.debug("After Return TO RMEXP");
 					
-					//Delete tmp folder					
-					nodeService.deleteNode(tmpParentFileInfo.getNodeRef());
-					//Add Metadata
+					//Borro la carpeta del indice					
+					nodeService.deleteNode(tmpExpFolder);
 					
-					active = false;
-					break;
 				} catch (GdibException e) {
 					LOGGER.error(
 							"Error realizando el ugradeo del indice (" + doc.getId() + "). " + e.getMessage());
-					active = false;
-					break;
 				} catch (Exception e) {
 					LOGGER.error(
 							"Error realizando el upgradeo del indice (" + doc.getId() + "). " + e.getMessage());
-					active = false;
-					break;
 				}
 			}
 		}
 		//Finalización del trabajo de upgradeo de índices
 		LOGGER.debug("Upgrade Finalizado");
+		
+		nodeService.deleteNode(tmpFolder);
+
 	}
 
 	/**
@@ -226,20 +227,28 @@ public class UpgradeIndex {
 		Set<QName> toSearch = new HashSet<>();
 		toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
 		List<ChildAssociationRef> listaHijos  = nodeService.getChildAssocs(tempParentRef, toSearch);
+		
 		if(!listaHijos.isEmpty())
 		{	
 			for(ChildAssociationRef it : listaHijos)
 			{
 				if("NO".equals((String) nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)  ) )
 					continue;
-				//Call Upgrade Signature
+
+				
 				LOGGER.debug("Actualizando firma del nodo : "+it.getChildRef().getId());
-				//retrieve answer data (check serial)
 				
     			byte[] signature = utils.getByteArrayFromHandler(utils.getDataHandler(it.getChildRef(), ContentModel.PROP_CONTENT));
-    			//signatureService.verifySignature(null, signature);
-    			//byte[] newSignature  = signatureService.signXadesDocument(signature, SignatureFormat.XAdES_A, null, null);
-    			byte[] newSignature = signatureService.upgradeSignature(signature, SignatureFormat.XAdES_A);
+    			
+    			byte[] newSignature;
+    			try {
+    				newSignature = signatureService.upgradeSignature(signature, SignatureFormat.XAdES_A);	
+    			}catch(GdibException e)
+    			{
+    				LOGGER.debug(e.getMessage());
+    				continue;
+    			}
+    			
     			//Afirma5ServiceInvokerFacade.getInstance().invokeService(newSignature, "validate", method, serviceProperties)
     			try {
     				Document toParseXml = obtenerDocumentDeByte(newSignature);
@@ -252,17 +261,14 @@ public class UpgradeIndex {
     			{
     				
     				LOGGER.debug("GOt Exception While reading XML = "+e.getMessage());
-        			active = false;
+        			//active = false;
 
     				throw new GdibException(e.getMessage());
     			}
     			
     			
     	        
-    	        
-    			active = false;
-    			//set new Signature
-    			//signatureService.verifySignature(null, newSignature);
+    	        //Actualizo la firma como contenido
     	    	DataHandler dh = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(newSignature)));
     	    	
                 utils.setUnsecureDataHandler(it.getChildRef(), ConstantUtils.PROP_CONTENT, dh, MimetypeMap.MIMETYPE_BINARY);
@@ -274,7 +280,8 @@ public class UpgradeIndex {
     			//break;
 			}
 		}
-		// Upgrade Signature / call SignXades Document
+		// Devuelvo una lista con los nodeRefs de los índices actualizados
+		
 
 		return listaIndices;
 	}
@@ -289,29 +296,29 @@ public class UpgradeIndex {
 	 */
 	private List<NodeRef> getDocumentsToUpgrade() throws GdibException {
 		List<NodeRef> result = null;
-		List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
+		//List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
 		// String luceneQuery = upgradeIndexPropertiesFilter.getProperty(typeDoc,
 		// LUCENE_QUERY_TEMPLATE);
 		final SearchParameters params = new SearchParameters();
 		params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
 		params.setLanguage(SearchService.LANGUAGE_LUCENE);
 		int queryResultLength = 0;
-		// +(TYPE:"gdib:indiceExpediente") AND @eni\\:cod_clasificacion:"%s"
-		for (SubTypeDocInfo info : resealInfo) {
-			final StringBuilder query = new StringBuilder(400);
 
-			Formatter formatterDocumento = new Formatter(query);
+		//for (SubTypeDocInfo info : resealInfo) {
+			//final StringBuilder query = new StringBuilder(400);
 
-			formatterDocumento.format(lucene_query, info.getDocumentarySeries()).toString();
+			//Formatter formatterDocumento = new Formatter(query);
 
-			query.trimToSize();
+			//formatterDocumento.format(lucene_query, info.getDocumentarySeries()).toString();
+
+			//query.trimToSize();
 			LOGGER.debug("Query Upgrading Indexes: " + lucene_query);
 
 			params.setQuery(lucene_query);
 
 			// query.append(luceneQuery);
-			query.trimToSize();
-			LOGGER.debug("Query: " + lucene_query);
+			//query.trimToSize();
+			//LOGGER.debug("Query: " + lucene_query);
 
 			// params.setQuery(query.toString());
 
@@ -321,8 +328,7 @@ public class UpgradeIndex {
 				if (resultSet != null && resultSet.length() > 0) {
 					queryResultLength += resultSet.length();
 					result = resultSet.getNodeRefs();
-					LOGGER.debug("Found " + resultSet.length() + " total indexes from cod serie:"
-							+ info.getDocumentarySeries() + " to upgradeSignature");
+					LOGGER.debug("Found " + resultSet.length() + " total indexes to upgradeSignature");
 
 				}
 				LOGGER.info("Número de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
@@ -332,9 +338,8 @@ public class UpgradeIndex {
 					resultSet.close();
 				}
 			}
-			break;
 
-		}
+		//}
 
 		return result;
 	}
@@ -343,7 +348,7 @@ public class UpgradeIndex {
 	 * Método para migrar un expediente a una carpeta temporal.
 	 * @param original Nodo del expediente original a copiar al directorio temporal
 	 * @param tmpFolder Referencia al nodo raiz de la carpetatemporal
-	 * @return
+	 * @return NodeRef of new expedient in TMP folder
 	 * @throws GdibException
 	 */
 	private NodeRef moveToTmp(NodeRef original,NodeRef tmpFolder) throws GdibException
@@ -423,53 +428,8 @@ public class UpgradeIndex {
 	    return builder.parse(new ByteArrayInputStream(documentoXml));
 	}
 
-	/**
-	 * Método que devuelve una cadena del identificador del CN del OCSP provider
-	 * @param signature XML resultado de firma
-	 * @return Identificador por nombre del certificado usado por el servicio OCSP
-	 * @throws IOException
-	 */
-	private String parseTimeStamp(Document signature) throws IOException{
 
-        //NodeList completeCertificateRefs = signature.getElementsByTagName("xades:CompleteCertificateRefs");
-        NodeList OCSPRefs = signature.getElementsByTagName("xades:OCSPRefs");
-        if(OCSPRefs.getLength() != 0)
-        {
-        	Node OCSPREfsList = OCSPRefs.item(0);
-        	if(OCSPREfsList != null)
-        	{
-        		if(OCSPREfsList.hasChildNodes())
-        		{
-        			Node lastOCSPCert = OCSPREfsList.getLastChild();
-        			if(lastOCSPCert  != null)
-        			{
-        				Element lastOCSPCertEle= (Element) lastOCSPCert ;
-        				Node OCSPIdentifier= lastOCSPCertEle.getElementsByTagName("xades:OCSPIdentifier").item(0);
-                		if(OCSPIdentifier != null)
-                		{	
-                			Element OCSPIdentifierElement = (Element)OCSPIdentifier;
-                			Node OCSPResponderID = OCSPIdentifierElement.getElementsByTagName("xades:ResponderID").item(0);
-                			if(OCSPResponderID != null)
-                			{
-                				Element identifier = (Element) OCSPResponderID;
-            	                Node identifierTag = identifier.getElementsByTagName("xades:ByName").item(0);
-            	                if(identifierTag != null)
-            	                {	
-            	                	String res = identifierTag.getTextContent();
-            	                	LOGGER.debug("OCSP Cert Identifier by name : "+res);
-            	                }
-                			}
-                		}
-        			}
-        		}
-        	}
-        }
-		return "PARSETIMESTAMP";
-			
-		
-		
-	}
-		public void setJobRunDate(Date jobRunDate) {
+	public void setJobRunDate(Date jobRunDate) {
 		this.jobRunDate = jobRunDate;
 	}
 

@@ -662,11 +662,8 @@ public class GdibUtils {
 	            QName qname = createQName(prop.getQname());
 	            if(qname != null){
 	            	//Si la propiedad es multiple construimos un array
-	            	LOGGER.debug("searchign prop > "+qname);
 	            	if(dictionaryService.getProperty(qname).isMultiValued()){
-	            		LOGGER.debug("DictonaryServiceGetProperty("+qname+") is not null" );
 	            		String concatenedValue = prop.getValue().toString();
-	            		LOGGER.debug("prop.getValue().toString() is not null" );
 	            		List<String> values = null;
 	            		if(concatenedValue.startsWith("[")){
 	            			concatenedValue = concatenedValue.replace("[", "").replace("]", "");
@@ -678,12 +675,9 @@ public class GdibUtils {
 		            			values = Arrays.asList(trim(concatenedValue.split(ConstantUtils.CSV_SEPARATOR)));
 		            		}
 	            		}
-	            		LOGGER.debug("Got before PUT with values "+values );
 	            		props.put( qname, (Serializable) values );
 	            	} else{
-	            		LOGGER.debug("after dicService Get Property qname" + qname);
 	            		Serializable value = prop.getValue();
-	            		LOGGER.debug("after porp get value"+ (String) value);
 	            		props.put( qname, value  );
 	            	}
 	            }
@@ -1189,15 +1183,11 @@ public class GdibUtils {
 			Object prop = propertiesNode.get(property);
 			if (!property.getNamespaceURI().contains(ConstantUtils.NS_SYSTEM_MODEL) && prop != null) {
 				if (prop instanceof Date) {
-					LOGGER.debug(" READING DATETYPE "+formatQname(property));
 					//properties.put(formatQname(property), new SimpleDateFormat("yyyy-MM-dd").format(prop));
 					properties.add(new Property(formatQname(property), ISO8601DateFormat.format((Date) prop)));
 				} else if (prop instanceof java.util.ArrayList){
 					properties.add(new Property(formatQname(property), prop.toString().replace(", ", ",")));
 				} else {
-					LOGGER.debug(" READING NORMAL PROP "+formatQname(property));
-					if(prop == null)
-						LOGGER.debug("PROP IS NULL CLALING TOSTRING NPE");
 					properties.add(new Property(formatQname(property), prop.toString()));
 				}
 			}
@@ -2668,11 +2658,8 @@ public class GdibUtils {
         							    		DERSequence seq = (DERSequence) c;
         							    		for(int k=0;k<seq.size();k++) {
         							    			DEREncodable d = seq.getObjectAt(k);
-        									    	System.out.println("        " + d.toString() + " " + d.getClass().getName());
-        									    	
+      									    	
         									    	if(d instanceof ASN1Integer) {
-        									    		System.out.println("            <<<<<<<<<<" + d.toString() + ">>>>>>>>>>");
-        									    		LOGGER.debug("TSA CERT SERIAL > "+ d.toString());
         									    		return d.toString();
         									    	}
         									    	

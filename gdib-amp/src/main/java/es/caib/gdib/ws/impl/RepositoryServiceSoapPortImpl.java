@@ -2416,6 +2416,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		List<ChildAssociationRef> hijos = nodeService.getChildAssocs(node);
     	for(ChildAssociationRef childref:hijos){
     		NodeRef hijo = childref.getChildRef();
+			if("NO".equals(nodeService.getProperty(hijo, ConstantUtils.PROP_INDEX_VALID_QNAME) ) )
+				continue;
+
     		if ( nodeService.getType(hijo).equals(ConstantUtils.TYPE_FILE_INDEX_QNAME) ){
     			String name = nodeService.getProperty(hijo, ContentModel.PROP_NAME).toString();
     			String eniId = nodeService.getProperty(node, ConstantUtils.PROP_ID_QNAME ).toString();
