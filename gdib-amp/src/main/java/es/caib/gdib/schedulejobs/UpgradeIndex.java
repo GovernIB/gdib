@@ -2,18 +2,11 @@ package es.caib.gdib.schedulejobs;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,11 +20,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
-import org.alfresco.repo.processor.BaseProcessorExtension;
-import org.alfresco.service.cmr.model.FileExistsException;
 import org.alfresco.service.cmr.model.FileFolderService;
 import org.alfresco.service.cmr.model.FileInfo;
-import org.alfresco.service.cmr.model.FileNotFoundException;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.ContentIOException;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -44,23 +34,8 @@ import org.alfresco.service.namespace.QName;
 import org.alfresco.util.ISO8601DateFormat;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.ASN1Integer;
-import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.ASN1Sequence;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERObject;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERTaggedObject;
-import org.bouncycastle.asn1.util.ASN1Dump;
-import org.bouncycastle.util.encoders.Base64;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.rm.utils.ImportUtils;
@@ -73,12 +48,6 @@ import es.caib.gdib.utils.SubTypeDocUtil;
 import es.caib.gdib.ws.common.types.SignatureFormat;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
-import es.gob.afirma.integraFacade.IntegraFacade;
-import es.gob.afirma.integraFacade.IntegraFacadeWSDSS;
-import es.gob.afirma.integraFacade.pojo.Repository;
-import es.gob.afirma.integraFacade.pojo.VerifyCertificateRequest;
-import es.gob.afirma.integraFacade.pojo.VerifyCertificateResponse;
-import es.gob.afirma.wsServiceInvoker.Afirma5ServiceInvokerFacade;
 
 public class UpgradeIndex {
 	private static final Logger LOGGER = Logger.getLogger(UpgradeIndex.class);
@@ -129,6 +98,16 @@ public class UpgradeIndex {
 		NodeRef nodeTmp = utils.idToNodeRef(tmpDir);
 		FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmpIndexFolder", ContentModel.TYPE_FOLDER);	
 		
+		//Lista para comprobar vigencias
+		List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo(); 
+		Map<String,String> timeLimitMap = new HashMap<>();
+		//Relleno el mapa con la información por Codigo clasificación
+		for(SubTypeDocInfo stdi : resealInfo)
+		{
+			timeLimitMap.put(stdi.getDocumentarySeries(), stdi.getTimeLimit());
+			LOGGER.debug("Inserted into Map KEY"+stdi.getDocumentarySeries() + " TIMELIMT "+stdi.getTimeLimit());
+		}
+		
 		
 		NodeRef tmpFolder = tmpParentFileInfo.getNodeRef();
 		//Si ocurre algún error ( la carpeta solo debe crearse para llevar a cabo el trabajo temporal)
@@ -138,7 +117,7 @@ public class UpgradeIndex {
 		upgradeDocs = null;
 
 		try {
-			LOGGER.debug("Obtiendo los índices");
+			LOGGER.debug("Obteniendo los índices");
 			// Get Index To Apply TSA upgrade
 			upgradeDocs = getDocumentsToUpgrade();
 		} catch (GdibException e) {
@@ -154,17 +133,30 @@ public class UpgradeIndex {
 					//break;
 				// DOC ES ÍNDICE ORIGINAL
 				try {
-					LOGGER.debug("Upgradeando el sello el documento: " + doc.getId());
 
 					ChildAssociationRef rmParentChild = nodeService.getPrimaryParent(doc);
 					if (rmParentChild == null)
 						continue;
 					NodeRef rmParent = rmParentChild.getParentRef();
+					String cod_clasif = (String) nodeService.getProperty(rmParent, ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
+					if(cod_clasif == null)
+					{
+						LOGGER.debug("No se encontró codigo de clasificación en expediente :"+rmParent.getId());
+					}
+					LOGGER.debug("Comprobando vigencia de expediente "+rmParent.getId() +  " con codigo de clasificación "+cod_clasif);
+					if(!checkExpedientReseal((Date)nodeService.getProperty(rmParent,ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),timeLimitMap.get(cod_clasif)))
+					{
+						LOGGER.debug("No debe resellarse ya que ha pasado el periodo de vigencia");
+						continue;
+					}
+					
 					Set<QName> toSearch = new HashSet<>();
 					toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
 					//Obtengo lista de índices antiguos que dejarán de ser válidos al completar el proceso
 					List<ChildAssociationRef> listaHijos  = nodeService.getChildAssocs(rmParent, toSearch);
 					// copyToTemp
+					LOGGER.debug("Upgradeando el sello el documento: " + doc.getId());
+
 					// Mover a carpeta temporal y devuelvo NodeRef de carpeta temporal
 					NodeRef tmpExpFolder = this.moveToTmp(rmParent,tmpFolder);
 					// Actualizo firma y devuelvo NodeRefs de indices resellados
@@ -173,6 +165,9 @@ public class UpgradeIndex {
 					//Actualizo los metadatos necesarios
 					for(ChildAssociationRef oldIndex : listaHijos)
 					{
+						if("NO".equals(nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME) ))
+							continue;
+						
 						nodeService.setProperty(oldIndex.getChildRef(),ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
 						nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
 					}
@@ -427,7 +422,26 @@ public class UpgradeIndex {
 	    DocumentBuilder builder = factory.newDocumentBuilder();
 	    return builder.parse(new ByteArrayInputStream(documentoXml));
 	}
-
+	/**
+	 * Método auxiliar para saber si un expediente se debe resellar
+	 * @param fechaFinExp fecha cierre del expediente
+	 * @param diasVigencia dias de vigencia por serie documental
+	 * @return true si debe resellarse
+	 */
+	private boolean checkExpedientReseal(Date fechaFinExp,String diasVigencia)
+	{
+		Calendar docLifeTimeCal;
+		//Si diasVigencia es nulo se entiende que ha de resellarse
+		if(diasVigencia == null)
+			return true;
+		docLifeTimeCal = Calendar.getInstance();
+		docLifeTimeCal.setTime(fechaFinExp);
+		docLifeTimeCal.add(Calendar.DAY_OF_YEAR, Integer.valueOf(diasVigencia));
+    	boolean res = docLifeTimeCal.before(jobRunDate);
+    	LOGGER.debug("Checking if "+docLifeTimeCal.toString() + " is before than "+ jobRunDate.toString());
+    	return res;
+		
+	}
 
 	public void setJobRunDate(Date jobRunDate) {
 		this.jobRunDate = jobRunDate;
