@@ -1710,8 +1710,8 @@ public class GdibUtils {
     	nodeParent = getParentFromClassificationTable(classificationCategory);
     	if(nodeParent != null){
     		String expedientDate= this.getProperty(node.getProperties(), ConstantUtils.PROP_FECHA_INICIO_QNAME);
-    		expedientDate = this.getISO860DateFormat(expedientDate);
        		node.getProperties().add(new Property(ConstantUtils.PROP_FECHA_INICIO_QNAME, expedientDate));
+			expedientDate = this.getISO860DateFormat(expedientDate);
 			String functionName = (String) nodeService.getProperty(nodeParent, ConstantUtils.PROP_NAME);
 			String path = ConstantUtils.PATH_SEPARATOR + functionName
 					+ ConstantUtils.PATH_SEPARATOR + classificationCategory + ConstantUtils.PATH_SEPARATOR + expedientDate.replace("-", ConstantUtils.PATH_SEPARATOR);
