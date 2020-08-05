@@ -105,6 +105,11 @@
 		<property name="fileFolderService" ref="FileFolderService" />
 		<property name="active" value="$gdib{upgrade.active}" />
 		<property name="lucene_query" value="$gdib{upgrade.lucene_query}" />
+		<property name="end_hour" value="$gdib{upgrade.end_hour}" />
+		<property name="start_hour" value="$gdib{upgrade.start_hour}" />
+		<property name="max_items" value="$gdib{upgrade.max_items}" />
+		<property name="cert_serial" value="$gdib{upgrade.cert_serial}" />
+		
 		<property name="tmpDir" value="$gdib{gdib.repository.temp.folder.uuid}" />
 		
 	</bean>
