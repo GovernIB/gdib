@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -2687,7 +2689,96 @@ public class GdibUtils {
 
 		
 	}
+	/**
+	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
+	 * @param signature XML que contiene la firma en un índice
+	 * @return Serial number del certificado de la TSA
+	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
+	 * @throws IOException  Excepción lanzada si no consigue leer el XML
+	 */
+	public Date parseTimeStampASN1CertCad(org.w3c.dom.Document signature) throws GdibException,IOException{
 
+		org.w3c.dom.NodeList completeCertificateRefs = signature.getElementsByTagName("xadesv141:ArchiveTimeStamp");
+        if(completeCertificateRefs.getLength() != 0)
+        {
+        	org.w3c.dom.Node certRefs = completeCertificateRefs.item(0);
+        	if(certRefs != null)
+        	{
+        		if(certRefs.hasChildNodes())
+        		{
+        			Element archivtimeStamp = (Element) certRefs;
+        			org.w3c.dom.Node timeStamp = archivtimeStamp.getElementsByTagName("xades:EncapsulatedTimeStamp").item(0);
+
+        			if(timeStamp != null)
+        			{
+        				String toDecode = timeStamp.getTextContent();
+        				if(toDecode == null)
+        					return null;
+        				
+        				byte[] valueDecoded = Base64.decode(toDecode.getBytes());
+        				ASN1InputStream bIn = new ASN1InputStream(valueDecoded);
+        				
+        				DERObject obj;
+        				try {
+        					while ((obj = bIn.readObject()) != null) {
+        					    ASN1Sequence asn1 = ASN1Sequence.getInstance(obj);
+
+        					    DEREncodable a = asn1.getObjectAt(1);
+        					    DERTaggedObject derTaggedObject = (DERTaggedObject) a;
+        					    
+        					    ASN1Sequence asn2 = ASN1Sequence.getInstance(derTaggedObject.getObject());
+        					    
+        					    for(int i=0;i<asn2.size();i++) {
+        					    	DEREncodable b = asn2.getObjectAt(i);
+        					    	if (b instanceof DERTaggedObject) {
+        					    		DERTaggedObject tag = ((DERTaggedObject) b);
+        					    		ASN1Sequence asn3 = ASN1Sequence.getInstance(tag.getObject());
+        					    		
+        					    		for(int j=0;j<asn3.size();j++) {
+        							    	DEREncodable c = asn3.getObjectAt(j);
+        							    	if (c instanceof DERSequence) {
+        							    		DERSequence seq = (DERSequence) c;
+        							    		DEREncodable d = seq.getObjectAt(4);
+        							    		DERSequence seq2 = (DERSequence) d;
+        							    		for(int l=0;l<seq2.size();l++) {
+        							    			DEREncodable e = seq2.getObjectAt(l);
+        							    			
+        							    			String input = e.toString();
+        							    			DateFormat parser = new SimpleDateFormat("yyMMddHHmmss");
+        							    			Date date;
+        											try {
+        												date = parser.parse(input);
+        								    			
+        								    			return date;
+        											} catch (ParseException e1) {
+        												LOGGER.debug("Ocurrió un error obteniendo caducidad del certificado.");
+        					        					throw new GdibException("Excepcion reading TSA Cert Validity");
+        											}
+        							    			
+        							    		}
+        							    		
+        							    	}
+        							    	
+        							    }
+        					    		
+        					    	}
+        					     }
+        					   
+        					}
+        				} catch (IOException e) {
+        					LOGGER.debug("Excepcion reading TSA Cert Validity");
+        					throw new GdibException("Excepcion reading TSA Cert Validity");
+        				}
+        			}
+        			
+        		}
+        	}
+        }
+		
+		return null;
+
+		
+	}
 	//public void setUnsecureContentService(ContentService unsecureContentService) {
 		//this.unsecureContentService = unsecureContentService;
 	//}

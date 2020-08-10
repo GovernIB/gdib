@@ -379,7 +379,8 @@ public class ResealDocuments extends BaseProcessorExtension {
 	    	} else {
 	    		//El documento se encuentra en RM
 	    		//Es necesario comprobar el plazo de prescripción de los valores primarios, propiedad eni:plazo
-	    		try{
+	    		res = Boolean.FALSE;
+	    		/*try{
 	    			timeLimit = Integer.parseInt(info.getTimeLimit());
 	    			if(timeLimit >= 0){
 	    				// si la fecha de entrada en RM + el plazo del valor primario es anterior o igual
@@ -396,7 +397,7 @@ public class ResealDocuments extends BaseProcessorExtension {
 	    		} catch(Exception e){
 	    			//Se entiende que no ha sido establecido un tiempo máximo de vida del valor primario del documento
 	    			res = Boolean.TRUE;
-	    		}
+	    		}*/
 	    	}
     	}
 

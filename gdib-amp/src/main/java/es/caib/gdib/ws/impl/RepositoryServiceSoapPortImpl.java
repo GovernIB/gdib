@@ -2172,9 +2172,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			Document dIndexInternal = XmlUtils.byteArrayToXmlDocument(indexBArrayInternal);
 			dIndexInternal.getDocumentElement().normalize();
 			String serialCertIdentr= utils.parseTimeStampASN1(dIndexInternal) ;
+			Date certValidity = utils.parseTimeStampASN1CertCad(dIndexInternal);
+			
 			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
 			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
-			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
 				
 			
 		}catch(Exception e)
@@ -2201,9 +2203,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			Document dIndexEchange = XmlUtils.byteArrayToXmlDocument(indexBArrayExchange);
 			dIndexEchange.getDocumentElement().normalize();
 			String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
+			Date certValidity = utils.parseTimeStampASN1CertCad(dIndexEchange);
+
 			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
 			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
-			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(new Date()));
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
 				
 			
 		}catch(Exception e)

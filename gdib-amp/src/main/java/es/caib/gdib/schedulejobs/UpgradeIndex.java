@@ -149,18 +149,22 @@ public class UpgradeIndex {
 					}
 					LOGGER.debug("Comprobando vigencia de expediente " + rmParent.getId()
 							+ " con codigo de clasificación " + cod_clasif);
-					if (!checkExpedientReseal(
-							(Date) nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),
-							timeLimitMap.get(cod_clasif))) {
-						LOGGER.debug("No debe resellarse ya que ha pasado el periodo de vigencia");
-						continue;
-					}
-
+					
 					Set<QName> toSearch = new HashSet<>();
 					toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
 					// Obtengo lista de índices antiguos que dejarán de ser válidos al completar el
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
+
+					if (!checkExpedientReseal(
+							(Date) nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),
+							timeLimitMap.get(cod_clasif))) {
+						
+						updateOldIndexesValidity(listaHijos);
+						LOGGER.debug("No debe resellarse ya que ha pasado el periodo de vigencia");
+						continue;
+					}
+
 					// copyToTemp
 					LOGGER.debug("Upgradeando el sello el documento: " + doc.getId());
 
@@ -169,19 +173,12 @@ public class UpgradeIndex {
 					// Actualizo firma y devuelvo NodeRefs de indices resellados
 					List<NodeRef> listIndexes = this.upgradeTSASeal(tmpExpFolder);
 
-					// Actualizo los metadatos necesarios
-					for (ChildAssociationRef oldIndex : listaHijos) {
-						if ("NO".equals(
-								nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
-							continue;
+					// Actualizo los metadatos necesarios- Se realiza aqui por que asi aseguras el haber generado los nuevos sellos
+					updateOldIndexesValidity(listaHijos);
 
-						nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
-								ISO8601DateFormat.format(new Date()));
-						nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
-					}
 					for (NodeRef newIndex : listIndexes) {
-						nodeService.setProperty(newIndex, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
-								ISO8601DateFormat.format(new Date()));
+						//nodeService.setProperty(newIndex, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
+							//	ISO8601DateFormat.format(new Date()));
 						nodeService.setProperty(newIndex, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
 						nodeService.setProperty(newIndex, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME,
 								nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME));
@@ -209,6 +206,20 @@ public class UpgradeIndex {
 
 		nodeService.deleteNode(tmpFolder);
 
+	}
+	
+	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
+		
+		for (ChildAssociationRef oldIndex : listaHijos) {
+			if ("NO".equals(
+					nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
+				continue;
+
+			//nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
+				//	ISO8601DateFormat.format(new Date()));
+			nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
+		}
+		
 	}
 
 	/**
@@ -256,7 +267,10 @@ public class UpgradeIndex {
 					// LOGGER.debug(parseTimeStamp(toParseXml));
 
 					String certValue = utils.parseTimeStampASN1(toParseXml);
+					Date certValidity  = utils.parseTimeStampASN1CertCad(toParseXml);
 					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME, certValue);
+					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
+					LOGGER.debug("GOT CERT VALIDTIY " + ISO8601DateFormat.format(certValidity));
 				} catch (Exception e) {
 
 					LOGGER.debug("GOt Exception While reading XML = " + e.getMessage());
