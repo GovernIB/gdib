@@ -1019,7 +1019,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                     throw new AlfrescoRuntimeException("Can't create recorded version, because copy fails.", e);
                 }
 
-                // set extended security on recordç
+                // set extended security on record
                 extendedSecurityService.set(record,readers,writers);
                 //extendedSecurityService.addExtendedSecurity(record, readers, writers);
 

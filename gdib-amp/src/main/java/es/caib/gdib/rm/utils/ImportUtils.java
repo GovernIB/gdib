@@ -83,7 +83,7 @@ public class ImportUtils {
 
 		NodeRef openExpedient = nodeService.getChildByName(destRef, ContentModel.ASSOC_CONTAINS, expedientName);
 		LOGGER.debug("Obtengo el expediente nuevo creado. ("+openExpedient.getId()+")");
-		LOGGER.debug("Añado propiedad expediente original al nuevo expediente creado");
+		LOGGER.debug("Atado propiedad expediente original al nuevo expediente creado");
 		//TODO Trabajo de reopen File
 		nodeService.setProperty(openExpedient, ConstantUtils.PROP_EXP_REAPERTURA_QNAME, expediente.getStoreRef()+"/"+expediente.getId());
 		//

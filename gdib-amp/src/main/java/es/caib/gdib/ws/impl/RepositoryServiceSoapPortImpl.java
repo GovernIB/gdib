@@ -123,7 +123,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	
 	
     /**
-     * Localización de ficheros temporales
+     * Localizacion de ficheros temporales
      * */
     @Value("$gdib{gdib.repository.temp.folder.uuid}")
     private String tempFolder;
@@ -153,7 +153,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	private boolean preingreso;
 
 	/**
-     * Límite de resultados obtenidos en la bÃƒÂºsqueda
+     * Limite de resultados obtenidos en la bÃƒÂºsqueda
      * */
     @Value("$gdib{gdib.repository.search.limit}")
     private String searchLimit;
@@ -226,8 +226,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	}
 
 	/**
-	 * Genera una versión en el nodo.
-	 * @param nodeRef NodeRef del nodo que se quiere avanzar una versión
+	 * Genera una version en el nodo.
+	 * @param nodeRef NodeRef del nodo que se quiere avanzar una version
 	 *
 	 * */
     private void createVersion(NodeRef nodeRef){
@@ -271,7 +271,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Dado un nodo se recoge a travÃƒÂ©s de su serie documental una plantilla y se copia dentro del nodo.
-     * @param node Nodo que se acaba de crear y que habría que aplicar dicha plantilla.
+     * @param node Nodo que se acaba de crear y que habria que aplicar dicha plantilla.
      * @throws GdibException Si no se tienen permisos o se produce algÃƒÂºn error.
      * */
     private void getTemplate(NodeRef node) throws GdibException{
@@ -300,7 +300,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
 	 * Desacoplamiento de createNode.
-	 * Realiza la operación de createNode sin comprobaciones previas y con todos los elementos:
+	 * Realiza la operacion de createNode sin comprobaciones previas y con todos los elementos:
 	 *  - Firma
 	 *  - Contenido
 	 *  - Metadatos
@@ -309,7 +309,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @param  name Nombre del nuevo nodo.
 	 * @param  type QName del tipo del nuevo nodo
 	 * @param  props Mapa<QName,Serializable> de propiedades del nuevo nodo.
-	 * @param  aspects Lista<QName> de aspectos que tendrá el nuevo nodo.
+	 * @param  aspects Lista<QName> de aspectos que tendra el nuevo nodo.
 	 * @param  content Contenido del nuevo nodo a crear.
 	 * @param  sign Contenido de la firma del nuevo nodo a crear.
 	 * @return NodeRef del nuevo nodo creado.
@@ -343,7 +343,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 	 /**
 	 * Desacoplamiento de createNode.
-	 * Realiza la operación de createNode sin comprobaciones previas con los elementos:
+	 * Realiza la operacion de createNode sin comprobaciones previas con los elementos:
 	 *  - Contenido
 	 *  - Metadatos
 	 *
@@ -351,7 +351,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @param  name Nombre del nuevo nodo.
 	 * @param  type QName del tipo del nuevo nodo
 	 * @param  props Mapa<QName,Serializable> de propiedades del nuevo nodo.
-	 * @param  aspects Lista<QName> de aspectos que tendrá el nuevo nodo.
+	 * @param  aspects Lista<QName> de aspectos que tendra el nuevo nodo.
 	 * @param  content Contenido del nuevo nodo a crear.
 	 * @return NodeRef del nuevo nodo creado.
 	 * @throws GdibException Si no se tienen permisos para crear el nodo.
@@ -380,13 +380,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
      /**
  	 * Desacoplamiento de createNode.
- 	 * Realiza la operación de createNode sin comprobaciones previas con sus metadatos
+ 	 * Realiza la operacion de createNode sin comprobaciones previas con sus metadatos
  	 *
  	 * @param  parentRef NodeRef del nodo padre donde se va a generar el nuevo nodo.
  	 * @param  name Nombre del nuevo nodo.
  	 * @param  type QName del tipo del nuevo nodo
  	 * @param  props Mapa<QName,Serializable> de propiedades del nuevo nodo.
- 	 * @param  aspects Lista<QName> de aspectos que tendrá el nuevo nodo.
+ 	 * @param  aspects Lista<QName> de aspectos que tendra el nuevo nodo.
  	 * @return NodeRef del nuevo nodo creado.
  	 * @throws GdibException Si no se tienen permisos para crear el nodo.
  	 * @throws GdibException Si el nombre es incorrecto.
@@ -416,12 +416,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
    	 * Desacoplamiento de getNode.
-   	 * Realiza la operación de getNode sin comprobaciones previas.
+   	 * Realiza la operacion de getNode sin comprobaciones previas.
    	 *
    	 * @param  nodeRef NodeRef del nodo a recuperar.
    	 * @param  withContent Flag que indica si se quiere recuperar o no el contenido del nodo.
    	 * @param  withSign Flag que indica si se quiere recuperar o no la firma del nodo.
-   	 * @return Node Objeto Nodo con la información que alfresco tiene en el repositorio.
+   	 * @return Node Objeto Nodo con la informacion que alfresco tiene en el repositorio.
    	 * @throws GdibException Si no se tienen permisos para recuperar el nodo.
    	 * */
     public Node _internal_getNode(NodeRef nodeRef, boolean withContent, boolean withSign) throws GdibException {
@@ -464,14 +464,14 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
    	 * Desacoplamiento de linkNode.
-   	 * Realiza la operación de copia de un nodo sin comprobaciones previas.
+   	 * Realiza la operacion de copia de un nodo sin comprobaciones previas.
    	 *
    	 * @param  target NodeRef del nodo padre donde se va a copiar el nodo.
    	 * @param  source NodeRef del nodo que se quiere copiar.
    	 * @return NodeRef del nuevo nodo copiado.
-   	 * @throws GdibException Si no se tienen permisos para crear el nodo en la nueva localización.
+   	 * @throws GdibException Si no se tienen permisos para crear el nodo en la nueva localizacion.
    	 * @throws GdibException Si no se tienen permisos para leer el nodo source.
-   	 * @throws GdibException Si el nodo copiado ya existía previamente
+   	 * @throws GdibException Si el nodo copiado ya existia previamente
    	 * @throws GdibException Si no se encuentra el nodo origen.
    	 * */
     private NodeRef _internal_copy(NodeRef target, NodeRef source) throws GdibException{
@@ -489,13 +489,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
    	 * Desacoplamiento de linkNode.
-   	 * Realiza la operación de enlace de un nodo sin comprobaciones previas.
-   	 * La operación de enlazar dispone un enlace padre-hijo entre nodos.
+   	 * Realiza la operacion de enlace de un nodo sin comprobaciones previas.
+   	 * La operacion de enlazar dispone un enlace padre-hijo entre nodos.
    	 *
    	 * @param  target NodeRef del nodo padre donde se va a enlazar el nodo.
    	 * @param  source NodeRef del nodo que se quiere enlazar.
    	 * @return el uuid del nodo padre donde se enlazo el documento
-   	 * @throws GdibException Si no se tienen permisos para enlazar el nodo en la nueva localización.
+   	 * @throws GdibException Si no se tienen permisos para enlazar el nodo en la nueva localizacion.
    	 *
    	 * */
     private void _internal_ref(NodeRef target, NodeRef source) throws GdibException {
@@ -506,12 +506,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
    	 * Desacoplamiento de moveNode.
-   	 * Realiza la operación de movimiento de un nodo sin comprobaciones previas.
+   	 * Realiza la operacion de movimiento de un nodo sin comprobaciones previas.
    	 *
    	 * @param  nodeRef del nodo que se pretende mover
    	 * @param  newParentNodeRef NodeRef del nodo padre donde se va a mover el nodo.
-   	 * @throws GdibException Si no se tienen permisos para mover el nodo en la nueva localización.
-   	 * @throws GdibException Si el nodo que se quiere mover está bloqueado por otro usuario.
+   	 * @throws GdibException Si no se tienen permisos para mover el nodo en la nueva localizacion.
+   	 * @throws GdibException Si el nodo que se quiere mover esta bloqueado por otro usuario.
    	 * */
     private void _internal_moveNode (NodeRef nodeRef, NodeRef newParentNodeRef) throws GdibException {
         if(! utils.isNodeLocked(nodeRef)){
@@ -523,7 +523,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Desacoplamiento de authorizeNode
-     * Realiza la asignación/desasignación de permisos a unas autoridades en concreto para unos nodos de alfresco sin comprobaciones previas.
+     * Realiza la asignacion/desasignacion de permisos a unas autoridades en concreto para unos nodos de alfresco sin comprobaciones previas.
      *
      * @param nodeRefs Lista de nodos que se pretenden modificar sus ACLs
      * @param authorities Lista de autoridades que van a modificar los permisos de los nodos.
@@ -546,7 +546,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Desacoplamiento de authorizeNode
-     * Realiza la asignación/desasignación de permisos a una sola autoridad en concreto para un nodo de alfresco sin comprobaciones previas.
+     * Realiza la asignacion/desasignacion de permisos a una sola autoridad en concreto para un nodo de alfresco sin comprobaciones previas.
      *
      * @param nodeRef Nodo que se pretende modificar sus ACLs
      * @param authority Autoridad que va a modificar los permisos del nodo.
@@ -573,7 +573,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Desacoplamiento de authorizeNode
-     * Realiza la asignación/desasignación de una lista de permisos a una autoridad en concreto para un nodo de alfresco sin comprobaciones previas.
+     * Realiza la asignacion/desasignacion de una lista de permisos a una autoridad en concreto para un nodo de alfresco sin comprobaciones previas.
      *
      * @param nodeRef Nodo que se pretende modificar sus ACLs
      * @param authority Autoridad que va a modificar los permisos del nodo.
@@ -586,7 +586,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	}
 
     /**
-     * Genera y firma el indice electrónico del expediente.
+     * Genera y firma el indice electronico del expediente.
      *
      * 		AdministrativeProcessingIndexSignerFactory.CAIB_INDEX_V10 => Indice electronico interno de CAIB. Se usa en los servicios de cerrar expediente y foliado de expediente
      * 		AdministrativeProcessingIndexSignerFactory.ENI_INDEX_V10 => Indice electronico ENI. Se usa en el servicio de export expediente.
@@ -602,7 +602,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 		try {
 			// 1 Generar indice XML
-			// 2 Firma del indice electrónico
+			// 2 Firma del indice electronico
 			byte[] signedXmlIndex = null;
 			switch (indexType) {
 			case AdministrativeProcessingIndexSignerFactory.CAIB_INDEX_V10:
@@ -617,7 +617,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				//Firma del del expediente ENI
 				LOGGER.debug("Genero el indice ENI_INDEX_V10");
 				ie = indiceElectronicoManager.getExpedienteElectronicoENI(nodeRef);
-				//Se especifica como referencia de firma el elemento raíz expediente
+				//Se especifica como referencia de firma el elemento raiz expediente
 				Map<String, Object> optionalParams = new HashMap<String, Object>();
 				optionalParams.put(ConstantUtils.INDEX_ID_ATT_KEY,
 						((es.caib.gdib.ws.xsd.expediente.eni.TipoExpediente) ie).getId());
@@ -628,7 +628,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.debug("Indice ENI_INDEX_V10 completado");
 				break;
 			default:
-				throw new GdibException("El tipo de índice " + indexType + " no es soportado.");
+				throw new GdibException("El tipo de indice " + indexType + " no es soportado.");
 			}
 
 
@@ -644,7 +644,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	}
 
 	/**
-	 * Comprobación de la firma de un documento.
+	 * Comprobacion de la firma de un documento.
 	 *
 	 * @param node Nodo que contiene la firma.
 	 *
@@ -659,7 +659,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     	nodeIdValue = (node.getId() == null? "nuevo documento": node.getId());
 
-    	LOGGER.debug("Se inicia la validacion de la firma electrónica del documento " + nodeIdValue);
+    	LOGGER.debug("Se inicia la validacion de la firma electronica del documento " + nodeIdValue);
     	signatureTypeProp = utils.getProperty(node.getProperties(), EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_TIPO_FIRMA);
     	LOGGER.debug("Tipo de firma ENI: " + signatureTypeProp);
     	if(signatureTypeProp == null){
@@ -674,7 +674,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     	}
 
         try{
-        	// si es un documento, es version definitiva y si la firma es realizada mediante certificado electrónico
+        	// si es un documento, es version definitiva y si la firma es realizada mediante certificado electronico
         	if(utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)
                 	&& utils.isFinalNode(node)
                 		&& !EniSignatureType.TF01.equals(eniSignatureType)){
@@ -683,11 +683,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
         		if(!EniSignatureType.TF01.equals(eniSignatureType) &&
         				!EniSignatureType.TF04.equals(eniSignatureType)){
-        			//Firma electrónica implicita (TF02, TF03, TF05 y TF06)
+        			//Firma electronica implicita (TF02, TF03, TF05 y TF06)
         			signature = utils.getByteArrayFromHandler(utils.getNodeContent(node));
         			implicitSignature = Boolean.TRUE;
         		} else {
-        			//Firma electrónica explicita
+        			//Firma electronica explicita
         			signature = utils.getByteArrayFromHandler(utils.getNodeSign(node));
         		}
 
@@ -697,11 +697,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
         		if(!EniSignatureType.TF05.equals(eniSignatureType) &&
         				!EniSignatureType.TF06.equals(eniSignatureType)){
-        			// Los tipos de firmas TF02,TF03 y TF04 requieren informar el contenido del documento para validar la firma electrónica
+        			// Los tipos de firmas TF02,TF03 y TF04 requieren informar el contenido del documento para validar la firma electronica
         			// se comprueba que es un documento migrado, mirando si viene informado el uuid o si es un nodo de migracion y con aspecto transformado
         			content = utils.getByteArrayFromHandler(utils.getNodeContent(node));
         		}
-        		LOGGER.debug("Preparando invocación a plataforma @firma (ValidarFirma)...");
+        		LOGGER.debug("Preparando invocacion a plataforma @firma (ValidarFirma)...");
         		//Se obtiene el actual perfil de firma establecido para el documento
         		signatureProfileNodeProp = utils.getProperty(node.getProperties(), EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
         		LOGGER.debug("Valor informado para el metadato " + EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA
@@ -709,10 +709,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		currentSignatureFormat = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(eniSignatureType.getName(),signatureProfileNodeProp);
         		// Se verifica la firma
         		SignatureValidationReport result = signatureService.verifySignature(content, signature);
-        		LOGGER.debug("Parseando resultado de validación de la firma electrónica del documento " + node.getId() + ".");
+        		LOGGER.debug("Parseando resultado de validacion de la firma electronica del documento " + node.getId() + ".");
         		if(result.getValidationStatus() == ValidationStatus.CORRECTO){
-        			LOGGER.debug("Resultado de validación de la firma electrónica del documento " + (node.getId() == null? "nuevo documento": node.getId()) + " correcto.");
-        			//Si la firma es correcta, se verifica que el formato avanzado es igual o superior al mínimo exigido
+        			LOGGER.debug("Resultado de validacion de la firma electronica del documento " + (node.getId() == null? "nuevo documento": node.getId()) + " correcto.");
+        			//Si la firma es correcta, se verifica que el formato avanzado es igual o superior al manimo exigido
         			signatureFormat = SignatureUtils.dssSigntureFormatToInernalSignatureFormat(result.getSignatureType(),result.getSignatureForm());
         			LOGGER.debug("Se verifica que la firma y el metadato de firma son coherentes (familia o tipo de firma).");
         			if(!currentSignatureFormat.getType().equalsIgnoreCase(signatureFormat.getType())){
@@ -721,7 +721,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         				throw new GdibException("Metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " con valor incorrecto para el documento " +
         						nodeIdValue + ". Formato DSS esperado " + result.getSignatureType() + ".");
         			}
-        			LOGGER.debug("Se verifica que la firma presenta un formato avanzado igual o superior al mínimo exigido...");
+        			LOGGER.debug("Se verifica que la firma presenta un formato avanzado igual o superior al manimo exigido...");
         			custodyAdvancedSignatureFormats =  minCustodyAdvancedSignatureFormats.split(ConstantUtils.COMMA_SEPARATOR);
         			minCustodySignatureFormat = SignatureFormat.UNRECOGNIZED;
         			eniSignatureProfile = null;
@@ -731,25 +731,25 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         				if(custodyAdvancedSignatureFormats[i].toUpperCase().startsWith(eniSignatureType.getName().toUpperCase())){
         					minCustodySignatureFormat = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(custodyAdvancedSignatureFormats[i]);
         					eniSignatureProfile = SignatureUtils.getEniSignatureProfile(custodyAdvancedSignatureFormats[i]);
-        					LOGGER.debug("Formato mínimo exigido configurado para el tipo de firma " + eniSignatureType.getName() + ": " + custodyAdvancedSignatureFormats[i] + ".");
+        					LOGGER.debug("Formato manimo exigido configurado para el tipo de firma " + eniSignatureType.getName() + ": " + custodyAdvancedSignatureFormats[i] + ".");
         					found = Boolean.TRUE;
         				}
         			}
 
         			if(!found || SignatureFormat.UNRECOGNIZED.equals(minCustodySignatureFormat) || eniSignatureProfile == null){
-        				throw new GdibException("Sistema mal cofigurado, debe establecerse un formato de firma electrónica avanzado mínimo para el tipo de firma " +
+        				throw new GdibException("Sistema mal cofigurado, debe establecerse un formato de firma electronica avanzado manimo para el tipo de firma " +
         						eniSignatureType.getName() + ".");
         			}
 
-        			//Si el formato de firma es inferior, se evoluciona al mínimo exigido
+        			//Si el formato de firma es inferior, se evoluciona al minimo exigido
         			if(minCustodySignatureFormat.isMoreAdvancedSignatureFormat(signatureFormat)){
-        				LOGGER.debug("Formato de firma inferior al mínimo exigido para custodia, se procede a evolucionar la firma al formato: " +
+        				LOGGER.debug("Formato de firma inferior al minimo exigido para custodia, se procede a evolucionar la firma al formato: " +
         						minCustodySignatureFormat.getName() + " (Perfil de firma: " + eniSignatureProfile.getName() + ").");
-        				LOGGER.debug("Preparando invocación a plataforma @firma (UpgradeFirma)...");
+        				LOGGER.debug("Preparando invocacion a plataforma @firma (UpgradeFirma)...");
         				signature = signatureService.upgradeSignature(signature, minCustodySignatureFormat);
-        				LOGGER.debug("Modificando firma electrónica del documento " + nodeIdValue + "....");
+        				LOGGER.debug("Modificando firma electronica del documento " + nodeIdValue + "....");
         				DataHandler signatureDataHandler = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(signature)));
-            			//Se actualiza la información del nodo y la firma electrónica
+            			//Se actualiza la informacion del nodo y la firma electronica
         				if(implicitSignature){
         					if ( node.getContent() != null ){
         						node.getContent().setData(signatureDataHandler);
@@ -765,7 +765,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         			}
 
         			//Se verifica que el perfil de firma informado es el mismo que el retornado por @firma
-        			//Si no es así, se modifica el metadato
+        			//Si no es asi, se modifica el metadato
         			if(!signatureProfileNodeProp.equals(eniSignatureProfile.getName())){
         				LOGGER.debug("Modificando el metadato " + EniModelUtilsInterface.PROP_PERFIL_FIRMA + " del documento " + nodeIdValue +
         						". Nuevo valor: " + eniSignatureProfile.getName() + ".");
@@ -784,13 +784,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         				}
     				}
 
-        			LOGGER.debug("Validación firma electrónica del documento " + nodeIdValue + " finalizada.");
+        			LOGGER.debug("Validacion firma electronica del documento " + nodeIdValue + " finalizada.");
         		} else if(result.getValidationStatus() == ValidationStatus.NO_CORRECTO){
-        			LOGGER.debug("Resultado de validación de la firma electrónica del documento " + node.getId() + " incorrecto.");
+        			LOGGER.debug("Resultado de validacion de la firma electronica del documento " + node.getId() + " incorrecto.");
         			throw new GdibException("La firma del documento " +
             				node.getId() + " no es valida: " + result.getValidationMessage() + "("+result.getDetailedValidationStatus()+").");
         		} else if(result.getValidationStatus() == ValidationStatus.NO_DETERMINADO){
-        			LOGGER.debug("Resultado de validación de la firma electrónica del documento " + node.getId() + " no determinado.");
+        			LOGGER.debug("Resultado de validacion de la firma electronica del documento " + node.getId() + " no determinado.");
         			throw new GdibException("No ha sido posible determinar la validez de la firma del documento " +
             				node.getId() + ".");
         		}
@@ -798,7 +798,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     	}catch(GdibException e){
     		throw e;
     	} finally {
-    		LOGGER.debug("Finalizada la validación de la firma electrónica del documento " + node.getId());
+    		LOGGER.debug("Finalizada la validacion de la firma electronica del documento " + node.getId());
     	}
     }
 
@@ -870,8 +870,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		/**
         		 * El nombre original es diferente a newname y a newnameprop, es decir, el nombre
         		 * en las propiedades y el nombre en el mÃƒÂ©todo getName son diferentes del orignial. En este
-        		 * punto solo caben dos opciones, ambos son iguales (no habría que hacer nada) o son diferentes,
-        		 * con lo que habría que lanzar una excepción porque se está intentando modificar dos veces el nombre
+        		 * punto solo caben dos opciones, ambos son iguales (no habria que hacer nada) o son diferentes,
+        		 * con lo que habria que lanzar una excepcion porque se esta intentando modificar dos veces el nombre
         		 * */
         		if ( newName != null && ! newName.equals(newNameProp)){
         			exUtils.checkMetadataException(ContentModel.PROP_NAME.getLocalName());
@@ -924,7 +924,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /**
-     * Modifica el contenido de un nodo para la operación modifyNode.
+     * Modifica el contenido de un nodo para la operacion modifyNode.
      *
      * @param node NodeRef del nodo a modificar su contenido.
      * @param updateContent Nuevo contenido del nodo
@@ -952,7 +952,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /***
-     * Modifica la firma de un nodo para la operación de modifyNode
+     * Modifica la firma de un nodo para la operacion de modifyNode
      *
      * @param node NodeRef del nodo
      * @param updateSign Nueva firma
@@ -981,7 +981,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /**
-     * Generación del export de un expediente sin comprobaciones previas.
+     * Generacion del export de un expediente sin comprobaciones previas.
      *
      * @param nodeRef NodeRef del expediente a exportar.
      * @return Identificador del subexpediente generado.
@@ -1006,7 +1006,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 //		    	if(exportFolder!=null)	fileFolderService.delete(exportFolder);
 		    	NodeRef ie_node = null;
 		    	try {
-			 		// Folio el expediente generando el XML de indice electrónico ENI firmado
+			 		// Folio el expediente generando el XML de indice electronico ENI firmado
 					DataHandler dh = _internal_foliate(nodeRef, AdministrativeProcessingIndexSignerFactory.ENI_INDEX_V10);
 
 					String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
@@ -1101,7 +1101,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /**
-     * Función que bloquea un nodo sin comprobaciones previas
+     * Funcion que bloquea un nodo sin comprobaciones previas
      *
      * @param node NodeRef del nodo a bloquear.
      *
@@ -1154,19 +1154,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						checkDocClassification(node,parentRef);
 					}
 				}
-				LOGGER.debug("ÃƒÅ¡ltima comprobación integridad del nodo.");
+				LOGGER.debug("comprobacion integridad del nodo.");
 				utils.checkNodeIntegrity(node);
 				verifySubtypeDoc(node);				
 			}
 		}
-		LOGGER.debug("Preparación para la llamada al servicio");
+		LOGGER.debug("Preparacion para la llamada al servicio");
         // preparar datos
         QName name = utils.createNameQName(node.getName());
         QName type = GdibUtils.createQName(node.getType());
         Map<QName, Serializable> props = utils.transformMapStringToQname(node.getProperties());
         List<QName> aspects = utils.transformListStringToQname(node.getAspects());
         long prepareProps = System.currentTimeMillis();
-        LOGGER.debug("Se llama al servicio de creación de nodos");
+        LOGGER.debug("Se llama al servicio de creacion de nodos");
         NodeRef nodeRef = _internal_createNode(parentRef, name, type, props, aspects, node.getContent(), node.getSign(), utils.getESBOp(gdibHeader));
         long endCreate = System.currentTimeMillis();
         LOGGER.info(nodeRef.getId()+ " creado en " + (endCreate-initMill) +"ms (Checks: "+(checkMill-initMill)+"ms Props: "+(prepareProps-checkMill-signMill)+"ms Firma: "+signMill+"ms Servicio: "+(endCreate-prepareProps)+"ms).");
@@ -1176,19 +1176,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Servicio que crea un nodo en el Repositorio DM de Alfresco.
-     * Se realizarán las comprobaciones necesarias: Permisos, formato de metadatos, tipo, etc...
-     * Además se realizan dos comprobaciones adicionales dependiendo del flag repositoryDisableCheck está activo o no:
+     * Se realizaron las comprobaciones necesarias: Permisos, formato de metadatos, tipo, etc...
+     * Ademas se realizan dos comprobaciones adicionales dependiendo del flag repositoryDisableCheck esta activo o no:
      *  1Ã‚Âº Que el nodo creado estÃƒÂ© dentro del DM.
-     *  2Ã‚Âº Que tenga una serie documental válida.
-     *  El formato de QName siempre que venga especificado como un String podrá ser tanto formato extendido {uri}prop
+     *  2Ã‚Âº Que tenga una serie documental valida.
+     *  El formato de QName siempre que venga especificado como un String podra ser tanto formato extendido {uri}prop
      *   o reducido prefix:prop .
      *
-     *  Además los Ids de nodos podrán venir especificados tanto en nodeRef como en paths relativos tomando siempre como primer nodo
+     *  Ademas los Ids de nodos podran venir especificados tanto en nodeRef como en paths relativos tomando siempre como primer nodo
      *  un Id de NodeRef. por ejemplo: 1111-11111-11111-11111/archivos/pruebas/test.pdf
      *
      *  @param node Nodo a crear
      *  @param parentId Id del padre
-     *  @param gdibHeader cabecera de auditoría y configuración.
+     *  @param gdibHeader cabecera de auditoria y configuracion.
      *  @return Id del nodo a devolver
      *  @throws GdibException Si se produce cualquier error en el proceso (Falta de permisos, errores de formato, de tipos, QNames...).
      *
@@ -1224,7 +1224,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * @see createNode
      * @param node Nodo a crear
      * @param parentId Id del nodo padre donde se va a crear el nuevo nodo.
-     * @param GdibHeader Cabecera de auditoría y configuración.
+     * @param GdibHeader Cabecera de auditoria y configuracion.
      * @return Objeto Node con los metadatos y aspectos pero sin firma ni contenido.
      * @throws GdibException Si se produjera cualquier error en el proceso (Falta de permisos, errores de formato, de tipos, QNames...).
      *
@@ -1239,19 +1239,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /**
-     * Servicio que modifica la información de un nodo de alfresco.
+     * Servicio que modifica la informacion de un nodo de alfresco.
      * Se aplican las mismas restricciones que al crear nodo.
      * Tiene la particularidad del tratamiento de un documento al pasar de estado borrador a estado final.
-     * Impide la modificación de la firma o contenido de un documento en estado final.
+     * Impide la modificacion de la firma o contenido de un documento en estado final.
      * La forma en que se modifica un nodo es la siguiente:
-     * 1Ã‚Âº Se especifica al servicio el nodo con los metadatos o propiedades que se quieran. Estos podrán ser iguales o diferentes de los originales.
-     *    Los metadatos/aspectos que sean iguales no se hace nada con ellos. Aquellos que sean diferentes se cambiarán. Los que no aparezcan
-     *    tampoco se modificarán. Y para eliminar propiedades o metadatos será necesario especificarlo mediante el carácter "-" en su QName.
-     *    Por ejemplo: -eni:id eliminaría la propiedad ID.
+     * 1Ã‚Âº Se especifica al servicio el nodo con los metadatos o propiedades que se quieran. Estos podran ser iguales o diferentes de los originales.
+     *    Los metadatos/aspectos que sean iguales no se hace nada con ellos. Aquellos que sean diferentes se cambiaran. Los que no aparezcan
+     *    tampoco se modificaran. Y para eliminar propiedades o metadatos sera necesario especificarlo mediante el caracter "-" en su QName.
+     *    Por ejemplo: -eni:id eliminaria la propiedad ID.
      *    El sistema comprueba que no se puedan eliminar metadatos/aspectos obligatorios, si el documento esta en estado final
      *
      * @param node Nodo que se quiere modificar.
-     * @param gdibHeader cabecera de auditoría y configuración
+     * @param gdibHeader cabecera de auditoria y configuracion
      * @throws GdibException Si se produjera cualquier error en el proceso (Falta de permisos, errores de formato, de tipos, QNames...).
      * */
     @Override
@@ -1295,7 +1295,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 	        	long initSign = System.currentTimeMillis();
 		        // (26/09): Se debe llamar al mÃƒÂ©todo checkSignature cuando un documento pasa de estado borrador a definitivo, dado que es el
-		        //momento en el que se verifica la firma electrónica del mismo, y se evoluciona si no presenta el formato mínimo exigido.
+		        //momento en el que se verifica la firma electronica del mismo, y se evoluciona si no presenta el formato minimo exigido.
 	        	String perfil  = utils.getProperty(newNode.getProperties(), EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
 	        	LOGGER.info("Perfil de firma antes de comprobar firma: "+perfil);
 	        	checkDocumentSignature(newNode);	        	
@@ -1336,10 +1336,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      *   Recupera un nodo del repositorio.
      *
      *   @param nodeId Identificado del nodo a recuperar
-     *   @param withContent Flag que indica si se requiere la recuperación del contenido
-     *   @param withSigh Flag que indica si se requiere la recuperación de la firma.
-     *   @param gdibHeader Cabecera de auditoría y configuración.
-     *   @return Objeto con la información del nodo.
+     *   @param withContent Flag que indica si se requiere la recuperacion del contenido
+     *   @param withSigh Flag que indica si se requiere la recuperacion de la firma.
+     *   @param gdibHeader Cabecera de auditoria y configuracion.
+     *   @return Objeto con la informacion del nodo.
      *   @throws GdibException si el identificador de nodo no es correcto.
      *   @throws GdibException si el nodo no pertenece al repositorio.
      *
@@ -1371,11 +1371,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     }
 
     /**
-     * Servicio que mueve la localización de un nodo padre a otro diferente.
+     * Servicio que mueve la localizacion de un nodo padre a otro diferente.
      * @param nodeId Identificador de nodo a mover
      * @param newParent Identificador del nuevo padre
-     * @param gdibHeader Cabecera de auditoría y configuración
-     * @throws GdibException Si no se tienen permisos para realizar la operación (permisos de escritura en ambos nodos).
+     * @param gdibHeader Cabecera de auditoria y configuracion
+     * @throws GdibException Si no se tienen permisos para realizar la operacion (permisos de escritura en ambos nodos).
      *
      *
      * */
@@ -1389,7 +1389,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        NodeRef newParentRef = utils.checkNodeId(newParent);
 	        utils.inDMPath(newParentRef);
 
-	        //Se verifica que la nueva localización pertence a la misma serie documental
+	        //Se verifica que la nueva localizacion pertence a la misma serie documental
 
 	        String serieDocNodo = null;
 	        boolean hasDraftAspect = nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME);
@@ -1413,23 +1413,23 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 
     /**
-     * Servicio de bÃƒÂºsqueda de nodos en los índices.
-     * El nÃƒÂºmero de resultados está condicionado por la variable gdib.repository.search.limit
-     * La función recibe la página de la bÃƒÂºsqueda que funciona de la siguiente manera:
-     * 	* La variable limite establece el numero de registros por páginas de la busqueda. Si la
+     * Servicio de bÃƒÂºsqueda de nodos en los indices.
+     * El nÃƒÂºmero de resultados esta condicionado por la variable gdib.repository.search.limit
+     * La funcion recibe la pagina de la bÃƒÂºsqueda que funciona de la siguiente manera:
+     * 	* La variable limite establece el numero de registros por paginas de la busqueda. Si la
      *    variable pagina es 0 y el limite son 50 registros, devuelve los 50 primeros registros. Si
      *    la variable pagina es 1 y el limte son 50 registros, devuelve desde el resultado 51 hasta el 100,
      *    es decir, Desde pagina*limite+1 hasta pagina*limite+limite.
      *
-     * El numero total de paginas y nodos encontrados va en la petición, si por la razón que sea se
-     * solicita un numero mayor que lo que hay realmente no devolverá resultados, por ejemplo:
+     * El numero total de paginas y nodos encontrados va en la peticion, si por la razon que sea se
+     * solicita un numero mayor que lo que hay realmente no devolvera resultados, por ejemplo:
      *  * Una busqueda devuelve 1000 resultados con una configuracion de limite de 100.
-     *  * El usuario pide la pagina 10 ( 10*100 + 1 = 1001, devolvería los resultados entre 1001 y 1100)
-     *    la bÃƒÂºsqueda no devolvería ningÃƒÂºn resultado.
+     *  * El usuario pide la pagina 10 ( 10*100 + 1 = 1001, devolveria los resultados entre 1001 y 1100)
+     *    la bÃƒÂºsqueda no devolveria ningÃƒÂºn resultado.
      *
      * @param luceneSearch Cadena de lucene para realizar la bÃƒÂºsqueda
      * @param pagina Numero de pagina en la se recogen los resultados
-     * @param gdibHeader Cabecera de auditoría y configuración
+     * @param gdibHeader Cabecera de auditoria y configuracion
      * @return SearchResults Lista de nodos con el resultado de la bÃƒÂºsqueda, numero de resultados y numero de paginas
      *
      *
@@ -1447,7 +1447,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * Servicio que elimina un nodo del repositorio.
      *
      * @param nodeId identificador del nodo a eliminar
-     * @param gdibHeader cabecera de auditoría y configuración.
+     * @param gdibHeader cabecera de auditoria y configuracion.
      * @throws GdibException Si no se puede eliminar el nodo (Bloqueo, falta de permisos...).
      *
      * */
@@ -1483,10 +1483,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      *  Servicio que enlaza un documento o carpeta con otra carpeta.
      *  Hay dos tipos de enlaces: LINK y COPY
      *
-     *  Enlace LINK: Genera un enlace padre hijo nuevo en el nodo. El nodo conservaría los enlaces anteriores padre-hijo. Esto significa que dos
-     *  			carpetas podrían ver exactamente el mismo nodo, con su contenido y propiedades calcadas, y no ocuaparía espacio extra en repositorio.
-     *  Enlace COPY: Genera un NUEVO NODO en el repositorio hijo del nodo padre suministrado. Esto implica que los dos nodos mantendrían diferentes
-     *  			metadatos y contenidos, pero al ser imposible la modificación del contenido de un nodo si es definitivo, en la práctica
+     *  Enlace LINK: Genera un enlace padre hijo nuevo en el nodo. El nodo conservaroa los enlaces anteriores padre-hijo. Esto significa que dos
+     *  			carpetas podrian ver exactamente el mismo nodo, con su contenido y propiedades calcadas, y no ocuaparia espacio extra en repositorio.
+     *  Enlace COPY: Genera un NUEVO NODO en el repositorio hijo del nodo padre suministrado. Esto implica que los dos nodos mantendrian diferentes
+     *  			metadatos y contenidos, pero al ser imposible la modificacion del contenido de un nodo si es definitivo, en la practica
      *  			van a compartir contenido y diferenciarse en metadatos. Al copiar el nodo de alfresco tampoco duplicamos el espacio ocupado
      *  			por ese contenido, ÃƒÂºnicamente se genera nuevo espacio en base de datos para mantener las propiedades.
      *
@@ -1497,8 +1497,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * @param parentId Id del nuevo padre del nodo
      * @param nodeId Id del nodo que se quiere enlazar
      * @param linkMode Tipo de enlace
-     * @param gdibHeader cabecera de auditoría y configuración
-     * @throws GdibException Si no se tienen permisos para realizar la operación.
+     * @param gdibHeader cabecera de auditoria y configuracion
+     * @throws GdibException Si no se tienen permisos para realizar la operacion.
      *
      * */
     @Override
@@ -1559,18 +1559,18 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	}
 
 	/**
-     * Servicio que genera un índice electrónico.
+     * Servicio que genera un indice electronico.
      * @param nodeId Identificador del expediente a foliar.
-     * @param GdibHeader cabecera de auditoría y configuración.
-     * @throws DataHandler con el contenido del índice.
-     * @throws GdibException si ocurre algÃƒÂºn error en la generación del foliado o no se tienen los permisos adecuados para realizarla.
+     * @param GdibHeader cabecera de auditoria y configuracion.
+     * @throws DataHandler con el contenido del indice.
+     * @throws GdibException si ocurre algÃƒÂºn error en la generacion del foliado o no se tienen los permisos adecuados para realizarla.
      *
      * */
     @Override
     public DataHandler foliateNode(String nodeId, GdibHeader gdibHeader) throws GdibException {
 	    	long initMill = System.currentTimeMillis();
 	    	DataHandler res =  null;
-	    	LOGGER.info("Se inicia  la generación del índice interno del expediente " + nodeId);
+	    	LOGGER.info("Se inicia  la generacion del indice interno del expediente " + nodeId);
 	    	NodeRef nodeRef = utils.checkNodeId(nodeId);
 	        QName nodeType = nodeService.getType(nodeRef);
 
@@ -1591,7 +1591,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 	     // miro si el expediente esta en estado abierto
 	        if(ConstantUtils.ESTADO_EXP_E01.equals(fileStatus)){
-	        	//El expediente se encuentra en DM, se genera el índice interno
+	        	//El expediente se encuentra en DM, se genera el indice interno
 	        	res =  _internal_foliate(nodeRef, AdministrativeProcessingIndexSignerFactory.CAIB_INDEX_V10);
 	        } else if(ConstantUtils.ESTADO_EXP_E02.equals(fileStatus)){
 	        	//El expediente se encuentra en RM, se debe buscar el indice interno
@@ -1607,11 +1607,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Servicio que prepara un expediente para ser exportado del sistema.
-     * El servicio debe generar un subexpediente del mismo con la información actual del expediente y su índice obviando el resto de
-     * subexpedientes de exportación.
+     * El servicio debe generar un subexpediente del mismo con la informacion actual del expediente y su indice obviando el resto de
+     * subexpedientes de exportacion.
      *
      * @param nodeId Identificador del nodo a exportar.
-     * @param gdibHeader Cabecera de seguridad y configuración.
+     * @param gdibHeader Cabecera de seguridad y configuracion.
      * @return Identificador del subexpediente generado.
      * @throws GdibException si ocurre algÃƒÂºn error al generar el subexpediente o no se tienen los permisos adecuados.
      *
@@ -1657,7 +1657,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        	//El expediente se encuentra en RM, se debe buscar el indice de intercambio
 	        	//El nombre del nodo que representa el indice de intercambio generado es:
 	        	//ConstantUtils.EXCHANGE_INDEX_NAME_PREFIX + eniId + "-" + dateString + ".xml";
-	        	//Recupero los hijos y si es de típo índice de intercambio lo devuelvo.
+	        	//Recupero los hijos y si es de tipo indice de intercambio lo devuelvo.
 	        	res = getExchangeIndexFromRM(node);
 	        }
 
@@ -1673,8 +1673,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * Servicio que recupera una lista de versiones del nodo.
      *
      * @param nodeId Identificador del nodo que se recuperan sus versiones
-     * @param gdibHeader Cabecera de auditoría y configuración.
-     * @return List<NodeVersion> Lista de información de versiones.
+     * @param gdibHeader Cabecera de auditoria y configuracion.
+     * @return List<NodeVersion> Lista de informacion de versiones.
      * @throws GdibException si no se tienen permisos para consultar la lista de versiones o el identificador es incorrecto.
      *
      * */
@@ -1700,7 +1700,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @param nodeIds Lista de identificadores de nodo
 	 * @param authorities Lista de autoridades
 	 * @param permission Permiso a otorgar.
-	 * @param gdibHeader Cabecera de seguridad y configuración.
+	 * @param gdibHeader Cabecera de seguridad y configuracion.
 	 *
 	 * */
     @Override
@@ -1731,11 +1731,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 *
 	 * QuÃƒÂ© pasa si invoco esto con permisos inexistentes o autoridades inexistentes?
      *  - Si la autoridad no tiene permisos asignados => Nada
-     *  - Si la autoridad no existe => Excepción.
-     *  - Si el nodo esta bloqueado => Excepción.
+     *  - Si la autoridad no existe => Excepcion.
+     *  - Si el nodo esta bloqueado => Excepcion.
 	 * @param nodeIds Lista de identificadores de nodo
 	 * @param authorities Lista de autoridades
-	 * @param gdibHeader Cabecera de seguridad y configuración.
+	 * @param gdibHeader Cabecera de seguridad y configuracion.
      *
      * */
     @Override
@@ -1772,7 +1772,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * Servicio que bloquea la escritura de un nodo.
      *
      * @param nodeId Identificador de nodo a bloquear
-     * @param gdibHeader Cabecera de auditoría y configuración
+     * @param gdibHeader Cabecera de auditoria y configuracion
      *
      * */
     @Override
@@ -1812,7 +1812,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * Servicio que desbloquea un nodo.
      *
      * @param nodeId Identificador del nodo a desbloquear
-     * @param gdibHeader Cabecera de auditoría y configuración.
+     * @param gdibHeader Cabecera de auditoria y configuracion.
      *
      * */
 
@@ -1848,7 +1848,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     /**
 	 * Recupera un ticket de alfresco.
 	 *
-	 * @param gdibHeader Cabecera de auditoría y configuración
+	 * @param gdibHeader Cabecera de auditoria y configuracion
 	 *
 	 * */
 	@Override
@@ -1860,10 +1860,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	}
 
 	/**
-	 * Servicio que recupera la información de migración de un nodo migrado y transformado.
+	 * Servicio que recupera la informacion de migracion de un nodo migrado y transformado.
 	 *
 	 * @param nodeId Identificador del nodo
-	 * @param gdibHeader Cabecera de auditoría y configuración.
+	 * @param gdibHeader Cabecera de auditoria y configuracion.
 	 * @return MigrationInfo con la firma Valcert y el ZIP con el contenido.
 	 *
 	 * */
@@ -1888,7 +1888,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	/**
 	 * Servicio que genera un CSV Aleatorio
 	 *
-	 * @param gdibHeader cabecera de auditoría y configuración.
+	 * @param gdibHeader cabecera de auditoria y configuracion.
 	 *
 	 * */
 	@Override
@@ -1925,10 +1925,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 
 	/**
-	 * Apertura de un expediente tras haberse cerrado. El sistema genera un nuevo expediente con la información del anterior.
+	 * Apertura de un expediente tras haberse cerrado. El sistema genera un nuevo expediente con la informacion del anterior.
 	 *
 	 * @param nodeId Identificador de Nodo de expediente.
-	 * @param gdibHeader Cabecera de auditoría y configuración.
+	 * @param gdibHeader Cabecera de auditoria y configuracion.
 	 * @return Identificador del Expediente generado.
 	 *
 	 * */
@@ -1951,11 +1951,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 			//Se procede a modificar las propiedades de archivo de los nodos hijos
 			Map<QName, Serializable> properties = new HashMap<QName, Serializable>();
-			// Se modifica el estado de tramitación del expediente, asignándole el valor Ã¢â‚¬Å“CerradoÃ¢â‚¬ï¿½.
+			// Se modifica el estado de tramitacion del expediente, asignandole el valor Ã¢â‚¬Å“CerradoÃ¢â‚¬.
 			properties.put(ConstantUtils.PROP_ESTADO_EXP_QNAME, ConstantUtils.ESTADO_EXP_E01);
-			// Se modifica el estado de archivo del expediente, asignándole el valor Ã¢â‚¬Å“preingresoÃ¢â‚¬ï¿½.
+			// Se modifica el estado de archivo del expediente, asignandole el valor Ã¢â‚¬Å“preingresoÃ¢â‚¬.
 			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, null);
-			// Se modifica la fase de archivo del expediente, asignándole el valor "Archivo historico".
+			// Se modifica la fase de archivo del expediente, asignandole el valor "Archivo historico".
 			properties.put(ConstantUtils.PROP_FASE_ARCHIVO_QNAME, ConstantUtils.FASE_ARCHIVO_ACTIVO);
 			// Se modifica la fecha fin de expediente, asignadole la fecha actual
 			properties.put(ConstantUtils.PROP_FECHA_FIN_EXP_QNAME, null);
@@ -2055,7 +2055,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * Cierra un expediente que se encuentre en el DM para enviarlo al RM.
 	 *
 	 * @param nodeId Identificador del expediente a cerrar.
-	 * @param gdibHeader Cabecera de configuración y auditoría.
+	 * @param gdibHeader Cabecera de configuracion y auditoria.
 	 *
 	 * */
 	@Override
@@ -2066,7 +2066,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			// compruebo el nodeId
 			NodeRef expedientRef = utils.checkNodeId(nodeId);
 
-			LOGGER.debug("Obteniendo la la clasificación documental del expediente " + nodeId);
+			LOGGER.debug("Obteniendo la la clasificacion documental del expediente " + nodeId);
 			// compruebo que la seriedocumental este valorada para poder cerrar el expediente
 			String codClasificacion = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
 	    	String subTypeDoc = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_SUBTIPO_DOC_QNAME);
@@ -2081,7 +2081,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					throw exUtils.documentarySeriesNoDocumentedException("");
 				}
 			}
-			LOGGER.debug("Clasificación documental del expediente " + nodeId + ": " +
+			LOGGER.debug("Clasificacion documental del expediente " + nodeId + ": " +
 					subTypeDocInfo.getDocumentarySeries() + "/" + subTypeDocInfo.getSubtypeDoc());
 			LOGGER.debug("Comprobando permisos sobre el expediente y su contenido...");
 
@@ -2139,23 +2139,23 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 		//Se procede a modificar las propiedades de archivo de los nodos hijos
 		Map<QName, Serializable> properties = new HashMap<QName, Serializable>();
-		// Se modifica el estado de tramitación del expediente, asignándole el valor Ã¢â‚¬Å“CerradoÃ¢â‚¬ï¿½.
+		// Se modifica el estado de tramitacion del expediente, asignandole el valor Ã¢â‚¬Å“CerradoÃ¢â‚¬.
 		properties.put(ConstantUtils.PROP_ESTADO_EXP_QNAME, ConstantUtils.ESTADO_EXP_E02);
-		// Se modifica el estado de archivo del expediente, asignándole el valor Ã¢â‚¬Å“preingresoÃ¢â‚¬ï¿½.
+		// Se modifica el estado de archivo del expediente, asignandole el valor Ã¢â‚¬Å“preingresoÃ¢â‚¬.
 		
 		if ( preingreso ){
 			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_PREINGRESO);
 		}else{
 			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_INGRESADO);
 		}
-		// Se modifica la fase de archivo del expediente, asignándole el valor "Archivo historico".
+		// Se modifica la fase de archivo del expediente, asignandole el valor "Archivo historico".
 		properties.put(ConstantUtils.PROP_FASE_ARCHIVO_QNAME, ConstantUtils.FASE_ARCHIVO_HISTORICO);
 		// Se modifica la fecha fin de expediente, asignadole la fecha actual
 		properties.put(ConstantUtils.PROP_FECHA_FIN_EXP_QNAME, closeDate);
 		LOGGER.info("Se procede a establcer propiedades de archivado (interoperables) al expediente. Propiedades: " + properties);
 
 		setFileContentArchivedMetadataCollection(expedientRef,properties,true);
-		LOGGER.info("Se procede a generar los índices del expediente, interno y de intercambio.");
+		LOGGER.info("Se procede a generar los indices del expediente, interno y de intercambio.");
 		// Se crean los indices interno y de intercambio del expediente
 		String eniId = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_ID_QNAME);
 		String dateString = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
@@ -2178,7 +2178,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    LOGGER.info("Indice de intercambio del expediente generado ("+exchangeIndexNodeRef.getId()+").");
 
 	    LOGGER.info("Se procede a realizar la transferencia a RM del expediente....");
-		// Se efectúa la transferencia a la fase semi- activa del expediente.
+		// Se efectia la transferencia a la fase semi- activa del expediente.
 		NodeRef rmExpedient = exportUtils.exportExpediente(expedientRef);
 		LOGGER.info("Transferencia a RM del expedeinte " + expedientRef.getId() + " realizada ("+rmExpedient.getId()+").");
 
@@ -2343,7 +2343,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         ArrayList<Node> resultado = new ArrayList<Node>();
         // Recupero los nodos a devolver
         // OJO! Con el inDMPath es posible que se devuelvan menos resultados de los que se esperan, porque
-        // esos resultados serían incorrectos... y no aparecerían en la bÃƒÂºsqueda, pero no se puede capar por permisos
+        // esos resultados serian incorrectos... y no aparecerian en la bÃƒÂºsqueda, pero no se puede capar por permisos
         for ( int i = pagina*limit; i < pagina*limit+limit; i++){
         	if ( i < numResultados){
         		try{
@@ -2367,7 +2367,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 
 	/**
-	 * Recupera el índice de intercambio de un nodo en el RM
+	 * Recupera el indice de intercambio de un nodo en el RM
 	 * @throws GdibException
 	 *
 	 * */
@@ -2502,9 +2502,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		LOGGER.debug("Begin Alfresco Transaction");
 		usrTrx = transactionService.getUserTransaction();
 		try {
-			LOGGER.info("Transacción recuperada. Estado: "+ String.valueOf(usrTrx.getStatus()));
+			LOGGER.info("Transaccion recuperada. Estado: "+ String.valueOf(usrTrx.getStatus()));
 			usrTrx.begin();
-			LOGGER.info("Transacción iniciada.  Estado: "+ String.valueOf(usrTrx.getStatus()));
+			LOGGER.info("Transaccion iniciada.  Estado: "+ String.valueOf(usrTrx.getStatus()));
 		} catch (NotSupportedException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new GdibException(e.getMessage(), e);
