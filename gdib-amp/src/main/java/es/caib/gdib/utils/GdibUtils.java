@@ -399,7 +399,7 @@ public class GdibUtils {
         	categoria = ConstantUtils.CATEGORIA_DOC_SIMPLE;
 
         	// TODO eni:def_csv es un dato rellenado por nosotros (SRV) que valor se ha de meter?
-        	this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_DEF_CSV_QNAME, ConstantUtils.DEF_CSV_VALUE);
+        	//this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_DEF_CSV_QNAME, ConstantUtils.DEF_CSV_VALUE);
 
         	// eni:documento_vital
         	this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_DOCUMENTO_VITAL_QNAME, Boolean.FALSE.toString());
