@@ -192,7 +192,12 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         }
         catch (Exception e)
         {
-        	if ( e.getCause() instanceof GdibException ){
+            LOGGER.error("Se ha producido un error: "+e.getMessage()+"Tipo de la excepcion: "+e.getClass()+", " +
+                    "causa: "+e.getCause());
+
+            LOGGER.error("Gdibexception?: "+(e.getCause() instanceof GdibException));
+
+            if ( e.getCause() instanceof GdibException ){
         		throw (GdibException) e.getCause();
         	}
            throw e;

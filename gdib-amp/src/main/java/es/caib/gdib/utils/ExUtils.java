@@ -274,4 +274,13 @@ public class ExUtils {
 		return new GdibException(message, this.getGdibExceptionInfo(ConstantUtils.CODE_REOPEN_EXPURGATE_EXPEDIENT, message));
 	}
 
+	public GdibException luceneQueryParserException(String lucene) {
+		String message = ConstantUtils.MSG_LUCENE_QUERY_PARSER_EXCEPTION.replace("@lucene", lucene);
+		return new GdibException(message, this.getGdibExceptionInfo(ConstantUtils.CODE_CHECK_PARAMS, message));
+	}
+
+	public GdibException genericException(String whilethe){
+		String message = ConstantUtils.MSG_GENERIC_ERROR.replace("@whilethe",whilethe);
+		return new GdibException(message, this.getGdibExceptionInfo(ConstantUtils.CODE_GENERAL, message));
+	}
 }

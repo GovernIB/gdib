@@ -122,4 +122,6 @@ public interface CaibExceptionsUtilsInterface {
 	public static final String MSG_FILE_INDEX_ERROR = "An error occurred while generating the index of the file @fileNumber: @exceptionMessage.";
 	public static final String MSG_CHECK_NODE_TYPE_ERROR = "The node @node isn't type @type.";
 	public static final String MSG_REOPEN_EXPURGATE_EXPEDIENT = "Can open a expurgate expedient (@node)";
+	public static final String MSG_LUCENE_QUERY_PARSER_EXCEPTION = "A syntax error occurred while the construction of the lucene query (@lucene)";
+	public static final String MSG_GENERIC_ERROR = "An unexpected error has occurred @whilethe";
 }

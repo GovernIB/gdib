@@ -2329,7 +2329,18 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         searchParameters.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
         searchParameters.setLanguage(SearchService.LANGUAGE_LUCENE);
         searchParameters.setQuery(luceneQuery);
-        ResultSet nodes = searchService.query(searchParameters);
+		ResultSet nodes;
+		try {
+			nodes = searchService.query(searchParameters);
+		} catch (org.alfresco.repo.search.impl.lucene.LuceneQueryParserException e) {
+			LOGGER.error("Se ha producido un error de sintaxis en la construcción de la consulta lucene ["
+					+ luceneQuery+ "]. Error: \n",e);
+			throw exUtils.luceneQueryParserException(luceneQuery);
+		} catch (Exception e) {
+			LOGGER.error("Se ha producido un error de tipo [" + e.getClass() + "] no controlado durante la " +
+					"ejecución de la consulta lucene: ",e);
+			throw exUtils.genericException("while the lucene query was running");
+		}
 
         // limite de resultados por bÃºsqueda, paginas y resultados encontrados
         int limit = Integer.parseInt(searchLimit);
