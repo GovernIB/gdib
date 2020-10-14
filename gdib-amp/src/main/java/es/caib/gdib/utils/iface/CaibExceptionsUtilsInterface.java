@@ -96,7 +96,7 @@ public interface CaibExceptionsUtilsInterface {
 	public static final String MSG_INVALID_QNAME_FORMAT = "@qname is not valid as qname";
 	public static final String MSG_ALREADY_EXITS = "@node already exits in the repository";
 	public static final String MSG_INVALID_PERMISSION = "Could not have the permission of @permission to perfom the operation";
-	public static final String MSG_FINALLY_NODE = "Can not remove the node (@node) becuase is finally";
+	public static final String MSG_FINALLY_NODE = "Can not remove the node (@node) because is finally";
 	public static final String MSG_INVALID_ADD_DRAFT_ASPECT = "Can not add the draft aspect to the node because is a final document";
 	public static final String MSG_ERROR_INDICEELECTRONICO ="No ha sido posible generar el indice electronico del expediente cuyo nodo es @nodeId.";
 	public static final String MSG_CHECK_DOCUMENTARY_SERIES_IN_CLASSIFICATION_TABLE = "The @classificationCategory is not found in the classification table";
