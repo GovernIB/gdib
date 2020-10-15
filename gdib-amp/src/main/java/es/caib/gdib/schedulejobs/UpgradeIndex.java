@@ -159,7 +159,18 @@ public class UpgradeIndex {
 					if (!checkExpedientReseal(
 							(Date) nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),
 							timeLimitMap.get(cod_clasif))) {
-						
+						for (ChildAssociationRef oldIndex : listaHijos)
+						{
+							//Recuperamos último índice válido y lo seteamos a SI_PERMANENTE
+							if ("SI".equals(
+									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
+								{
+									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
+									break;
+								}
+
+
+						}
 						updateOldIndexesValidity(listaHijos);
 						LOGGER.debug("No debe resellarse ya que ha pasado el periodo de vigencia");
 						continue;
@@ -207,12 +218,19 @@ public class UpgradeIndex {
 		nodeService.deleteNode(tmpFolder);
 
 	}
-	
+	/**
+	 * Método que actualiza el metadato de indice valido de los índices que posean de propiedad SI
+	 * @param listaHijos Lista de índices hijos de cada expediente
+	 */
 	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
 		
 		for (ChildAssociationRef oldIndex : listaHijos) {
 			if ("NO".equals(
-					nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
+					nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
+					||
+					"SI_PERMANENTE".equals(
+							nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
+					)
 				continue;
 
 			//nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
@@ -242,8 +260,9 @@ public class UpgradeIndex {
 
 		if (!listaHijos.isEmpty()) {
 			for (ChildAssociationRef it : listaHijos) {
-				if ("NO".equals(
-						(String) nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
+				if (!"SI".equals(
+						(String) nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
+						)
 					continue;
 
 				LOGGER.debug("Actualizando firma del nodo : " + it.getChildRef().getId());
@@ -270,10 +289,10 @@ public class UpgradeIndex {
 					Date certValidity  = utils.parseTimeStampASN1CertCad(toParseXml);
 					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME, certValue);
 					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
-					LOGGER.debug("GOT CERT VALIDTIY " + ISO8601DateFormat.format(certValidity));
+					LOGGER.debug("Validez del certificado : " + ISO8601DateFormat.format(certValidity));
 				} catch (Exception e) {
 
-					LOGGER.debug("GOt Exception While reading XML = " + e.getMessage());
+					LOGGER.debug("Excepcion leyendo XML : " + e.getMessage());
 					// active = false;
 
 					throw new GdibException(e.getMessage());
@@ -340,12 +359,16 @@ public class UpgradeIndex {
 			if (resultSet != null && resultSet.length() > 0) {
 				queryResultLength += resultSet.length();
 				result = resultSet.getNodeRefs();
-				LOGGER.debug("Found " + resultSet.length() + " total indexes to upgradeSignature");
+				LOGGER.debug("Encontrados " + resultSet.length() + " indices para upgradeSignature");
 
 			}
 			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
 					+ queryResultLength + ".");
-		} finally {
+		}catch(Exception e){
+			LOGGER.error("Ocurrio un error haciendo query de upgradeo de indices :"+query.toString());
+			throw new GdibException("Ocurrio un error haciendo query de upgradeo de indices :"+query.toString());
+			
+		}finally {
 			if (resultSet != null) {
 				resultSet.close();
 			}
@@ -394,7 +417,7 @@ public class UpgradeIndex {
 			for (NodeRef it : updatedIndexes) {
 				changeIndexName(it);
 				if (exportUtils == null)
-					LOGGER.debug("EXPORT UTILS IS NULLLLL");
+					LOGGER.debug("export Utils was not injected.");
 				exportUtils.createRMRecord(it, parent);
 			}
 

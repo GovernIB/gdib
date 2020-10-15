@@ -223,7 +223,8 @@
 							<parameter name="allowedValues">
 								<list>
 									<value>SI</value>
-									<value>NO</value>
+									<value>SI_PERMANENTE</value>
+									<value>NO</value>	
 								</list>
 							</parameter>
 						</constraint>
