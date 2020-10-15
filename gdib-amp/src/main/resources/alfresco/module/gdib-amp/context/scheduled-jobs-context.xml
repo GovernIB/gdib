@@ -92,6 +92,61 @@
 	</bean>
 
     <!-- Fin Resealing Documents -->
+    <!-- UpgradeIndexJob -->
+    <bean id="upgradeIndex"
+		class="es.caib.gdib.schedulejobs.UpgradeIndex">
+		<property name="upgradeIndexPropertiesFilter" ref="upgradeIndexPlaceHolderPopertiesFilter" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="searchService" ref="SearchService" />
+		<property name="subTypeDocUtil" ref="subTypeDocUtil" />
+		<property name="importUtils" ref="importUtils" />
+		<property name="signatureService" ref="internalSignatureService" />
+		<property name="exportUtils" ref="exportUtils" />
+		<property name="fileFolderService" ref="FileFolderService" />
+		<property name="active" value="$gdib{upgrade.active}" />
+		<property name="lucene_query" value="$gdib{upgrade.lucene_query}" />
+		<property name="end_hour" value="$gdib{upgrade.end_hour}" />
+		<property name="start_hour" value="$gdib{upgrade.start_hour}" />
+		<property name="max_items" value="$gdib{upgrade.max_items}" />
+		<property name="cert_serial" value="$gdib{upgrade.cert_serial}" />
+		
+		<property name="tmpDir" value="$gdib{gdib.repository.temp.folder.uuid}" />
+		
+	</bean>
+	
+	<bean id="upgradeIndexSchedulerAccessor" class="org.alfresco.schedule.AlfrescoSchedulerAccessorBean">
+        <property name="scheduler" ref="schedulerFactory"/>
+        <property name="triggers">
+            <list>
+                <bean id="upgradeIndexTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                    <property name="cronExpression" value="$gdib{upgrade.cron}"/>
+                    <property name="jobDetail" ref="upgradeIndexJobDetail"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="upgradeIndexJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="es.caib.gdib.schedulejobs.UpgradeIndexJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobExecuter" value-ref="upgradeIndex"/>
+            </map>
+        </property>
+    </bean>
+	<bean id="upgradeIndexPlaceHolderPopertiesFilter" class="es.caib.gdib.utils.FilterPlaceholderProperties">
+		<constructor-arg index="0" type="String" value="upgrade"/>
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+		        <list>
+		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-upgrade.properties</value>
+		        	<value>classpath*:schedule-job-upgrade.properties</value>
+		        </list>
+    		</property>
+	</bean>
+
 
 	<!-- Expurgate Documents -->
     <bean id="expurgateDocuments"

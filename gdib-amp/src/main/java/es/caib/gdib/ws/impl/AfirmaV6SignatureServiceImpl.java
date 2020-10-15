@@ -1,5 +1,9 @@
 package es.caib.gdib.ws.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import es.caib.gdib.utils.FilterPlaceholderProperties;
@@ -11,16 +15,26 @@ import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
 import es.gob.afirma.integraFacade.IntegraFacadeWSDSS;
 import es.gob.afirma.integraFacade.pojo.AsynchronousResponse;
+import es.gob.afirma.integraFacade.pojo.DataInfo;
+import es.gob.afirma.integraFacade.pojo.Detail;
+import es.gob.afirma.integraFacade.pojo.DetailLevelEnum;
+import es.gob.afirma.integraFacade.pojo.IndividualSignatureReport;
 import es.gob.afirma.integraFacade.pojo.InvalidAsyncResponse;
+import es.gob.afirma.integraFacade.pojo.OptionalParameters;
 import es.gob.afirma.integraFacade.pojo.PendingRequest;
+import es.gob.afirma.integraFacade.pojo.ProcessingDetail;
+import es.gob.afirma.integraFacade.pojo.Result;
 import es.gob.afirma.integraFacade.pojo.ServerSignerRequest;
 import es.gob.afirma.integraFacade.pojo.ServerSignerResponse;
 import es.gob.afirma.integraFacade.pojo.SignatureFormatEnum;
 import es.gob.afirma.integraFacade.pojo.UpgradeSignatureRequest;
+import es.gob.afirma.integraFacade.pojo.VerificationReport;
+import es.gob.afirma.integraFacade.pojo.VerifyCertificateRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureRequest;
 import es.gob.afirma.integraFacade.pojo.VerifySignatureResponse;
 import es.gob.afirma.integraFacade.pojo.XmlSignatureModeEnum;
 import es.gob.afirma.utils.DSSConstants;
+import es.gob.afirma.utils.DSSConstants.ReportDetailLevel;
 
 public class AfirmaV6SignatureServiceImpl implements SignatureService {
 
@@ -228,7 +242,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 
 		res = serSigRes.getSignature();
-
+		
 		return res;
 	}
 
@@ -237,6 +251,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		SignatureValidationReport res;
 		VerifySignatureRequest verSigReq;
 		VerifySignatureResponse verSigRes;
+
 		res = null;
 		LOGGER.debug("Iniciando servicio de validacion de firma electronica...");
 		LOGGER.debug("Validando parametros de entrada...");
@@ -251,8 +266,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Parametros de entrada validados...");
 		LOGGER.debug("Formando peticion servicio DSSAfirmaVerify ...");
 		verSigReq = new VerifySignatureRequest();
-
-		verSigReq.setSignature(signature);
+		
+		//verSigReq.setSignature(signature);
 		verSigReq.setApplicationId(getOperationAfirmaAppId());
 		if(document != null){
 			verSigReq.setDocument(document);
@@ -261,13 +276,85 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Peticion servicio DSSAfirmaVerify formada.");
 		
 		LOGGER.debug("Invocando servicio DSSAfirmaVerify ...");
+		//Add optional Parameters for deep info
+		OptionalParameters optParam = new OptionalParameters(); 
+		optParam.setReturnProcessingDetails(true); 
+		optParam.setAdditionalReportOption(true);
+		//optParam.setReturnSignedDataInfo(true); // UNCOMMENT TO GET ADITOINAL DATAINFO LIST
+		optParam.setReturnReadableCertificateInfo(true); 
 		
-		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
-		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
+		verSigReq.setOptionalParameters(optParam);
 
+		VerificationReport	reporte = new VerificationReport();
+		reporte.setReportDetailLevel(DetailLevelEnum.ALL_DETAILS);
+		reporte.setCheckCertificateStatus(true);
+		reporte.setIncludeCertificateValues(true);
+		reporte.setIncludeRevocationValues(true);
+		
+		verSigReq.setVerificationReport(reporte);
+		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
+		
+		
+		
+		//verSigRes.ge
+		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
+		
+		
 		if (verSigRes == null) {
 			throw new GdibException("No se obtuvo respuesta en la invocacion del servicio DSSAfirmaVerify de la plataforma @firma "
 					+ "para validar una firma electronica.");
+		}
+		/*LOGGER.debug("Obtaining Data info"); UNCOMMENT TO PARSE ADITIONAL DATA INFO
+		List<DataInfo> dataInfo = verSigRes.getSignedDataInfo();		
+		if(dataInfo == null)
+			LOGGER.debug("DataInfo List is null");
+		else
+		{
+			//ITERATE AND PARSE DATAINFO 
+		}*/
+		
+		LOGGER.debug("Obteniendo datos detallados sobre validez");
+		List<IndividualSignatureReport> info = verSigRes.getVerificationReport();
+		LOGGER.debug("Size of List IndividualSignatureReport " + info.size());
+		for(IndividualSignatureReport a : info)
+		{
+			LOGGER.debug("Reading "+a.toString());
+			
+			String signReport = a.getDetailedReport();
+			LOGGER.debug("SignReport == "+signReport);
+			ProcessingDetail pd = a.getProcessingDetails();
+			List<Detail> ld = null;
+			if(pd != null)
+				ld = pd.getListValidDetail();
+			
+			if(ld != null)
+				for(Detail d : ld )
+					LOGGER.debug("VALID TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			List<Detail> ld2 = null;
+			if(pd != null)
+				ld2 = pd.getListIndeterminateDetail();
+			if(ld2 != null)
+				for(Detail d : ld2 )
+					LOGGER.debug("INDETERMINATED ---- TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			List<Detail> ld3 = null;
+			if(pd != null)
+				ld3 = pd.getListInvalidDetail();
+			if(ld2 != null)
+				for(Detail d : ld3 )
+					LOGGER.debug("INVALID ---- TYPE : "+d.getType() +"  \nCODE :"+ d.getCode()+ "  \nMESSAGE ?"+d.getMessage() );
+			
+			
+			Map<String,Object> infoSet = a.getReadableCertificateInfo();
+			
+			//a.getProcessingDetails();
+			if(infoSet != null)
+			{	
+				for(Map.Entry<String, Object> it  : a.getReadableCertificateInfo().entrySet())
+					LOGGER.debug(it.getKey() + " -- "+it.getValue());
+			}else
+				LOGGER.debug("infoSet == null");
 		}
 		LOGGER.debug("SersigRes signatureFormat: " + verSigRes.getSignatureFormat());
 		if (verSigRes.getResult() == null) {
@@ -329,6 +416,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	 */
 	private static byte[] sign(ServerSignerRequest serSigReq) throws GdibException {
 		byte[] res = null;
+		
 		
 		ServerSignerResponse serSigRes = IntegraFacadeWSDSS.getInstance().sign(serSigReq);
 
