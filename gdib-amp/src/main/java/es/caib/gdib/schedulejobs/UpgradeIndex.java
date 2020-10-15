@@ -165,7 +165,7 @@ public class UpgradeIndex {
 							if ("SI".equals(
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
-									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
+									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "SI_PERMANENTE");
 									break;
 								}
 
