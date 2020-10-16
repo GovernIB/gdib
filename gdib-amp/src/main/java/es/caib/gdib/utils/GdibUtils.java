@@ -1098,8 +1098,10 @@ public class GdibUtils {
                     content.setData(handler);
                     content.setEncoding(reader.getEncoding());
                     content.setMimetype(reader.getMimetype());
+                    content.setByteSize(reader.getSize());
                 }
             } catch (ContentIOException e) {
+                LOGGER.error("Se ha producido un error en el getContent: "+e);
                 throw exUtils.invalidContent(node.getId(),e);
             }
         }

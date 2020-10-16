@@ -21,8 +21,17 @@ public class Content {
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
     protected DataHandler data;
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
-    protected String encoding;    
+    protected String encoding;
+    @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
+    protected long byteSize;
 
+    public long getByteSize() {
+        return byteSize;
+    }
+
+    public void setByteSize(long byteSize) {
+        this.byteSize = byteSize;
+    }
     public String getMimetype() {
         return mimetype;
     }
