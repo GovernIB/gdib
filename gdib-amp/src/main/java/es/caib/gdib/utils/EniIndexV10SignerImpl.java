@@ -59,7 +59,7 @@ public class EniIndexV10SignerImpl implements AdministrativeProcessingIndexSigne
 
     private static final String DEFAULT_ENI_SIGNATURE_TYPE_XML_ELEMENT_VALUE = "TF03";
     
-    private static final SignatureFormat DEFAULT_ENI_INDEX_SIGNATURE_FORMAT = SignatureFormat.XAdES_T;
+    private static final SignatureFormat DEFAULT_ENI_INDEX_SIGNATURE_FORMAT = SignatureFormat.XAdES_A;
    
     private static final String DEFAULT_SIGNATURE_POLICY_ID = null;
     
@@ -179,6 +179,8 @@ public class EniIndexV10SignerImpl implements AdministrativeProcessingIndexSigne
 			signatureIdAttValue = (String) preSingProcessRes.get(ID_MAP_ENTRY);
 			res = postSingProcess(res,signatureIdAttValue);
 		}
+		
+		
 		
 		return res;
 	}

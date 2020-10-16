@@ -215,6 +215,29 @@
 						</constraint>
 					</constraints>
 				</property>
+				<property name="gdib:indice_valido">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>SI</value>
+									<value>SI_PERMANENTE</value>
+									<value>NO</value>	
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<property name="gdib:identificador_certificado">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="gdib:fecha_validez_certificado">
+					<type>d:date</type>
+					<mandatory>false</mandatory>
+				</property>
 			</properties>
 		</type>		
 	</types>

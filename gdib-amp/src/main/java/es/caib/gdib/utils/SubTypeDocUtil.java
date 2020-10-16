@@ -385,7 +385,7 @@ public class SubTypeDocUtil {
 			if(conn != null){
 				StringBuffer stb_SELECT = new StringBuffer();
 
-				stb_SELECT.append("SELECT code_clasificacion, code_subtype, resealing FROM subtypedocinfo");
+				stb_SELECT.append("SELECT code_clasificacion, code_subtype, resealing, term FROM subtypedocinfo");
 
 				ps = conn.prepareStatement(stb_SELECT.toString());
 				LOGGER.debug("getReselladoInfo :: SQL query :: " + ps.toString());
@@ -395,6 +395,10 @@ public class SubTypeDocUtil {
 					while(rs.next()){
 						SubTypeDocInfo info = new SubTypeDocInfo(rs.getString(1), rs.getString(2));
 						info.setResealing(rs.getString(3));
+						if(rs.getInt(4) != 0)
+						{
+							info.setTimeLimit(String.valueOf(rs.getInt(4)));
+						}	
 						res.add(info); 
 					}
 				}			

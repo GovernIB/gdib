@@ -90,7 +90,20 @@ public interface CaibModelUtilsInterface {
     public static final QName TYPE_FILE_INDEX_QNAME = QName.createQName(NS_CAIB, TYPE_FILE_INDEX);
     public static final String PROP_INDEX_TYPE = "tipo_indice";
     public static final QName PROP_INDEX_TYPE_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_TYPE);
-
+    /**
+     * RESELLADO
+     */
+    //Indica si un indice es valido (ultimo resellado, ya que anteriores se configura esta propiedad a NO)
+    public static final String PROP_INDEX_VALID = "indice_valido";
+    public static final QName PROP_INDEX_VALID_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_VALID);
+    //Indicador de identificador del certificado firmante
+    public static final String PROP_INDEX_CERT = "identificador_certificado";
+    public static final QName PROP_INDEX_CERT_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_CERT);
+    //Indicador de fecha de validez del certificado
+    public static final String PROP_INDEX_CERT_DATE = "fecha_validez_certificado";
+    public static final QName PROP_INDEX_CERT_DATE_QNAME = QName.createQName(NS_CAIB, PROP_INDEX_CERT_DATE);
+    
+    
     /**
      * Type gdib:zipMigracion
      */

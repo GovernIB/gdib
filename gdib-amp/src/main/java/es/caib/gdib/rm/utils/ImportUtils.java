@@ -37,7 +37,7 @@ import es.caib.gdib.ws.exception.GdibException;
 
 public class ImportUtils {
 
-	private static final Logger LOGGER =  Logger.getLogger(ImportUtils.class);
+	private static final Logger LOGGER = Logger.getLogger(ImportUtils.class);
 
 	private NodeService nodeService;
 	private ImporterService importerService;
@@ -53,24 +53,34 @@ public class ImportUtils {
 		return execute(expediente);
 	}
 
+	public NodeRef importExpedientWithTarget(NodeRef expediente, NodeRef target) throws GdibException {
+		return execute(expediente, target);
+	}
+
 	public SearchService getSearchService() {
 		return searchService;
 	}
-
 
 	public void setSearchService(SearchService searchService) {
 		this.searchService = searchService;
 	}
 
-
-
 	private NodeRef execute(NodeRef expediente) throws GdibException {
-		String expedientName = (String)nodeService.getProperty(expediente, ConstantUtils.PROP_NAME);
+		return execute(expediente, null);
+	}
+
+	private NodeRef execute(NodeRef expediente, NodeRef target) throws GdibException {
+		String expedientName = (String) nodeService.getProperty(expediente, ConstantUtils.PROP_NAME);
 
 		LOGGER.debug("Obtenemos la localizacion donde se va a crear el expediente en el DM");
 		// location donde importar(abrir expediente) el nodo en el DM
-		NodeRef destRef = getLocationExpedientDM(expediente);
+		NodeRef destRef = null;
+		if (target == null)
+			destRef = getLocationExpedientDM(expediente);
+		else
+			destRef = target;
 //		Location location = new Location(destDir);
+
 		Location location = new Location(destRef);
 
 		LOGGER.debug("Configuro la importacion del expediente");
@@ -82,61 +92,67 @@ public class ImportUtils {
 		LOGGER.debug("Terminada importacion del expediente");
 
 		NodeRef openExpedient = nodeService.getChildByName(destRef, ContentModel.ASSOC_CONTAINS, expedientName);
-		LOGGER.debug("Obtengo el expediente nuevo creado. ("+openExpedient.getId()+")");
-		LOGGER.debug("Atado propiedad expediente original al nuevo expediente creado");
-		//TODO Trabajo de reopen File
-		nodeService.setProperty(openExpedient, ConstantUtils.PROP_EXP_REAPERTURA_QNAME, expediente.getStoreRef()+"/"+expediente.getId());
-		//
-		Serializable expedientes = nodeService.getProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME);
-		List<String> lint = new ArrayList<String>();
-		if(expedientes != null ){
-			if ( expedientes instanceof List){
-				lint = (List<String>) expedientes;
-			}else{
-				lint.add(openExpedient.getStoreRef()+"/"+openExpedient.getId());
+		LOGGER.debug("Obtengo el expediente nuevo creado. (" + openExpedient.getId() + ")");
+		LOGGER.debug("Añado propiedad expediente original al nuevo expediente creado");
+		if (target == null) {
+			// TODO Trabajo de reopen File
+			nodeService.setProperty(openExpedient, ConstantUtils.PROP_EXP_REAPERTURA_QNAME,
+					expediente.getStoreRef() + "/" + expediente.getId());
+			//
+			Serializable expedientes = nodeService.getProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME);
+			List<String> lint = new ArrayList<String>();
+			if (expedientes != null) {
+				if (expedientes instanceof List) {
+					lint = (List<String>) expedientes;
+				} else {
+					lint.add(openExpedient.getStoreRef() + "/" + openExpedient.getId());
+				}
+			} else {
+				lint.add(openExpedient.getStoreRef() + "/" + openExpedient.getId());
 			}
-		}else
-		{
-			lint.add(openExpedient.getStoreRef()+"/"+openExpedient.getId());
+			nodeService.setProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME, (Serializable) lint);
 		}
-		nodeService.setProperty(expediente, ConstantUtils.PROP_EXP_REABIERTO_QNAME, (Serializable) lint);
 		return openExpedient;
 	}
 
 	/**
-	 * Recupero la ruta donde se debe de abrir el expediente en el DM. Este dato lo sacamos del xml
-	 * descriptor de la exportacion de alfresco. Con esa ruta buscamos el nodo donde abrir el expediente
+	 * Recupero la ruta donde se debe de abrir el expediente en el DM. Este dato lo
+	 * sacamos del xml descriptor de la exportacion de alfresco. Con esa ruta
+	 * buscamos el nodo donde abrir el expediente
 	 *
 	 * @param expedient a reabrir el expediente del RM al DM
 	 * @return nodo donde se va a reabrir el expediente
 	 * @throws GdibException
 	 */
-	private NodeRef getLocationExpedientDM(NodeRef expedient) throws GdibException{
+	private NodeRef getLocationExpedientDM(NodeRef expedient) throws GdibException {
 		NodeRef expedienteDM = null;
 		try {
 			// obtenemos el nodo que contiene el XML descriptor del contenido del expediente
 			LOGGER.debug("Obtengo el xml descriptor con la estructura de carpetas del expediente");
 			NodeRef xmlRef = getXMLDescriptorFromExpedient(expedient);
-			if(xmlRef != null)
-				LOGGER.debug(" NodeRef xmlRef = getXMLDescriptorFromExpedient(expedient); xmlRef = "+xmlRef.toString());
+			if (xmlRef != null)
+				LOGGER.debug(
+						" NodeRef xmlRef = getXMLDescriptorFromExpedient(expedient); xmlRef = " + xmlRef.toString());
 			else
 				LOGGER.debug("xMlRef Is null");
 			Content contentXmlDescriptor = utils.getContent(xmlRef, ConstantUtils.PROP_CONTENT);
-			if(contentXmlDescriptor != null)
-				LOGGER.debug(" Content contentXmlDescriptor = utils.getContent(xmlRef, ConstantUtils.PROP_CONTENT); contentXmlDescriptor= "+contentXmlDescriptor.toString());
+			if (contentXmlDescriptor != null)
+				LOGGER.debug(
+						" Content contentXmlDescriptor = utils.getContent(xmlRef, ConstantUtils.PROP_CONTENT); contentXmlDescriptor= "
+								+ contentXmlDescriptor.toString());
 			else
 				LOGGER.debug("contentXmlDescriptor is null ");
-			
+
 			// parseamos el xml
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			LOGGER.debug("calling factory new instance");
 
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			LOGGER.debug("calling documentBuilder from factory");
-			
+
 			Document doc = dBuilder.parse(contentXmlDescriptor.getData().getInputStream());
 			LOGGER.debug("Doc = dbBuilder.parse");
-			
+
 			doc.getDocumentElement().normalize();
 			LOGGER.debug("doc.getelement.normalize");
 			String path = doc.getElementsByTagName("view:exportOf").item(0).getTextContent();
@@ -144,129 +160,130 @@ public class ImportUtils {
 			// buscamos el path dentro de alfresco
 			LOGGER.debug("Busco la ruta donde se va a reabrir el expediente");
 			expedienteDM = searchPath(path);
-			if(expedienteDM != null)
+			if (expedienteDM != null)
 				LOGGER.debug(expedienteDM.toString());
 			else
 				LOGGER.debug("expedientDM is null.");
 		} catch (ParserConfigurationException e) {
-			throw new GdibException("Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM " + expedient.getId() + ". " + e.getMessage());
+			throw new GdibException(
+					"Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM "
+							+ expedient.getId() + ". " + e.getMessage());
 		} catch (SAXException e) {
-			throw new GdibException("Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM " + expedient.getId() + ". " + e.getMessage());
+			throw new GdibException(
+					"Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM "
+							+ expedient.getId() + ". " + e.getMessage());
 		} catch (IOException e) {
-			throw new GdibException("Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM " + expedient.getId() + ". " + e.getMessage());		}
+			throw new GdibException(
+					"Ha ocurrido un error leyendo el xml descriptor de la abertura del expediente del RM "
+							+ expedient.getId() + ". " + e.getMessage());
+		}
 		return expedienteDM;
 	}
 
 	/**
-	 * Obtenemos el nodo que contiene el xml descriptor del expediente. Este fichero es un .xml con el nombre del expediente
+	 * Obtenemos el nodo que contiene el xml descriptor del expediente. Este fichero
+	 * es un .xml con el nombre del expediente
 	 *
 	 * @param expedient donde buscar el xml descriptor
 	 * @return nodo que contiene el xml descriptor
 	 */
-	private NodeRef getXMLDescriptorFromExpedient(NodeRef expedient){
-		String expedientName = (String)nodeService.getProperty(expedient, ConstantUtils.PROP_NAME);
+	private NodeRef getXMLDescriptorFromExpedient(NodeRef expedient) {
+		String expedientName = (String) nodeService.getProperty(expedient, ConstantUtils.PROP_NAME);
 		LOGGER.debug(expedientName);
-		
+
 		List<ChildAssociationRef> listNodes = nodeService.getChildAssocs(expedient);
 		LOGGER.debug(listNodes.toString());
 		for (ChildAssociationRef childAssoc : listNodes) {
-			if(childAssoc != null)
+			if (childAssoc != null)
 				LOGGER.debug(childAssoc.toString());
 			else
 				LOGGER.debug("node nul");
 			NodeRef son = childAssoc.getChildRef();
-			LOGGER.debug("son.toString="+son.toString());
-			String sonName = (String)nodeService.getProperty(son, ConstantUtils.PROP_NAME);
+			LOGGER.debug("son.toString=" + son.toString());
+			String sonName = (String) nodeService.getProperty(son, ConstantUtils.PROP_NAME);
 			LOGGER.debug("SonName  = " + sonName);
-			LOGGER.debug("trying sonName("+sonName+" contains expedientName("+expedientName+")");
-			if(sonName.contains(expedientName))
-			{
+			LOGGER.debug("trying sonName(" + sonName + " contains expedientName(" + expedientName + ")");
+			if (sonName.contains(expedientName)) {
 				return son;
 			}
 		}
-		LOGGER.debug("returned nul" );
+		LOGGER.debug("returned nul");
 		return null;
 	}
 
-
 	/**
-	 * Realizamos una busqueda lucene para buscar el nodo que corresponde con la ruta
+	 * Realizamos una busqueda lucene para buscar el nodo que corresponde con la
+	 * ruta
 	 *
 	 *
 	 * @param path ruta donde se debe reabrir el expediente
 	 * @return nodo donde reabrir el expediente
 	 * @throws GdibException si
 	 */
-	private NodeRef searchPath(String path) throws GdibException{
+	private NodeRef searchPath(String path) throws GdibException {
 		// elimino la ultima parte del path, pues es el expediente en si
 		path = path.substring(0, path.lastIndexOf("/"));
 		String luceneSearch = String.format("PATH:\"/" + path + "\"");
 		ArrayList<Node> resultado = new ArrayList<Node>();
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
-        searchParameters.setLanguage(SearchService.LANGUAGE_LUCENE);
-        searchParameters.setQuery(luceneSearch);
+		SearchParameters searchParameters = new SearchParameters();
+		searchParameters.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+		searchParameters.setLanguage(SearchService.LANGUAGE_LUCENE);
+		searchParameters.setQuery(luceneSearch);
 
-        ResultSet nodes = searchService.query(searchParameters);
-        long numResultados = nodes.getNumberFound();
-        if ( numResultados > 1)
-        	throw new GdibException("Existe un mas de un nodo donde reabrir el expediente. Ruta (" + path + ")");
-        if ( numResultados < 1)
-        	throw new GdibException("No existe la ruta donde reabrir el expediente. Ruta (" + path + ")");
+		ResultSet nodes = searchService.query(searchParameters);
+		long numResultados = nodes.getNumberFound();
+		if (numResultados > 1)
+			throw new GdibException("Existe un mas de un nodo donde reabrir el expediente. Ruta (" + path + ")");
+		if (numResultados < 1)
+			throw new GdibException("No existe la ruta donde reabrir el expediente. Ruta (" + path + ")");
 
-        return nodes.getNodeRef(0);
-   	}
+		return nodes.getNodeRef(0);
+	}
 
-	private static ImporterBinding CREATE_NEW = new ImporterBinding()
-    {
-        @Override
-        public UUID_BINDING getUUIDBinding()
-        {
-            return UUID_BINDING.CREATE_NEW;
-        }
+	private static ImporterBinding CREATE_NEW = new ImporterBinding() {
+		@Override
+		public UUID_BINDING getUUIDBinding() {
+			return UUID_BINDING.CREATE_NEW;
+		}
 
-        @Override
-        public String getValue(String key)
-        {
-            return null;
-        }
+		@Override
+		public String getValue(String key) {
+			return null;
+		}
 
-        @Override
-        public boolean allowReferenceWithinTransaction()
-        {
-            return false;
-        }
+		@Override
+		public boolean allowReferenceWithinTransaction() {
+			return false;
+		}
 
-        @Override
-        public QName[] getExcludedClasses()
-        {
-            return null;
-        }
+		@Override
+		public QName[] getExcludedClasses() {
+			return null;
+		}
 
-        @Override
-        public ImporterContentCache getImportConentCache()
-        {
-            return null;
-        }
-    };
+		@Override
+		public ImporterContentCache getImportConentCache() {
+			return null;
+		}
+	};
 
-    public void setImporterService(ImporterService importerService) {
+	public void setImporterService(ImporterService importerService) {
 		this.importerService = importerService;
 	}
 
-    public void setNodeService(NodeService nodeService) {
+	public void setNodeService(NodeService nodeService) {
 		this.nodeService = nodeService;
 	}
 
-    public void setDestDir(String destDir) {
+	public void setDestDir(String destDir) {
 		this.destDir = destDir;
 	}
 
-    public void setUtils(GdibUtils utils) {
+	public void setUtils(GdibUtils utils) {
 		this.utils = utils;
 	}
 
-    public void setRmImportPackageHandlerFactory(RMImportPackageHandlerFactory rmImportPackageHandlerFactory) {
+	public void setRmImportPackageHandlerFactory(RMImportPackageHandlerFactory rmImportPackageHandlerFactory) {
 		this.rmImportPackageHandlerFactory = rmImportPackageHandlerFactory;
 	}
 
