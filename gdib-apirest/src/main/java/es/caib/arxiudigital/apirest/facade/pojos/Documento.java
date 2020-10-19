@@ -28,6 +28,11 @@ public class Documento extends Nodo{
 	 * Tipo mime del contenido del nodo, por ejemplo “text/plain”
 	 */
 	private String mimetype;
+
+	/**
+	 * Tamaño del contenido del documento en bytes
+	 */
+	private long byteSize;
 	/**
 	 * Cadena de caracteres, codificada en base64, que representa el contenido
 	 */
@@ -73,6 +78,15 @@ public class Documento extends Nodo{
 	public String getMimetype() {
 		return mimetype;
 	}
+
+	public long getByteSize() {
+		return byteSize;
+	}
+
+	public void setByteSize(long byteSize) {
+		this.byteSize = byteSize;
+	}
+
 	public void setMimetype(String mimetype) {
 		this.mimetype = mimetype;
 	}

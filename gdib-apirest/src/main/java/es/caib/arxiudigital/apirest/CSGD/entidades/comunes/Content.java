@@ -8,6 +8,7 @@ public class Content {
 	private String mimetype;
 	private String content;
 	private String encoding;
+	private Long byteSize;
 
 	public TiposContenidosBinarios getBinaryType() {
 		return binaryType;
@@ -34,4 +35,11 @@ public class Content {
 		this.encoding = encoding;
 	}
 
+	public Long getByteSize() {
+		return byteSize;
+	}
+
+	public void setByteSize(Long byteSize) {
+		this.byteSize = byteSize;
+	}
 }
