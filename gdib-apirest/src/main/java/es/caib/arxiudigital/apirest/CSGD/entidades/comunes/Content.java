@@ -13,6 +13,15 @@ public class Content {
 	public TiposContenidosBinarios getBinaryType() {
 		return binaryType;
 	}
+
+	public Long getByteSize() {
+		return byteSize;
+	}
+
+	public void setByteSize(Long byteSize) {
+		this.byteSize = byteSize;
+	}
+
 	public void setBinaryType(TiposContenidosBinarios binaryType) {
 		this.binaryType = binaryType;
 	}
@@ -33,13 +42,5 @@ public class Content {
 	}
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
-	}
-
-	public Long getByteSize() {
-		return byteSize;
-	}
-
-	public void setByteSize(Long byteSize) {
-		this.byteSize = byteSize;
 	}
 }

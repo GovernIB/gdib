@@ -1092,6 +1092,53 @@ public class GdibUtils {
     }
 
     /**
+     * Obtengo el {@link Content} del contenido del nodo
+     *
+     * @param node
+     * @return content
+     * @throws GdibException
+     */
+    public Content getContent(NodeRef node, Boolean withContent) throws GdibException {
+        if(withContent==null) {
+            return getContent(node, ConstantUtils.PROP_CONTENT);
+        }else{
+            return getContent(node, ConstantUtils.PROP_CONTENT,withContent);
+        }
+    }
+
+    /**
+     * Obtengo el {@link Content} de una propiedad de tipo content de un nodo
+     *
+     * @param node
+     * @return content
+     * @throws GdibException
+     */
+    public Content getContent(NodeRef node, QName qname, boolean withContent) throws GdibException {
+        Content content = null;
+        if(node != null){
+            try {
+                ContentReader reader = getContentReader(node, qname);
+                if(reader!=null){
+                    content = new Content();
+                    if(withContent) {
+                        DataHandler handler = new DataHandler(new InputStreamDataSource(reader.getContentInputStream()));
+                        content.setData(handler);
+                    }
+                    if(isType(nodeService.getType(node),ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+                        content.setByteSize(reader.getSize());
+                        content.setEncoding(reader.getEncoding());
+                        content.setMimetype(reader.getMimetype());
+                    }
+                }
+            } catch (ContentIOException e) {
+                LOGGER.error("Error en el getContent: "+e);
+                throw exUtils.invalidContent(node.getId(),e);
+            }
+        }
+        return content;
+    }
+
+    /**
      * Obtengo el {@link Content} de una propiedad de tipo content de un nodo
      *
      * @param node
@@ -1100,16 +1147,15 @@ public class GdibUtils {
      */
     public Content getContent(NodeRef node, QName qname) throws GdibException {
         Content content = null;
-        if(node != null){
+        if(node != null) {
             try {
                 ContentReader reader = getContentReader(node, qname);
-                if(reader!=null){
+                if (reader != null) {
                     content = new Content();
                     DataHandler handler = new DataHandler(new InputStreamDataSource(reader.getContentInputStream()));
                     content.setData(handler);
                     content.setEncoding(reader.getEncoding());
                     content.setMimetype(reader.getMimetype());
-                    content.setByteSize(reader.getSize());
                 }
             } catch (ContentIOException e) {
                 LOGGER.error("Se ha producido un error en el getContent: "+e);
@@ -1723,8 +1769,8 @@ public class GdibUtils {
     	nodeParent = getParentFromClassificationTable(classificationCategory);
     	if(nodeParent != null){
     		String expedientDate= this.getProperty(node.getProperties(), ConstantUtils.PROP_FECHA_INICIO_QNAME);
+    		expedientDate = this.getISO860DateFormat(expedientDate);
        		node.getProperties().add(new Property(ConstantUtils.PROP_FECHA_INICIO_QNAME, expedientDate));
-			expedientDate = this.getISO860DateFormat(expedientDate);
 			String functionName = (String) nodeService.getProperty(nodeParent, ConstantUtils.PROP_NAME);
 			String path = ConstantUtils.PATH_SEPARATOR + functionName
 					+ ConstantUtils.PATH_SEPARATOR + classificationCategory + ConstantUtils.PATH_SEPARATOR + expedientDate.replace("-", ConstantUtils.PATH_SEPARATOR);

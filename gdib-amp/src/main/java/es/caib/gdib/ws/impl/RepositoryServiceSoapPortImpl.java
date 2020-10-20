@@ -441,9 +441,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         // obtener las propiedades de eni:transferible que estan en la base de datos del cuadro de clasificacion
         subTypeDocUtil.fillSubTypeDocInfo(node);
 
-        if (withContent) {
-            node.setContent(utils.getContent(nodeRef));
-        }
+//        if (withContent) {
+            node.setContent(utils.getContent(nodeRef,withContent));
+//        }
 
         if (withSign) {
             node.setSign(utils.getDataHandler(nodeRef, ConstantUtils.PROP_FIRMA_QNAME));
