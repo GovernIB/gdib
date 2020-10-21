@@ -70,13 +70,13 @@ public class UpgradeIndex {
 	private String cert_serial;// Serial identifier del certificado de TSA a renovar
 	private String tmpDir; // Directorio temporal donde realizar el upgradeo de firma
 	private int end_hour; // Hora de fin de trabajo programado ( si la sobrepasa se acaba el trabajo )
-	private int start_hour; // hora de inicio del trabajo programdo (limite inferior de ejecución)
-	private int max_items; // parametro opcional para limitar el número de resultados de la query
+	private int start_hour; // hora de inicio del trabajo programdo (limite inferior de ejecuciÃ³n)
+	private int max_items; // parametro opcional para limitar el nï¿½mero de resultados de la query
 	@Autowired
 	private GdibUtils utils;
 
 	/**
-	 * Método que dispara el método en base al parámetro upgrade.active del fichero
+	 * Mï¿½todo que dispara el mï¿½todo en base al parï¿½metro upgrade.active del fichero
 	 * schedule-job-upgrade.properties
 	 */
 	public void execute() {
@@ -94,9 +94,9 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método que ejecuta el trabajo de upgradeo de índices
+	 * Mï¿½todo que ejecuta el trabajo de upgradeo de ï¿½ndices
 	 * 
-	 * @throws GdibException wrapper para propagar la excepción
+	 * @throws GdibException wrapper para propagar la excepciï¿½n
 	 */
 	public void run() throws GdibException {
 		List<NodeRef> upgradeDocs;
@@ -106,22 +106,22 @@ public class UpgradeIndex {
 		// Lista para comprobar vigencias
 		List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
 		Map<String, String> timeLimitMap = new HashMap<>();
-		// Relleno el mapa con la información por Codigo clasificación
+		// Relleno el mapa con la informaciï¿½n por Codigo clasificaciï¿½n
 		for (SubTypeDocInfo stdi : resealInfo) {
 			timeLimitMap.put(stdi.getDocumentarySeries(), stdi.getTimeLimit());
 			LOGGER.debug("Inserted into Map KEY" + stdi.getDocumentarySeries() + " TIMELIMT " + stdi.getTimeLimit());
 		}
 
 		NodeRef tmpFolder = tmpParentFileInfo.getNodeRef();
-		// Si ocurre algún error ( la carpeta solo debe crearse para llevar a cabo el
+		// Si ocurre algï¿½n error ( la carpeta solo debe crearse para llevar a cabo el
 		// trabajo temporal)
 		if (tmpFolder == null)
-			throw new GdibException("Ocurrió un error creando el directorio temporal");
+			throw new GdibException("Ocurriï¿½ un error creando el directorio temporal");
 
 		upgradeDocs = null;
 
 		try {
-			LOGGER.debug("Obteniendo los índices");
+			LOGGER.debug("Obteniendo los ï¿½ndices");
 			// Get Index To Apply TSA upgrade
 			upgradeDocs = getDocumentsToUpgrade();
 		} catch (GdibException e) {
@@ -135,7 +135,7 @@ public class UpgradeIndex {
 				int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
 				if (hour >= end_hour && hour < start_hour)
 					break;
-				// DOC ES ÍNDICE ORIGINAL
+				// DOC ES ï¿½NDICE ORIGINAL
 				try {
 
 					ChildAssociationRef rmParentChild = nodeService.getPrimaryParent(doc);
@@ -145,14 +145,14 @@ public class UpgradeIndex {
 					String cod_clasif = (String) nodeService.getProperty(rmParent,
 							ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
 					if (cod_clasif == null) {
-						LOGGER.debug("No se encontró codigo de clasificación en expediente :" + rmParent.getId());
+						LOGGER.debug("No se encontrï¿½ codigo de clasificaciï¿½n en expediente :" + rmParent.getId());
 					}
 					LOGGER.debug("Comprobando vigencia de expediente " + rmParent.getId()
-							+ " con codigo de clasificación " + cod_clasif);
+							+ " con codigo de clasificaciï¿½n " + cod_clasif);
 					
 					Set<QName> toSearch = new HashSet<>();
 					toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
-					// Obtengo lista de índices antiguos que dejarán de ser válidos al completar el
+					// Obtengo lista de ï¿½ndices antiguos que dejarï¿½n de ser vï¿½lidos al completar el
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
 
@@ -161,7 +161,7 @@ public class UpgradeIndex {
 							timeLimitMap.get(cod_clasif))) {
 						for (ChildAssociationRef oldIndex : listaHijos)
 						{
-							//Recuperamos último índice válido y lo seteamos a SI_PERMANENTE
+							//Recuperamos ï¿½ltimo ï¿½ndice vï¿½lido y lo seteamos a SI_PERMANENTE
 							if ("SI".equals(
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
@@ -212,15 +212,15 @@ public class UpgradeIndex {
 				}
 			}
 		}
-		// Finalización del trabajo de upgradeo de índices
+		// Finalizaciï¿½n del trabajo de upgradeo de ï¿½ndices
 		LOGGER.debug("Upgrade Finalizado");
 
 		nodeService.deleteNode(tmpFolder);
 
 	}
 	/**
-	 * Método que actualiza el metadato de indice valido de los índices que posean de propiedad SI
-	 * @param listaHijos Lista de índices hijos de cada expediente
+	 * Mï¿½todo que actualiza el metadato de indice valido de los ï¿½ndices que posean de propiedad SI
+	 * @param listaHijos Lista de ï¿½ndices hijos de cada expediente
 	 */
 	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
 		
@@ -241,11 +241,11 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método que ejecuta la operación de upgradeo/resellado de la firma de un
-	 * índice
+	 * Mï¿½todo que ejecuta la operaciï¿½n de upgradeo/resellado de la firma de un
+	 * ï¿½ndice
 	 * 
 	 * @param indexIdentifier Nodo del expediente en el espacio temporal
-	 * @throws GdibException      wrapper para propagar la excepción
+	 * @throws GdibException      wrapper para propagar la excepciï¿½n
 	 * @throws IOException
 	 * @throws ContentIOException
 	 */
@@ -310,18 +310,18 @@ public class UpgradeIndex {
 				// break;
 			}
 		}
-		// Devuelvo una lista con los nodeRefs de los índices actualizados
+		// Devuelvo una lista con los nodeRefs de los ï¿½ndices actualizados
 
 		return listaIndices;
 	}
 
 	/**
-	 * Método que ejecuta la búsqueda de aquellos índices que deban ser resellados.
+	 * Mï¿½todo que ejecuta la bï¿½squeda de aquellos ï¿½ndices que deban ser resellados.
 	 * La consulta se especifica en el fichero schedule-job-upgrade.properties, en
 	 * la property lucene_query
 	 * 
-	 * @return List<NodeRef> Lista con aquellos índices que deban ser resellados
-	 * @throws GdibException Wrapper de cualquier excepción para propagar
+	 * @return List<NodeRef> Lista con aquellos ï¿½ndices que deban ser resellados
+	 * @throws GdibException Wrapper de cualquier excepciï¿½n para propagar
 	 */
 	private List<NodeRef> getDocumentsToUpgrade() throws GdibException {
 		List<NodeRef> result = null;
@@ -362,7 +362,7 @@ public class UpgradeIndex {
 				LOGGER.debug("Encontrados " + resultSet.length() + " indices para upgradeSignature");
 
 			}
-			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
+			LOGGER.info("Nï¿½mero de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
 					+ queryResultLength + ".");
 		}catch(Exception e){
 			LOGGER.error("Ocurrio un error haciendo query de upgradeo de indices :"+query.toString());
@@ -380,7 +380,7 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método para migrar un expediente a una carpeta temporal.
+	 * Mï¿½todo para migrar un expediente a una carpeta temporal.
 	 * 
 	 * @param original  Nodo del expediente original a copiar al directorio temporal
 	 * @param tmpFolder Referencia al nodo raiz de la carpetatemporal
@@ -402,13 +402,13 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método para migrar una lista de NodeRefs(índices) a un expediente en el RM,
+	 * Mï¿½todo para migrar una lista de NodeRefs(ï¿½ndices) a un expediente en el RM,
 	 * previamente obtenidos del mismo, para llevar a cabo el trabajo programado
 	 * UpgradeIndex.
 	 * 
 	 * @param List<NodeRef> updatedIndexes Lista contenedora de los NodeRef de los
-	 *                      índices a exportar.
-	 * @param NodeRef       parent NodeRef destino al que devolver los índices
+	 *                      ï¿½ndices a exportar.
+	 * @param NodeRef       parent NodeRef destino al que devolver los ï¿½ndices
 	 * @throws GdibException
 	 */
 	private void returnToRMExp(List<NodeRef> updatedIndexes, NodeRef parent) throws GdibException {
@@ -431,12 +431,12 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método privado para cambiar el nombre de un índice. Al crearse los índices,
+	 * Mï¿½todo privado para cambiar el nombre de un ï¿½ndice. Al crearse los ï¿½ndices,
 	 * se les concatena al final del nombre la fecha en formato YYYYMMDDHHmm , por
-	 * lo que la cambiamos y ponemos la fecha con el mismo formato del día de
-	 * ejecución.
+	 * lo que la cambiamos y ponemos la fecha con el mismo formato del dï¿½a de
+	 * ejecuciï¿½n.
 	 * 
-	 * @param indexToChange NodeRef del índice a cambiar el nombre
+	 * @param indexToChange NodeRef del ï¿½ndice a cambiar el nombre
 	 */
 	private void changeIndexName(NodeRef indexToChange) {
 		// Change property CM:NAME
@@ -455,7 +455,7 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método auxiliar para parsear un documento XML en forma de byte Array
+	 * Mï¿½todo auxiliar para parsear un documento XML en forma de byte Array
 	 * 
 	 * @param documentoXml byte[] que contiene el el resultado de firma
 	 * @return Document contenedor del resultado de parsear el xml
@@ -469,7 +469,7 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * Método auxiliar para saber si un expediente se debe resellar
+	 * Mï¿½todo auxiliar para saber si un expediente se debe resellar
 	 * 
 	 * @param fechaFinExp  fecha cierre del expediente
 	 * @param diasVigencia dias de vigencia por serie documental
