@@ -1769,8 +1769,8 @@ public class GdibUtils {
     	nodeParent = getParentFromClassificationTable(classificationCategory);
     	if(nodeParent != null){
     		String expedientDate= this.getProperty(node.getProperties(), ConstantUtils.PROP_FECHA_INICIO_QNAME);
-    		expedientDate = this.getISO860DateFormat(expedientDate);
        		node.getProperties().add(new Property(ConstantUtils.PROP_FECHA_INICIO_QNAME, expedientDate));
+       		expedientDate = this.getISO860DateFormat(expedientDate);
 			String functionName = (String) nodeService.getProperty(nodeParent, ConstantUtils.PROP_NAME);
 			String path = ConstantUtils.PATH_SEPARATOR + functionName
 					+ ConstantUtils.PATH_SEPARATOR + classificationCategory + ConstantUtils.PATH_SEPARATOR + expedientDate.replace("-", ConstantUtils.PATH_SEPARATOR);
@@ -2658,11 +2658,11 @@ public class GdibUtils {
 	}
 
 	/**
-	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
-	 * @param signature XML que contiene la firma en un índice
+	 * Mï¿½todo que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
+	 * @param signature XML que contiene la firma en un ï¿½ndice
 	 * @return Serial number del certificado de la TSA
 	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
-	 * @throws IOException  Excepción lanzada si no consigue leer el XML
+	 * @throws IOException  Excepciï¿½n lanzada si no consigue leer el XML
 	 */
 	public String parseTimeStampASN1(org.w3c.dom.Document signature) throws GdibException,IOException{
 
@@ -2738,11 +2738,11 @@ public class GdibUtils {
 		
 	}
 	/**
-	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
-	 * @param signature XML que contiene la firma en un índice
+	 * Mï¿½todo que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
+	 * @param signature XML que contiene la firma en un ï¿½ndice
 	 * @return Serial number del certificado de la TSA
 	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
-	 * @throws IOException  Excepción lanzada si no consigue leer el XML
+	 * @throws IOException  Excepciï¿½n lanzada si no consigue leer el XML
 	 */
 	public Date parseTimeStampASN1CertCad(org.w3c.dom.Document signature) throws GdibException,IOException{
 
@@ -2799,7 +2799,7 @@ public class GdibUtils {
         								    			
         								    			return date;
         											} catch (ParseException e1) {
-        												LOGGER.debug("Ocurrió un error obteniendo caducidad del certificado.");
+        												LOGGER.debug("Ocurriï¿½ un error obteniendo caducidad del certificado.");
         					        					throw new GdibException("Excepcion reading TSA Cert Validity");
         											}
         							    			
