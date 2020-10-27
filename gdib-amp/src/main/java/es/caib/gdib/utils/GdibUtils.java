@@ -1124,11 +1124,9 @@ public class GdibUtils {
                         DataHandler handler = new DataHandler(new InputStreamDataSource(reader.getContentInputStream()));
                         content.setData(handler);
                     }
-                    if(isType(nodeService.getType(node),ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
                         content.setByteSize(reader.getSize());
                         content.setEncoding(reader.getEncoding());
                         content.setMimetype(reader.getMimetype());
-                    }
                 }
             } catch (ContentIOException e) {
                 LOGGER.error("Error en el getContent: "+e);
