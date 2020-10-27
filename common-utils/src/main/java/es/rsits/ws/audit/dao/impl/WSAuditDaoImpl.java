@@ -48,7 +48,7 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 				+ "publicservantname, "
 				+ "publicservantorganization, "
 				+ "expedient) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -127,7 +127,7 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 				+ "expedient, "
 				+ "code, "
 				+ "message) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -187,7 +187,7 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 	}
 
 	public int getRowAudit() throws DAOException {
-		String sql = "select count(*) from gdibauditoria;";
+		String sql = "select count(*) from gdibauditoria";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -230,7 +230,7 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 
 	@Override
 	public int getRowCountAudit() throws DAOException {
-		String sql = "select count(*) from gdibauditoria;";
+		String sql = "select count(*) from gdibauditoria";
 		int rows = jdbcTemplate.queryForObject(sql, Integer.class);
 		return rows;
 	}
@@ -238,14 +238,14 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Map getLastRowAudit() {
-		String sql = "select * from gdibauditoria;";
+		String sql = "select * from gdibauditoria";
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		return rows.get(rows.size()-1);
 	}
 
 	@Override
 	public int getRowCountError() throws DAOException {
-		String sql = "select count(*) from gdibauditoria_error;";
+		String sql = "select count(*) from gdibauditoria_error";
 		int rows = jdbcTemplate.queryForObject(sql, Integer.class);
 		return rows;
 	}
@@ -253,7 +253,7 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Map getLastRowError() {
-		String sql = "select * from gdibauditoria_error;";
+		String sql = "select * from gdibauditoria_error";
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		return rows.get(rows.size()-1);
 	}

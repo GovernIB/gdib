@@ -220,7 +220,7 @@ public class AuditHandler extends SpringBeanAutowiringSupport  implements SOAPHa
 				stb_SELECT.append("    SELECT 1 FROM information_schema.tables ");
 				stb_SELECT.append("    WHERE table_schema='public' AND ");
 				stb_SELECT.append("          table_name='gdibauditoria'");
-				stb_SELECT.append("    );");
+				stb_SELECT.append("    )");
 
 //				SELECT EXISTS (
 //						   SELECT 1
@@ -287,7 +287,7 @@ public class AuditHandler extends SpringBeanAutowiringSupport  implements SOAPHa
 				stb_CREATE.append("    )");
 				stb_CREATE.append("WITH (");
 				stb_CREATE.append("    OIDS=FALSE");
-				stb_CREATE.append("    );");
+				stb_CREATE.append("    )");
 
 				stb_CREATE.append("CREATE TABLE gdibauditoria_error");
 				stb_CREATE.append("    (");
@@ -314,7 +314,7 @@ public class AuditHandler extends SpringBeanAutowiringSupport  implements SOAPHa
 				stb_CREATE.append("    )");
 				stb_CREATE.append("WITH (");
 				stb_CREATE.append("    OIDS=FALSE");
-				stb_CREATE.append("    );");
+				stb_CREATE.append("    )");
 
 				st = conn.createStatement();
 
