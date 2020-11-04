@@ -1111,7 +1111,6 @@ public class GdibUtils {
                     content.setMimetype(reader.getMimetype());
                 }
             } catch (ContentIOException e) {
-                LOGGER.error("Se ha producido un error en el getContent: "+e);
                 throw exUtils.invalidContent(node.getId(),e);
             }
         }
