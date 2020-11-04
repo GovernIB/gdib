@@ -23,13 +23,13 @@ public class Content {
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
     protected String encoding;
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
-    protected Long byteSize;
+    protected long byteSize;
 
-    public Long getByteSize() {
+    public long getByteSize() {
         return byteSize;
     }
 
-    public void setByteSize(Long byteSize) {
+    public void setByteSize(long byteSize) {
         this.byteSize = byteSize;
     }
     public String getMimetype() {

@@ -2346,8 +2346,7 @@ public class ApiArchivoDigital {
     		if (TiposContenidosBinarios.CONTENT.equals(contenido.getBinaryType())){
     			doc.setContent(contenido.getContent()); 
     			doc.setEncoding(contenido.getEncoding());
-    			doc.setMimetype(contenido.getMimetype());
-    			doc.setByteSize(contenido.getByteSize());
+    			doc.setMimetype(contenido.getMimetype()); 
     		}
     	
     		if (TiposContenidosBinarios.SIGNATURE.equals(contenido.getBinaryType())){
@@ -2443,8 +2442,6 @@ public class ApiArchivoDigital {
       contenido.setContent(doc.getContent());
       contenido.setEncoding(doc.getEncoding());
       contenido.setMimetype(doc.getMimetype());
-      contenido.setByteSize(doc.getByteSize());
-
       listaContenidos.add(contenido);
 
       if (doc.getListaFirmas() != null) {
