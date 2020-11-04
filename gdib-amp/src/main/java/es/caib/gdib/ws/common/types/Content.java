@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "content", propOrder = {
     "mimetype",
     "data",
-    "encoding",
-    "byteSize"
+    "encoding"
 },namespace = "http://www.caib.es/gdib/repository/ws")
 public class Content {
 
@@ -33,7 +32,6 @@ public class Content {
     public void setByteSize(Long byteSize) {
         this.byteSize = byteSize;
     }
-
     public String getMimetype() {
         return mimetype;
     }
