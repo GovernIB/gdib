@@ -113,7 +113,7 @@ function extractContentAndSignatureGetDocResp(mc) {
 		    		var valCertSignatureFound = false;
 		    		
 		    		if(Object.prototype.toString.call(getDocRes.resParam.binaryContents) == '[object Array]'){
-		    			mc.setProperty('traza', 'Firma explicita');
+		    		
 				    	for (i = 0; i < getDocRes.resParam.binaryContents.length; i++) {
 				    		binaryContent = getDocRes.resParam.binaryContents[i];
 				    		if(binaryContent.binaryType == 'CONTENT' && contentRequired){
@@ -121,7 +121,7 @@ function extractContentAndSignatureGetDocResp(mc) {
 			    				mc.setProperty('docContent', binaryContent.content);
 			    				contentFound = true;
 			    			}
-
+	
 				    		if(isEniDocType){
 				    			if(binaryContent.binaryType == 'SIGNATURE' && contentRequired){
 					    			mc.setProperty('docSignature', binaryContent.content);
@@ -150,33 +150,28 @@ function extractContentAndSignatureGetDocResp(mc) {
 					    	}
 					    }
 		    		} else {
-		    			mc.setProperty('traza', 'Firma implicita');
 		    			//Cuando se retorna un solo binario, no se retorna como array, sino como objeto simple
 		    			//Esto solo sucede con documentos tipo eni:documento, que poseen contenido y, opcionalmente, firma
 		    			//Por tanto, solo es posible en este caso firmas implicitas
 		    			binaryContent = getDocRes.resParam.binaryContents;
 		    			if(binaryContent.binaryType == 'CONTENT' && !contentRequired){
-		    				mc.setProperty('traza', 'Firma implicita - Cumple condicion');
-
 		    				//Firma implícita
 		    				mc.setProperty('docSignature', binaryContent.content);
 			    			signatureFound = true;
-			    		} else {
-			    			mc.setProperty('traza', 'Firma implicita - No Cumple condicion' + binaryContent.binaryType);
 			    		}
 		    		}
-
+		    		
 			    	mc.setProperty('docType', docType);
 			    	mc.setProperty('signatureFound', signatureFound);
 			    	mc.setProperty('contentRequired', contentRequired);
 			    	mc.setProperty('contentFound', contentFound);
 			    	mc.setProperty('docSignatureContentFound', docSignatureContentFound);
 			    	mc.setProperty('valCertSignatureFound', valCertSignatureFound);
-
+			    	
 			    	responseOk = signatureFound;
 			    	if(!responseOk){
 			    		errorMessage = 'El documento a verificar no posee firma electrónica, o esta no puede ser recuperada.';
-			    	} else {
+			    	} else {			    	
 				    	if(isEniDocType){
 				    		var contentOk = true;
 				    		if(contentRequired){
@@ -206,11 +201,11 @@ function extractContentAndSignatureGetDocResp(mc) {
     } else {
     	errorMessage = 'No se obtuvo documento del Archivo Digital.';
     }
-
+    
     if(!responseOk){
     	mc.setProperty('respServiceErrorMessage', errorMessage);
     }
-
+    
     mc.setProperty('respServiceOk', responseOk);
 }
 
@@ -222,7 +217,7 @@ function extractDocumentInfo(mc) {
     var getDocResString = mc.getProperty('getDocRes');
     if(getDocResString != null){
 	    var getDocRes = eval('('+getDocResString+')');
-
+	    
 	    if(getDocRes != null && getDocRes.resParam != null && getDocRes.resParam.id != null && getDocRes.resParam.type != null){
 	    	var documentResp = '<csgd:document xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0">';
 
@@ -247,7 +242,7 @@ function extractDocumentInfo(mc) {
     			if(Object.prototype.toString.call(getDocRes.resParam.metadataCollection) == '[object Array]'){
 		    		for (i = 0; i < getDocRes.resParam.metadataCollection.length; i++) {
 		    			metadata = getDocRes.resParam.metadataCollection[i];
-
+		    			
 		    			documentResp = documentResp + '<csgd:metadataCollection>';
 		    			documentResp = documentResp + '<csgd:qname>' + metadata.qname + '</csgd:qname>';
 		    			if(Object.prototype.toString.call(metadata.value) == '[object Array]'){
@@ -261,7 +256,7 @@ function extractDocumentInfo(mc) {
 				    }
     			} else {
     				metadata = getDocRes.resParam.metadataCollection;
-
+	    			
 	    			documentResp = documentResp + '<csgd:metadataCollection>';
 	    			documentResp = documentResp + '<csgd:qname>' + metadata.qname + '</csgd:qname>';
 	    			if(Object.prototype.toString.call(metadata.value) == '[object Array]'){
@@ -289,10 +284,10 @@ function extractDocumentInfoAndContents(mc) {
     var getDocResString = mc.getProperty('getDocRes');
     if(getDocResString != null){
 	    var getDocRes = eval('('+getDocResString+')');
-
+	    
 	    if(getDocRes != null && getDocRes.resParam != null && getDocRes.resParam.id != null && getDocRes.resParam.type != null){
 	    	var documentResp = '<csgd:document xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0">';
-
+	    	
 	    	documentResp = documentResp + '<csgd:id>' + getDocRes.resParam.id + '</csgd:id>';
 	    	documentResp = documentResp + '<csgd:name>' + getDocRes.resParam.name + '</csgd:name>';
     		documentResp = documentResp + '<csgd:type>' + getDocRes.resParam.type + '</csgd:type>';
@@ -314,7 +309,7 @@ function extractDocumentInfoAndContents(mc) {
     			if(Object.prototype.toString.call(getDocRes.resParam.metadataCollection) == '[object Array]'){
 		    		for (i = 0; i < getDocRes.resParam.metadataCollection.length; i++) {
 		    			metadata = getDocRes.resParam.metadataCollection[i];
-
+	
 		    			documentResp = documentResp + '<csgd:metadataCollection>';
 		    			documentResp = documentResp + '<csgd:qname>' + metadata.qname + '</csgd:qname>';
 		    			if(Object.prototype.toString.call(metadata.value) == '[object Array]'){
@@ -323,12 +318,12 @@ function extractDocumentInfoAndContents(mc) {
 		    				}
 		    			} else {
 		    				documentResp = documentResp + '<csgd:value>' + metadata.value + '</csgd:value>';
-		    			}
+		    			}		    			
 		    			documentResp = documentResp + '</csgd:metadataCollection>';
 				    }
     			} else {
     				metadata = getDocRes.resParam.metadataCollection;
-
+    				
 	    			documentResp = documentResp + '<csgd:metadataCollection>';
 	    			documentResp = documentResp + '<csgd:qname>' + metadata.qname + '</csgd:qname>';
 	    			if(Object.prototype.toString.call(metadata.value) == '[object Array]'){
@@ -353,9 +348,6 @@ function extractDocumentInfoAndContents(mc) {
 	        				documentResp = documentResp + '<csgd:mimetype>' + binaryContent.mimetype + '</csgd:mimetype>';
 	        			}
 	        			documentResp = documentResp + '<csgd:content>' + binaryContent.content + '</csgd:content>';
-	        			if(binaryContent.byteSize != null){
-	        			    documentResp = documentResp + '<csgd:byteSize>' + binaryContent.byteSize + '</csgd:byteSize>';
-	        			}
 	        			if(binaryContent.encoding != null){
 	        				documentResp = documentResp + '<csgd:encoding>' + binaryContent.encoding + '</csgd:encoding>';
 	        			}
@@ -372,9 +364,6 @@ function extractDocumentInfoAndContents(mc) {
         			if(binaryContent.encoding != null){
         				documentResp = documentResp + '<csgd:encoding>' + binaryContent.encoding + '</csgd:encoding>';
         			}
-        			if(binaryContent.byteSize != null){
-                        documentResp = documentResp + '<csgd:byteSize>' + binaryContent.byteSize + '</csgd:byteSize>';
-                    }
         			documentResp = documentResp + '</csgd:binaryContents>';
     			}
     		}
