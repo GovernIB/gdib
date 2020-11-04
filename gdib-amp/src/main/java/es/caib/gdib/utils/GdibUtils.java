@@ -1217,7 +1217,9 @@ public class GdibUtils {
          */
         ContentReader cR = getContentReader(nodeRef, ConstantUtils.PROP_CONTENT);
         if (cR != null) {
-            propertiesCalculated.add(new Property(formatQnameCalculated(ConstantUtils.CALCULATED_FILESIZE), String.valueOf(cR.getSize())));
+//            propertiesCalculated.add(new Property(formatQnameCalculated(ConstantUtils.CALCULATED_FILESIZE), String.valueOf(cR.getSize())));
+            propertiesCalculated.add(new Property(ConstantUtils.NAMESPACE_BEGIN + ConstantUtils.NS_ENI + ConstantUtils.NAMESPACE_END + ConstantUtils.CALCULATED_FILESIZE, String.valueOf(cR.getSize())));
+            propertiesCalculated.add(new Property(ConstantUtils.NAMESPACE_BEGIN + ConstantUtils.NS_ENI + ConstantUtils.NAMESPACE_END + ConstantUtils.CALCULATED_MIME_TYPE, cR.getMimetype()));
         }
         String path = this.getPathFromUID(nodeRef);
         propertiesCalculated.add(new Property(formatQnameCalculated(ConstantUtils.CALCULATED_PATH), path));
