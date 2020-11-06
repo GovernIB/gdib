@@ -2374,7 +2374,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		} catch (org.alfresco.repo.search.impl.lucene.LuceneQueryParserException e) {
 			LOGGER.error("Se ha producido un error de sintaxis en la construcción de la consulta lucene ["
 					+ luceneQuery+ "]. Error: \n",e);
-			throw exUtils.luceneQueryParserException(luceneQuery);
+//			Se devuelve -1 a modo de codigo, en el bus se cambiara por el mensaje adecuado
+			res.setNumResultados(-1);
+			res.setNumPaginas(-1);
+			res.setResultados(new ArrayList<>());
+			return res;
+//			throw exUtils.luceneQueryParserException(luceneQuery);
 		} catch (Exception e) {
 			LOGGER.error("Se ha producido un error de tipo [" + e.getClass() + "] no controlado durante la " +
 					"ejecución de la consulta lucene: ",e);
