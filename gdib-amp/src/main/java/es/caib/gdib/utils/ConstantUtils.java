@@ -74,7 +74,6 @@ public class ConstantUtils implements CaibModelUtilsInterface, EniModelUtilsInte
 	public static final String CALCULATED_URI = "http://www.ricoh.es/model/gdib/calculated/1.0";
     public static final String CALCULATED_PREFIX = "calc";
     public static final String CALCULATED_MODEL_PREFIX = CALCULATED_PREFIX + PREFIX_SEPARATOR;
-    public static final String CALCULATED_FILESIZE = "fileSize";
     public static final String CALCULATED_MIME_TYPE = "mimeType";
     public static final String CALCULATED_PATH = "path";
     public static final String CALCULATED_SITE = "site";

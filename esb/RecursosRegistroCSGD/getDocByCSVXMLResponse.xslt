@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:fn="http://www.w3.org/2005/xpath-functions" version="2.0" exclude-result-prefixes="fn xsd soapenv">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 	<xsl:param name="retrieveContent" />
-	<xsl:param name="returnedProperites" select="('eni:app_tramite_doc','eni:csv','eni:tipoFirma','eni:perfil_firma','eni:id','eni:organo','eni:v_nti','eni:origen','eni:id_origen','eni:estado_elaboracion','eni:nombre_formato','eni:extensión_formato','eni:def_csv','eni:mimeType','eni:fileSize')"/>
+	<xsl:param name="returnedProperites" select="('eni:app_tramite_doc','eni:csv','eni:tipoFirma','eni:perfil_firma','eni:id','eni:organo','eni:v_nti','eni:origen','eni:id_origen','eni:estado_elaboracion','eni:nombre_formato','eni:extensión_formato','eni:def_csv','gdib:mimeType','eni:tamano_logico')"/>
 	<xsl:template match="/">
 		<csgd:getDocumentResult>
 			<csgd:result>
