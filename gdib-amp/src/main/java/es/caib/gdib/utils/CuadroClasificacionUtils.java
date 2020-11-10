@@ -30,11 +30,16 @@ public class CuadroClasificacionUtils {
 	 * @return lista de noderef
 	 * @throws GdibException
 	 */
-	public List<NodeRef> getAllFunctions() throws GdibException{
-		if(StringUtils.isEmpty(rootRM)){
+	public List<NodeRef> getAllFunctions(NodeRef root) throws GdibException{
+//		if(StringUtils.isEmpty(rootRM)){
+//			throw exUtils.configurationRootRMException();
+//		}
+		if(root == null){
 			throw exUtils.configurationRootRMException();
 		}
-		NodeRef RM = utils.toNodeRef(rootRM);
+		//TODO: Como obtener el RM ahora???
+//		NodeRef RM = utils.toNodeRef(rootRM);
+		NodeRef RM = null;
 		List<NodeRef> functions = new ArrayList<NodeRef>();
 		Set<QName> childNodeTypeQNames = new HashSet<QName>();
 		childNodeTypeQNames.add(RecordsManagementModel.TYPE_RECORD_CATEGORY);
@@ -101,8 +106,8 @@ public class CuadroClasificacionUtils {
 	 * @return nodeRef de la funcion dentro del RM
 	 * @throws GdibException
 	 */
-	public NodeRef getFunctionFromDocumentarySeries(String documentarySeries) throws GdibException{
-		List<NodeRef> functions = this.getAllFunctions();
+	public NodeRef getFunctionFromDocumentarySeries(String documentarySeries, NodeRef root) throws GdibException{
+		List<NodeRef> functions = this.getAllFunctions(root);
 		for (NodeRef function : functions) {
 			NodeRef series = this.getDocumentarySeriesFromFunction(function, documentarySeries);
 			if(series != null)
@@ -123,6 +128,7 @@ public class CuadroClasificacionUtils {
 	 */
 	public NodeRef getDocumentarySeriesFromFunction(NodeRef function, String documentarySeries){
 		Set<QName> childNodeTypeQNames = new HashSet<QName>();
+		//FIXME: Cambiar la forma de como obtener las series? ahora son los hijos de las funciones
 		childNodeTypeQNames.add(RecordsManagementModel.TYPE_RECORD_CATEGORY);
 		List<ChildAssociationRef> childs = nodeService.getChildAssocs(function, childNodeTypeQNames );
 		for (ChildAssociationRef child : childs) {
@@ -144,7 +150,8 @@ public class CuadroClasificacionUtils {
 	 * @throws GdibException
 	 */
 	public NodeRef getDocumentarySeries(String documentarySeries) throws GdibException{
-		List<NodeRef> functions = this.getAllFunctions();
+		NodeRef classificationTableCode = null;
+		List<NodeRef> functions = this.getAllFunctions(classificationTableCode);
 		for (NodeRef function : functions) {
 			NodeRef series = this.getDocumentarySeriesFromFunction(function, documentarySeries);
 			if(series != null)

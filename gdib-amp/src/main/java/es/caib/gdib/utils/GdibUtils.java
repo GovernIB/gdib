@@ -212,19 +212,21 @@ public class GdibUtils {
      *            nodo a verificar
      * @throws GdibException
      */
-    public boolean inDMPath(NodeRef node) throws GdibException {
+    public boolean inDMPath(NodeRef node,NodeRef classificationTable) throws GdibException {
     	if(inDMPathCheckActive){
-    		inPath(getPathDM(), node);
+    		inPath(getPathDM(classificationTable), node);
     	}
     	return true;
     }
 
     /* Devuelve el pathDM */
-    private String getPathDM() {
-    	if (!StringUtils.isEmpty(this.rootDM)) {
-			this._pathDM = this.getPathFromUID(this.toNodeRef(this.rootDM));
-		}
-		return this._pathDM;
+    private String getPathDM(NodeRef classificationTable) {
+        //TODO: Cambiar esto, no se puede utilizar la variable global
+        //TODO: Como obtener el path del DM?
+//    	if (!StringUtils.isEmpty(this.rootDM)) {
+			this._pathDM = this.getPathFromUID(classificationTable);
+//		}
+//		return this._pathDM;
 	}
 
 	/**
@@ -333,6 +335,7 @@ public class GdibUtils {
 		if (StringUtils.isEmpty(node.getName()))
 			throw exUtils.nullParamException("node name");
 
+
 		// elimino las propiedades calculadas y propiedades de borrar
 		node.setProperties(this.filterRemoveMetadata(node.getProperties()));
 		node.setProperties(this.filterCalculatedProperties(node.getProperties()));
@@ -346,6 +349,9 @@ public class GdibUtils {
         // verifico si los metadatos del nodo existen en el dictionario de alfresco
         checkValidProperties(this.filterRemoveMetadata(node.getProperties()));
 
+        // Se comprueba que este el cuadro de clasificacion informado
+        this.checkClassificationTableProperty(node.getProperties());
+
         // verifico si los aspectos del nodo existen en el dictionario de alfresco
         this.checkValidAspects(node.getAspects());
 
@@ -356,6 +362,24 @@ public class GdibUtils {
 
             if (node.getSign() != null)
                 throw exUtils.informParamException("node sign");
+        }
+    }
+
+    /**
+     * Se valida que se haya informado el codigo del cuadro de clasificacion al que pertenece (o el suyo propio en caso
+     * de ser de tipo cuadro de clasificacion)
+     *
+     * @param properties
+     */
+    private void checkClassificationTableProperty(List<Property> properties) throws GdibException {
+        boolean encontrado = false;
+        for(Property p : properties){
+            if(p.getQname().equals(ConstantUtils.PROP_CODIGO_CUADRO)){
+                encontrado = true;
+            }
+        }
+        if(!encontrado){
+            throw exUtils.checkMandatoryMetadataException(ConstantUtils.PROP_CODIGO_CUADRO);
         }
     }
 
@@ -409,7 +433,7 @@ public class GdibUtils {
 
         	categoria = ConstantUtils.CATEGORIA_DOC_SIMPLE;
 
-        	// TODO eni:def_csv es un dato rellenado por nosotros (SRV) que valor se ha de meter?
+        	// Se quita este valor por defecto por la incidencia #31
         	//this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_DEF_CSV_QNAME, ConstantUtils.DEF_CSV_VALUE);
 
         	// eni:documento_vital
@@ -434,6 +458,8 @@ public class GdibUtils {
 //        	String eniId = this.calculateEniId(node.getId(), node.getType(), organo);
 //        	this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_ID_QNAME, eniId);
 //        }
+        //FIXME: Hace falta poner algún valor por defecto en las propiedades de series y funciones??
+
         if ( this.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME ) || this.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME )) {
 	        // eni:v_nti
 	        this.setValuePropertyIfEmpty(node.getProperties(), ConstantUtils.PROP_V_NTI_QNAME, v_nti);
@@ -1696,13 +1722,34 @@ public class GdibUtils {
 			// me salto este paso si esta desactivado los check principales del repositorio
 			if (isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME) && StringUtils.isEmpty(parentId)) {
 				String classificationCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
-				parentRef = getParentFromClassificationTable(node, classificationCode);
+                String classificationTableCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_CODIGO_CUADRO_QNAME);
+				parentRef = getParentFromClassificationTable(node, classificationCode,classificationTableCode);
 				// si al consultar el cuadro de clasificacion no tengo el nodeRef del padre es que ha habido un error
 				// en el cuadro de clasificacion
 				if (parentRef == null)
 					throw exUtils.checkDocumentarySeriesInClassificationTableExcepcion(classificationCode);
 				return parentRef;
-			}else{
+			}else if(isType(node.getType(), ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) && !StringUtils.isEmpty(parentId)){
+			    //FIXME: El cuadro de clasificacion no debe tener padre¿?¿?
+			    throw exUtils.checkParamsException("parentId","for classification table type");
+            }else if(isType(node.getType(), ConstantUtils.TYPE_SERIE_DOCUMENTAL_QNAME) && StringUtils.isEmpty(parentId)){
+                String classificationCode = this.getProperty(node.getProperties(),
+                        ConstantUtils.PROP_CODIGO_CLASIFICACION_SERIE_QNAME);
+                String classificationTableCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_CODIGO_CUADRO_QNAME);
+                parentRef = getParentFromClassificationTable(node, classificationCode,classificationTableCode);
+                if (parentRef == null)
+                    throw exUtils.checkDocumentarySeriesInClassificationTableExcepcion(classificationCode);
+                return parentRef;
+
+            }else if(isType(node.getType(), ConstantUtils.TYPE_FUNCION_QNAME) && StringUtils.isEmpty(parentId)){
+                String classificationCode = this.getProperty(node.getProperties(),
+                        ConstantUtils.PROP_CODIGO_FUNCION_QNAME);
+                String classificationTableCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_CODIGO_CUADRO_QNAME);
+                parentRef = getParentFromClassificationTable(node, classificationCode,classificationTableCode);
+                if (parentRef == null)
+                    throw exUtils.checkDocumentarySeriesInClassificationTableExcepcion(classificationCode);
+                return parentRef;
+            }else{
 				if(StringUtils.isEmpty(parentId))
 					throw exUtils.checkParamsException("parentId", "null or empty");
 			}
@@ -1762,10 +1809,12 @@ public class GdibUtils {
 	 * @return
 	 * @throws GdibException
 	 */
-    public NodeRef getParentFromClassificationTable(Node node, String classificationCategory) throws GdibException{
+    public NodeRef getParentFromClassificationTable(Node node, String classificationCategory,
+                                                    String classificationTableCode) throws GdibException{
     	NodeRef nodeParent = null;
-    	nodeParent = getParentFromClassificationTable(classificationCategory);
-    	if(nodeParent != null){
+    	nodeParent = getParentFromClassificationTable(classificationCategory,classificationTableCode);
+    	//FIXME: Solo crea la estructura de fechas si se trata de un expediente
+    	if(nodeParent != null && isType(node.getType(),ConstantUtils.TYPE_EXPEDIENTE_QNAME)){
     		String expedientDate= this.getProperty(node.getProperties(), ConstantUtils.PROP_FECHA_INICIO_QNAME);
        		node.getProperties().add(new Property(ConstantUtils.PROP_FECHA_INICIO_QNAME, expedientDate));
        		expedientDate = this.getISO860DateFormat(expedientDate);
@@ -1792,17 +1841,21 @@ public class GdibUtils {
     	return expedienteDateString;
     }
 
-    private NodeRef getParentFromClassificationTable(String classificationCategory) throws GdibException{
-    	if(this.repositoryClassificationTableMode)
-    		return getParentFromRM(classificationCategory);
+    public NodeRef getParentFromClassificationTable(String classificationCategory,String classificationTableCode)
+            throws GdibException{
+    	//FIXME: Ahora se recuperaria siempre de Alfresco, pero como diferenciar RM y DM?
+        if(this.repositoryClassificationTableMode)
+    		return getParentFromRM(classificationCategory,classificationTableCode);
     	else
-    		return getParentFromAlfresco(classificationCategory);
+    		return getParentFromAlfresco(classificationCategory,classificationTableCode);
     }
 
-    private NodeRef getParentFromAlfresco(String classificationCategory){
-    	Collection<ChildAssociationRef> categories = categoryService.getChildren(this.toNodeRef(rootCT),
+    private NodeRef getParentFromAlfresco(String classificationCategory,String classificationTableCode){
+    	Collection<ChildAssociationRef> categories = categoryService.getChildren(
+    	        this.classificationTableCodetoNodeRef(classificationTableCode),
     			org.alfresco.service.cmr.search.CategoryService.Mode.SUB_CATEGORIES,
     			org.alfresco.service.cmr.search.CategoryService.Depth.ANY);
+
     	for (ChildAssociationRef child : categories) {
 			String categoryName = (String) nodeService.getProperty(child.getChildRef(), ConstantUtils.PROP_NAME);
 			if(categoryName.equals(classificationCategory)){
@@ -1812,8 +1865,13 @@ public class GdibUtils {
     	return null;
     }
 
-    private NodeRef getParentFromRM(String classificationCategory) throws GdibException{
-    	return ccUtils.getFunctionFromDocumentarySeries(classificationCategory);
+    public NodeRef classificationTableCodetoNodeRef(String classificationTableCode) {
+        //TODO: Como obtengo el nodeRef buscando por el codigo??
+    }
+
+    private NodeRef getParentFromRM(String classificationCategory,String classificationTableCode) throws GdibException{
+    	return ccUtils.getFunctionFromDocumentarySeries(classificationCategory,
+                classificationTableCodetoNodeRef(classificationTableCode));
     }
 
     /**
@@ -2018,7 +2076,6 @@ public class GdibUtils {
     }
 
     public String getPathFromUID(final NodeRef nodeRef){
-
     	String path  = "";
     	path = AuthenticationUtil.runAsSystem(new RunAsWork<String>() {
 			// @Override

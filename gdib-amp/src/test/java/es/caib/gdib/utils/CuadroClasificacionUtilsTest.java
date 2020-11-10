@@ -121,7 +121,8 @@ public class CuadroClasificacionUtilsTest {
     @Test
     public void testFunctionFromDocumentarySeries() throws GdibException{
     	String documentarySeries = "documentarySeries11";
-    	NodeRef function = ccUtils.getFunctionFromDocumentarySeries(documentarySeries);
+        //TODO: Pasar el cuadro de clasificacion
+    	NodeRef function = ccUtils.getFunctionFromDocumentarySeries(documentarySeries,null);
     	String nameFunction = (String) nodeService.getProperty(function, ConstantUtils.PROP_NAME);
     	assertTrue("function1".equals(nameFunction));
     }

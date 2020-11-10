@@ -427,19 +427,35 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
    	 * @return Node Objeto Nodo con la informaci�n que alfresco tiene en el repositorio.
    	 * @throws GdibException Si no se tienen permisos para recuperar el nodo.
    	 * */
-    public Node _internal_getNode(NodeRef nodeRef, boolean withContent, boolean withSign) throws GdibException {
+    public Node _internal_getNode(NodeRef nodeRef,NodeRef classificationTableRef ,boolean withContent, boolean withSign)
+			throws GdibException {
         Node node = new Node();
 
+        String type = utils.getNodeType(nodeRef);
+
         node.setId(nodeRef.getId());
-        node.setType(utils.getNodeType(nodeRef));
+        node.setType(type);
         node.setName(utils.getNameNode(nodeRef));
         node.setAspects(utils.getAspects(nodeRef));
 
+
         List<Property> allProperties = utils.getProperties(nodeRef);
         allProperties.addAll(utils.getPropertiesCalculated(nodeRef));
+
+        if(utils.isType(type,ConstantUtils.TYPE_EXPEDIENTE_QNAME)
+				|| utils.isType(type,ConstantUtils.TYPE_DOCUMENTO_QNAME)){
+
+        	NodeRef serie = utils.getParentFromClassificationTable(
+        			utils.getProperty(nodeRef,ConstantUtils.PROP_COD_CLASIFICACION_QNAME), classificationTableRef.getId());
+        	//FIXME: Hace falta meter todas las propiedades o hay que seleccionarlas?
+        	allProperties.addAll(utils.getProperties(serie));
+		}
+
         node.setProperties(allProperties);
+
+        //FIXME: Borrar esta línea cuando se confirme que está bien lo de arriba
         // obtener las propiedades de eni:transferible que estan en la base de datos del cuadro de clasificacion
-        subTypeDocUtil.fillSubTypeDocInfo(node);
+//        subTypeDocUtil.fillSubTypeDocInfo(node);
 
 //        if (withContent) {
             node.setContent(utils.getContent(nodeRef,withContent));
@@ -1134,6 +1150,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         utils.fillNodeMetadata(node);
         LOGGER.debug("Ultimas comprobaciones.");
         long signMill = 0;
+        //FIXME: Confirmar que no hace falta hacer nada con los aspectos de series/funciones
 		if (!repositoryDisableCheck.booleanValue()) {
 			if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
 				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
@@ -1350,6 +1367,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    	long initMill = System.currentTimeMillis();
 	    	// compruebo parametros de entrada
 	        NodeRef nodeRef = utils.checkNodeId(nodeId);
+	        NodeRef classificationTableRef = this.utils.
+					classificationTableCodetoNodeRef(utils.getProperty(nodeRef,ConstantUtils.PROP_CODIGO_CUADRO_QNAME));
 	        utils.checkRestriction(nodeRef, gdibHeader);
 
 	        // compruebo que tenga permisos
@@ -1359,13 +1378,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        	// me salto este paso si esta desactivado los check principales del repositorio
 
 		        if(versionService.isAVersion(nodeRef)){
-		        	utils.inDMPath(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)));
+		        	utils.inDMPath(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)),classificationTableRef);
 		        }else{
 		        	// compruebo que el nodo este dentro del path del DM
-		        	utils.inDMPath(nodeRef);
+		        	utils.inDMPath(nodeRef,classificationTableRef);
 		        }
 	        }
-	        Node ret = _internal_getNode(nodeRef, withContent,withSign);
+	        Node ret = _internal_getNode(nodeRef, classificationTableRef, withContent, withSign);
 	        LOGGER.info(nodeId + " recuperado en "+(System.currentTimeMillis()-initMill)+"ms");
 	        return ret;
     }
