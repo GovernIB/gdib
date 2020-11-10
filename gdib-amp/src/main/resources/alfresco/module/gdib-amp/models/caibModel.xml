@@ -647,6 +647,10 @@
 					<type>d:content</type>
 					<mandatory>false</mandatory>
 				</property>
+				<property name="gdib:nombre_firma">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
 			</properties>
 		</aspect>
 

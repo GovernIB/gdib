@@ -1155,19 +1155,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						checkDocClassification(node,parentRef);
 					}
 				}
-				LOGGER.debug("Ãšltima comprobaci�n integridad del nodo.");
+				LOGGER.debug("Última comprobación integridad del nodo.");
 				utils.checkNodeIntegrity(node);
 				verifySubtypeDoc(node);				
 			}
 		}
-		LOGGER.debug("Preparaci�n para la llamada al servicio");
+		LOGGER.debug("Preparación para la llamada al servicio");
         // preparar datos
         QName name = utils.createNameQName(node.getName());
         QName type = GdibUtils.createQName(node.getType());
         Map<QName, Serializable> props = utils.transformMapStringToQname(node.getProperties());
         List<QName> aspects = utils.transformListStringToQname(node.getAspects());
         long prepareProps = System.currentTimeMillis();
-        LOGGER.debug("Se llama al servicio de creaci�n de nodos");
+        LOGGER.debug("Se llama al servicio de creación de nodos");
         NodeRef nodeRef = _internal_createNode(parentRef, name, type, props, aspects, node.getContent(), node.getSign(), utils.getESBOp(gdibHeader));
         long endCreate = System.currentTimeMillis();
         LOGGER.info(nodeRef.getId()+ " creado en " + (endCreate-initMill) +"ms (Checks: "+(checkMill-initMill)+"ms Props: "+(prepareProps-checkMill-signMill)+"ms Firma: "+signMill+"ms Servicio: "+(endCreate-prepareProps)+"ms).");
