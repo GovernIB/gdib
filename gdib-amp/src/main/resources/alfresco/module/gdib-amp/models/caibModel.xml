@@ -69,6 +69,12 @@
 		<type name="eni:documento">
 			<title>Documento CAIB</title>
 			<parent>eni:docBase</parent>
+			<properties>
+				<property name="gdib:mimeType">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
 			<mandatory-aspects>
 				<aspect>eni:transferible</aspect>
 			</mandatory-aspects>
