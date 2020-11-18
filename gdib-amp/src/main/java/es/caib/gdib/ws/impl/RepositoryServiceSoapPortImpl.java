@@ -1142,7 +1142,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					//Se comprueba para todos menos los migrados transformados.
 					if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
 						checkDocumentSignature(node);
-					}					
+					}
 					// incluir a lista de propiedades la fecha de sellado pues la firma es valida
 					utils.updateResealDate(node);
 					signMill = System.currentTimeMillis() - beginMill;
@@ -1157,7 +1157,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				}
 				LOGGER.debug("Última comprobación integridad del nodo.");
 				utils.checkNodeIntegrity(node);
-				verifySubtypeDoc(node);				
+				verifySubtypeDoc(node);
 			}
 		}
 		LOGGER.debug("Preparación para la llamada al servicio");
@@ -1353,7 +1353,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	        utils.checkRestriction(nodeRef, gdibHeader);
 
 	        // compruebo que tenga permisos
-	        utils.hasPermission(nodeRef, CaibServicePermissions.READ);
+			if(versionService.isAVersion(nodeRef)) {
+				utils.hasPermission(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)), CaibServicePermissions.READ);
+			}else{
+				utils.hasPermission(nodeRef, CaibServicePermissions.READ);
+			}
+			LOGGER.debug("permisos checkeados");
 
 	        if(!repositoryDisableCheck.booleanValue()){
 	        	// me salto este paso si esta desactivado los check principales del repositorio
