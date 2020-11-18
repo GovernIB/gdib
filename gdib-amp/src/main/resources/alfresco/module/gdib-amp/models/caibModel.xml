@@ -24,11 +24,11 @@
 			<properties>
 				<property name="gdib:codigo_cuadro">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:estado">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 			</properties>
 		</type>
@@ -41,7 +41,7 @@
 				<!-- Descripcion: Nombre del tipo de documento -->
 				<property name="gdib:codigo_funcion">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:funcion_padre">
 					<type>d:text</type>
@@ -49,7 +49,7 @@
 				</property>
 				<property name="gdib:estado">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 			</properties>
 		</type>
@@ -63,67 +63,67 @@
 				<!-- Descripcion: Nombre del tipo de documento -->
 				<property name="gdib:codigo_clasificacion">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:lopd">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:confidencialidad">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:tipo_acceso">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:causa_limitacion">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:normativa">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:condicion_reutilizacion">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:tipo_valor">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:termino">
 					<type>d:int</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:valor_secundario">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:tipo_dictamen">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:accion_dictaminada">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:termino_accion_dictaminada">
 					<type>d:int</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:serie_esencial">
 					<type>d:boolean</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:tipo_clasificacion">
 					<type>d:text</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 				<property name="gdib:resellado">
 					<type>d:boolean</type>
-					<mandatory>true</mandatory>
+					<mandatory>false</mandatory>
 				</property>
 			</properties>
 		</type>
