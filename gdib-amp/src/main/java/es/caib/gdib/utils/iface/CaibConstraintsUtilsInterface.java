@@ -45,10 +45,12 @@ public interface CaibConstraintsUtilsInterface {
     public static final String LOPD_BASICO = "Basico";
     public static final String LOPD_MEDIO = "Medio";
     public static final String LOPD_ALTO = "Alto";
+    public static final String LOPD_BASICO_NUEVO = "Básico";
     public static final List<String> LOPD_VALUES = Arrays.asList(
     		LOPD_BASICO,
     		LOPD_MEDIO,
-    		LOPD_ALTO);
+    		LOPD_ALTO,
+    		LOPD_BASICO_NUEVO);
 
 
     /**

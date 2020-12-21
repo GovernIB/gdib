@@ -143,11 +143,11 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 		ret.setAspects(node.getAspects());
 		ret.setProperties(node.getProperties());
 
-//		if  (withContent){
-			ret.setContent( utils.getContent(utils.idToNodeRef(node.getId()),withContent));
-//		}else{
-//			ret.setContent(null);
-//		}
+		if  (withContent){
+			ret.setContent( utils.getContent(utils.idToNodeRef(node.getId())));
+		}else{
+			ret.setContent(null);
+		}
 
 		NodeRef parent = nodeService.getPrimaryParent( utils.idToNodeRef(node.getId()) ).getParentRef();
 		if (withSign && node.getSign() != null){
@@ -169,25 +169,25 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 		if (withMigrationSign){
 			firmaMigracion =  nodeService.getChildByName(parent, ContentModel.ASSOC_CONTAINS ,  node.getName() + ConstantUtils.FIRMA_MIGRACION);
 			zipFirmaMigracion =  nodeService.getChildByName(parent, ContentModel.ASSOC_CONTAINS ,  node.getName() + ConstantUtils.FIRMA_MIGRACION_ZIP);
-			
+
+			ret.getProperties().add(new Property(ConstantUtils.PROP_CSV_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_CSV_QNAME)));
+			ret.getProperties().add(new Property(ConstantUtils.PROP_TIPO_FIRMA_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_TIPO_FIRMA_QNAME)));
+			ret.getProperties().add(new Property(ConstantUtils.PROP_PERFIL_FIRMA_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_PERFIL_FIRMA_QNAME)));
+
 			if ( firmaMigracion != null ){
 				ret.setSign( utils.getContent(firmaMigracion).getData() );
-				ret.getProperties().add(new Property(ConstantUtils.PROP_CSV_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_CSV_QNAME)));
-				ret.getProperties().add(new Property(ConstantUtils.PROP_TIPO_FIRMA_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_TIPO_FIRMA_QNAME)));
-				ret.getProperties().add(new Property(ConstantUtils.PROP_PERFIL_FIRMA_QNAME,(String)nodeService.getProperty(firmaMigracion, ConstantUtils.PROP_PERFIL_FIRMA_QNAME)));
 			}else{
-					throw exUtils.firmaMigracionNotFound(node.getId());
-			}				
-			if ( zipFirmaMigracion != null ){
-					ret.setZipContent(utils.getContent(zipFirmaMigracion).getData());
-			}else{
-					throw exUtils.zipMigracionNotFound(node.getId());
+				throw exUtils.firmaMigracionNotFound(node.getId());
 			}
-			
+			if ( zipFirmaMigracion != null ){
+				ret.setZipContent(utils.getContent(zipFirmaMigracion).getData());
+			}else{
+				throw exUtils.zipMigracionNotFound(node.getId());
+			}
+
 		}else{
 			ret.setSign(null);
 		}
-
 
 		return ret;
 	}
@@ -251,7 +251,7 @@ public class MigrationServiceSoapPortImpl extends SpringBeanAutowiringSupport im
 	@Override
 	public MigrationNode getMigrationNode(MigrationID migrationId, boolean withContent, boolean withSign,
 			boolean withMigrationSign, GdibHeader gdibHeader) throws GdibException {    		
-			MigrationNode ret = _internal_getMigrationNode(migrationId,withContent,withSign,withMigrationSign);
+			MigrationNode ret = _internal_getMigrationNode(migrationId,withContent,withSign,withMigrationSign);	        
 	        return ret;
 	}
 

@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="eemgde:contentmodel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+	<description>Modelo para disponer de metadatos del esquema eEMGDE</description>
+	<author>e43152206c</author>
+	<version>1.0</version>
+
+	<imports>
+		<!-- Importa Definiciones del Diccionario de Alfresco -->
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+		<!-- Importa Definiciones del Modelo de Contenido de Alfresco -->
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+	</imports>
+	
+	<namespaces>
+		<namespace uri="http://administracioelectronica.caib.es/model/eemgde/2.0" prefix="eemgde" />
+	</namespaces>
+	
+	<constraints>
+		<constraint name="eemgde:plazo_unidad_constraint" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+						<value>A</value> 	<!-- Años -->
+						<value>M</value> 	<!-- Mes -->
+						<value>DH</value> 	<!-- Día hábil -->
+						<value>DN</value> 	<!-- Día natural -->									
+						<value>H</value>	<!-- Hora -->
+				</list>
+			</parameter>
+		</constraint>
+	</constraints>
+	
+	<types>
+		<type name="eemgde:serie">
+			<title>Serie documental</title>
+			<description>Carpeta metadatada que representa una sèrie documental d'un quadre de classificació funcional</description>	
+			<parent>cm:folder</parent>
+			<mandatory-aspects>
+				<aspect>eemgde:clasificable</aspect>
+				<aspect>eemgde:sensible_datos_personales</aspect>
+				<aspect>eemgde:clasificable_ens</aspect>
+				<aspect>eemgde:reutilizable</aspect>
+				<aspect>eemgde:calificable</aspect>
+				<aspect>eemgde:resellable</aspect>
+			</mandatory-aspects>
+		</type>
+	</types>	
+	
+	
+	<aspects>
+		<aspect name="eemgde:clasificable">
+			<title>Clasificación</title>
+			<description>Codificación por categorías. Corresponde al metadato eEMGDE 22</description>
+			<properties>
+				<property name="eemgde:codigo_clasificacion">
+					<title>Código de clasificación</title>
+					<description>Identificador único que determina una categoría en un cuadro de clasificación o en SIA (eEMGDE 22.1)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="eemgde:denominacion_clase">
+					<title>Denominación de clase</title>
+					<description>Indicador en lenguaje natural que identifica de forma unívoca la clase asignada dentro de un Cuadro de Clasificación (eEMGDE 22.2)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="eemgde:tipo_clasificacion">
+					<title>Tipo de clasificación </title>
+					<description>Indica si corresponde a una clasificación administrativa del procedimiento de acuerdo con SIA (NTI exp) o bien se trata de una clasificación funcional (eEMGDE 22.2)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción  false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>SIA</value>
+									<value>Funcional</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>								
+			</properties>	
+		</aspect>
+		
+		<aspect name="eemgde:sensible_datos_personales">
+			<title>Sensibilidad datos de carácter personal</title>
+			<description>Término normalizado de acuerdo con los niveles de clasificación de la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal y normativa de desarrollo. Corresponde al metadato eEMGDE 8.4</description>
+			<properties>
+				<property name="eemgde:lopd">
+					<title>Sensibilidad de datos de carácter personal</title>
+					<description>Nivel de sensibilidad en cuanto a datos de carácter personal (eEMGDE 8.4)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Basico</value>
+									<value>Medio</value>
+									<value>Alto</value>									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>					
+			</properties>	
+		</aspect>
+		
+		<aspect name="eemgde:clasificable_ens">
+			<title>Confidencialidad ENS</title>
+			<description>Denota el nivel de seguridad de un sistema de información conforme a los criterios del ENS. Corresponde al metadato eEMGDE 8.5</description>
+			<properties>
+				<property name="eemgde:confidencialidad">
+					<title>Nivel de confidencialidad</title>
+					<description>Nivel de confidencialidad de la información, acorde con el ENS (eEMGDE 8.5)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Bajo</value>
+									<value>Medio</value>
+									<value>Alto</value>									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>					
+			</properties>	
+		</aspect>
+		
+		<aspect name="eemgde:reutilizable">
+			<title>Derechos de acceso, uso y reutilización</title>
+			<description>Políicas y requisitos que regulan o restringen el acceso, uso y reutilización por terceros. Corresponde al metadato eEMGDE 9</description>
+			<properties>
+				<property name="eemgde:tipo_acceso">
+					<title>Tipo de acceso</title>
+					<description>Indica si se rige por el régimen general de libre acceso o si, por el contrario, está sujeto a limitaciones (eEMGDE 9.1)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Libre</value>
+									<value>Parcialmente restringido</value>
+									<value>Restringido</value>									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				
+				<property name="eemgde:codigo_causa_limitacion">
+					<title>Código de la causa de limitación</title>
+					<description>Codifica las causas de restricción de acceso (eEMGDE 9.2)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory>false</mandatory>
+					<multiple>true</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>A</value>
+									<value>B</value>
+									<value>C</value>									
+									<value>D</value>
+									<value>E</value>
+									<value>F</value>
+									<value>G</value>
+									<value>H</value>
+									<value>I</value>
+									<value>J</value>
+									<value>K</value>
+									<value>L</value>
+									<value>M</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				
+				<!-- NOTA: No se define el metadato normativa, ya que es un metadato de cardinalidad múltiple correlado con el de causa de limitación. Dado que casi nunca se buscará por este metadato, de momento, se opta por no incorporar el metadato. Se podría hacer con ítems de tipo "normativa" enlazados con las causas de limitación, pero en fase 0 no se abordará -->
+				
+				<property name="eemgde:condicion_reutilizacion">
+					<title>Condiciones de reutilización</title>
+					<description>Indica bajo qué condiciones un documento, expediente o serie son reutilizables (eEMGDE 9.4)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>					
+			</properties>	
+		</aspect>
+		
+		<aspect name="eemgde:calificable">
+			<title>Calificable</title>
+			<description>Información sonre plazos de conservación, valores a lo largo del ciclo de vida y acciones dictaminadas. Corresponde al metadato eEMGDE 13</description>
+			<mandatory-aspects>
+				<aspect>eemgde:valorable</aspect>
+				<aspect>eemgde:dictaminable</aspect>
+				<aspect>eemgde:esencial</aspect>
+			</mandatory-aspects>
+		</aspect>
+		
+		<aspect name="eemgde:valorable">
+			<title>Valorable</title>
+			<description>Valores a los que los documentos están sometidos a lo largo de su ciclo de vida. Corresponde al metadato eEMGDE 13.1</description>
+			<properties>
+				<property name="eemgde:valor_secundario">
+					<title>Valor secundario</title>
+					<description>Determina si existen valores secundarios (testimonial o histórico) en los documentos (eEMGDE 13.1.2)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Si</value>
+									<value>No</value>
+									<value>Sin cobertura de calificacion</value>									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+			<mandatory-aspects>
+				<aspect>eemgde:valorable_primario</aspect>
+			</mandatory-aspects>
+		</aspect>
+		
+		<aspect name="eemgde:valorable_primario">
+			<title>Valorable primario</title>
+			<description>Valores primarios de los documentos y expedientes que componen una determinada serie documental. Corresponde al metadato eEMGDE 13.1.1</description>
+			<properties>
+				<property name="eemgde:tipo_valor">
+					<title>Valor secundario</title>
+					<description>Informa sobre los diferentes valores primarios que poseen los documentos, expedientes y series (eEMGDE 13.1.1.1)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>true</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Administrativo</value>
+									<value>Fiscal</value>
+									<value>Juridico</value>
+									<value>Otros</value>									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</aspect>
+		
+		<!-- Según el eEMGDE este metadato es repetible (se tendría que poder guardar los diferentes dictámenes vigentes por los que ha pasado la serie). Por limitaciones de Alfresco, tanto en capacidades de búsqueda como de modelado, se opta por almacenar únicamente el último dictamen vigente de la serie, el cual tendrá impacto sobre todos los expedientes que contenga (tanto si existían previamente al nuevo dictamen como los nuevos que se creen). De lo contrario (si el nuevo dictamen no ha de afectar a expedientes antiguos), se tendrá que crear una nueva serie documental -->
+		<aspect name="eemgde:dictaminable">
+			<title>Dictaminable</title>
+			<description>Recopila decisiones emitidas por la autoridad calificadora relativas a la conservación o eliminación de documentos. Corresponde al metadato eEMGDE 13.2</description>
+			<properties>
+				<property name="eemgde:tipo_dictamen">
+					<title>Tipo de dictamen</title>
+					<description>Tipo de decisión emitida por la autoridad calificadora a aplicar sobre los documentos (eEMGDE 13.2.1)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>CP</value> <!-- Conservación Permanente -->
+									<value>EP</value> <!-- Eliminación Parcial -->
+									<value>ET</value> <!-- Eliminación Total -->
+									<value>PD</value> <!-- Pendiente de dictamen -->									
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<property name="eemgde:accion_dictaminada">
+					<title>Acción dictaminada</title>
+					<description>Acción concreta que se aplica al documento en base al dictamen adoptado por una autoridad calificadora (eEMGDE 13.2.2)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="eemgde:plazo_accion_dictaminada">
+					<title>Plazo de ejecución de la acción dictaminada</title>
+					<description>Plazo en el que se tiene que ejecutar la acción concreta que se aplica al documento (eEMGDE 13.2.3)</description>
+					<type>d:int</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="eemgde:plazo_unidad_accion_dictaminada">
+					<title>Unidad temporal del plazo de ejecución de la acción dictaminada</title>
+					<description>Unidad temporal del plazo en el que se tiene que ejecutar la acción concreta que se aplica al documento (por defecto, Años)</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+					<default>Año</default>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint ref="eemgde:plazo_unidad_constraint" />
+					</constraints>
+				</property>
+			</properties>
+		</aspect>
+		
+		<aspect name="eemgde:esencial">
+			<title>Esencial</title>
+			<description>Permite calificar un documento como esencial para el desarrollo de las actividades de la organización. Corresponde al metadato eEMGDE 13.4</description>
+			<properties>
+				<property name="eemgde:documento_esencial">
+					<title>Documento esencial</title>
+					<description>Determina si un documento es esencial para el desarrollo de las actividades de la organización(eEMGDE 13.4)</description>
+					<type>d:boolean</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+		
+		<aspect name="eemgde:resellable">
+			<title>Plazo máximo resellado</title>
+			<description>Permite describir el plazo máximo en que los expedientes de una serie se resellarán</description>
+			<properties>
+				<property name="eemgde:plazo_resellado">
+					<title>Plazo de ejecución de la acción dictaminada</title>
+					<description>Plazo durante el que se tiene que ejecutar la tarea de resellado de los expedientes de la serie. Corresponde con el máximo de los plazos de los tipos de valores primarios de la serie</description>
+					<type>d:int</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="eemgde:plazo_unidad_resellado">
+					<title>Unidad temporal del plazo de ejecución de la acción dictaminada</title>
+					<description>Unidad temporal del plazo durante el que se tiene que ejecutar la tarea de resellado</description>
+					<type>d:text</type>
+					<!-- Las propiedades "protected" = true son sólo de lectura por CMIS -->
+					<protected>false</protected>
+					<mandatory enforced="true">true</mandatory>
+					<multiple>false</multiple>
+					<default>Año</default>
+					<!-- Queremos poder buscar por este metadato -->
+					<index enabled="true">
+						<!-- Indexación en la misma transacción que en la subida del nodo -->
+						<atomic>true</atomic>
+						<!-- En debug se puede poner a true, permite almacenar en el índice y ser obtenido por query de Lucene...en producción false -->
+						<stored>false</stored>
+						<!-- Indexar la propiedad tal cual es, sin tokenizar -->
+						<tokenised>false</tokenised>
+					</index>
+					<constraints>
+						<constraint ref="eemgde:plazo_unidad_constraint" />
+					</constraints>
+				</property>
+			</properties>
+		</aspect>
+	</aspects>
+</model>

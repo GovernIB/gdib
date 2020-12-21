@@ -34,7 +34,6 @@ public interface CaibModelUtilsInterface {
     /**
      *  ************************ TYPES ************************
      */
-
     /**
      * Type gdib:cuadro_clasificacion
      */
@@ -48,7 +47,7 @@ public interface CaibModelUtilsInterface {
     /**
      * Type gdib:funcion
      */
-    public static final String TYPE_FUNCION = "serie";
+    public static final String TYPE_FUNCION = "funcion";
     public static final QName TYPE_FUNCION_QNAME = QName.createQName(NS_CAIB,TYPE_FUNCION);
     public static final String PROP_CODIGO_FUNCION = "codigo_funcion";
     public static final QName PROP_CODIGO_FUNCION_QNAME = QName.createQName(NS_CAIB,PROP_CODIGO_FUNCION);
@@ -57,7 +56,7 @@ public interface CaibModelUtilsInterface {
 
     /**
      * Type gdib:serie
-     */
+   
     public static final String TYPE_SERIE_DOCUMENTAL = "serie";
     public static final QName TYPE_SERIE_DOCUMENTAL_QNAME = QName.createQName(NS_CAIB,TYPE_SERIE_DOCUMENTAL);
     public static final String PROP_CODIGO_CLASIFICACION_SERIE = "codigo_clasificacion";
@@ -93,7 +92,7 @@ public interface CaibModelUtilsInterface {
     public static final QName PROP_TIPO_CLASIFICACION_SERIE_QNAME = QName.createQName(NS_CAIB,PROP_TIPO_CLASIFICACION_SERIE);
     public static final String PROP_RESELLADO_SERIE = "resellado";
     public static final QName PROP_RESELLADO_SERIE_QNAME = QName.createQName(NS_CAIB,PROP_RESELLADO_SERIE);
-
+  */
 
 
     /**
@@ -174,7 +173,6 @@ public interface CaibModelUtilsInterface {
     /**
      *  ************************ ASPECTS ************************
      */
-
     /**
      * Aspect gdib:firmadoMigracion
      */

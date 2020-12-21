@@ -130,6 +130,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * */
     @Value("$gdib{gdib.repository.temp.folder.uuid}")
     private String tempFolder;
+    
+    
     /**
      * Flag que activa/desactiva diversas comprobaciones en el repositorio.
      * */
@@ -331,12 +333,14 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         // actualizo la propiedad ENI - ID para incluirl el uid
         this.checkCalculateEniId(nodeRef, esbOperation);
 
-        // obtengo la plantilla del expediente
-        if(!repositoryDisableCheck.booleanValue()){
-        	// me salto este paso si esta desactivado los check principales del repositorio
-        	this.getTemplate(nodeRef);
+        if(!(utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME) || utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) || utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ))
+        {
+	        // obtengo la plantilla del expediente
+	        if(!repositoryDisableCheck.booleanValue()){
+	        	// me salto este paso si esta desactivado los check principales del repositorio
+	        	this.getTemplate(nodeRef);
+	        }
         }
-
         // creo la version 1.0 del nodo, y desactivo el autoversionado del nodo
         this.createVersion(nodeRef);
 
@@ -367,7 +371,24 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         if  (content != null && content.getMimetype() != null && content.getData() != null ){
             try{
             	long startCreate = System.currentTimeMillis();
-            	utils.setDataHandler(nodeRef,ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
+            	if(utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME))
+            	{
+            		//Creamos fichero de metadatos
+            		Map<QName,Serializable> childProps = new HashMap<>();
+            		childProps.put(ConstantUtils.PROP_NAME, "metadatos.xml");
+            		
+                    ChildAssociationRef createdChildRef = nodeService.createNode(nodeRef,
+                            ContentModel.ASSOC_CONTAINS,
+                            utils.createNameQName("metadatos.xml"),
+                            ConstantUtils.TYPE_CONTENT,
+                            childProps);
+            		utils.setDataHandler(nodeRef,ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
+            	}
+            	else
+        		{
+            		utils.setDataHandler(nodeRef,ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
+        		}	
+            	
             	long endCreate = System.currentTimeMillis();
             	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");            	
             	Date d1 = new Date(startCreate);
@@ -400,7 +421,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     	if(props.get(ConstantUtils.PROP_NAME) == null)
     		props.put(ConstantUtils.PROP_NAME, name.getLocalName());
     	long startCreate = System.currentTimeMillis();
-        
+        LOGGER.debug("Creating with name = " + name.getLocalName());
         ChildAssociationRef createdChildRef = nodeService.createNode(parentRef,
                 ContentModel.ASSOC_CONTAINS,
                 name,
@@ -414,6 +435,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         	Date d2 = new Date(endCreate);
         	LOGGER.info(ret + ": LLamada a servicio crear nodo de Alfresco de "+(endCreate-startCreate)+"ms entre "+sdf.format(d1)+" y "+sdf.format(d2)+".");
         }
+        LOGGER.debug("Created with nodeRef = " + ret.getId());
         return ret;
     }
 
@@ -427,39 +449,23 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
    	 * @return Node Objeto Nodo con la informaci�n que alfresco tiene en el repositorio.
    	 * @throws GdibException Si no se tienen permisos para recuperar el nodo.
    	 * */
-    public Node _internal_getNode(NodeRef nodeRef,NodeRef classificationTableRef ,boolean withContent, boolean withSign)
-			throws GdibException {
+    public Node _internal_getNode(NodeRef nodeRef, boolean withContent, boolean withSign) throws GdibException {
         Node node = new Node();
 
-        String type = utils.getNodeType(nodeRef);
-
         node.setId(nodeRef.getId());
-        node.setType(type);
+        node.setType(utils.getNodeType(nodeRef));
         node.setName(utils.getNameNode(nodeRef));
         node.setAspects(utils.getAspects(nodeRef));
 
-
         List<Property> allProperties = utils.getProperties(nodeRef);
         allProperties.addAll(utils.getPropertiesCalculated(nodeRef));
-
-        if(utils.isType(type,ConstantUtils.TYPE_EXPEDIENTE_QNAME)
-				|| utils.isType(type,ConstantUtils.TYPE_DOCUMENTO_QNAME)){
-
-        	NodeRef serie = utils.getParentFromClassificationTable(
-        			utils.getProperty(nodeRef,ConstantUtils.PROP_COD_CLASIFICACION_QNAME), classificationTableRef.getId());
-        	//FIXME: Hace falta meter todas las propiedades o hay que seleccionarlas?
-        	allProperties.addAll(utils.getProperties(serie));
-		}
-
         node.setProperties(allProperties);
-
-        //FIXME: Borrar esta línea cuando se confirme que está bien lo de arriba
         // obtener las propiedades de eni:transferible que estan en la base de datos del cuadro de clasificacion
-//        subTypeDocUtil.fillSubTypeDocInfo(node);
+        subTypeDocUtil.fillSubTypeDocInfo(node);
 
-//        if (withContent) {
-            node.setContent(utils.getContent(nodeRef,withContent));
-//        }
+        if (withContent) {
+            node.setContent(utils.getContent(nodeRef));
+        }
 
         if (withSign) {
             node.setSign(utils.getDataHandler(nodeRef, ConstantUtils.PROP_FIRMA_QNAME));
@@ -718,7 +724,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         			// se comprueba que es un documento migrado, mirando si viene informado el uuid o si es un nodo de migracion y con aspecto transformado
         			content = utils.getByteArrayFromHandler(utils.getNodeContent(node));
         		}
-        		LOGGER.debug("Preparando invocaci�n a plataforma @firma (ValidarFirma)...");
+        		LOGGER.debug("Preparando invocación a plataforma @firma (ValidarFirma)...");
         		//Se obtiene el actual perfil de firma establecido para el documento
         		signatureProfileNodeProp = utils.getProperty(node.getProperties(), EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
         		LOGGER.debug("Valor informado para el metadato " + EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA
@@ -726,9 +732,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		currentSignatureFormat = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(eniSignatureType.getName(),signatureProfileNodeProp);
         		// Se verifica la firma
         		SignatureValidationReport result = signatureService.verifySignature(content, signature);
-        		LOGGER.debug("Parseando resultado de validaci�n de la firma electr�nica del documento " + node.getId() + ".");
+        		LOGGER.debug("Parseando resultado de validación de la firma electrónica del documento " + node.getId() + ".");
         		if(result.getValidationStatus() == ValidationStatus.CORRECTO){
-        			LOGGER.debug("Resultado de validaci�n de la firma electr�nica del documento " + (node.getId() == null? "nuevo documento": node.getId()) + " correcto.");
+        			LOGGER.debug("Resultado de validación de la firma electrónica del documento " + (node.getId() == null? "nuevo documento": node.getId()) + " correcto.");
         			//Si la firma es correcta, se verifica que el formato avanzado es igual o superior al m�nimo exigido
         			signatureFormat = SignatureUtils.dssSigntureFormatToInernalSignatureFormat(result.getSignatureType(),result.getSignatureForm());
         			LOGGER.debug("Se verifica que la firma y el metadato de firma son coherentes (familia o tipo de firma).");
@@ -738,7 +744,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         				throw new GdibException("Metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA + " con valor incorrecto para el documento " +
         						nodeIdValue + ". Formato DSS esperado " + result.getSignatureType() + ".");
         			}
-        			LOGGER.debug("Se verifica que la firma presenta un formato avanzado igual o superior al m�nimo exigido...");
+        			LOGGER.debug("Se verifica que la firma presenta un formato avanzado igual o superior al mínimo exigido...");
         			custodyAdvancedSignatureFormats =  minCustodyAdvancedSignatureFormats.split(ConstantUtils.COMMA_SEPARATOR);
         			minCustodySignatureFormat = SignatureFormat.UNRECOGNIZED;
         			eniSignatureProfile = null;
@@ -748,19 +754,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         				if(custodyAdvancedSignatureFormats[i].toUpperCase().startsWith(eniSignatureType.getName().toUpperCase())){
         					minCustodySignatureFormat = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(custodyAdvancedSignatureFormats[i]);
         					eniSignatureProfile = SignatureUtils.getEniSignatureProfile(custodyAdvancedSignatureFormats[i]);
-        					LOGGER.debug("Formato m�nimo exigido configurado para el tipo de firma " + eniSignatureType.getName() + ": " + custodyAdvancedSignatureFormats[i] + ".");
+        					LOGGER.debug("Formato mínimo exigido configurado para el tipo de firma " + eniSignatureType.getName() + ": " + custodyAdvancedSignatureFormats[i] + ".");
         					found = Boolean.TRUE;
         				}
         			}
 
         			if(!found || SignatureFormat.UNRECOGNIZED.equals(minCustodySignatureFormat) || eniSignatureProfile == null){
-        				throw new GdibException("Sistema mal cofigurado, debe establecerse un formato de firma electr�nica avanzado m�nimo para el tipo de firma " +
+        				throw new GdibException("Sistema mal cofigurado, debe establecerse un formato de firma electrónica avanzado mínimo para el tipo de firma " +
         						eniSignatureType.getName() + ".");
         			}
 
         			//Si el formato de firma es inferior, se evoluciona al m�nimo exigido
         			if(minCustodySignatureFormat.isMoreAdvancedSignatureFormat(signatureFormat)){
-        				LOGGER.debug("Formato de firma inferior al m�nimo exigido para custodia, se procede a evolucionar la firma al formato: " +
+        				LOGGER.debug("Formato de firma inferior al mínimo exigido para custodia, se procede a evolucionar la firma al formato: " +
         						minCustodySignatureFormat.getName() + " (Perfil de firma: " + eniSignatureProfile.getName() + ").");
         				LOGGER.debug("Preparando invocaci�n a plataforma @firma (UpgradeFirma)...");
         				signature = signatureService.upgradeSignature(signature, minCustodySignatureFormat);
@@ -1143,48 +1149,59 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     	LOGGER.debug("Comienza _createNode. Se comprueba que node sea correcto." );
    		utils.checkNode(node);
    		LOGGER.debug("Comprobacion uid padre.");
-        NodeRef parentRef = utils.checkParentId(node, parentId);
+   		NodeRef parentRef;
+        if(utils.isType(node.getType(), ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) )
+        {
+        	LOGGER.debug("Creando cuadro de clasificación");
+        	parentRef = utils.getRootDM();
+        }else {
+        	parentRef = utils.checkParentId(node, parentId);
+        }
+        
         long checkMill = System.currentTimeMillis();
         LOGGER.debug("Relleno metadatos automaticos");
         // relleno los metadatos automaticos del nodo
         utils.fillNodeMetadata(node);
         LOGGER.debug("Ultimas comprobaciones.");
         long signMill = 0;
-        //FIXME: Confirmar que no hace falta hacer nada con los aspectos de series/funciones
 		if (!repositoryDisableCheck.booleanValue()) {
 			if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
-				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
-					LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
-					long beginMill = System.currentTimeMillis();
-					//Se comprueba para todos menos los migrados transformados.
-					if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
-						checkDocumentSignature(node);
-					}					
-					// incluir a lista de propiedades la fecha de sellado pues la firma es valida
-					utils.updateResealDate(node);
-					signMill = System.currentTimeMillis() - beginMill;
-					LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
-					checkDocClassification(node,parentRef);
-				} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
-					if(parentId != null && !parentId.isEmpty()){
-						//Subexpediente
-						LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
+				
+					if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+						LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
+						long beginMill = System.currentTimeMillis();
+						//Se comprueba para todos menos los migrados transformados.
+						if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
+							checkDocumentSignature(node);
+						}
+						// incluir a lista de propiedades la fecha de sellado pues la firma es valida
+						utils.updateResealDate(node);
+						signMill = System.currentTimeMillis() - beginMill;
+						LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
 						checkDocClassification(node,parentRef);
+					} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
+						if(parentId != null && !parentId.isEmpty()){
+							//Subexpediente
+							LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
+							checkDocClassification(node,parentRef);
+						}
 					}
+					LOGGER.debug("Última comprobación integridad del nodo.");
+					utils.checkNodeIntegrity(node);
+					verifySubtypeDoc(node);
 				}
-				LOGGER.debug("Ãšltima comprobaci�n integridad del nodo.");
-				utils.checkNodeIntegrity(node);
-				verifySubtypeDoc(node);				
-			}
+			
 		}
-		LOGGER.debug("Preparaci�n para la llamada al servicio");
+		LOGGER.debug("Preparación para la llamada al servicio");
         // preparar datos
         QName name = utils.createNameQName(node.getName());
         QName type = GdibUtils.createQName(node.getType());
+        
         Map<QName, Serializable> props = utils.transformMapStringToQname(node.getProperties());
+        LOGGER.debug("READING PROPS : " + props.toString() );
         List<QName> aspects = utils.transformListStringToQname(node.getAspects());
         long prepareProps = System.currentTimeMillis();
-        LOGGER.debug("Se llama al servicio de creaci�n de nodos");
+        LOGGER.debug("Se llama al servicio de creación de nodos");
         NodeRef nodeRef = _internal_createNode(parentRef, name, type, props, aspects, node.getContent(), node.getSign(), utils.getESBOp(gdibHeader));
         long endCreate = System.currentTimeMillis();
         LOGGER.info(nodeRef.getId()+ " creado en " + (endCreate-initMill) +"ms (Checks: "+(checkMill-initMill)+"ms Props: "+(prepareProps-checkMill-signMill)+"ms Firma: "+signMill+"ms Servicio: "+(endCreate-prepareProps)+"ms).");
@@ -1367,24 +1384,27 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    	long initMill = System.currentTimeMillis();
 	    	// compruebo parametros de entrada
 	        NodeRef nodeRef = utils.checkNodeId(nodeId);
-	        NodeRef classificationTableRef = this.utils.
-					classificationTableCodetoNodeRef(utils.getProperty(nodeRef,ConstantUtils.PROP_CODIGO_CUADRO_QNAME));
 	        utils.checkRestriction(nodeRef, gdibHeader);
 
 	        // compruebo que tenga permisos
-	        utils.hasPermission(nodeRef, CaibServicePermissions.READ);
+			if(versionService.isAVersion(nodeRef)) {
+				utils.hasPermission(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)), CaibServicePermissions.READ);
+			}else{
+				utils.hasPermission(nodeRef, CaibServicePermissions.READ);
+			}
+			LOGGER.debug("permisos checkeados");
 
 	        if(!repositoryDisableCheck.booleanValue()){
 	        	// me salto este paso si esta desactivado los check principales del repositorio
 
 		        if(versionService.isAVersion(nodeRef)){
-		        	utils.inDMPath(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)),classificationTableRef);
+		        	utils.inDMPath(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@")+1)));
 		        }else{
 		        	// compruebo que el nodo este dentro del path del DM
-		        	utils.inDMPath(nodeRef,classificationTableRef);
+		        	utils.inDMPath(nodeRef);
 		        }
 	        }
-	        Node ret = _internal_getNode(nodeRef, classificationTableRef, withContent, withSign);
+	        Node ret = _internal_getNode(nodeRef, withContent,withSign);
 	        LOGGER.info(nodeId + " recuperado en "+(System.currentTimeMillis()-initMill)+"ms");
 	        return ret;
     }
@@ -2393,7 +2413,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		} catch (org.alfresco.repo.search.impl.lucene.LuceneQueryParserException e) {
 			LOGGER.error("Se ha producido un error de sintaxis en la construcción de la consulta lucene ["
 					+ luceneQuery+ "]. Error: \n",e);
-			throw exUtils.luceneQueryParserException(luceneQuery);
+//			Se devuelve -1 a modo de codigo, en el bus se cambiara por el mensaje adecuado
+			res.setNumResultados(-1);
+			res.setNumPaginas(-1);
+			res.setResultados(new ArrayList<>());
+			return res;
+//			throw exUtils.luceneQueryParserException(luceneQuery);
 		} catch (Exception e) {
 			LOGGER.error("Se ha producido un error de tipo [" + e.getClass() + "] no controlado durante la " +
 					"ejecución de la consulta lucene: ",e);
@@ -2584,7 +2609,6 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			throw new GdibException(e.getMessage(), e);
 		}
 	}
-
 	private void commit() throws GdibTransactionException {
 		LOGGER.debug("Commit Alfresco Transaction");
 		try {
@@ -2609,7 +2633,6 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			throw exUtils.transactionException(e);
 		}
 	}
-
 	private void rollback() throws GdibException {
 		LOGGER.debug("Rollback on Alfresco Transaction");
 		try {
@@ -2627,12 +2650,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			throw new GdibException(e.getMessage(), e);
 		}
 	}
-
 	private void doAuthentication(GdibHeader gdibHeader) throws GdibException{
 		GdibSecurity security = gdibHeader.getGdibSecurity();
 		doAuthentication(security.getUser(),security.getPassword());
 	}
-
 	private void doAuthentication(String username, String password) throws GdibException {
 		try {
 			// si el usuario viene vacio, se tiene que validar el ticket de autenticacion de alfresco

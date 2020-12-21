@@ -106,17 +106,17 @@ public class UpgradeIndex {
 		// Lista para comprobar vigencias
 		List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
 		Map<String, String> timeLimitMap = new HashMap<>();
-		// Relleno el mapa con la informaci�n por Codigo clasificaci�n
+		// Relleno el mapa con la información por Codigo clasificación
 		for (SubTypeDocInfo stdi : resealInfo) {
 			timeLimitMap.put(stdi.getDocumentarySeries(), stdi.getTimeLimit());
 			LOGGER.debug("Inserted into Map KEY" + stdi.getDocumentarySeries() + " TIMELIMT " + stdi.getTimeLimit());
 		}
 
 		NodeRef tmpFolder = tmpParentFileInfo.getNodeRef();
-		// Si ocurre alg�n error ( la carpeta solo debe crearse para llevar a cabo el
+		// Si ocurre algún error ( la carpeta solo debe crearse para llevar a cabo el
 		// trabajo temporal)
 		if (tmpFolder == null)
-			throw new GdibException("Ocurri� un error creando el directorio temporal");
+			throw new GdibException("Ocurrió un error creando el directorio temporal");
 
 		upgradeDocs = null;
 
@@ -145,14 +145,14 @@ public class UpgradeIndex {
 					String cod_clasif = (String) nodeService.getProperty(rmParent,
 							ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
 					if (cod_clasif == null) {
-						LOGGER.debug("No se encontr� codigo de clasificaci�n en expediente :" + rmParent.getId());
+						LOGGER.debug("No se encontró codigo de clasificaci�n en expediente :" + rmParent.getId());
 					}
 					LOGGER.debug("Comprobando vigencia de expediente " + rmParent.getId()
 							+ " con codigo de clasificaci�n " + cod_clasif);
 					
 					Set<QName> toSearch = new HashSet<>();
 					toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
-					// Obtengo lista de �ndices antiguos que dejar�n de ser v�lidos al completar el
+					// Obtengo lista de índices antiguos que dejarán de ser válidos al completar el
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
 
@@ -161,7 +161,7 @@ public class UpgradeIndex {
 							timeLimitMap.get(cod_clasif))) {
 						for (ChildAssociationRef oldIndex : listaHijos)
 						{
-							//Recuperamos �ltimo �ndice v�lido y lo seteamos a SI_PERMANENTE
+							//Recuperamos último índice válido y lo seteamos a SI_PERMANENTE
 							if ("SI".equals(
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
@@ -219,8 +219,8 @@ public class UpgradeIndex {
 
 	}
 	/**
-	 * M�todo que actualiza el metadato de indice valido de los �ndices que posean de propiedad SI
-	 * @param listaHijos Lista de �ndices hijos de cada expediente
+	 * M�todo que actualiza el metadato de indice valido de los índices que posean de propiedad SI
+	 * @param listaHijos Lista de índices hijos de cada expediente
 	 */
 	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
 		
@@ -241,11 +241,11 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * M�todo que ejecuta la operaci�n de upgradeo/resellado de la firma de un
-	 * �ndice
+	 * Método que ejecuta la operación de upgradeo/resellado de la firma de un
+	 * índice
 	 * 
 	 * @param indexIdentifier Nodo del expediente en el espacio temporal
-	 * @throws GdibException      wrapper para propagar la excepci�n
+	 * @throws GdibException      wrapper para propagar la excepción
 	 * @throws IOException
 	 * @throws ContentIOException
 	 */
@@ -316,12 +316,12 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * M�todo que ejecuta la b�squeda de aquellos �ndices que deban ser resellados.
+	 * Método que ejecuta la búsqueda de aquellos índices que deban ser resellados.
 	 * La consulta se especifica en el fichero schedule-job-upgrade.properties, en
 	 * la property lucene_query
 	 * 
-	 * @return List<NodeRef> Lista con aquellos �ndices que deban ser resellados
-	 * @throws GdibException Wrapper de cualquier excepci�n para propagar
+	 * @return List<NodeRef> Lista con aquellos índices que deban ser resellados
+	 * @throws GdibException Wrapper de cualquier excepción para propagar
 	 */
 	private List<NodeRef> getDocumentsToUpgrade() throws GdibException {
 		List<NodeRef> result = null;
