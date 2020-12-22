@@ -44,13 +44,13 @@
                <property name="HTTP_SC" value="400" scope="axis2" type="STRING"/>
                <payloadFactory media-type="json">
                   <format>
-                     {
-                     "exception":{
-                     "code": "COD_098",
-                     "description": "$1"
-                     }
-                     }
-                  </format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_098",
+		            				"description": "$1"
+		            			}
+		            		}
+		            	</format>
                   <args>
                      <arg evaluator="xml" expression="get-property('errorMessage')"/>
                   </args>
@@ -74,7 +74,7 @@
                   <with-param name="retrieveNode" value="{get-property('retrieveNode')}"/>
                   <with-param name="serviceHeaderString"
                               value="{get-property('serviceHeaderString')}"/>
-                  <with-param name="nodeType" value="gdib:funcion"/>
+                  <with-param name="nodeType" value="eni:expediente"/>
                </call-template>
                <filter xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0"
                        xpath="$body/csgd:createFileResult/csgd:result/csgd:code[text() != 'COD_000']">
@@ -121,13 +121,13 @@
                          type="STRING"/>
                <payloadFactory media-type="json">
                   <format>
-                     {
-                     "exception":{
-                     "code": "$1",
-                     "description": "$2"
-                     }
-                     }
-                  </format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}
+           	   </format>
                   <args>
                      <arg evaluator="xml" expression="get-property('exceptionCode')"/>
                      <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
@@ -147,3 +147,4 @@
    <parameter name="disableSOAP11">true</parameter>
    <description/>
 </proxy>
+                                
