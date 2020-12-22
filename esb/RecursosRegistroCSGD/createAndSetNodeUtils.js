@@ -1,14 +1,192 @@
+function buildCreateClassificationRootRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString;
+	payload = mc.getPayloadJSON();
+	createRootReq = payload.createClassificationRootRequest;
+	if (createRootReq != null && createRootReq.param != null && createRootReq.param.classificationRoot != null ) {
+		var rootReq = createRootReq.param.classificationRoot ;
+		requestOk = rootReq.type != null;
+                if (requestOk) {
+                requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+                requestString = requestString + '<ws:node>';
+                if(rootReq.id!= null){
+                  requestString = requestString + '<ws:id>'+rootReq.id+'</ws:id>';
+                }
+                if(rootReq.name!= null){
+                    requestString = requestString + '<ws:name>'+rootReq.name+'</ws:name>';
+                }
+
+                requestString = requestString + '<ws:type>'+rootReq.type+'</ws:type>';
+
+                //Aspectos
+                	if(rootReq.aspects!= null){
+				for (i = 0; ! i < rootReq.aspects.length; i++) {
+					aspect = rootReq.aspects[i];
+					requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+				}
+		 }
+
+
+                //Propiedas
+								if(rootReq.metadataCollection != null && rootReq.metadataCollection.length > 0){
+                	requestString += generatePropertiesReqElement(rootReq.metadataCollection);
+								}
+			requestString = requestString + '</ws:node>';
+
+			requestString = requestString + '</ws:createNode>';
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación el cuadro.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+	}
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codeErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
+function buildCreateSerieRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString="";
+	var errorMessage="error";
+        payload = mc.getPayloadJSON();
+	createSerieReq = payload.createSerieRequest;
+        if (createSerieReq != null && createSerieReq.param != null && createSerieReq.param.serie != null && createSerieReq.param.parentId != null) {
+		var serieReq = createSerieReq.param.serie;
+		requestOk = serieReq.type != null && serieReq.metadataCollection != null && serieReq.aspects != null && serieReq.binaryContent != null ;
+		if (requestOk) {
+
+                  requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+    requestString = requestString + '<ws:node>';
+    if(serieReq.id!= null){
+      requestString = requestString + '<ws:id>'+serieReq.id+'</ws:id>';
+    }
+    if(serieReq.name!= null){
+        requestString = requestString + '<ws:name>'+serieReq.name+'</ws:name>';
+    }
+
+    requestString = requestString + '<ws:type>'+serieReq.type+'</ws:type>';
+
+    //Aspectos
+    for (i = 0;  i < serieReq.aspects.length; i++) {
+      aspect = serieReq.aspects[i];
+      requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+    }
+
+
+    //Propiedas
+    requestString += generatePropertiesReqElement(serieReq.metadataCollection);
+		var binaryContent= serieReq.binaryContent;
+		requestString = requestString + '<ws:content>';
+		if(binaryContent.mimetype != null){
+			requestString = requestString + '<ws:mimetype>' + binaryContent.mimetype + '</ws:mimetype>';
+		}
+		//if(binaryContent.content != null){
+			requestString = requestString + '<ws:data>' + binaryContent.content + '</ws:data>';
+		//}
+		if(binaryContent.encoding != null){
+			requestString = requestString + '<ws:encoding>' + binaryContent.encoding + '</ws:encoding>';
+		}
+		requestString = requestString + '</ws:content>';
+
+    requestString = requestString + '</ws:node>';
+		requestString = requestString + '<ws:parent>' + createSerieReq.param.parentId + '</ws:parent>';
+
+    requestString = requestString + '</ws:createNode>';
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación de la Seri.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+	}
+	//requestOk = false;
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codigoErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
+function buildCreateFunctionRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString;
+	payload = mc.getPayloadJSON();
+	createFunctionReq = payload.createFunctionRequest;
+	if (createFunctionReq != null && createFunctionReq.param.classificationFunction != null && createFunctionReq.param.parentId != null) {
+		errorMessage = 'Petición formada6';
+		var functionReq = createFunctionReq.param.classificationFunction;
+		requestOk = functionReq.type != null && functionReq.metadataCollection != null;
+                if (requestOk) {
+                requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+                requestString = requestString + '<ws:node>';
+                if(functionReq.id!= null){
+                  requestString = requestString + '<ws:id>'+functionReq.id+'</ws:id>';
+                }
+                if(functionReq.name!= null){
+                    requestString = requestString + '<ws:name>'+functionReq.name+'</ws:name>';
+                }
+
+                requestString = requestString + '<ws:type>'+functionReq.type+'</ws:type>';
+
+                //Aspectos
+                	if(functionReq.aspects!= null){
+				for (i = 0; ! i < functionReq.aspects.length; i++) {
+					aspect = functionReq.aspects[i];
+					requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+				}
+		 }
+
+
+                //Propiedas
+                requestString += generatePropertiesReqElement(functionReq.metadataCollection);
+			requestString = requestString + '</ws:node>';
+			requestString = requestString + '<ws:parent>' + createFunctionReq.param.parentId + '</ws:parent>';
+
+			requestString = requestString + '</ws:createNode>';
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación de la Funcion.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados en funcion.';
+	}
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codigoErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
 function buildCreateFileRequest(mc) {
 	payload = mc.getPayloadJSON();
 	createFileReq = payload.createFileRequest;
     var requestOk = false;
     var requestString;
-    
+
     if(createFileReq != null && createFileReq.param != null  && createFileReq.param.file != null){
-    	
+
     	var fileReq = createFileReq.param.file;
     	requestOk = fileReq.name != null && (fileReq.metadataCollection != null && fileReq.metadataCollection.length > 0) && (fileReq.aspects != null && fileReq.aspects.length >0);
-    	
+
     	if(requestOk){
     		var retrieveNode = mc.getProperty('retrieveNode');
 			if(retrieveNode != null && retrieveNode.equals('true')){
@@ -16,7 +194,7 @@ function buildCreateFileRequest(mc) {
 			} else {
 				requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
 			}
-			
+
 			requestString = requestString + '<ws:node>';
     		requestString = requestString + '<ws:name>' + fileReq.name + '</ws:name>';
     		requestString = requestString + '<ws:type>eni:expediente</ws:type>';
@@ -27,9 +205,9 @@ function buildCreateFileRequest(mc) {
     		}
        		//Metadatos
        		requestString += generatePropertiesReqElement(fileReq.metadataCollection);
-    		
+
        		requestString = requestString + '</ws:node>';
-    		
+
     		if(retrieveNode != null && retrieveNode.equals('true')){
     			requestString = requestString + '</ws:createAndGetNode>';
     		} else {
@@ -37,17 +215,17 @@ function buildCreateFileRequest(mc) {
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros file.name, file.metadataCollection y file.aspects del nuevo expediente deben ser informados.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -56,13 +234,13 @@ function buildCreateChildFileRequest(mc) {
 	createChildFileReq = payload.createChildFileRequest;
     var requestOk = false;
     var requestString;
-    
+
     if(createChildFileReq != null && createChildFileReq.param != null  && createChildFileReq.param.file != null){
     	var reqParam = createChildFileReq.param;
     	var childFileReq = createChildFileReq.param.file;
-    	
+
     	requestOk = reqParam.parent != null && childFileReq.name != null && (childFileReq.metadataCollection != null && childFileReq.metadataCollection.length > 0) && (childFileReq.aspects != null && childFileReq.aspects.length >0);
-    	
+
     	if(requestOk){
     		var retrieveNode = mc.getProperty('retrieveNode');
     		if(retrieveNode != null && retrieveNode.equals('true')){
@@ -81,9 +259,9 @@ function buildCreateChildFileRequest(mc) {
    		    }
        		//Metadatos
        		requestString += generatePropertiesReqElement(childFileReq.metadataCollection);
-       		
+
        		requestString = requestString + '</ws:node>';
-       		
+
        		if(retrieveNode != null && retrieveNode.equals('true')){
     			requestString = requestString + '</ws:createAndGetNode>';
     		} else {
@@ -91,17 +269,17 @@ function buildCreateChildFileRequest(mc) {
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros parent, childFile.name, childFile.metadataCollection y childFile.aspects del nuevo sub expediente deben ser informados.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -110,13 +288,13 @@ function buildCreateFolderRequest(mc) {
 	createFolderReq = payload.createFolderRequest;
     var requestOk = false;
     var requestString;
-    
+
     if(createFolderReq != null && createFolderReq.param != null && createFolderReq.param.folder != null){
     	reqParam = createFolderReq.param;
     	folderReq = createFolderReq.param.folder;
-    	
+
     	requestOk = reqParam.parent != null && folderReq.name != null;
-    	
+
     	if(requestOk){
     		var retrieveNode = mc.getProperty('retrieveNode');
     		if(retrieveNode != null && retrieveNode.equals('true')){
@@ -124,14 +302,14 @@ function buildCreateFolderRequest(mc) {
     		} else {
     			requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
     		}
-    		
+
     		requestString = requestString + '<ws:parent>' + reqParam.parent + '</ws:parent>';
-    		
+
     		requestString = requestString + '<ws:node>';
     		requestString = requestString + '<ws:name>' + folderReq.name + '</ws:name>';
     		requestString = requestString + '<ws:type>eni:agregacionDoc</ws:type>';
     		requestString = requestString + '</ws:node>';
-    		
+
     		if(retrieveNode != null && retrieveNode.equals('true')){
     			requestString = requestString + '</ws:createAndGetNode>';
     		} else {
@@ -139,17 +317,17 @@ function buildCreateFolderRequest(mc) {
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros parent y folder.name de la nueva agrupación documental deben ser informados.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -159,18 +337,18 @@ function buildCreateDocRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString;
-    
-    if(createDocReq != null && createDocReq.param != null && createDocReq.param.document != null){    	
-    	
+
+    if(createDocReq != null && createDocReq.param != null && createDocReq.param.document != null){
+
 		var reqParam = createDocReq.param;
 		var docReq = createDocReq.param.document;
 		var draftAspectFound = false;
 		var contentFound = false;
 		var signatureFound = false;
-		
+
     	requestOk = reqParam.parent != null && docReq.name != null && (docReq.binaryContents != null && docReq.binaryContents.length > 0) && (docReq.metadataCollection != null && docReq.metadataCollection.length > 0) && (docReq.aspects != null && docReq.aspects.length > 0);
 
-    	if(requestOk){    		
+    	if(requestOk){
     		//Se verifica que se ha informado el contenido y la firma
     		for (i = 0; !(contentFound && signatureFound) && i < docReq.binaryContents.length; i++) {
     			binaryContent = docReq.binaryContents[i];
@@ -183,10 +361,10 @@ function buildCreateDocRequest(mc) {
 
     		var signatureProperties = getSignatureProperties(docReq.metadataCollection);
     		var signatureType = '';
-    		
+
     		if(signatureProperties != null && signatureProperties.length > 0){
     			signatureType = signatureProperties[0];
-    			
+
     			if(signatureType == 'TF04' && !signatureFound){
     				requestOk = false;
     			} else {
@@ -203,7 +381,7 @@ function buildCreateDocRequest(mc) {
         		} else {
         			requestString = '<ws:createNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
         		}
-        		
+
     			requestString = requestString + '<ws:parent>' + reqParam.parent + '</ws:parent>';
         		requestString = requestString + '<ws:node>';
 				requestString = requestString + '<ws:name>' + docReq.name + '</ws:name>';
@@ -224,33 +402,33 @@ function buildCreateDocRequest(mc) {
 	    		} else {
 	    			//Metadatos
 	    			requestString += generatePropertiesReqElement(docReq.metadataCollection);
-	    			
-	    			//Contenido y firma	    			
-	    			requestString += generateBinaryContentsReqElement(docReq,signatureFound);	    			
+
+	    			//Contenido y firma
+	    			requestString += generateBinaryContentsReqElement(docReq,signatureFound);
 	    		}
 		    	requestString = requestString + '</ws:node>';
-		    	
+
 		    	if(retrieveNode != null && retrieveNode.equals('true')){
 	    			requestString = requestString + '</ws:createAndGetNode>';
 	    		} else {
 	    			requestString = requestString + '</ws:createNode>';
 	    		}
-    		} else {    			
+    		} else {
     			errorMessage = 'Petición mal formada. No se informo el contenido y/o la firma electrónica del nuevo documento, o alguno de los metadatos relacionados con la firma electrónica (eni:tipoFirma o eni:perfil_firma).';
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros parent, document.name, document.metadataCollection, document.aspects y document.binaryContents del nuevo documento deben ser informados.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -260,15 +438,15 @@ function buildCreateDraftDocRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString;
-    
-    if(createDraftDocReq != null && createDraftDocReq.param != null && createDraftDocReq.param.document != null){    	
-    	
+
+    if(createDraftDocReq != null && createDraftDocReq.param != null && createDraftDocReq.param.document != null){
+
 		var reqParam = createDraftDocReq.param;
 		var draftDocReq = reqParam.document;
 		var draftAspectFound = false;
-		
+
     	requestOk = reqParam.parent != null && draftDocReq.name != null;
-    	
+
     	if(requestOk){
     		var retrieveNode = mc.getProperty('retrieveNode');
     		if(retrieveNode != null && retrieveNode.equals('true')){
@@ -280,12 +458,12 @@ function buildCreateDraftDocRequest(mc) {
     		requestString = requestString + '<ws:parent>' + reqParam.parent + '</ws:parent>';
     		//Nuevo nodo
     		requestString = requestString + '<ws:node>';
-			requestString = requestString + '<ws:name>' + draftDocReq.name + '</ws:name>';			
+			requestString = requestString + '<ws:name>' + draftDocReq.name + '</ws:name>';
     		requestString = requestString + '<ws:type>eni:documento</ws:type>';
 
     		//Aspectos
     		requestString = requestString + '<ws:aspects>gdib:borrador</ws:aspects>';
-    		if(draftDocReq.aspects != null && draftDocReq.aspects.length >0){    			
+    		if(draftDocReq.aspects != null && draftDocReq.aspects.length >0){
         		for (i = 0; !draftAspectFound && i < draftDocReq.aspects.length; i++) {
         			aspect = draftDocReq.aspects[i];
         			if(aspect.indexOf('-gdib:borrador') < 0 && aspect.indexOf('gdib:borrador') < 0){
@@ -293,9 +471,9 @@ function buildCreateDraftDocRequest(mc) {
         			} else {
         				draftAspectFound = true;
         			}
-    		    }        		
+    		    }
     		}
-    		
+
     		if(draftAspectFound){
     			requestOk = false;
     			errorMessage = 'Petición mal formada. No está permitido el aspecto gdib:borrador.';
@@ -307,7 +485,7 @@ function buildCreateDraftDocRequest(mc) {
     			requestString += generateBinaryContentsReqElement(draftDocReq,false);
     		}
     		requestString = requestString + '</ws:node>';
-    		
+
     		if(retrieveNode != null && retrieveNode.equals('true')){
     			requestString = requestString + '</ws:createAndGetNode>';
     		} else {
@@ -315,17 +493,17 @@ function buildCreateDraftDocRequest(mc) {
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros parent y document.name del nuevo documento deben ser informados.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -335,22 +513,22 @@ function buildSetDocRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
-    
-    if(setDocReq != null && setDocReq.param != null && setDocReq.param.document != null){    	
-    	
+
+    if(setDocReq != null && setDocReq.param != null && setDocReq.param.document != null){
+
 		var reqParam = setDocReq.param;
 		var docReq = reqParam.document;
 		var draftAspectFound = false;
-		
+
     	requestOk = docReq.id != null;
-    	
+
     	if(requestOk){
     		requestString = requestString + '<ws:id>' + docReq.id + '</ws:id>';
-    		
+
     		if(docReq.name != null && docReq.name.length > 0){
     			requestString = requestString + '<ws:name>' + docReq.name + '</ws:name>';
     		}
-    		
+
     		if(docReq.aspects != null && docReq.aspects.length > 0){
         		for (i = 0; !draftAspectFound && i < docReq.aspects.length; i++) {
         			aspect = docReq.aspects[i];
@@ -370,24 +548,24 @@ function buildSetDocRequest(mc) {
     			if(docReq.metadataCollection != null && docReq.metadataCollection.length > 0){
         			requestString += generatePropertiesReqElement(docReq.metadataCollection);
         		}
-    			
+
 	    		//Contenido y firma
     			requestString += generateBinaryContentsReqElement(docReq,false);
     		}
     		requestString = requestString + '</ws:node>';
     	} else {
     		errorMessage = 'Petición mal formada. El parámetro document.id del documento debe ser informado.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -401,19 +579,19 @@ function buildCreateTargetDocRequest(mc) {
     var createDocReqOk = false;
     var sourceNodeId = mc.getProperty('sourceNodeIdParam');
     var targetDocument = '';
-    
+
     if(dispatchedDocString != null){
 		try{
 			dispatchedDoc = eval('('+dispatchedDocString+')');
 			createDocReqOk = dispatchedDoc != null && (dispatchedDoc.type != null && dispatchedDoc.type == 'eni:documento');
-			
-			if(createDocReqOk){				
+
+			if(createDocReqOk){
 				createDocReqOk = dispatchedDoc.aspects != null && (dispatchedDoc.aspects.indexOf('gdib:borrador') < 0 && dispatchedDoc.aspects.indexOf('gdib:transformado') < 0);
 	    		if(createDocReqOk){
 	    			targetDocument = '{';
 	    			targetDocument += '"name": "' + dispatchedDoc.name + '",';
 	    			targetDocument += '"type": "' + dispatchedDoc.type + '",';
-	    			//Metadatos	    			
+	    			//Metadatos
 	    			targetDocument += '"metadataCollection": [';
 	    			var arrayMetadataCollectionValue = '';
 	    			for (i = 0; i < dispatchedDoc.metadataCollection.length; i++) {
@@ -421,14 +599,14 @@ function buildCreateTargetDocRequest(mc) {
 	    				if(allowedMetadataCol.indexOf(metadata.qname) >= 0){
 	    					//Nombre del metadato
 	    					arrayMetadataCollectionValue += '{ "qname" : "' + metadata.qname + '",';
-	    					arrayMetadataCollectionValue += '"value" : ';	    					
+	    					arrayMetadataCollectionValue += '"value" : ';
 	    					//Valor del metadato
 	    					if(metadata.qname == 'eni:cod_clasificacion'){
 	    						//Serie documental
 	    						arrayMetadataCollectionValue += '"' + newDocSeriesParamString + '"';
 	    					} else if(metadata.qname == 'eni:subtipo_doc' && (newDocSubSeriesParamString != null && newDocSubSeriesParamString.length > 0)){
 	    						arrayMetadataCollectionValue += '"' + newDocSubSeriesParamString + '"';
-	    					} else {		    					
+	    					} else {
 		    					if(Object.prototype.toString.call(metadata.value) == '[object Array]'){
 		    						arrayMetadataCollectionValue += '[';
 		    						var arrayMetadataValue = '';
@@ -438,8 +616,8 @@ function buildCreateTargetDocRequest(mc) {
 		    						arrayMetadataValue = arrayMetadataValue.substring(0,arrayMetadataValue.lastIndexOf(','));
 		    						arrayMetadataCollectionValue += arrayMetadataValue;
 		    						arrayMetadataCollectionValue += ']';
-		    					} else {		    			
-		    						arrayMetadataCollectionValue += '"' + metadata.value + '"';		    			
+		    					} else {
+		    						arrayMetadataCollectionValue += '"' + metadata.value + '"';
 		    					}
 	    					}
 	    					arrayMetadataCollectionValue += '},'
@@ -457,12 +635,12 @@ function buildCreateTargetDocRequest(mc) {
 	        		arrayAspectsValue = arrayAspectsValue.substring(0,arrayAspectsValue.lastIndexOf(','));
 					targetDocument += arrayAspectsValue;
 	        		targetDocument += '],';
-	        		
+
 	        		//Contenidos: contenido del documento y firma
 	        		targetDocument += '"binaryContents": [';
 	        		var arrayBinaryContentsValue = '';
 	        		if(Object.prototype.toString.call(dispatchedDoc.binaryContents) == '[object Array]'){
-		        		
+
 		        		for (i = 0; i < dispatchedDoc.binaryContents.length; i++) {
 		        			binaryContent = dispatchedDoc.binaryContents[i];
 		        			arrayBinaryContentsValue += '{';
@@ -472,7 +650,7 @@ function buildCreateTargetDocRequest(mc) {
 		        			if(binaryContent.mimetype != null){
 		        				arrayBinaryContentsValue += '"mimetype": "' + binaryContent.mimetype + '",';
 		        			}
-		        			arrayBinaryContentsValue += '"content": "' + binaryContent.content + '",';	        				
+		        			arrayBinaryContentsValue += '"content": "' + binaryContent.content + '",';
 		        			if(binaryContent.encoding != null){
 		        				arrayBinaryContentsValue += '"encoding": "' + binaryContent.encoding + '",';
 		        			}
@@ -480,7 +658,7 @@ function buildCreateTargetDocRequest(mc) {
 		        			arrayBinaryContentsValue += '},';
 		        		}
 		        		arrayBinaryContentsValue = arrayBinaryContentsValue.substring(0,arrayBinaryContentsValue.lastIndexOf(','));
-		        		
+
 	        		} else {
 	        			binaryContent = dispatchedDoc.binaryContents;
 	        			arrayBinaryContentsValue += '{';
@@ -490,7 +668,7 @@ function buildCreateTargetDocRequest(mc) {
 	        			if(binaryContent.mimetype != null){
 	        				arrayBinaryContentsValue += '"mimetype": "' + binaryContent.mimetype + '",';
 	        			}
-	        			arrayBinaryContentsValue += '"content": "' + binaryContent.content + '",';	        				
+	        			arrayBinaryContentsValue += '"content": "' + binaryContent.content + '",';
 	        			if(binaryContent.encoding != null){
 	        				arrayBinaryContentsValue += '"encoding": "' + binaryContent.encoding + '",';
 	        			}
@@ -502,7 +680,7 @@ function buildCreateTargetDocRequest(mc) {
 	        		targetDocument += '}';
 	    		} else {
 	    			errorMessage = 'No está permitido el traslado entre expedientes de documentos en estado borrador, o migrados y posteriormente transformados.';
-	    		}	    		
+	    		}
 			} else {
 				errorMessage = 'Documento ' + sourceNodeId + ' a trasladar debe ser de tipo eni:documento.';
 			}
@@ -512,9 +690,9 @@ function buildCreateTargetDocRequest(mc) {
     }else {
     	errorMessage = 'Documento ' + sourceNodeId + ' a trasladar no encontrado.';
 	}
-	
+
     if(!createDocReqOk){
-    	mc.setProperty('errorMessage', errorMessage);    	
+    	mc.setProperty('errorMessage', errorMessage);
     } else {
     	mc.setProperty('createTargetDocRequest', targetDocument);
     }
@@ -534,22 +712,22 @@ function buildSetDispatchedDocRequest(mc) {
 	var appName = mc.getProperty('serviceHeaderAppName');
 	var dispatchedDate = new Date();
 	var sourceDocument = '';
-		
+
 	if(dispatchedDocString != null){
 		try{
 			dispatchedDoc = eval('('+dispatchedDocString+')');
 
 			var sourceDocument = '{';
 			sourceDocument += '"id": "' + sourceNodeId + '",';
-			
-			//Se verifica que existe el documento trasladado			
+
+			//Se verifica que existe el documento trasladado
     		for (i = 0; !dispatchedAspectFound && i < dispatchedDoc.aspects.length; i++) {
     			aspect = dispatchedDoc.aspects[i];
     			if(dispatchedDoc.aspects[i] == 'gdib:trasladado'){
     				dispatchedAspectFound = true;
     			}
 		    }
-    		
+
     		//Se formatea la fecha a cadena. Formato ISO-8601: YYYY-MM-DDTHH:mm:ss.sssZ
     		if(dispatchedAspectFound){
     			sourceDocument += '"metadataCollection": [';
@@ -565,23 +743,23 @@ function buildSetDispatchedDocRequest(mc) {
     						for (j = 0; j < metadata.value.length; j++) {
     							metadataValue += '"' + metadata.value[j] + '",';
     						}
-	    				} else {		    			
+	    				} else {
 	    					metadataValue = '"' + metadata.value + '",';
 	    				}
     					//Solo es necesario tratar fecha de traslado, por ser una fecha
     					var currentValue = '';
     					if(metadata.qname == 'gdib:id_nodo_nueva_loc'){
-    						currentValue = '"' + newDocIdParam + '"';	
+    						currentValue = '"' + newDocIdParam + '"';
     					} else if (metadata.qname == 'gdib:fecha_traslado'){
     						currentValue = '"' + dateToISOString(dispatchedDate) + '"';
     					} else if(metadata.qname == 'gdib:autor_traslado'){
-    						currentValue = '"' + appName + '"';	
+    						currentValue = '"' + appName + '"';
     					} else if(metadata.qname == 'gdib:destino_traslado'){
-    						currentValue = '"' + targetNodeId + '"';	
+    						currentValue = '"' + targetNodeId + '"';
     					} else if(metadata.qname == 'gdib:tipo_destino'){
-    						currentValue = '"' + targetTypeParam + '"';	
+    						currentValue = '"' + targetTypeParam + '"';
     					}
-    					
+
     					metadataValue += currentValue;
     					sourceDocument += metadataValue + ']},'
     				}
@@ -620,48 +798,48 @@ function buildSetFileRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
-    
-    if(setFileReq != null && setFileReq.param != null && setFileReq.param.file != null){    	
-    	
+
+    if(setFileReq != null && setFileReq.param != null && setFileReq.param.file != null){
+
 		var reqParam = setFileReq.param;
 		var fileReq = reqParam.file;
-		
+
     	requestOk = fileReq.id != null;
-    	
+
     	if(requestOk){
     		requestString = requestString + '<ws:id>' + fileReq.id + '</ws:id>';
-    		
+
     		if(fileReq.name != null && fileReq.name.length > 0){
     			requestString = requestString + '<ws:name>' + fileReq.name + '</ws:name>';
     		}
 
     		if(fileReq.aspects != null && fileReq.aspects.length >0){
-    			
+
         		for (i = 0; i < fileReq.aspects.length; i++) {
         			aspect = fileReq.aspects[i];
 
         			requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
     		    }
     		}
-    		
+
     		if(fileReq.metadataCollection != null && fileReq.metadataCollection.length > 0){
     			requestString += generatePropertiesReqElement(fileReq.metadataCollection);
     		}
-    		
+
     		requestString = requestString + '</ws:node>';
     	} else {
     		errorMessage = 'Petición mal formada. El parámetro file.id del expediente/subexpediente debe ser informado.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -671,17 +849,17 @@ function buildSetFolderRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
-    
-    if(setFolderReq != null && setFolderReq.param != null && setFolderReq.param.folder != null){    	
-    	
+
+    if(setFolderReq != null && setFolderReq.param != null && setFolderReq.param.folder != null){
+
 		var reqParam = setFolderReq.param;
 		var folderReq = reqParam.folder;
-		
+
     	requestOk = folderReq.id != null;
-    	
+
     	if(requestOk){
     		requestString = requestString + '<ws:id>' + folderReq.id + '</ws:id>';
-    		
+
     		if(folderReq.name != null && folderReq.name.length > 0){
     			requestString = requestString + '<ws:name>' + folderReq.name + '</ws:name>';
     		}
@@ -689,17 +867,17 @@ function buildSetFolderRequest(mc) {
     		requestString = requestString + '</ws:node>';
     	} else {
     		errorMessage = 'Petición mal formada. El parámetro folder.id de la agrupación documental debe ser informado.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -709,26 +887,26 @@ function buildSetFinalDocRequest(mc) {
 	var errorMessage = '';
     var requestOk = false;
     var requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
-    
-    if(setFinalDocReq != null && setFinalDocReq.param != null && setFinalDocReq.param.document != null){    	
-    	
+
+    if(setFinalDocReq != null && setFinalDocReq.param != null && setFinalDocReq.param.document != null){
+
 		var reqParam = setFinalDocReq.param;
 		var docReq = reqParam.document;
 		var draftAspectFound = false;
-		
+
     	requestOk = docReq.id != null;
-    	
+
     	if(requestOk){
     		requestString = requestString + '<ws:id>' + docReq.id + '</ws:id>';
-    		
+
     		if(docReq.name != null && docReq.name.length > 0){
     			requestString = requestString + '<ws:name>' + docReq.name + '</ws:name>';
     		}
 
     		//Aspectos
-    		requestString = requestString + '<ws:aspects>-gdib:borrador</ws:aspects>';    		
+    		requestString = requestString + '<ws:aspects>-gdib:borrador</ws:aspects>';
     		if(docReq.aspects != null && docReq.aspects.length >0){
-    			
+
         		for (i = 0; !draftAspectFound && i < docReq.aspects.length; i++) {
         			aspect = docReq.aspects[i];
         			if(aspect.indexOf('-gdib:borrador') < 0 && aspect.indexOf('gdib:borrador') < 0){
@@ -738,7 +916,7 @@ function buildSetFinalDocRequest(mc) {
         			}
     		    }
     		}
-    		
+
     		if(draftAspectFound){
     			requestOk = false;
     			errorMessage = 'Petición mal formada. No está permitido el aspecto gdib:borrador.';
@@ -747,24 +925,24 @@ function buildSetFinalDocRequest(mc) {
     			if(docReq.metadataCollection != null && docReq.metadataCollection.length > 0){
         			requestString += generatePropertiesReqElement(docReq.metadataCollection);
         		}
-    			
+
 	    		//Contenido y firma
-    			requestString += generateBinaryContentsReqElement(docReq,false);	    		
+    			requestString += generateBinaryContentsReqElement(docReq,false);
     		}
     		requestString = requestString + '</ws:node>';
     	} else {
     		errorMessage = 'Petición mal formada. El parámetro document.id del documento debe ser informado.';
-    	}   		 
+    	}
     } else {
     	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
     }
-    
+
     if(requestOk){
-    	mc.setProperty('reqService', requestString);    	
+    	mc.setProperty('reqService', requestString);
     } else {
     	mc.setProperty('reqServiceErrorMessage', errorMessage);
     }
-    
+
     mc.setProperty('reqServiceOk', requestOk);
 }
 
@@ -774,30 +952,30 @@ function dateToISOString(date){
 	var res = '';
 	var month = date.getUTCMonth() + 1;
 	var monthStr, dateStr, hourStr, minStr,secStr,msecStr;
-	
+
 	//Formato ISO-8601: YYYY-MM-DDTHH:mm:ss.sssZ
-	
+
 	monthStr = (month<10?'0'+month:month);
 	dateStr = (date.getUTCDate()<10?'0'+date.getUTCDate():date.getUTCDate());
 	hourStr = (date.getUTCHours()<10?'0'+date.getUTCHours():date.getUTCHours());
 	minStr = (date.getUTCMinutes()<10?'0'+date.getUTCMinutes():date.getUTCMinutes());
 	secStr = (date.getUTCSeconds()<10?'0'+date.getUTCSeconds():date.getUTCSeconds());
-	
-	msecStr = date.getUTCMilliseconds();	
+
+	msecStr = date.getUTCMilliseconds();
 	if(date.getUTCMilliseconds() < 10){
 		msecStr = '00' +  msecStr;
 	} else if(date.getUTCMilliseconds() > 10 && date.getUTCMilliseconds() < 100){
 		msecStr = '0' +  msecStr;
 	}
-	
+
 	res = date.getUTCFullYear() + '-' + monthStr + '-' + dateStr + 'T' + hourStr + ':' + minStr + ':' + secStr + '.' + msecStr + 'Z';
-	
+
 	return res;
 }
 
 function generatePropertiesReqElement(metadataCollection){
 	var res = '';
-	
+
 	for (i = 0; i < metadataCollection.length; i++) {
 		metadata = metadataCollection[i];
 		if(metadata.qname != null && metadata.qname.length > 0){
@@ -809,33 +987,33 @@ function generatePropertiesReqElement(metadataCollection){
 				for (j = 0; j < metadata.value.length; j++) {
 					arrayMetadataValue = arrayMetadataValue + metadata.value[j] + ';';
 				}
-				
+
 				arrayMetadataValue = arrayMetadataValue.substring(0,arrayMetadataValue.lastIndexOf(';'));
-				res = res + '<ws:value>' + arrayMetadataValue + '</ws:value>';				
-			} else {		    			
-				res = res + '<ws:value>' + (metadata.value==null?'':metadata.value) + '</ws:value>';		    			
+				res = res + '<ws:value>' + arrayMetadataValue + '</ws:value>';
+			} else {
+				res = res + '<ws:value>' + (metadata.value==null?'':metadata.value) + '</ws:value>';
 			}
 			res = res + '</ws:properties>';
 		}
     }
-	
+
 	return res;
 }
 
 function getSignatureProperties(metadataCollection){
 	var res = [];
-	
+
 	if(metadataCollection != null){
 		for (i = 0; i < metadataCollection.length; i++) {
 			metadata = metadataCollection[i];
 			if(metadata.qname != null && metadata.qname == 'eni:tipoFirma'){
 				res[0] = metadata.value;
 			} else if(metadata.qname != null && metadata.qname == 'eni:perfil_firma'){
-				res[1] = metadata.value;				
+				res[1] = metadata.value;
 			}
 	    }
 	}
-	
+
 	return res;
 }
 
@@ -844,13 +1022,13 @@ function generateBinaryContentsReqElement(docReq,signatureRequired){
 	var docContent = '';
 	var contentFound = false;
 	var signatureFound = false;
-	
+
 	if(docReq.binaryContents != null && docReq.binaryContents.length > 0) {
 		//Contenido y firma
 		for (i = 0; !(contentFound && signatureFound) && i < docReq.binaryContents.length; i++) {
 			binaryContent = docReq.binaryContents[i];
 			if(binaryContent.binaryType != null && binaryContent.binaryType.equals('CONTENT')){
-				
+
 				res = res + '<ws:content>';
 				if(binaryContent.mimetype != null){
 					res = res + '<ws:mimetype>' + binaryContent.mimetype + '</ws:mimetype>';
@@ -871,7 +1049,7 @@ function generateBinaryContentsReqElement(docReq,signatureRequired){
 				signatureFound = true;
 			}
 		}
-		
+
 		/*
 		 * 14/11/2016
 		 * La firma electrónica solo es requerida de informar si está es explícita
@@ -879,6 +1057,6 @@ function generateBinaryContentsReqElement(docReq,signatureRequired){
 			res = res + '<ws:sign>' + docContent + '</ws:sign>';
 		}*/
 	}
-	
+
 	return res;
 }
