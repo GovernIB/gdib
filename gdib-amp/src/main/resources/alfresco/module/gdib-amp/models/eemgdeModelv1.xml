@@ -453,7 +453,7 @@
 					<protected>false</protected>
 					<mandatory>false</mandatory>
 					<multiple>false</multiple>
-					<default>Año</default>
+					<default>A</default>
 					<!-- Queremos poder buscar por este metadato -->
 					<index enabled="true">
 						<!-- Indexación en la misma transacción que en la subida del nodo -->
