@@ -46,7 +46,7 @@
                   <format>
 		            		{
 		            			"exception":{
-		            				"code": "COD_098",
+		            				"code": "COD_099",
 		            				"description": "$1"
 		            			}
 		            		}
@@ -74,21 +74,21 @@
                   <with-param name="retrieveNode" value="{get-property('retrieveNode')}"/>
                   <with-param name="serviceHeaderString"
                               value="{get-property('serviceHeaderString')}"/>
-                  <with-param name="nodeType" value="eni:expediente"/>
+                  <with-param name="nodeType" value="gdib:funcion"/>
                </call-template>
                <filter xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0"
-                       xpath="$body/csgd:createFileResult/csgd:result/csgd:code[text() != 'COD_000']">
+                       xpath="$body/csgd:createFunctionResult/csgd:result/csgd:code[text() != 'COD_000']">
                   <then>
                      <property name="exceptionHttpStatusCode"
                                value="404"
                                scope="default"
                                type="STRING"/>
                      <property name="exceptionCode"
-                               expression="$body/csgd:createFileResult/csgd:result/csgd:code/text()"
+                               expression="$body/csgd:createFunctionResult/csgd:result/csgd:code/text()"
                                scope="default"
                                type="STRING"/>
                      <property name="exceptionDesc"
-                               expression="$body/csgd:createFileResult/csgd:result/csgd:description/text()"
+                               expression="$body/csgd:createFunctionResult/csgd:result/csgd:description/text()"
                                scope="default"
                                type="STRING"/>
                   </then>
@@ -101,7 +101,7 @@
                          scope="default"
                          type="STRING"/>
                <property name="exceptionCode"
-                         value="COD_099"
+                         expression="get-property('codigoErrorMessage')"
                          scope="default"
                          type="STRING"/>
                <property name="exceptionDesc"

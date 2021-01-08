@@ -46,7 +46,7 @@
                   <format>
 		            		{
 		            			"exception":{
-		            				"code": "COD_098",
+		            				"code": "COD_099",
 		            				"description": "$1"
 		            			}
 		            		}
@@ -101,7 +101,7 @@
                          scope="default"
                          type="STRING"/>
                <property name="exceptionCode"
-                         value="COD_099"
+                         expression="get-property('codeErrorMessage')"
                          scope="default"
                          type="STRING"/>
                <property name="exceptionDesc"
@@ -147,3 +147,4 @@
    <parameter name="disableSOAP11">true</parameter>
    <description/>
 </proxy>
+                                
