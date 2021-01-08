@@ -382,7 +382,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
                             utils.createNameQName("metadatos.xml"),
                             ConstantUtils.TYPE_CONTENT,
                             childProps);
-            		utils.setDataHandler(nodeRef,ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
+            		utils.setDataHandler(createdChildRef.getChildRef(),ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
             	}
             	else
         		{
