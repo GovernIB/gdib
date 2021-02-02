@@ -73,6 +73,8 @@
 		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-reseal.properties</value>
 		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-expurgate.properties</value>
 		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-upgrade.properties</value>
+		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-upgrade-signature.properties</value>
+		        	<value>classpath:alfresco/module/gdib-amp/properties/schedule-job-close-file.properties</value>
 		        	<value>classpath*:gdib-amp.properties</value>
 		        	<value>classpath*:schedule-job-expire.properties</value>
 		        	<value>classpath*:schedule-job-reseal.properties</value>

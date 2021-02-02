@@ -60,6 +60,7 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         catch (Exception e)
         {
         	if ( e.getCause() instanceof GdibException ){
+                LOGGER.error("Se ha producido la excepcion: "+((GdibException)e.getCause()).getMessage());
         		throw (GdibException) e.getCause();
         	}
            throw e;
@@ -531,13 +532,14 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         catch (Exception e)
         {
         	if ( e.getCause() instanceof GdibException ){
+        	    LOGGER.error("Se ha producido la excepcion: "+((GdibException)e.getCause()).getMessage());
         		throw (GdibException) e.getCause();
         	}
            throw e;
         }		
 	}
 	
-	private RepositoryServiceSoapPortImpl getBean(){
+	public RepositoryServiceSoapPortImpl getBean(){
 		//return (RepositoryServiceSoapPortImpl) context.getBean("RepositoryServiceSoapPortImpl");
 		return (RepositoryServiceSoapPortImpl) context.getBean("repositoryServiceSoap");		
 	}
@@ -546,7 +548,7 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 		GdibSecurity security = gdibHeader.getGdibSecurity();
 		doAuthentication(security.getUser(),security.getPassword());
 	}
-	private void doAuthentication(String username, String password) throws GdibException {
+	public void doAuthentication(String username, String password) throws GdibException {
 		try {
 			// si el usuario viene vacio, se tiene que validar el ticket de autenticacion de alfresco
 			if(username.isEmpty()){
@@ -560,8 +562,10 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 				}
 				// login con usuario y password
 				authenticationService.authenticate(username, password.toCharArray());
+				LOGGER.debug("Autenticacion realizada");
 			}
 		}catch (AuthenticationException ae){
+		    LOGGER.error("Error logueando: "+ae);
 			throw new GdibException(ae.getMessage());
 		}
 	}
