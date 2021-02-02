@@ -2128,7 +2128,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			LOGGER.info("Se finaliza el cierre del expediente " + nodeId);
 	}
 
-	private void __internal_closeFile(final NodeRef expedientRef, final Date closeDate) throws GdibException, ContentIOException, IOException{
+	public void __internal_closeFile(final NodeRef expedientRef, final Date closeDate) throws GdibException, ContentIOException, IOException{
 			RunAsWork<?> raw = new RunAsWork<Object>() {
             public Object doWork() throws Exception {
                 //Set permission to this folder for the logged in user
@@ -2653,6 +2653,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		}
 	}
 */
+
+	public NodeService getNodeService() {
+		return nodeService;
+	}
 
 	public AsynchronousDatabaseAccess getDatabaseAccess() {
 		return databaseAccess;

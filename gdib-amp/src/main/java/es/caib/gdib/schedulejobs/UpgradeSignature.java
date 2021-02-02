@@ -160,8 +160,8 @@ public class UpgradeSignature {
                         errors.add(entry);
                         continue;
                     }
-                    LOGGER.debug("Firma actualizada, proceso de upgradeo finalizado correctamente");
                     success.add(entry);
+                    LOGGER.debug("Firma actualizada, proceso de upgradeo finalizado correctamente");
                 } else {
                     LOGGER.debug("Saltamos la entrada del documento id [" + entry.getId() + "] por superar el numero maximo de intentos [" + entry.getTried() + "]");
                     maxTriesList.add(entry);

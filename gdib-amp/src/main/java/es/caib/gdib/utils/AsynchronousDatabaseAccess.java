@@ -174,7 +174,6 @@ public class AsynchronousDatabaseAccess {
         try {
             if (rs != null) {
                 while (rs.next()) {
-                    LOGGER.debug("Se recorre un reusltado");
                     CloseFileJobEntity fila = new CloseFileJobEntity();
                     fila.setId(rs.getString(CLOSE_FILE_ID));
                     fila.setCloseDate(rs.getDate(CLOSE_FILE_CLOSE_DATE));

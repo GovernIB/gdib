@@ -199,13 +199,11 @@
 <!--	closeFile-->
 	<bean id="closeFile"
 		  class="es.caib.gdib.schedulejobs.CloseFile">
-		<property name="signatureService" ref="internalSignatureService" />
 		<property name="bbddService" ref="asynchronousDatabaseAccess" />
 		<property name="utils" ref="gdibUtils"/>
 		<property name="active" value="$gdib{close.file.upgrade.active}" />
 		<property name="maxTries" value="$gdib{close.file.max.number.tries}" />
 		<property name="destinations" value="$gdib{close.file.destination.mail}" />
-		<property name="addIntExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.caibIndexV10.addExchangeFiles}" />
 		<property name="mailService" ref="MailService" />
 	</bean>
 
