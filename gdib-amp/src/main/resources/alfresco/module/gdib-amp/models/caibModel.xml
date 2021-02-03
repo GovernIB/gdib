@@ -1216,6 +1216,12 @@
 			<title>Aspecto para indicar que el nodo es un historico</title>
 		</aspect>
 
+
+<!-- Expedientes Enlazados -->
+		<aspect name="gdib:obsoleto">
+			<title>Aspecto una serie o función posee el estado obsoletoo</title>
+		</aspect>
+		
 	</aspects>
 
 </model>

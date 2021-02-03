@@ -253,18 +253,18 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		VerifySignatureResponse verSigRes;
 
 		res = null;
-		LOGGER.debug("Iniciando servicio de validaci�n de firma electr�nica...");
-		LOGGER.debug("Validando par�metros de entrada...");
+		LOGGER.debug("Iniciando servicio de validación de firma electrónica...");
+		LOGGER.debug("Validando parámetros de entrada...");
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Validaci�n de firma electr�nica: Firma electr�nica nula o vac�a.");
+			throw new GdibException("Validación de firma electrónica: Firma electrónica nula o vacía.");
 		}
 		
 		if(document == null || document.length == 0){
-			LOGGER.debug("El documento informado en la operaci�n de validaci�n de firma electr�nica es vac�o, se procede a validar una firma impl�cita.");
+			LOGGER.debug("El documento informado en la operación de validación de firma electrónica es vacío, se procede a validar una firma implícita.");
 		}
-		LOGGER.debug("Par�metros de entrada validados...");
-		LOGGER.debug("Formando petici�n servicio DSSAfirmaVerify ...");
+		LOGGER.debug("Parámetros de entrada validados...");
+		LOGGER.debug("Formando petición servicio DSSAfirmaVerify ...");
 		verSigReq = new VerifySignatureRequest();
 		
 		//verSigReq.setSignature(signature);
@@ -273,7 +273,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			verSigReq.setDocument(document);
 		}
 		verSigReq.setSignature(signature);		
-		LOGGER.debug("Petici�n servicio DSSAfirmaVerify formada.");
+		LOGGER.debug("Petición servicio DSSAfirmaVerify formada.");
 		
 		LOGGER.debug("Invocando servicio DSSAfirmaVerify ...");
 		//Add optional Parameters for deep info
@@ -301,8 +301,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		
 		
 		if (verSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci�n del servicio DSSAfirmaVerify de la plataforma @firma "
-					+ "para validar una firma electr�nica.");
+			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
+					+ "para validar una firma electrónica.");
 		}
 		/*LOGGER.debug("Obtaining Data info"); UNCOMMENT TO PARSE ADITIONAL DATA INFO
 		List<DataInfo> dataInfo = verSigRes.getSignedDataInfo();		
@@ -358,8 +358,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 		LOGGER.debug("SersigRes signatureFormat: " + verSigRes.getSignatureFormat());
 		if (verSigRes.getResult() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operaci�n para "
-					+ "validar una firma electr�nica.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye el resultado de la operación para "
+					+ "validar una firma electrónica.");
 		}
 		
 		LOGGER.debug("SersigRes Result major: " + verSigRes.getResult().getResultMajor());
@@ -373,10 +373,10 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	    	
 	    	String signatureType = verSigRes.getSignatureFormat().substring(0, index);
 	    	res.setSignatureType(signatureType);
-	    	LOGGER.debug("Familia a la que pertenece la firma electr�nica validada: " + signatureType);
+	    	LOGGER.debug("Familia a la que pertenece la firma electrónica validada: " + signatureType);
 	    	if(index != -1){
 	    		String signatureForm = verSigRes.getSignatureFormat().substring(index+1,verSigRes.getSignatureFormat().length());
-	    		LOGGER.debug("Formato avanzado de la firma electr�nica validada: " + signatureForm);
+	    		LOGGER.debug("Formato avanzado de la firma electrónica validada: " + signatureForm);
 	    		res.setSignatureForm(signatureForm);
 	    		
 	    	}
@@ -390,18 +390,18 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			res.setDetailedValidationStatus(verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:RequesterError".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C�digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + 
+			res.setDetailedValidationStatus("Código (Major): " + verSigRes.getResult().getResultMajor() + " \n\t Código (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:ResponderError".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C�digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + 
+			res.setDetailedValidationStatus("Código(Major): " + verSigRes.getResult().getResultMajor() + " \n\t Código (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:InsufficientInformation".equals(verSigRes.getResult().getResultMajor())){
 			res.setValidationStatus(ValidationStatus.NO_CORRECTO);
-			res.setDetailedValidationStatus("C�digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + 
+			res.setDetailedValidationStatus("Código(Major): " + verSigRes.getResult().getResultMajor() + " \n\t Código (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		} else if("urn:oasis:names:tc:dss:1.0:resultmajor:Warning".equals(verSigRes.getResult().getResultMajor())){			
-			res.setDetailedValidationStatus("C�digo (Major): " + verSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + 
+			res.setDetailedValidationStatus("Código(Major): " + verSigRes.getResult().getResultMajor() + " \n\t Código (Minor): " + 
 					verSigRes.getResult().getResultMinor());
 		}
 

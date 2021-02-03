@@ -46,8 +46,8 @@ public enum SignatureFormat {
 	CAdES(new Integer(30), "CAdES", "CAdES"),
 	XAdES(new Integer(31), "XAdES", "XAdES"),
 	PAdES(new Integer(32), "PAdES", "PAdES"),
-	XML_SIGNATURE(new Integer(33), "XML-Signature", "XML-Signature");
-
+	XML_SIGNATURE(new Integer(33), "XML-Signature", "XML-Signature"),
+	PAdES_T(new Integer(34), "PAdES-T","PAdES");
 	private static final String CADES_FAMILY_NAME = "CAdES";
 	private static final String XADES_FAMILY_NAME = "XAdES";	
 	private static final String PADES_FAMILY_NAME = "PAdES";
@@ -102,6 +102,7 @@ public enum SignatureFormat {
     	PADES_ADVANCED_ORDER.put(PAdES_BES, 1);
     	PADES_ADVANCED_ORDER.put(PAdES_EPES, 2);
     	PADES_ADVANCED_ORDER.put(PAdES_LTV, 3);
+    	PADES_ADVANCED_ORDER.put(PAdES_T, 4);
     }
     
     private SignatureFormat(Integer id, String name, String type) {

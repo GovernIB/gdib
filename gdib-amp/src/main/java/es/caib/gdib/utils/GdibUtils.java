@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -157,8 +158,8 @@ public class GdibUtils {
          * iii-	PATH RELATIVO: b24eeb92-aed8-439c-af4d-db25785b2fc4/ruta/al/nodo
          */
         if (!ConstantUtils.UUID_PATTERN.matcher(nodeId).matches()
-                & !ConstantUtils.VERSION_UUID_PATTERN.matcher(nodeId).matches()
-                & !ConstantUtils.PATH_REL_PATTERN.matcher(nodeId).matches()) {
+                && !ConstantUtils.VERSION_UUID_PATTERN.matcher(nodeId).matches()
+                && !ConstantUtils.PATH_REL_PATTERN.matcher(nodeId).matches()) {
             return false;
         }
 
@@ -205,7 +206,20 @@ public class GdibUtils {
         exists(ref);
         return ref;
     }
-
+	/**
+	 * Metodo para comprobar si un expediente se encuentra bajo uno de los nuevos tipos serie funcion o cuadro
+	 * @param node El nodeRef a comprobar
+	 * @return true si su padre es eemgd:serie o gdib:funcion
+	 */
+    public boolean isNewClassificationCode(NodeRef node)
+    {
+    	//itero 3 veces ( la estructura crea a partir de las series una carpeta para año / mes / dia
+    	ChildAssociationRef parentRefAssoc = nodeService.getPrimaryParent(node);
+    	NodeRef parentRef = parentRefAssoc.getParentRef();
+    	return false;
+    	//
+    	
+    }
     /**
      * Compruebo que el nodo esta en el path de la raiz del DM
      *
@@ -225,7 +239,7 @@ public class GdibUtils {
     	if (!StringUtils.isEmpty(this.rootDM)) {
 			this._pathDM = this.getPathFromUID(this.toNodeRef(this.rootDM));
 		}
-		return this._pathDM;
+		return this._pathDM;   
 	}
 
 	/**
@@ -1659,6 +1673,7 @@ public class GdibUtils {
 		if(this.repositoryDisableCheck.booleanValue() == false){
 			// me salto este paso si esta desactivado los check principales del repositorio
 			if (isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME) && StringUtils.isEmpty(parentId)) {
+				FindNodeParameters params = new FindNodeParameters();
 				
 				
 				String classificationCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
@@ -1667,9 +1682,11 @@ public class GdibUtils {
 				//params.setNodeTypes();
 				//nodeService.
 				
-				//NodeRef newParnt = nodeService.findNodes(params);
-				
-				parentRef = getParentFromClassificationTable(node, classificationCode);
+				NodeRef newParnt = this.getSerieParentByLucene(classificationCode);
+				if(newParnt == null)
+					parentRef = getParentFromClassificationTable(node, classificationCode);
+				else
+					parentRef = newParnt;
 				// si al consultar el cuadro de clasificacion no tengo el nodeRef del padre es que ha habido un error
 				// en el cuadro de clasificacion
 				if (parentRef == null)
@@ -2463,7 +2480,7 @@ public class GdibUtils {
 		LOGGER.debug("Type of nodeRef "+nodeRef.getId()+ "  : " + type);
 		LOGGER.debug("searching for type = "+ConstantUtils.TYPE_EXPEDIENTE_QNAME +" or " + ConstantUtils.TYPE_SERIE_QNAME);
 		LOGGER.debug("entering while" );
-		while  ( ! type.equals(ConstantUtils.TYPE_EXPEDIENTE_QNAME) && ! type.equals(ConstantUtils.TYPE_SERIE_QNAME)){
+		while  ( !type.equals(ConstantUtils.TYPE_EXPEDIENTE_QNAME) && !type.equals(ConstantUtils.TYPE_SERIE_QNAME)){
 			actualNode = nodeService.getPrimaryParent(actualNode).getParentRef();
 			LOGGER.debug("actualNodeID = "+actualNode.getId());
 			type = nodeService.getType(actualNode);
@@ -2804,4 +2821,56 @@ public class GdibUtils {
 	//public void setUnsecureContentService(ContentService unsecureContentService) {
 		//this.unsecureContentService = unsecureContentService;
 	//}
+	/**
+	 * Método que ejecuta la búsqueda de series de clasificación a través de su código
+	 * mediante FTS(Full Text Search ) alfresco
+	 * 
+	 * @return List<NodeRef> Lista con el parent ref donde se creará el expediente
+	 * @throws GdibException Wrapper de cualquier excepción para propagar
+	 */
+	private NodeRef getSerieParentByLucene(String codClasif) throws GdibException {
+		List<NodeRef> result = null;
+		
+		final SearchParameters params = new SearchParameters();
+		params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+		params.setLanguage(SearchService.LANGUAGE_FTS_ALFRESCO);
+		int queryResultLength = 0;
+		String FTS_QUERY ="=eemgde\\:codigo_clasificacion:\"%s\" and TYPE:eemgde\\:serie";
+		final StringBuilder query = new StringBuilder(400);
+
+		Formatter formatterDocumento = new Formatter(query);
+		formatterDocumento.format(FTS_QUERY, codClasif).toString();
+
+		query.trimToSize();
+		LOGGER.debug("Query Upgrading Indexes: " + query.toString());
+
+		params.setQuery(query.toString());
+
+		params.setMaxItems(2);
+
+		ResultSet resultSet = null;
+		try {
+			resultSet = searchService.query(params);
+			if (resultSet != null && resultSet.length() == 1) {
+				queryResultLength += resultSet.length();
+				result = resultSet.getNodeRefs();
+				LOGGER.debug("Encontrados " + resultSet.length() + " parentsRef por código de clasificación :"+codClasif);
+
+			}
+			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta fts de busqueda de series: "
+					+ queryResultLength + ".");
+		}catch(Exception e){
+			LOGGER.error("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
+			throw new GdibException("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
+			
+		}finally {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
+		
+		// }
+		
+		return result.get(0);
+	}
 }

@@ -375,11 +375,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
             	{
             		//Creamos fichero de metadatos
             		Map<QName,Serializable> childProps = new HashMap<>();
-            		childProps.put(ConstantUtils.PROP_NAME, "metadatos.xml");
+            		String metadataFileName = "metadatos_"+utils.getProperty(nodeRef, ConstantUtils.PROPERTY_CODIGO_CLASIFICACION_QNAME)+".xml";
+            		 
+            		childProps.put(ConstantUtils.PROP_NAME, metadataFileName);
             		
                     ChildAssociationRef createdChildRef = nodeService.createNode(nodeRef,
                             ContentModel.ASSOC_CONTAINS,
-                            utils.createNameQName("metadatos.xml"),
+                            utils.createNameQName(metadataFileName),
                             ConstantUtils.TYPE_CONTENT,
                             childProps);
             		utils.setDataHandler(createdChildRef.getChildRef(),ContentModel.PROP_CONTENT,content.getData(),content.getMimetype());
@@ -1293,6 +1295,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     public void modifyNode(Node node, GdibHeader gdibHeader) throws GdibException {
 
 	    	long initMod = System.currentTimeMillis();
+	    	if(node == null)
+	    		LOGGER.debug("node is null, here comes the boom");
+	    	LOGGER.debug("Received node : "+ node.toString());
 	        NodeRef nodeRef = utils.checkNodeId(node.getId());
 	        utils.checkRestriction(nodeRef, gdibHeader);
 	        this.modifyNodeCheck(nodeRef);
@@ -1432,7 +1437,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 	        String serieDocNodo = null;
 	        boolean hasDraftAspect = nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME);
-	        if(!hasDraftAspect){
+	        boolean sameClasifCodeSanityCheckDisabled = utils.isType(nodeService.getType(nodeRef), ConstantUtils.TYPE_FUNCION_QNAME) || utils.isType(nodeService.getType(nodeRef), ConstantUtils.TYPE_SERIE_QNAME) ;
+	        if(sameClasifCodeSanityCheckDisabled)
+	        	LOGGER.debug("moving Function or Serie with id :"+nodeId);
+	        if(!hasDraftAspect && !sameClasifCodeSanityCheckDisabled){
 		        if (fileFolderService.getFileInfo(nodeRef).isFolder()){
 		        	serieDocNodo = utils.getCodClasificacion(nodeRef);
 		        }else{
@@ -1444,9 +1452,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		        	throw exUtils.illegalLinkException();
 		        }
 	        }
-
+	        LOGGER.debug("before internal Move ");
 	        _internal_moveNode(nodeRef, newParentRef);
-
+	        LOGGER.debug("after internal Move ");
 	        LOGGER.info(nodeId+" movido en "+(System.currentTimeMillis()-initMill)+"ms.");
     }
 
@@ -1494,26 +1502,29 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     @Override
     public void removeNode(String nodeId, GdibHeader gdibHeader) throws GdibException {
 
+    		
 	    	long initMill = System.currentTimeMillis();
+	    	LOGGER.debug("Calling remove node with nodeId :"+nodeId);
 	    	// comprobar parametros de entrada
 	        NodeRef ref = utils.checkNodeId(nodeId);
+	        LOGGER.debug("After CheckNodeId :");
 	        utils.checkRestriction(ref,gdibHeader);
-
+	        LOGGER.debug("After CheckRestriction :");
 	        // comprobar permisos de escritura sobre el nodo
 	        utils.hasPermission(ref, CaibServicePermissions.WRITE);
-
+	        LOGGER.debug("After hasPermission :WRITE");
 	        // compruebo que el nodo este dentro del path del DM
 	        utils.inDMPath(ref);
-
+	        LOGGER.debug("After inDMPath :");
 	        // compruebo si el nodo esta bloqueado, o si es un expediente, si tiene algun documento dentro bloqueado
 	        if(utils.isSomeoneLockedDown(ref)){
 	            throw exUtils.lockedNode(nodeId);
 	        }
-
+	        LOGGER.debug("After isSomeoneLockedDown :");
 	        // Chequear si es un nodo definitivo => lanzar excepcion
 	        // Si es una carpeta que contiene documentos definitivos => lanzar excepcion
 	        utils.checkFinalNode(ref);
-
+	        LOGGER.debug("After checkFinalNode :");
 	        nodeService.deleteNode(ref);
 	        LOGGER.info(nodeId+ " borrado en "+(System.currentTimeMillis()-initMill)+"ms.");
     }

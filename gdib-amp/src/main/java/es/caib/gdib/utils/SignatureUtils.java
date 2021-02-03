@@ -49,6 +49,7 @@ public class SignatureUtils {
 	private static final String A_DSS_URI_SIGNATURE_FORM = "urn:oasis:names:tc:dss:1.0:profiles:AdES:forms:ES-A";
 	private static final String LTV_DSS_URI_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:PAdES:1.1.2:forms:LTV";
 
+	private static final String DSS_URI_T_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:T-Level";
 	public static final String SIGNATURE_FORMAT_CONCATENATE_STRING = "_#_";
 	
 	private static Map<String,SignatureFormat> ENI_TRANSFORMED_FORMATS = new HashMap<String,SignatureFormat>();
@@ -131,6 +132,7 @@ public class SignatureUtils {
 				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.PAdES_EPES);
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING + 
 				EemgdeSignatureProfile.LTV.getName().toUpperCase(), SignatureFormat.PAdES_LTV);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName(), SignatureFormat.PAdES_T);
 	}
 	
 	/**
@@ -244,6 +246,8 @@ public class SignatureUtils {
 				case LTV_DSS_URI_SIGNATURE_FORM:
 					res = SignatureFormat.PAdES_LTV;
 					break;
+				case DSS_URI_T_LVL_SIGNATURE_FORM:
+					res = SignatureFormat.PAdES_T;
 			}
 			break;
 			case XMLSIGNATURE_DSS_URI_SIGNATURE_TYPE:
