@@ -121,7 +121,7 @@ public class UpgradeIndex {
 		upgradeDocs = null;
 
 		try {
-			LOGGER.debug("Obteniendo los �ndices");
+			LOGGER.debug("Obteniendo los índices");
 			// Get Index To Apply TSA upgrade
 			upgradeDocs = getDocumentsToUpgrade();
 		} catch (GdibException e) {
@@ -362,7 +362,7 @@ public class UpgradeIndex {
 				LOGGER.debug("Encontrados " + resultSet.length() + " indices para upgradeSignature");
 
 			}
-			LOGGER.info("N�mero de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
+			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
 					+ queryResultLength + ".");
 		}catch(Exception e){
 			LOGGER.error("Ocurrio un error haciendo query de upgradeo de indices :"+query.toString());

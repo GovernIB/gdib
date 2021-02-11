@@ -732,6 +732,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		LOGGER.debug("Valor informado para el metadato " + EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA
         				+ ": "+ signatureProfileNodeProp + ".");
         		currentSignatureFormat = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(eniSignatureType.getName(),signatureProfileNodeProp);
+        		if(currentSignatureFormat == null) LOGGER.debug("currentSignatureFormat is null");
         		// Se verifica la firma
         		SignatureValidationReport result = signatureService.verifySignature(content, signature);
         		LOGGER.debug("Parseando resultado de validación de la firma electrónica del documento " + node.getId() + ".");
@@ -740,6 +741,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         			//Si la firma es correcta, se verifica que el formato avanzado es igual o superior al m�nimo exigido
         			signatureFormat = SignatureUtils.dssSigntureFormatToInernalSignatureFormat(result.getSignatureType(),result.getSignatureForm());
         			LOGGER.debug("Se verifica que la firma y el metadato de firma son coherentes (familia o tipo de firma).");
+        			if(signatureFormat == null ) LOGGER.debug("signatureFormat is null");
+        			LOGGER.debug("Params to Signature Utils : TYPE "+result.getSignatureType() + " FORM "+result.getSignatureForm());
         			if(!currentSignatureFormat.getType().equalsIgnoreCase(signatureFormat.getType())){
         				//Se verifica que el formato de firma establecido para el nodo y el retornado por @firma
         				//pertenecen a la misma familia de formatos (CAdES, XAdES o PAdES)
@@ -2131,7 +2134,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					throw exUtils.documentarySeriesNoDocumentedException("");
 				}
 			}
-			LOGGER.debug("Clasificaci�n documental del expediente " + nodeId + ": " +
+			LOGGER.debug("Clasificación documental del expediente " + nodeId + ": " +
 					subTypeDocInfo.getDocumentarySeries() + "/" + subTypeDocInfo.getSubtypeDoc());
 			LOGGER.debug("Comprobando permisos sobre el expediente y su contenido...");
 
@@ -2202,10 +2205,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		properties.put(ConstantUtils.PROP_FASE_ARCHIVO_QNAME, ConstantUtils.FASE_ARCHIVO_HISTORICO);
 		// Se modifica la fecha fin de expediente, asignadole la fecha actual
 		properties.put(ConstantUtils.PROP_FECHA_FIN_EXP_QNAME, closeDate);
-		LOGGER.info("Se procede a establcer propiedades de archivado (interoperables) al expediente. Propiedades: " + properties);
+		LOGGER.info("Se procede a establecer propiedades de archivado (interoperables) al expediente. Propiedades: " + properties);
 
 		setFileContentArchivedMetadataCollection(expedientRef,properties,true);
-		LOGGER.info("Se procede a generar los �ndices del expediente, interno y de intercambio.");
+		LOGGER.info("Se procede a generar los ñindices del expediente, interno y de intercambio.");
 		// Se crean los indices interno y de intercambio del expediente
 		String eniId = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_ID_QNAME);
 		String dateString = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());

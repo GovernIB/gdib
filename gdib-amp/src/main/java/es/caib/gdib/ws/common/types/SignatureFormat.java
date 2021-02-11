@@ -102,7 +102,7 @@ public enum SignatureFormat {
     	PADES_ADVANCED_ORDER.put(PAdES_BES, 1);
     	PADES_ADVANCED_ORDER.put(PAdES_EPES, 2);
     	PADES_ADVANCED_ORDER.put(PAdES_LTV, 3);
-    	PADES_ADVANCED_ORDER.put(PAdES_T, 4);
+    	PADES_ADVANCED_ORDER.put(PAdES_T, 2);
     }
     
     private SignatureFormat(Integer id, String name, String type) {

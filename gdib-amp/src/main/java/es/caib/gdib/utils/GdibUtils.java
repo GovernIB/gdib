@@ -2871,6 +2871,6 @@ public class GdibUtils {
 		
 		// }
 		
-		return result.get(0);
+		return result == null ? null : result.get(0);
 	}
 }

@@ -132,7 +132,10 @@ public class SignatureUtils {
 				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.PAdES_EPES);
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING + 
 				EemgdeSignatureProfile.LTV.getName().toUpperCase(), SignatureFormat.PAdES_LTV);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName(), SignatureFormat.PAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING + 
+				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.PAdES_T);
+
+		//ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase(), SignatureFormat.PAdES_T);
 	}
 	
 	/**
@@ -248,6 +251,7 @@ public class SignatureUtils {
 					break;
 				case DSS_URI_T_LVL_SIGNATURE_FORM:
 					res = SignatureFormat.PAdES_T;
+					break;
 			}
 			break;
 			case XMLSIGNATURE_DSS_URI_SIGNATURE_TYPE:

@@ -66,7 +66,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	 * Formatos de firma electr�nica PAdES admitidos para generaci�n.
 	 */
 	private static SignatureFormat [] SUPPORTED_PADES_FORMATS = {SignatureFormat.PAdES_Basic, 
-			SignatureFormat.PAdES_BES,SignatureFormat.PAdES_EPES,SignatureFormat.PAdES_LTV};
+			SignatureFormat.PAdES_BES,SignatureFormat.PAdES_EPES,SignatureFormat.PAdES_LTV,SignatureFormat.PAdES_T};
 	
 	/**
 	 * Valor por defecto de par�metros de configuraci�n para la integraci�n con @firma, mediante Integr@. Los parametros est�n establecidos en el archivo gdib-amp.properties (Prefijo: gdib.afirma).
@@ -95,7 +95,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr�nica CAdES: Documento nulo o vac�o.");
+			throw new GdibException("Firma electrónica CAdES: Documento nulo o vacío.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_CADES_FORMATS);
@@ -125,7 +125,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr�nica PAdES: Documento nulo o vac�o.");
+			throw new GdibException("Firma electrónica PAdES: Documento nulo o vacío.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_PADES_FORMATS);
@@ -157,7 +157,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(document == null || document.length == 0){
-			throw new GdibException("Firma electr�nica XML: Documento nulo o vac�o.");
+			throw new GdibException("Firma electrónica XML: Documento nulo o vacío.");
 		}
 		
 		checkSignatureFormat(signatureFormat,SUPPORTED_XADES_FORMATS);
@@ -190,13 +190,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		res = null;
 		
 		if(signature == null || signature.length == 0){
-			throw new GdibException("Evoluci�n de firma electr�nica: Firma electr�nica nula o vac�a.");
+			throw new GdibException("Evolución de firma electrónica: Firma electrónica nula o vacía.");
 		}
 		
 		dssSignatureFormat = translateSignatureFormat(upgradedSignatureFormat);
 		
 		if(dssSignatureFormat == null){
-			throw new GdibException("Formato de firma electr�nica " + upgradedSignatureFormat.getName() + " no soportado  para evolucionar una firma electr�nica.");
+			throw new GdibException("Formato de firma electrónica " + upgradedSignatureFormat.getName() + " no soportado  para evolucionar una firma electrónica.");
 		}
 		
 		upgSigReq = new UpgradeSignatureRequest();
@@ -212,8 +212,8 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		
 		LOGGER.debug("Resultado evoluci�n firma:");
 		if (serSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci�n del servicio DSSAfirmaVerify de la plataforma @firma "
-					+ "para evolucionar una firma electr�nica al formato " + upgradedSignatureFormat.getName() + ".");
+			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
+					+ "para evolucionar una firma electrónica al formato " + upgradedSignatureFormat.getName() + ".");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
@@ -227,17 +227,16 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	    LOGGER.debug("SersigRes Result minor: " + serSigRes.getResult().getResultMinor());
 	    LOGGER.debug("SersigRes Result message: " + serSigRes.getResult().getResultMessage());
 		
-
 		
 		
 		if (!"urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals(serSigRes.getResult().getResultMajor())) {
-			throw new GdibException("Se obtuvo una respuesta err�nea en la invocaci�n del servicio DSSAfirmaSign de la plataforma @firma para evolucionar una firma electr�nica al formato " + 
-					upgradedSignatureFormat.getName() + ". \n\t C�digo (Major): " + serSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + 
+			throw new GdibException("Se obtuvo una respuesta errónea en la invocación del servicio DSSAfirmaSign de la plataforma @firma para evolucionar una firma electrónica al formato " + 
+					upgradedSignatureFormat.getName() + ". \n\t Código (Major): " + serSigRes.getResult().getResultMajor() + " \n\t C�ódigo (Minor): " + 
 					serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + serSigRes.getResult().getResultMessage() + ".");
 		}
 
 		if (serSigRes.getSignature() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye la firma electr�nica evolucionada al "
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaVerify de la plataforma @firma no incluye la firma electrónica evolucionada al "
 					+ "formato " + upgradedSignatureFormat.getName() + ".");
 		}
 
@@ -422,27 +421,28 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 
 		LOGGER.debug("Resultado firma de servidor delegada en @firma:");
 		if (serSigRes == null) {
-			throw new GdibException("No se obtuvo respuesta en la invocaci�n del servicio DSSAfirmaSign de la plataforma @firma.");
+			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaSign de la plataforma @firma.");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
 		if (serSigRes.getResult() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operaci�n.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operación.");
 		}
 		
 		LOGGER.debug("SersigRes Result major: " + serSigRes.getResult().getResultMajor());
 	    LOGGER.debug("SersigRes Result minor: " + serSigRes.getResult().getResultMinor());
 	    LOGGER.debug("SersigRes Result message: " + serSigRes.getResult().getResultMessage());
 		
+
 		if (!"urn:oasis:names:tc:dss:1.0:resultmajor:Success".equals(serSigRes.getResult().getResultMajor())) {
-			throw new GdibException("Se obtuvo una respuesta err�nea en la invocaci�n del servicio DSSAfirmaSign de la plataforma @firma. \n\t C�digo (Major): " + 
-					serSigRes.getResult().getResultMajor() + " \n\t C�digo (Minor): " + serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + 
+			throw new GdibException("Se obtuvo una respuesta errónea en la invocación del servicio DSSAfirmaSign de la plataforma @firma. \n\t Código (Major): " + 
+					serSigRes.getResult().getResultMajor() + " \n\t Código (Minor): " + serSigRes.getResult().getResultMinor() + "\n\t Observaciones: " + 
 					serSigRes.getResult().getResultMessage() + ".");
 		}
 
 		if (serSigRes.getSignature() == null) {
-			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye la firma electr�nica.");
+			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye la firma electrónica.");
 		}
 
 		res = serSigRes.getSignature();
@@ -464,7 +464,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		}
 		
 		if(!found){
-			throw new GdibException("El formato de firma electr�nica " + signatureFormat.getName() + " no est� soportado para la operaci�n solicitada.");
+			throw new GdibException("El formato de firma electrónica " + signatureFormat.getName() + " no está soportado para la operación solicitada.");
 		}
 	}
 	
@@ -550,6 +550,9 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 				break;
 			case PAdES_LTV:
 				res = SignatureFormatEnum.PAdES_LTV;
+				break;
+			case PAdES_T:
+				res = SignatureFormatEnum.PAdES_T_LEVEL;
 				break;
 		default:
 			break;

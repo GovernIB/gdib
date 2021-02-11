@@ -194,8 +194,8 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 		try{
 			Document doc = XmlUtils.byteArrayToXmlDocument(document);
 
-			LOGGER.debug("Se inicia la incorporaci�n del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o, al nodo ra�z del documento.");
+			LOGGER.debug("Se inicia la incorporación del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacío, al nodo raíz del documento.");
 			Element rootNode = doc.getDocumentElement();
 			XmlUtils.getPrefixesRecursive(rootNode, prefixes);
 			
@@ -208,7 +208,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 				throw new GdibException(excMsg);
 			}
 			LOGGER.debug("Se genera el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o.");
+					", con contenido vacío.");
 			String caibNamespacePrefix = (prefixes.get(CAIB_INDEX_NAMESPACE) == null?"":prefixes.get(CAIB_INDEX_NAMESPACE)+":");
 			Element signatureTypeNode = doc.createElementNS(CAIB_INDEX_NAMESPACE,caibNamespacePrefix+CAIB_SIGNATURE_TYPE_XML_ELEMENT);
 			signatureTypeNode.setTextContent(this.signatureTypeValue);
@@ -220,19 +220,19 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 			signatureNode.appendChild(signatureContentNode);
 			
 			LOGGER.debug("Nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o, generado correctamente.");
+					", con contenido vacío, generado correctamente.");
 			LOGGER.debug("Se a�ade el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o, como hijo del nodo ra�z del documento.");
+					", con contenido vacío, como hijo del nodo ra�z del documento.");
 			rootNode.appendChild(signatureNode);
-			LOGGER.debug("A�adido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o, como hijo del nodo ra�z del documento.");
+			LOGGER.debug("Añadido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacío, como hijo del nodo ra�z del documento.");
 			
 			LOGGER.debug("Actualizando contenido documento XML en memoria.");
 			//Se transforma el XML a un array de bytes
 			res = XmlUtils.xmlDocumentToByteArray(doc,INDEX_CHARSET);
 			
-			LOGGER.debug("Finalizada la incorporaci�n del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
-					", con contenido vac�o, al nodo ra�z del documento con éxito.");
+			LOGGER.debug("Finalizada la incorporación del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+					", con contenido vacío, al nodo raíz del documento con éxito.");
 		
 		} catch (TransformerException | UnsupportedEncodingException e){
 			excMsg = "Se produjo un error al transformar un documento XML en array de bytes: " + e.getMessage();
@@ -296,11 +296,11 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 					
 			LOGGER.debug("Nodo " + signatureNode.getTagName() + " recuperado del documento.");
 			
-			//Se a�ade el nodo /caibexpind:IndiceElectronico/ds:Signature al nodo 
+			//Se añade el nodo /caibexpind:IndiceElectronico/ds:Signature al nodo 
 			// /caibexpind:IndiceElectronico/caibexpind:firma/caibexpind:contenidoFirma
 			Element signatureCloneNode = (Element) signatureNode.cloneNode(true);
 			
-			LOGGER.debug("A�adiendo nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + ".");
+			LOGGER.debug("Añadiendo nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + ".");
 			signatureContentNode.appendChild(signatureCloneNode);
 			
 			LOGGER.debug("Eliminando nodo " + DS_SIGNATURE_XML_ELEMENT + " como hijo del nodo ra�z del documento.");
