@@ -95,7 +95,7 @@
             <filter xpath="($func:getContent = 'true') and boolean(//csgd:aspects[text() = 'gdib:transformado'])">
               <then>
                 <log level="custom">
-                  <property name="### Documento transformado ###" value="Se recupera la información de migración."/>
+                  <property name="### Documento transformado ###" value="Se recupera la informaciï¿½n de migraciï¿½n."/>
                 </log>
                 <property expression="$body/csgd:getDocumentResult"
                   name="getDocumentResultOm" scope="default" type="OM"/>
@@ -193,16 +193,34 @@
           <else/>
         </filter>
       </case>
-      <case regex="eni:expediente">
-        <xslt key="conf:/repository/esb/registry/xslt/getFileXMLResponse.xslt">
+      <case regex="gdib:funcion">
+        <xslt key="conf:/repository/esb/registry/xslt/getFuntionXMLResponse.xslt">
           <resource
-            key="conf:/repository/esb/registry/xslt/parseFileXMLResponse.xslt" location="fillFile.xslt"/>
+            key="conf:/repository/esb/registry/xslt/parseFileXMLResponse.xslt" location="fillFuntion.xslt"/>
+        </xslt>
+      </case>
+      <case regex="eemgde:serie">
+        <xslt key="conf:/repository/esb/registry/xslt/getSerienXMLResponse.xslt">
+          <resource
+            key="conf:/repository/esb/registry/xslt/parseSerieXMLResponse.xslt" location="fillSerie.xslt"/>
+        </xslt>
+      </case>
+      <case regex="gdib:cuadro_clasificacion">
+        <xslt key="conf:/repository/esb/registry/xslt/getClassificationRootXMLResponse.xslt">
+          <resource
+            key="conf:/repository/esb/registry/xslt/parseRootXMLResponse.xslt" location="fillRoot.xslt"/>
         </xslt>
       </case>
       <case regex="eni:agregacionDoc">
         <xslt key="conf:/repository/esb/registry/xslt/getFolderXMLResponse.xslt">
           <resource
             key="conf:/repository/esb/registry/xslt/parseFolderXMLResponse.xslt" location="fillFolder.xslt"/>
+        </xslt>
+      </case>
+      <case regex="eni:expediente">
+        <xslt key="conf:/repository/esb/registry/xslt/getFileXMLResponse.xslt">
+          <resource
+            key="conf:/repository/esb/registry/xslt/parseFileXMLResponse.xslt" location="fillFile.xslt"/>
         </xslt>
       </case>
       <default/>

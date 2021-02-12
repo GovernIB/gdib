@@ -1,3 +1,169 @@
+
+function buildsetClassificationRootRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString;
+	payload = mc.getPayloadJSON();
+	setRootReq = payload.setClassificationRootRequest;
+	if (setRootReq != null && setRootReq.param != null && setRootReq.param.classificationRoot != null ) {
+		var rootReq = setRootReq.param.classificationRoot ;
+		requestOk = rootReq.type != null && rootReq.id!= null;
+                if (requestOk) {
+								requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+                requestString = requestString + '<ws:node>';
+                requestString = requestString + '<ws:id>'+rootReq.id+'</ws:id>';
+                if(rootReq.name!= null){
+                    requestString = requestString + '<ws:name>'+rootReq.name+'</ws:name>';
+                }
+
+                requestString = requestString + '<ws:type>'+rootReq.type+'</ws:type>';
+
+                //Aspectos
+                	if(rootReq.aspects!= null){
+				for (i = 0; ! i < rootReq.aspects.length; i++) {
+					aspect = rootReq.aspects[i];
+					requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+				}
+		 }
+
+
+                //Propiedas
+								if(rootReq.metadataCollection != null && rootReq.metadataCollection.length > 0){
+                	requestString += generatePropertiesReqElement(rootReq.metadataCollection);
+								}
+			requestString = requestString + '</ws:node>';
+
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación el cuadro.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+	}
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codeErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
+function buildsetSerieRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString="";
+	var errorMessage="error";
+        payload = mc.getPayloadJSON();
+	setSerieReq = payload.setSerieRequest;
+        if (setSerieReq != null && setSerieReq.param != null && setSerieReq.param.serie != null) {
+		var serieReq = setSerieReq.param.serie;
+		requestOk = serieReq.type != null && serieReq.metadataCollection != null && serieReq.aspects != null && serieReq.binaryContent != null && serieReq.id != null ;
+		if (requestOk) {
+
+		requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+    requestString = requestString + '<ws:id>'+serieReq.id+'</ws:id>';
+    if(serieReq.name!= null){
+        requestString = requestString + '<ws:name>'+serieReq.name+'</ws:name>';
+    }
+
+    requestString = requestString + '<ws:type>'+serieReq.type+'</ws:type>';
+
+    //Aspectos
+    for (i = 0;  i < serieReq.aspects.length; i++) {
+      aspect = serieReq.aspects[i];
+      requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+    }
+
+
+    //Propiedas
+    requestString += generatePropertiesReqElement(serieReq.metadataCollection);
+		var binaryContent= serieReq.binaryContent;
+		requestString = requestString + '<ws:content>';
+		if(binaryContent.mimetype != null){
+			requestString = requestString + '<ws:mimetype>' + binaryContent.mimetype + '</ws:mimetype>';
+		}
+		//if(binaryContent.content != null){
+			requestString = requestString + '<ws:data>' + binaryContent.content + '</ws:data>';
+		//}
+		if(binaryContent.encoding != null){
+			requestString = requestString + '<ws:encoding>' + binaryContent.encoding + '</ws:encoding>';
+		}
+		requestString = requestString + '</ws:content>';
+
+    requestString = requestString + '</ws:node>';
+
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación de la Seri.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+	}
+	//requestOk = false;
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codigoErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
+function buildsetFunctionRequest(mc) {
+	var codigo="COD_099";
+	var requestOk = false;
+	var requestString;
+	payload = mc.getPayloadJSON();
+	setFunctionReq = payload.setFunctionRequest;
+	if (setFunctionReq != null && setFunctionReq.param.classificationFunction != null) {
+		errorMessage = 'Petición formada6';
+		var functionReq = setFunctionReq.param.classificationFunction;
+		requestOk = functionReq.type != null && functionReq.metadataCollection != null && functionReq.id != null;
+                if (requestOk) {
+                requestString = '<ws:node xmlns:ws="http://www.caib.es/gdib/repository/ws">';
+                requestString = requestString + '<ws:id>'+functionReq.id+'</ws:id>';
+                if(functionReq.name!= null){
+                    requestString = requestString + '<ws:name>'+functionReq.name+'</ws:name>';
+                }
+
+                requestString = requestString + '<ws:type>'+functionReq.type+'</ws:type>';
+
+                //Aspectos
+                	if(functionReq.aspects!= null){
+				for (i = 0; ! i < functionReq.aspects.length; i++) {
+					aspect = functionReq.aspects[i];
+					requestString = requestString + '<ws:aspects>' + aspect + '</ws:aspects>';
+				}
+		 }
+
+
+                //Propiedas
+                requestString += generatePropertiesReqElement(functionReq.metadataCollection);
+			requestString = requestString + '</ws:node>';
+
+		} else {
+			errorMessage = 'Petición mal formada. No se han mandado alguno de los parametros obligatorios para la creación de la Funcion.';
+			codigo="COD_010";
+		}
+
+	} else {
+
+		errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados en funcion.';
+	}
+	if (requestOk) {
+		mc.setProperty('reqService', requestString);
+	} else {
+		mc.setProperty('reqServiceErrorMessage', errorMessage);
+		mc.setProperty('codigoErrorMessage', codigo);
+	}
+
+	mc.setProperty('reqServiceOk', requestOk);
+}
 function buildCreateClassificationRootRequest(mc) {
 	var codigo="COD_099";
 	var requestOk = false;
