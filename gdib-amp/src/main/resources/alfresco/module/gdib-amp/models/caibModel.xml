@@ -54,7 +54,6 @@
 	   	<type name="gdib:funcion_rm">
 			<title>Funcion</title>
 			<parent>rma:recordCategory</parent>
-           </properties>
         </type>
 
 		<type name="eni:expediente">
