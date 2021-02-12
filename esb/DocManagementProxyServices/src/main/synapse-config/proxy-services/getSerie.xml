@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getClassificationRoot"
+       transports="http,https"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target faultSequence="conf:repository/esb/registry/sequences/ExceptionSequence">
+      <inSequence>
+         <property name="FORCE_ERROR_ON_SOAP_FAULT"
+                   value="true"
+                   scope="default"
+                   type="STRING"/>
+         <property name="FORCE_SC_ACCEPTED"
+                   value="false"
+                   scope="axis2"
+                   type="STRING"/>
+         <property name="csgdOperation"
+                   value="getClassificationRoot"
+                   scope="default"
+                   type="STRING"/>
+         <property name="typeRestrictions"
+                   value="gdib:cuadro_clasificacion"
+                   scope="default"
+                   type="STRING"/>
+         <log level="full"/>
+         <property name="serviceHeader"
+                   expression="json-eval($.getFunctionRequest.serviceHeader)"
+                   scope="default"
+                   type="STRING"/>
+         <script language="js"
+                 key="conf:/repository/esb/registry/js/serviceHeaderUtils.js"
+                 function="parseServiceHeader"/>
+         <log>
+            <property name="### Cabecera correcta �? ###"
+                      expression="get-property('errorMessage')"/>
+         </log>
+         <log>
+            <property name="### Usuario cabecera Property ###"
+                      expression="get-property('username')"/>
+         </log>
+         <filter source="not(boolean(get-property('serviceHeaderOk')))" regex="true">
+            <then>
+               <property name="HTTP_SC" value="400" scope="axis2" type="STRING"/>
+               <payloadFactory media-type="json">
+                  <format>
+		            		{
+		            			"exception":{
+		            				"code": "COD_099",
+		            				"description": "$1"
+		            			}
+		            		}
+		            	</format>
+                  <args>
+                     <arg evaluator="xml" expression="get-property('errorMessage')"/>
+                  </args>
+               </payloadFactory>
+               <respond description="Enviar excepcion"/>
+            </then>
+            <else/>
+         </filter>
+         <property name="nodeId"
+                   expression="json-eval($.getFunctionRequest.param.id)"
+                   scope="default"
+                   type="STRING"/>
+         <log>
+            <property name="### Identificador de carpeta a recuperar ###"
+                      expression="get-property('nodeId')"/>
+         </log>
+         <filter source="boolean(get-property('nodeId'))" regex="true">
+            <then>
+               <call-template target="conf:/repository/esb/registry/sequences/GetNodeSequence">
+                  <with-param name="nodeId" value="{get-property('nodeId')}"/>
+                  <with-param name="getContent" value="false"/>
+                  <with-param name="serviceHeaderString"
+                              value="{get-property('serviceHeaderString')}"/>
+                  <with-param name="nodeType" value="gdib:cuadro_clasificacion"/>
+               </call-template>
+               <filter xmlns:csgd="urn:es.caib.archivodigital.esb.services:1.0.0"
+                       xpath="$body/csgd:getFileResult/csgd:result/csgd:code[text() != 'COD_000']">
+                  <then>
+                     <property name="exceptionHttpStatusCode"
+                               value="404"
+                               scope="default"
+                               type="STRING"/>
+                     <property name="exceptionCode"
+                               value="COD_001"
+                               scope="default"
+                               type="STRING"/>
+                     <property name="exceptionDesc"
+                               expression="fn:concat('No se ha encontrado el expediente con id  ',get-property('nodeId'),'.')"
+                               scope="default"
+                               type="STRING"/>
+                  </then>
+                  <else/>
+               </filter>
+            </then>
+            <else>
+               <property name="exceptionHttpStatusCode"
+                         value="400"
+                         scope="default"
+                         type="STRING"/>
+               <property name="exceptionCode"
+                         value="COD_099"
+                         scope="default"
+                         type="STRING"/>
+               <property name="exceptionDesc"
+                         value="Petici�n mal formada. No se encontr� el par�metro nodeId."
+                         scope="default"
+                         type="STRING"/>
+            </else>
+         </filter>
+         <filter source="boolean(get-property('exceptionCode'))" regex="false">
+            <then>
+               <property name="HTTP_SC" value="200" scope="axis2" type="STRING"/>
+            </then>
+            <else>
+               <property name="HTTP_SC"
+                         expression="get-property('exceptionHttpStatusCode')"
+                         scope="axis2"
+                         type="STRING"/>
+               <payloadFactory media-type="json">
+                  <format>
+           		{
+           			"exception":{
+           				"code": "$1",
+           				"description": "$2"
+           			}
+           		}
+           	   </format>
+                  <args>
+                     <arg evaluator="xml" expression="get-property('exceptionCode')"/>
+                     <arg evaluator="xml" expression="get-property('exceptionDesc')"/>
+                  </args>
+               </payloadFactory>
+            </else>
+         </filter>
+         <property name="messageType"
+                   value="application/json"
+                   scope="axis2"
+                   type="STRING"/>
+         <respond description="Enviar respuesta"/>
+      </inSequence>
+      <outSequence/>
+   </target>
+   <parameter name="disableSOAP12">true</parameter>
+   <parameter name="disableSOAP11">true</parameter>
+   <description/>
+</proxy>
+                                
