@@ -10,6 +10,9 @@
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
 		<!-- Importa Definiciones del Modelo de Contenido de Alfresco -->
 		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+		<!-- Importa Definiciones del Modelo de Contenido de RM Alfresco -->
+		<import uri="http://www.alfresco.org/model/recordsmanagement/1.0" prefix="rma" />
+		
 	</imports>
 	
 	<namespaces>
@@ -43,6 +46,11 @@
 				<aspect>eemgde:calificable</aspect>
 				<aspect>eemgde:resellable</aspect>
 			</mandatory-aspects>
+		</type>
+			<type name="eemgde:serie_rm">
+			<title>Serie documental</title>
+			<description>Carpeta metadatada que representa una sèrie documental d'un quadre de classificació funcional en el RM</description>	
+			<parent>rma:recordCategory</parent>
 		</type>
 	</types>	
 	

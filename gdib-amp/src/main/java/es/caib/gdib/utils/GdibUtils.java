@@ -2873,4 +2873,89 @@ public class GdibUtils {
 		
 		return result == null ? null : result.get(0);
 	}
+	/**
+	 * Método que ejecuta la búsqueda de series de clasificación a través de su código
+	 * mediante FTS(Full Text Search ) alfresco
+	 * 
+	 * @return List<NodeRef> Lista con el parent ref donde se creará el expediente
+	 * @throws GdibException Wrapper de cualquier excepción para propagar
+	 */
+	NodeRef getSerieRMParentByLucene(String codClasif, QName type) throws GdibException {
+		List<NodeRef> result = null;
+		
+		final SearchParameters params = new SearchParameters();
+		params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+		params.setLanguage(SearchService.LANGUAGE_FTS_ALFRESCO);
+		int queryResultLength = 0;
+		String FTS_QUERY ="=cm\\:name:\"%s\" and ";
+		final StringBuilder query = new StringBuilder(400);
+		if(isType(type,ConstantUtils.TYPE_FUNCION_QNAME))
+		{
+		  query.append("TYPE:eemgde\\\\:funcion_rm");	
+		}
+		else 
+		{
+		  query.append("TYPE:eemgde\\\\:serie_rm");	
+		}
+		
+
+		Formatter formatterDocumento = new Formatter(query);
+		formatterDocumento.format(FTS_QUERY, codClasif).toString();
+
+		query.trimToSize();
+		LOGGER.debug("Query obtaining rm parent : " + query.toString());
+
+		params.setQuery(query.toString());
+
+		params.setMaxItems(2);
+
+		ResultSet resultSet = null;
+		try {
+			resultSet = searchService.query(params);
+			if (resultSet != null && resultSet.length() == 1) {
+				queryResultLength += resultSet.length();
+				result = resultSet.getNodeRefs();
+				LOGGER.debug("Encontrados " + resultSet.length() + " parentsRef por código de clasificación :"+codClasif);
+
+			}
+			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta fts de busqueda de series: "
+					+ queryResultLength + ".");
+		}catch(Exception e){
+			LOGGER.error("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
+			throw new GdibException("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
+			
+		}finally {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
+		
+		// }
+		
+		return result == null ? null : result.get(0);
+	}
+	
+	public void duplicateInRMFromRM(QName type, QName name,NodeRef parentRef) throws GdibException
+	{
+		 		//Si es de tipo cuadro el padre es la raiz del RM
+		if(isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) )
+		{
+			ChildAssociationRef createdChildRef = nodeService.createNode(toNodeRef(ccUtils.getRootRM()),
+                    ContentModel.ASSOC_CONTAINS,
+                    name,
+                    ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME,
+                    null);
+		}
+		else
+		{
+			//Si no localizo el padre y creo el hijo directamente
+			QName auxType = isType(type,ConstantUtils.TYPE_FUNCION_QNAME) ?  ConstantUtils.TYPE_FUNCION_RM_QNAME :  ConstantUtils.TYPE_SERIE_QNAME_RM;
+			ChildAssociationRef createdChildRef = nodeService.createNode(getSerieRMParentByLucene(name.getLocalName(), nodeService.getType(parentRef)),
+                    ContentModel.ASSOC_CONTAINS,
+                    name,
+                    auxType,
+                    null);
+		}
+		
+	}
 }

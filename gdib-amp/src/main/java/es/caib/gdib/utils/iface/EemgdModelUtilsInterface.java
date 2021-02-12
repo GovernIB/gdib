@@ -19,7 +19,9 @@ public interface EemgdModelUtilsInterface {
     
     public static final String TYPE_SERIE = "serie";
     public static final QName TYPE_SERIE_QNAME = QName.createQName(NS_EEMGD, TYPE_SERIE);
-    
+    public static final String TYPE_SERIE_RM = "serie_rm";
+    public static final QName TYPE_SERIE_QNAME_RM = QName.createQName(NS_EEMGD, TYPE_SERIE);
+
     /**
      * Aspects
      */

@@ -9,6 +9,7 @@
 	<imports>
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
 		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+		<import uri="http://www.alfresco.org/model/recordsmanagement/1.0" prefix="rma" />
 	</imports>
 
 	<namespaces>
@@ -45,7 +46,16 @@
 	           	 </property>
            </properties>
         </type>
-
+		<type name="gdib:cuadro_clasificacion_rm">
+	   		<title>Cuadro Clasificacion</title>
+	   		<parent>rma:recordCategory</parent>                          
+	   	</type>
+	   
+	   	<type name="gdib:funcion_rm">
+			<title>Funcion</title>
+			<parent>rma:recordCategory</parent>
+           </properties>
+        </type>
 
 		<type name="eni:expediente">
 			<title>Expediente</title>

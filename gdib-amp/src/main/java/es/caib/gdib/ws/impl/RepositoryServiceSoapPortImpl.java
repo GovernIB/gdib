@@ -130,7 +130,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * */
     @Value("$gdib{gdib.repository.temp.folder.uuid}")
     private String tempFolder;
-    
+    /**root RM*/
+    @Value("$gdib{gdib.repository.classification.table.root.uuid}")
+    private String rootRM;
     
     /**
      * Flag que activa/desactiva diversas comprobaciones en el repositorio.
@@ -333,7 +335,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         // actualizo la propiedad ENI - ID para incluirl el uid
         this.checkCalculateEniId(nodeRef, esbOperation);
 
-        if(!(utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME) || utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) || utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ))
+        if(!(utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME) || 
+        		utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) ||
+        		utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME) ||
+        		utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ||
+        		utils.isType(type, ConstantUtils.TYPE_FUNCION_RM_QNAME) 
+        		))
         {
 	        // obtengo la plantilla del expediente
 	        if(!repositoryDisableCheck.booleanValue()){
@@ -424,6 +431,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     		props.put(ConstantUtils.PROP_NAME, name.getLocalName());
     	long startCreate = System.currentTimeMillis();
         LOGGER.debug("Creating with name = " + name.getLocalName());
+        //Check if is new type duplicate in RM
+        if(utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) || 
+        		utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME) ||
+        		utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ) {
+        	try {
+        		utils.duplicateInRMFromRM(type, name,parentRef);       	
+        	}catch(Exception e)
+        	{
+        		LOGGER.debug("couldnt create RM folder");
+        	}
+        	 	
+        }
+        
         ChildAssociationRef createdChildRef = nodeService.createNode(parentRef,
                 ContentModel.ASSOC_CONTAINS,
                 name,
@@ -2606,6 +2626,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 */
 	public void setAddIntExchangeFilesPropValue(String addIntExchangeFilesPropValue) {
 		this.addIntExchangeFilesPropValue = addIntExchangeFilesPropValue;
+	}
+
+	public void setRootRM(String rootRM) {
+		this.rootRM = rootRM;
 	}
 
 /*

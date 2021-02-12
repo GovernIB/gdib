@@ -9,6 +9,7 @@
 		<property name="models">
 			<list>
 				<value>alfresco/module/gdib-amp/models/caibModel.xml</value>
+				<value>alfresco/module/gdib-amp/models/eemgdeModelv1.xml</value>
 			</list>
 		</property>
 		<property name="labels">

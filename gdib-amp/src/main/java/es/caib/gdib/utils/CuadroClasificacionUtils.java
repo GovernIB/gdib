@@ -1,6 +1,7 @@
 package es.caib.gdib.utils;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,10 @@ import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.service.cmr.repository.StoreRef;
+import org.alfresco.service.cmr.search.ResultSet;
+import org.alfresco.service.cmr.search.SearchParameters;
+import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.lang3.StringUtils;
 
@@ -150,7 +155,15 @@ public class CuadroClasificacionUtils {
 			if(series != null)
 				return series;
 		}
-		return null;
+		/**
+		 * Went out of bucle
+		 * recover series from RM
+		 */
+		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.TYPE_SERIE_QNAME_RM);
+		
+		
+		// }
+
 	}
 
 	/**
@@ -176,6 +189,9 @@ public class CuadroClasificacionUtils {
 
 	public void setRootRM(String rootRM) {
 		this.rootRM = rootRM;
+	}
+	public String getRootRM() {
+		return rootRM;
 	}
 
 	public void setExUtils(ExUtils exUtils) {

@@ -55,6 +55,21 @@ public interface CaibModelUtilsInterface {
     public static final QName PROP_ESTADO_FUNCION_QNAME = QName.createQName(NS_CAIB,PROP_ESTADO_FUNCION);
 
     /**
+     * Type gdib:funcion_rm
+     */
+    public static final String TYPE_FUNCION_RM = "funcion_RM";
+    public static final QName TYPE_FUNCION_RM_QNAME = QName.createQName(NS_CAIB,TYPE_FUNCION);
+
+    /**
+     * Type gdib:cuadro_rm
+     */
+    public static final String TYPE_CUADRO_CLASIFICACION_RM = "cuadro_clasificacion_rm";
+    public static final QName TYPE_CUADRO_CLASIFICACION_RM_QNAME = QName.createQName(NS_CAIB,TYPE_CUADRO_CLASIFICACION);
+
+    
+    
+    
+    /**
      * Type gdib:serie
    
     public static final String TYPE_SERIE_DOCUMENTAL = "serie";
