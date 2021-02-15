@@ -113,7 +113,7 @@ public class CuadroClasificacionUtils {
 			if(series != null)
 				return function;
 		}
-		return null;
+		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.TYPE_FUNCION_RM_QNAME);
 	}
 
 	/**
@@ -136,6 +136,8 @@ public class CuadroClasificacionUtils {
 			if(name.equals(documentarySeries))
 				return node;
 		}
+		//No function by old method
+		
 		return null;
 	}
 

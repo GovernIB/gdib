@@ -2889,13 +2889,17 @@ public class GdibUtils {
 		int queryResultLength = 0;
 		String FTS_QUERY ="=cm\\:name:\"%s\" and ";
 		final StringBuilder query = new StringBuilder(400);
-		if(isType(type,ConstantUtils.TYPE_FUNCION_QNAME))
+		if(isType(type,ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME))
 		{
-		  query.append("TYPE:eemgde\\\\:funcion_rm");	
+		  query.append("TYPE:eemgde\\:cuadro_clasificacion_rm");	
+		}
+		else if(isType(type,ConstantUtils.TYPE_FUNCION_RM_QNAME) )
+		{
+			query.append("TYPE:eemgde\\:funcion_rm");	
 		}
 		else 
 		{
-		  query.append("TYPE:eemgde\\\\:serie_rm");	
+		  query.append("TYPE:eemgde\\:serie_rm");	
 		}
 		
 
@@ -2950,7 +2954,13 @@ public class GdibUtils {
 		{
 			//Si no localizo el padre y creo el hijo directamente
 			QName auxType = isType(type,ConstantUtils.TYPE_FUNCION_QNAME) ?  ConstantUtils.TYPE_FUNCION_RM_QNAME :  ConstantUtils.TYPE_SERIE_QNAME_RM;
-			ChildAssociationRef createdChildRef = nodeService.createNode(getSerieRMParentByLucene(name.getLocalName(), nodeService.getType(parentRef)),
+			QName parentType = nodeService.getType(parentRef);
+			String parentName = (String) nodeService.getProperty(parentRef, ConstantUtils.PROP_NAME);
+			NodeRef parentRMRef = getSerieRMParentByLucene(parentName, nodeService.getType(parentRef)); 
+			if(parentRMRef == null)
+				throw exUtils.documentarySeriesNoDocumentedException(name.getLocalName());
+				
+			ChildAssociationRef createdChildRef = nodeService.createNode(parentRMRef,
                     ContentModel.ASSOC_CONTAINS,
                     name,
                     auxType,
