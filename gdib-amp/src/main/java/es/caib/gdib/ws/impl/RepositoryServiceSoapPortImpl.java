@@ -439,7 +439,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		utils.duplicateInRMFromRM(type, name,parentRef);       	
         	}catch(Exception e)
         	{
-        		LOGGER.debug("couldnt create RM folder");
+        		LOGGER.debug("couldnt create RM folder:"+e.getLocalizedMessage());
         	}
         	 	
         }

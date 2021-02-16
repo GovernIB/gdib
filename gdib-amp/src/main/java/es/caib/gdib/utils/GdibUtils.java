@@ -2941,7 +2941,7 @@ public class GdibUtils {
 	
 	public void duplicateInRMFromRM(QName type, QName name,NodeRef parentRef) throws GdibException
 	{
-		 		//Si es de tipo cuadro el padre es la raiz del RM
+		 //Si es de tipo cuadro el padre es la raiz del RM
 		if(isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) )
 		{
 			ChildAssociationRef createdChildRef = nodeService.createNode(toNodeRef(ccUtils.getRootRM()),
@@ -2957,8 +2957,12 @@ public class GdibUtils {
 			QName parentType = nodeService.getType(parentRef);
 			String parentName = (String) nodeService.getProperty(parentRef, ConstantUtils.PROP_NAME);
 			NodeRef parentRMRef = getSerieRMParentByLucene(parentName, nodeService.getType(parentRef)); 
-			if(parentRMRef == null)
+			
+			if(parentRMRef == null) {
+				LOGGER.debug("Parent not found");	
 				throw exUtils.documentarySeriesNoDocumentedException(name.getLocalName());
+			}
+				
 				
 			ChildAssociationRef createdChildRef = nodeService.createNode(parentRMRef,
                     ContentModel.ASSOC_CONTAINS,
