@@ -56,16 +56,14 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            String ret = txnHelper.doInTransaction(callback);
            LOGGER.info("createNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
-        }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-                LOGGER.error("Se ha producido la excepcion: "+((GdibException)e.getCause()).getMessage());
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }finally{
-        	
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
 	}
 
@@ -85,13 +83,14 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            Node ret = txnHelper.doInTransaction(callback);
            LOGGER.info("createAndGetNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
-        }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
 	}
 
@@ -111,15 +110,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
            LOGGER.info("modifyNode securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public Node getNode(final String nodeId, final boolean withContent, final boolean withSign, final GdibHeader gdibHeader)
@@ -138,15 +138,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            Node ret = txnHelper.doInTransaction(callback);
            LOGGER.info("getNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }				
-	}
+    }
 
 	@Override
 	public void moveNode(final String nodeId, final String newParent, final GdibHeader gdibHeader) throws GdibException {
@@ -163,16 +164,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("moveNode("+nodeId+" => "+newParent+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("moveNode("+nodeId+" => "+newParent+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }				
-	}
+    }
 
 	@Override
 	public SearchResults searchNode(final String luceneSearch, final int pagina, final GdibHeader gdibHeader) throws GdibException {
@@ -190,20 +192,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            SearchResults res = txnHelper.doInTransaction(callback);
            LOGGER.info("searchNode securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return res;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-            LOGGER.error("Se ha producido un error: "+e.getMessage()+"Tipo de la excepcion: "+e.getClass()+", " +
-                    "causa: "+e.getCause());
-
-            LOGGER.error("Gdibexception?: "+(e.getCause() instanceof GdibException));
-
-            if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }
-	}
+    }
 
 	@Override
 	public void removeNode(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -220,16 +218,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("removeNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("removeNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public String linkNode(final String parentId, final String nodeId, final String linkMode, final GdibHeader gdibHeader)
@@ -248,15 +247,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            String ret = txnHelper.doInTransaction(callback);
            LOGGER.info("linkNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }			
-	}
+    }
 
 	@Override
 	public DataHandler foliateNode(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -274,15 +274,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            DataHandler ret = txnHelper.doInTransaction(callback);
            LOGGER.info("foliateNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public DataHandler exportNode(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -300,15 +301,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            DataHandler ret = txnHelper.doInTransaction(callback);
            LOGGER.info("exportNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }
-	}
+    }
 
 	@Override
 	public List<NodeVersion> getNodeVersionList(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -326,15 +328,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            List<NodeVersion> ret = txnHelper.doInTransaction(callback);
            LOGGER.info("getNodeVersionList("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public void authorizeNode(final List<String> nodeIds, final List<String> authorities, final String permission, final GdibHeader gdibHeader)
@@ -352,16 +355,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("authorizeNode("+nodeIds.toString()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("authorizeNode("+nodeIds.toString()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public void removeAuthority(final List<String> nodeIds, final List<String> authorities, final GdibHeader gdibHeader)
@@ -379,16 +383,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("removeAuthority("+nodeIds.toString()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("removeAuthority("+nodeIds.toString()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }				
-	}
+    }
 
 	@Override
 	public void lockNode(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -405,16 +410,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("lockNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("lockNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public void unlockNode(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -431,16 +437,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("unlockNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("unlockNode("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public String getTicket(GdibHeader gdibHeader) throws GdibException {
@@ -467,15 +474,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            MigrationInfo ret = txnHelper.doInTransaction(callback);
            LOGGER.info("getMigrationInfo("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public String getCSV(GdibHeader gdibHeader) throws GdibException {
@@ -502,15 +510,16 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            String ret = txnHelper.doInTransaction(callback);
            LOGGER.info("openFile("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 
 	@Override
 	public void closeFile(final String nodeId, final GdibHeader gdibHeader) throws GdibException {
@@ -527,17 +536,17 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         {
            doAuthentication(gdibHeader);
            txnHelper.doInTransaction(callback);
-           LOGGER.info("closeFile("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");           
+           LOGGER.info("closeFile("+nodeId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
         }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        	    LOGGER.error("Se ha producido la excepcion: "+((GdibException)e.getCause()).getMessage());
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }		
-	}
+    }
 	
 	public RepositoryServiceSoapPortImpl getBean(){
 		//return (RepositoryServiceSoapPortImpl) context.getBean("RepositoryServiceSoapPortImpl");
