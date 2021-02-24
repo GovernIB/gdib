@@ -113,7 +113,7 @@ public class CuadroClasificacionUtils {
 			if(series != null)
 				return function;
 		}
-		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.TYPE_FUNCION_RM_QNAME);
+		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.FUNCION_RM);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class CuadroClasificacionUtils {
 		 * Went out of bucle
 		 * recover series from RM
 		 */
-		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.TYPE_SERIE_QNAME_RM);
+		return utils.getSerieRMParentByLucene(documentarySeries,ConstantUtils.SERIE_RM);
 		
 		
 		// }

@@ -40,9 +40,11 @@ public class ConstantUtils implements CaibModelUtilsInterface, EniModelUtilsInte
 
 	public static final String PERMISSION_READ = "read";
 	public static final String PERMISSION_WRITE = "write";
+	public static final String PERMISSION_CONTRIBUTOR = "contributor";
 	public static final List<String> PERMISSIONS = Arrays.asList(
 			PERMISSION_READ,
-			PERMISSION_WRITE);
+			PERMISSION_WRITE,
+			PERMISSION_CONTRIBUTOR);
 
 	public static final String REPO_MIGR = "Migracion";
 
@@ -197,4 +199,10 @@ public class ConstantUtils implements CaibModelUtilsInterface, EniModelUtilsInte
 	public static final String METADATA_ID_ATT_PREFIX = "MTD_";
 
 	public static final String SIGNATURE_ID_ATT_PREFIX = "FIR_";
+	
+	public static final String SERIE_RM= "serie_rm";
+	
+	public static final String CUADRO_RM= "cuadro_clasificacion_rm";
+	
+	public static final String FUNCION_RM= "funcion_rm";
 }

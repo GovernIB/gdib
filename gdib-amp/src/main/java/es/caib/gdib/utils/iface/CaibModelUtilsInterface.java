@@ -57,14 +57,14 @@ public interface CaibModelUtilsInterface {
     /**
      * Type gdib:funcion_rm
      */
-    public static final String TYPE_FUNCION_RM = "funcion_RM";
-    public static final QName TYPE_FUNCION_RM_QNAME = QName.createQName(NS_CAIB,TYPE_FUNCION);
+    public static final String ASPECT_FUNCION_RM = "funcion_rm_aspect";
+    public static final QName ASPECT_FUNCION_RM_QNAME = QName.createQName(NS_CAIB,ASPECT_FUNCION_RM);
 
     /**
      * Type gdib:cuadro_rm
      */
-    public static final String TYPE_CUADRO_CLASIFICACION_RM = "cuadro_clasificacion_rm";
-    public static final QName TYPE_CUADRO_CLASIFICACION_RM_QNAME = QName.createQName(NS_CAIB,TYPE_CUADRO_CLASIFICACION);
+    public static final String ASPECT_CUADRO_CLASIFICACION_RM = "cuadro_clasificacion_rm_aspect";
+    public static final QName ASPECT_CUADRO_CLASIFICACION_RM_QNAME = QName.createQName(NS_CAIB,ASPECT_CUADRO_CLASIFICACION_RM);
 
     
     

@@ -9,7 +9,6 @@
 	<imports>
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
 		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
-		<import uri="http://www.alfresco.org/model/recordsmanagement/1.0" prefix="rma" />
 	</imports>
 
 	<namespaces>
@@ -46,15 +45,7 @@
 	           	 </property>
            </properties>
         </type>
-		<type name="gdib:cuadro_clasificacion_rm">
-	   		<title>Cuadro Clasificacion</title>
-	   		<parent>rma:recordCategory</parent>                          
-	   	</type>
-	   
-	   	<type name="gdib:funcion_rm">
-			<title>Funcion</title>
-			<parent>rma:recordCategory</parent>
-        </type>
+	
 
 		<type name="eni:expediente">
 			<title>Expediente</title>
@@ -1226,11 +1217,18 @@
 		</aspect>
 
 
-<!-- Expedientes Enlazados -->
+<!-- Metadatos Integración -->
 		<aspect name="gdib:obsoleto">
-			<title>Aspecto una serie o función posee el estado obsoletoo</title>
+			<title>Aspecto una serie o función posee el estado obsoleto</title>
 		</aspect>
-		
+				<!-- Documentos históricos -->
+		<aspect name="gdib:cuadro_clasificacion_rm">
+			<title>Aspecto para indicar que es un cuadro en el RM</title>
+		</aspect>
+	   
+	   	<aspect name="gdib:funcion_rm">
+			<title>Aspecto para indicar que es una Funcion en el RM</title>
+        </aspect>
 	</aspects>
 
 </model>

@@ -337,9 +337,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
         if(!(utils.isType(type, ConstantUtils.TYPE_SERIE_QNAME) || 
         		utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) ||
-        		utils.isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME) ||
-        		utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ||
-        		utils.isType(type, ConstantUtils.TYPE_FUNCION_RM_QNAME) 
+        		utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME)
         		))
         {
 	        // obtengo la plantilla del expediente
@@ -437,9 +435,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         		utils.isType(type, ConstantUtils.TYPE_FUNCION_QNAME) ) {
         	try {
         		utils.duplicateInRMFromRM(type, name,parentRef);       	
-        	}catch(Exception e)
+        	}catch(GdibException e)
         	{
         		LOGGER.debug("couldnt create RM folder:"+e.getLocalizedMessage());
+        		LOGGER.debug("Cause :"+e.getCause());
+        		throw e;
         	}
         	 	
         }
@@ -570,7 +570,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
     /**
      * Desacoplamiento de authorizeNode
-     * Realiza la asignaci�n/desasignaci�n de permisos a unas autoridades en concreto para unos nodos de alfresco sin comprobaciones previas.
+     * Realiza la asignación/desasignación de permisos a unas autoridades en concreto para unos nodos de alfresco sin comprobaciones previas.
      *
      * @param nodeRefs Lista de nodos que se pretenden modificar sus ACLs
      * @param authorities Lista de autoridades que van a modificar los permisos de los nodos.
@@ -601,8 +601,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * */
     private void _internal_authorizeNode(NodeRef nodeRef, String authority, String permission) throws GdibException {
     	// comprobar si la autoridad existe
-    	if(authorityService.authorityExists(authority)){
+    	boolean isSerie = utils.isType(nodeService.getType(nodeRef), ConstantUtils.TYPE_SERIE_QNAME);
+    	if(!authorityService.authorityExists(authority) )
+    		throw exUtils.authorityNotExitsException(authority);
 
+    	if(!isSerie){
+    		
     		switch (permission) {
 			case ConstantUtils.PERMISSION_READ:
 				this._internal_authorizeNode(nodeRef, authority, CaibServicePermissions.READ.getPermissions());
@@ -614,7 +618,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				break;
 			}
     	}else{
-    		throw exUtils.authorityNotExitsException(authority);
+			permissionService.setPermission(nodeRef, authority, PermissionService.CONTRIBUTOR, true);
     	}
     }
 
@@ -1819,6 +1823,13 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	    	utils.checkRestriction(nodeRefs,gdibHeader);
 			for(NodeRef node:nodeRefs){
 				// compruebo si tengo permisos sobre el nodo
+				if(utils.isType(nodeService.getType(node), ConstantUtils.TYPE_SERIE_QNAME)){
+					for(String authority:authorities){
+						this.utils.checkAuthorityExists(authority);
+						permissionService.setPermission(node, authority, PermissionService.CONTRIBUTOR, false);
+					}
+					continue;
+				}
 				utils.hasPermission(node, CaibServicePermissions.WRITE);
 				utils.inDMPath(node);
 				// compruebo si el nodo esta bloqueado
@@ -1831,6 +1842,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						permissionService.setPermission(node, authority, permission, false);
 					}
 				}
+				
 			}
 			if ( nodeIds.size() > 1 ){
 	        	LOGGER.info("Permisos ["+nodeIds.get(0)+".."+nodeIds.get(nodeIds.size()-1)+"] eliminados en "+(System.currentTimeMillis()-initMill)+"ms.");
@@ -2139,23 +2151,30 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			// compruebo el nodeId
 			NodeRef expedientRef = utils.checkNodeId(nodeId);
 
-			LOGGER.debug("Obteniendo la la clasificaci�n documental del expediente " + nodeId);
+			LOGGER.debug("Obteniendo la la clasificación documental del expediente " + nodeId);
 			// compruebo que la seriedocumental este valorada para poder cerrar el expediente
+			//Comprobamos primero si la serie ha sido creada desde Archium:
 			String codClasificacion = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
-	    	String subTypeDoc = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_SUBTIPO_DOC_QNAME);
 
-			SubTypeDocInfo subTypeDocInfo = subTypeDocUtil.getSubTypeDocInfo(codClasificacion, subTypeDoc);
+			if(!utils.existsSerie(codClasificacion))
+			{
 
-			if(subTypeDocInfo == null){
-				if ( codClasificacion != null )
-				{
-					throw exUtils.documentarySeriesNoDocumentedException(codClasificacion);
-				}else{
-					throw exUtils.documentarySeriesNoDocumentedException("");
+		    	String subTypeDoc = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_SUBTIPO_DOC_QNAME);
+
+				SubTypeDocInfo subTypeDocInfo = subTypeDocUtil.getSubTypeDocInfo(codClasificacion, subTypeDoc);
+
+				if(subTypeDocInfo == null){
+					if ( codClasificacion != null )
+					{
+						throw exUtils.documentarySeriesNoDocumentedException(codClasificacion);
+					}else{
+						throw exUtils.documentarySeriesNoDocumentedException("");
+					}
 				}
+				LOGGER.debug("Clasificación documental del expediente " + nodeId + ": " +
+						subTypeDocInfo.getDocumentarySeries() + "/" + subTypeDocInfo.getSubtypeDoc());
+	
 			}
-			LOGGER.debug("Clasificación documental del expediente " + nodeId + ": " +
-					subTypeDocInfo.getDocumentarySeries() + "/" + subTypeDocInfo.getSubtypeDoc());
 			LOGGER.debug("Comprobando permisos sobre el expediente y su contenido...");
 
 			// compruebo permisos de escritura sobre el nodo
@@ -2212,9 +2231,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 		//Se procede a modificar las propiedades de archivo de los nodos hijos
 		Map<QName, Serializable> properties = new HashMap<QName, Serializable>();
-		// Se modifica el estado de tramitaci�n del expediente, asign�ndole el valor â€œCerradoâ€�.
+		// Se modifica el estado de tramitación del expediente, asignándole el valor Cerrado.
 		properties.put(ConstantUtils.PROP_ESTADO_EXP_QNAME, ConstantUtils.ESTADO_EXP_E02);
-		// Se modifica el estado de archivo del expediente, asign�ndole el valor â€œpreingresoâ€�.
+		// Se modifica el estado de archivo del expediente, asignádole el valor preingreso.
 		
 		if ( preingreso ){
 			properties.put(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, ConstantUtils.ESTADO_ARCHIVO_PREINGRESO);
@@ -2228,7 +2247,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		LOGGER.info("Se procede a establecer propiedades de archivado (interoperables) al expediente. Propiedades: " + properties);
 
 		setFileContentArchivedMetadataCollection(expedientRef,properties,true);
-		LOGGER.info("Se procede a generar los ñindices del expediente, interno y de intercambio.");
+		LOGGER.info("Se procede a generar los indices del expediente, interno y de intercambio.");
 		// Se crean los indices interno y de intercambio del expediente
 		String eniId = (String) nodeService.getProperty(expedientRef, ConstantUtils.PROP_ID_QNAME);
 		String dateString = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
@@ -2351,7 +2370,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
                                          if(!CollectionUtils.isEmpty(childNodes)){
                                                  Map<QName, Serializable> exchangeFilesproperties = new HashMap<QName, Serializable>(properties);
                                                  exchangeFilesproperties.remove(ConstantUtils.PROP_ESTADO_EXP_QNAME);
-                                                 //TODO (PAOT-16/12): Tengo dudas de si tambiÃ©n elimar el metadato fin expediente, pero es requerido para el proceso de expurgo
+                                                 //TODO (PAOT-16/12): Tengo dudas de si también elimar el metadato fin expediente, pero es requerido para el proceso de expurgo
                                                  for(Iterator<ChildAssociationRef> it = childNodes.iterator();it.hasNext();){
                                                          ChildAssociationRef childAssociationRef = it.next();
                                                          NodeRef childNodeRef = childAssociationRef.getChildRef();

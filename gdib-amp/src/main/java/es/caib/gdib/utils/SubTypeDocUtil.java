@@ -349,7 +349,7 @@ public class SubTypeDocUtil {
 				throw  new GdibException("La conexion a la base de datos se ha generado nula.");
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | GdibException e) {
 			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
 			throw  new GdibException("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
 		} finally {

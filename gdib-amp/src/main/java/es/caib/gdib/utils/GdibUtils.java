@@ -28,6 +28,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.alfresco.model.ContentModel;
+import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.service.cmr.dictionary.AspectDefinition;
@@ -2880,32 +2881,146 @@ public class GdibUtils {
 	 * @return List<NodeRef> Lista con el parent ref donde se creará el expediente
 	 * @throws GdibException Wrapper de cualquier excepción para propagar
 	 */
-	NodeRef getSerieRMParentByLucene(String codClasif, QName type) throws GdibException {
+	NodeRef getSerieRMParentByLucene(String codClasif,String type) throws GdibException {
 		List<NodeRef> result = null;
 		
 		final SearchParameters params = new SearchParameters();
 		params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
 		params.setLanguage(SearchService.LANGUAGE_FTS_ALFRESCO);
 		int queryResultLength = 0;
-		String FTS_QUERY ="=cm\\:name:\"%s\" and ";
+		String FTS_QUERY ="=cm\\:name:\"%s\"  and ASPECT:";
+				
 		final StringBuilder query = new StringBuilder(400);
-		if(isType(type,ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME))
-		{
-		  query.append("TYPE:eemgde\\:cuadro_clasificacion_rm");	
-		}
-		else if(isType(type,ConstantUtils.TYPE_FUNCION_RM_QNAME) )
-		{
-			query.append("TYPE:eemgde\\:funcion_rm");	
-		}
-		else 
-		{
-		  query.append("TYPE:eemgde\\:serie_rm");	
-		}
 		
 
 		Formatter formatterDocumento = new Formatter(query);
 		formatterDocumento.format(FTS_QUERY, codClasif).toString();
+		
+		if(ConstantUtils.SERIE_RM.equals(type))
+		{
+			query.append("eemgde\\:"+ConstantUtils.SERIE_RM+"_aspect");
+		}
+		else
+		{
+			query.append("gdib\\:"+type+"_aspect");
+		}
+		
+		query.trimToSize();
+		LOGGER.debug("Query obtaining rm parent : " + query.toString());
 
+		params.setQuery(query.toString());
+
+		params.setMaxItems(2);
+
+		ResultSet resultSet = null;
+		try {
+			resultSet = searchService.query(params);
+			if (resultSet != null && resultSet.length() >= 1 ) {
+				queryResultLength += resultSet.length();
+				result = resultSet.getNodeRefs();
+				LOGGER.debug("Encontrados " + resultSet.length() + " parentsRef por código de clasificación :"+codClasif);
+
+			}else {
+				throw exUtils.documentarySeriesNoDocumentedException(codClasif);	
+			}
+			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta fts de busqueda de series: "
+					+ queryResultLength + ".");
+			
+		}catch(Exception e){
+			LOGGER.error("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
+			throw new GdibException("Ocurrio un error haciendo query de busqueda de series :"+query.toString(),e);
+			
+		}finally {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
+				
+		return result == null ? null : result.get(0);
+	}
+	
+	public void duplicateInRMFromRM(QName type, QName name,NodeRef parentRef) throws GdibException
+	{
+		 //Si es de tipo cuadro el padre es la raiz del RM
+		Map<QName,Serializable> props = new HashMap<>();
+		props.put(ConstantUtils.PROP_NAME, name.getLocalName());
+		if(isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) )
+		{
+			NodeRef parentRMRef = toNodeRef(ccUtils.getRootRM());
+			LOGGER.debug("Creating "+ConstantUtils.ASPECT_CUADRO_CLASIFICACION_RM_QNAME+ " with name "+name + " at "+parentRMRef.getId());
+			ChildAssociationRef createdChildRef = nodeService.createNode(parentRMRef,
+                    ContentModel.ASSOC_CONTAINS,
+                    name,
+                    RecordsManagementModel.TYPE_RECORD_CATEGORY,
+                    props);
+            nodeService.addAspect(createdChildRef.getChildRef(), ConstantUtils.ASPECT_CUADRO_CLASIFICACION_RM_QNAME, null);
+
+		}
+		else
+		{
+			String parentRMAspectString;
+			QName auxAspect; //Determinar si crearemos funcion o serie para anyadirle el aspecto
+			QName parentType = nodeService.getType(parentRef); // Lo necesitamos por que a esta funcion recupera el parentRef del elemento en el DM
+			String parentName = (String) nodeService.getProperty(parentRef, ConstantUtils.PROP_NAME);
+			
+			//Si no localizo el padre y creo el hijo directamente
+			if(isType(type,ConstantUtils.TYPE_FUNCION_QNAME) )
+			{
+				LOGGER.debug(type+" is  equals to "+ConstantUtils.TYPE_FUNCION_QNAME.getLocalName());
+				if(isType(parentType, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME))
+				{
+					parentRMAspectString = ConstantUtils.CUADRO_RM ;
+				}
+				else
+				{
+					
+					parentRMAspectString = ConstantUtils.FUNCION_RM ;	
+				}
+				
+				auxAspect =   ConstantUtils.ASPECT_FUNCION_RM_QNAME ;
+			}
+			else
+			{
+				parentRMAspectString = ConstantUtils.FUNCION_RM ;
+				auxAspect =   ConstantUtils.ASPECT_SERIE_QNAME_RM ;
+			}
+	
+			NodeRef parentRMRef = getSerieRMParentByLucene(parentName, parentRMAspectString); 
+			LOGGER.debug("Creating "+auxAspect +" and his ParentRef is " + parentRef.getId());
+			if(parentRMRef == null) {
+				LOGGER.debug("Parent not found");	
+				throw exUtils.documentarySeriesNoDocumentedException(name.getLocalName());
+			}
+				
+				
+			ChildAssociationRef createdChildRef = nodeService.createNode(parentRMRef,
+                    ContentModel.ASSOC_CONTAINS,
+                    name,
+                    RecordsManagementModel.TYPE_RECORD_CATEGORY,
+                    props);
+            nodeService.addAspect(createdChildRef.getChildRef(), auxAspect, null);
+
+		}
+		
+	}
+	public boolean existsSerie(String codClasificaion) 
+	{
+	List<NodeRef> result = null;
+		
+		final SearchParameters params = new SearchParameters();
+		params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+		params.setLanguage(SearchService.LANGUAGE_FTS_ALFRESCO);
+		int queryResultLength = 0;
+		String FTS_QUERY ="=eemgde\\:codigo_clasificacion:\"%s\"  and TYPE:eemgde\\:serie";
+				
+		final StringBuilder query = new StringBuilder(400);
+		
+
+		Formatter formatterDocumento = new Formatter(query);
+		formatterDocumento.format(FTS_QUERY, codClasificaion).toString();
+		
+		
+		
 		query.trimToSize();
 		LOGGER.debug("Query obtaining rm parent : " + query.toString());
 
@@ -2919,57 +3034,23 @@ public class GdibUtils {
 			if (resultSet != null && resultSet.length() == 1) {
 				queryResultLength += resultSet.length();
 				result = resultSet.getNodeRefs();
-				LOGGER.debug("Encontrados " + resultSet.length() + " parentsRef por código de clasificación :"+codClasif);
+				LOGGER.debug("Encontrados " + resultSet.length() + " parentsRef por código de clasificación :"+codClasificaion);
 
 			}
 			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta fts de busqueda de series: "
 					+ queryResultLength + ".");
 		}catch(Exception e){
 			LOGGER.error("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
-			throw new GdibException("Ocurrio un error haciendo query de busqueda de series :"+query.toString());
-			
+			return false;			
 		}finally {
 			if (resultSet != null) {
 				resultSet.close();
 			}
 		}
 		
-		// }
 		
-		return result == null ? null : result.get(0);
+		return result == null ? false : true;
+		
 	}
 	
-	public void duplicateInRMFromRM(QName type, QName name,NodeRef parentRef) throws GdibException
-	{
-		 //Si es de tipo cuadro el padre es la raiz del RM
-		if(isType(type, ConstantUtils.TYPE_CUADRO_CLASIFICACION_QNAME) )
-		{
-			ChildAssociationRef createdChildRef = nodeService.createNode(toNodeRef(ccUtils.getRootRM()),
-                    ContentModel.ASSOC_CONTAINS,
-                    name,
-                    ConstantUtils.TYPE_CUADRO_CLASIFICACION_RM_QNAME,
-                    null);
-		}
-		else
-		{
-			//Si no localizo el padre y creo el hijo directamente
-			QName auxType = isType(type,ConstantUtils.TYPE_FUNCION_QNAME) ?  ConstantUtils.TYPE_FUNCION_RM_QNAME :  ConstantUtils.TYPE_SERIE_QNAME_RM;
-			QName parentType = nodeService.getType(parentRef);
-			String parentName = (String) nodeService.getProperty(parentRef, ConstantUtils.PROP_NAME);
-			NodeRef parentRMRef = getSerieRMParentByLucene(parentName, nodeService.getType(parentRef)); 
-			
-			if(parentRMRef == null) {
-				LOGGER.debug("Parent not found");	
-				throw exUtils.documentarySeriesNoDocumentedException(name.getLocalName());
-			}
-				
-				
-			ChildAssociationRef createdChildRef = nodeService.createNode(parentRMRef,
-                    ContentModel.ASSOC_CONTAINS,
-                    name,
-                    auxType,
-                    null);
-		}
-		
-	}
 }
