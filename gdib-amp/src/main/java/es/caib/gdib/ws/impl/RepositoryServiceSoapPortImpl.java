@@ -1201,12 +1201,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						//Subexpediente
 						LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
 						checkDocClassification(node,parentRef);
-					} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
-						if(parentId != null && !parentId.isEmpty()){
-							//Subexpediente
-							LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
-							checkDocClassification(node,parentRef);
-						}
+					}
 					}
 					LOGGER.debug("Última comprobación integridad del nodo.");
 					utils.checkNodeIntegrity(node);
@@ -1235,6 +1230,105 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         return nodeRef.getId();
     }
 
+	/**
+	 * Metodo para el upgrade de la firma, se utiliza desde el job de UpgradeSignature, contiene la logica encargada del
+	 * upgradeSignature que antes se encontraba en el checkDocumentSignature
+	 *
+ 	 * @param errors
+	 * @param success
+	 * @param entry
+	 */
+	public void upgradeDocumentSignature(List<UpgradeSignatureJobEntity> errors, List<UpgradeSignatureJobEntity> success, UpgradeSignatureJobEntity entry) {
+		LOGGER.debug("Se procede a upgradear la firma del documento [" + entry.getId() + "]");
+		// Asignamos los valores recuperados de base de datos
+		SignatureFormat minCustodySignatureFormat = SignatureFormat.getById(entry.getIdMinCustodySignature());
+		EemgdeSignatureProfile eniSignatureProfile = EemgdeSignatureProfile.getById(entry.getIdEniSignatureNumber());
+		Boolean implicitSignature = entry.getImplicitSignature();
+
+		Node node = null;
+		byte[] signature = null;
+
+		try {
+			// recuperamos el nodo y la firma
+			NodeRef nodeRef = utils.checkNodeId(entry.getId());
+			node = _internal_getNode(nodeRef, false, false);
+			if (node == null) {
+				if (signature == null) {
+					LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
+							"No se ha podido recuperar el nodo");
+					entry.setError("No se ha podido recuperar el nodo");
+					entry.setTried(entry.getTried() + 1);
+					errors.add(entry);
+					return;
+				}
+			}
+			// En funcion del tipo de firma, esta se encuentra en el contenido del documento, o tiene un dettached que es la firma
+			if (implicitSignature) {
+				//Firma electronica implicita (TF02, TF03, TF05 y TF06)
+				signature = utils.getByteArrayFromHandler(utils.getNodeContent(node));
+			} else {
+				//Firma electronica explicita (dettached)
+				signature = utils.getByteArrayFromHandler(utils.getNodeSign(node));
+			}
+			LOGGER.debug("Datos recuperados de base de datos setteados");
+			if (signature == null) {
+				LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
+						"No se ha podido recuperar el contenido de la firma");
+				entry.setError("No se ha podido recuperar el contenido de la firma");
+				entry.setTried(entry.getTried() + 1);
+				errors.add(entry);
+				return;
+			} else {
+				LOGGER.debug("Firma recuperada");
+			}
+			// ******************* CODIGO QUE SE TRASLADA *******************************************
+			LOGGER.debug("Formato de firma inferior al manimo exigido para custodia, se procede a evolucionar la firma al formato: " +
+					minCustodySignatureFormat.getName() + " (Perfil de firma: " + eniSignatureProfile.getName() + ").");
+			LOGGER.debug("Preparando invocacion a plataforma @firma (UpgradeFirma)...");
+			signature = signatureService.upgradeSignature(signature, minCustodySignatureFormat);
+			if (signature == null) {
+				LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
+						"El valor devuelto por el servicio de firma es nulo");
+				entry.setError("El valor devuelto por el servicio de firma es nulo");
+				entry.setTried(entry.getTried() + 1);
+				errors.add(entry);
+				return;
+			}
+			LOGGER.debug("Modificando firma electronica del documento " + node.getId() + "....");
+			DataHandler signatureDataHandler = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(signature)));
+			//Se actualiza la informacion del nodo y la firma electronica
+			if (implicitSignature) {
+				if (node.getContent() != null) {
+					node.getContent().setData(signatureDataHandler);
+				} else { // si el contenido no esta en el nodo es porque no se pasa como parametro pero existe anteriormente
+					Content contenido = utils.getContent(utils.idToNodeRef(node.getId()));
+					contenido.setData(signatureDataHandler);
+					node.setContent(contenido);
+				}
+				node.setSign(null);
+			} else {
+				node.setSign(signatureDataHandler);
+			}
+			// ******************* FIN CODIGO TRASLADADO *******************************************
+			// Actualizamos el contenido de la firma
+			LOGGER.debug("Proceso de upgradeo finalizado, procedemos a actualizar el contenido de la firma");
+			if (implicitSignature) {
+				//actualizar contenido
+				utils.setDataHandler(nodeRef, ContentModel.PROP_CONTENT, node.getContent().getData(), node.getContent().getMimetype());
+			} else {
+				//actualizar firma
+				utils.setDataHandler(nodeRef, ConstantUtils.PROP_FIRMA_QNAME, node.getSign(), MimetypeMap.MIMETYPE_BINARY);
+			}
+		} catch (Exception exception) {
+			LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " + exception.getMessage(),exception);
+			entry.setError(exception.getMessage());
+			entry.setTried(entry.getTried() + 1);
+			errors.add(entry);
+			return;
+		}
+		success.add(entry);
+		LOGGER.debug("Firma actualizada, proceso de upgradeo finalizado correctamente");
+	}
 
     /**
      * Servicio que crea un nodo en el Repositorio DM de Alfresco.
