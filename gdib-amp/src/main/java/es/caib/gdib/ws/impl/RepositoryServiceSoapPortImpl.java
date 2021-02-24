@@ -22,6 +22,7 @@ import javax.activation.DataHandler;
 import javax.jws.WebService;
 import javax.transaction.UserTransaction;
 
+import es.caib.gdib.utils.*;
 import org.alfresco.model.ContentModel;
 import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
 import org.alfresco.repo.content.MimetypeMap;
@@ -64,16 +65,6 @@ import org.w3c.dom.Document;
 
 import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.rm.utils.ImportUtils;
-import es.caib.gdib.utils.AdministrativeProcessingIndexSignerFactory;
-import es.caib.gdib.utils.CaibServicePermissions;
-import es.caib.gdib.utils.ConstantUtils;
-import es.caib.gdib.utils.ExUtils;
-import es.caib.gdib.utils.GdibUtils;
-import es.caib.gdib.utils.InputStreamDataSource;
-import es.caib.gdib.utils.SignatureUtils;
-import es.caib.gdib.utils.SubTypeDocInfo;
-import es.caib.gdib.utils.SubTypeDocUtil;
-import es.caib.gdib.utils.XmlUtils;
 import es.caib.gdib.utils.iface.EniModelUtilsInterface;
 import es.caib.gdib.ws.common.types.Content;
 import es.caib.gdib.ws.common.types.EemgdeSignatureProfile;
@@ -200,6 +191,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     private ExportUtils exportUtils;
     @Autowired
     private ImportUtils importUtils;
+    @Autowired
+	private AsynchronousDatabaseAccess databaseAccess;
 
     @Autowired
     private IndiceElectronicoManager indiceElectronicoManager;
@@ -424,7 +417,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
  	 * @throws GdibException Si el tipo es incorrecto.
  	 * @throws GdibException Si los aspectos o propiedades son incorrectas
  	 * */
-    private NodeRef _internal_createNode(NodeRef parentRef, QName name, QName type, Map<QName,Serializable> props) throws GdibException {
+	 public NodeRef _internal_createNode(NodeRef parentRef, QName name, QName type, Map<QName, Serializable> props) throws GdibException {
     	if(props.get(ConstantUtils.PROP_NAME) == null)
     		props.put(ConstantUtils.PROP_NAME, name.getLocalName());
     	long startCreate = System.currentTimeMillis();
@@ -647,7 +640,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      * @return DataHandler con la info del indice generado
      * @throws GdibException
      */
-	private DataHandler _internal_foliate(NodeRef nodeRef, String indexType) throws GdibException {
+	public DataHandler _internal_foliate(NodeRef nodeRef, String indexType) throws GdibException {
 		DataHandler dh = null;
 		Object ie;
 
@@ -698,7 +691,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @param node Nodo que contiene la firma.
 	 *
 	 * */
-    private void checkDocumentSignature(Node node) throws GdibException{
+    private UpgradeSignatureJobEntity checkDocumentSignature(Node node) throws GdibException{
+		UpgradeSignatureJobEntity jobEntity = null;
     	Boolean implicitSignature = Boolean.FALSE;
     	byte[] content,signature;
     	EemgdeSignatureProfile eniSignatureProfile;
@@ -795,25 +789,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
         			//Si el formato de firma es inferior, se evoluciona al m�nimo exigido
         			if(minCustodySignatureFormat.isMoreAdvancedSignatureFormat(signatureFormat)){
-        				LOGGER.debug("Formato de firma inferior al mínimo exigido para custodia, se procede a evolucionar la firma al formato: " +
-        						minCustodySignatureFormat.getName() + " (Perfil de firma: " + eniSignatureProfile.getName() + ").");
-        				LOGGER.debug("Preparando invocaci�n a plataforma @firma (UpgradeFirma)...");
-        				signature = signatureService.upgradeSignature(signature, minCustodySignatureFormat);
-        				LOGGER.debug("Modificando firma electr�nica del documento " + nodeIdValue + "....");
-        				DataHandler signatureDataHandler = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(signature)));
-            			//Se actualiza la informaci�n del nodo y la firma electr�nica
-        				if(implicitSignature){
-        					if ( node.getContent() != null ){
-        						node.getContent().setData(signatureDataHandler);
-        					}else{ // si el contenido no esta en el nodo es porque no se pasa como parametro pero existe anteriormente
-        						Content contenido = utils.getContent(utils.idToNodeRef(node.getId()));
-        						contenido.setData(signatureDataHandler);        						
-        						node.setContent(contenido);
-        					}
-        					node.setSign(null);
-        				} else {
-        					node.setSign(signatureDataHandler);
-        				}
+        				LOGGER.debug("Se guardan datos para el job: ");
+        				jobEntity = new UpgradeSignatureJobEntity();
+        				jobEntity.setImplicitSignature(implicitSignature);
+        				jobEntity.setIdMinCustodySignature(minCustodySignatureFormat.getId());
+        				jobEntity.setIdEniSignatureNumber(eniSignatureProfile.getId());
+        				LOGGER.debug("Datos: "+jobEntity.toString());
         			}
 
         			//Se verifica que el perfil de firma informado es el mismo que el retornado por @firma
@@ -852,6 +833,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     	} finally {
     		LOGGER.debug("Finalizada la validaci�n de la firma electr�nica del documento " + node.getId());
     	}
+        return jobEntity;
     }
 
 
@@ -1193,20 +1175,31 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         utils.fillNodeMetadata(node);
         LOGGER.debug("Ultimas comprobaciones.");
         long signMill = 0;
+        UpgradeSignatureJobEntity jobEntity = null;
 		if (!repositoryDisableCheck.booleanValue()) {
 			if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
-				
-					if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
-						LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
-						long beginMill = System.currentTimeMillis();
-						//Se comprueba para todos menos los migrados transformados.
-						if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
-							checkDocumentSignature(node);
+				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+					LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
+					long beginMill = System.currentTimeMillis();
+					//Se comprueba para todos menos los migrados transformados.
+					if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
+						jobEntity = checkDocumentSignature(node);
+						if(jobEntity!=null) {
+							LOGGER.debug("Job entity devuelto: " + jobEntity.toString());
+						}else{
+							LOGGER.debug("Job entity nulo");
 						}
-						// incluir a lista de propiedades la fecha de sellado pues la firma es valida
-						utils.updateResealDate(node);
-						signMill = System.currentTimeMillis() - beginMill;
-						LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
+
+					}
+					// incluir a lista de propiedades la fecha de sellado pues la firma es valida
+					utils.updateResealDate(node);
+					signMill = System.currentTimeMillis() - beginMill;
+					LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
+					checkDocClassification(node,parentRef);
+				} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
+					if(parentId != null && !parentId.isEmpty()){
+						//Subexpediente
+						LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
 						checkDocClassification(node,parentRef);
 					} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
 						if(parentId != null && !parentId.isEmpty()){
@@ -1234,6 +1227,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         NodeRef nodeRef = _internal_createNode(parentRef, name, type, props, aspects, node.getContent(), node.getSign(), utils.getESBOp(gdibHeader));
         long endCreate = System.currentTimeMillis();
         LOGGER.info(nodeRef.getId()+ " creado en " + (endCreate-initMill) +"ms (Checks: "+(checkMill-initMill)+"ms Props: "+(prepareProps-checkMill-signMill)+"ms Firma: "+signMill+"ms Servicio: "+(endCreate-prepareProps)+"ms).");
+        if(jobEntity!=null){
+        	jobEntity.setId(nodeRef.getId());
+        	databaseAccess.saveUpgradeSignature(jobEntity);
+        	LOGGER.debug("Guardada informacion para el upgradeo de la firma en base de datos");
+		}
         return nodeRef.getId();
     }
 
@@ -2187,27 +2185,42 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.info("Se procede a realizar el cierre del expediente " + nodeId);
 				// realizo el cierre del expediente. Pasandolo del DM al RM
 				Date closeDate = new Date();
-				__internal_closeFile(expedientRef,closeDate);
+//				__internal_closeFile(expedientRef,closeDate);
 
-				LOGGER.debug("Se procede a establecer metadatos del RM sobre el expediente cerrado, " + nodeId + ", y su contenido.");
-				// Declaramos los documentos del expediente como "documento de archivo completo"
-				Map<QName, Serializable> props = new HashMap<QName, Serializable>();
+				// En lugar de proceder a cerrar el expediente, persistimos la informacion para ejecutarlo en el job
+				CloseFileJobEntity jobEntity = new CloseFileJobEntity();
+				jobEntity.setCloseDate(closeDate);
+				jobEntity.setId(nodeId);
 
-				props.put(RecordsManagementModel.PROP_DECLARED_AT, closeDate);
-				props.put(RecordsManagementModel.PROP_DECLARED_BY, AuthenticationUtil.getFullyAuthenticatedUser());
-				for (ChildAssociationRef child : nodeService.getChildAssocs(expedientRef)) {
-					NodeRef childRef = child.getChildRef();
-					nodeService.addProperties(childRef, props);
+				try {
+					databaseAccess.saveCloseFile(jobEntity);
+				}catch (GdibException e){
+					throw e;
+				}catch (Exception e){
+					throw new GdibException(e.getMessage());
 				}
-			} catch (ContentIOException | IOException e) {
+				LOGGER.debug("Guardada informacion para el cierre del expediente en base de datos");
+
+//				LOGGER.debug("Se procede a establecer metadatos del RM sobre el expediente cerrado, " + nodeId + ", y su contenido.");
+//				// Declaramos los documentos del expediente como "documento de archivo completo"
+//				Map<QName, Serializable> props = new HashMap<QName, Serializable>();
+//
+//				props.put(RecordsManagementModel.PROP_DECLARED_AT, closeDate);
+//				props.put(RecordsManagementModel.PROP_DECLARED_BY, AuthenticationUtil.getFullyAuthenticatedUser());
+//				for (ChildAssociationRef child : nodeService.getChildAssocs(expedientRef)) {
+//					NodeRef childRef = child.getChildRef();
+//					nodeService.addProperties(childRef, props);
+//				}
+
+			} catch (ContentIOException  e) {
 				throw new GdibException(e.getMessage());
 			}
 
 			LOGGER.info("Se finaliza el cierre del expediente " + nodeId);
 	}
 
-	private void __internal_closeFile(final NodeRef expedientRef, final Date closeDate) throws GdibException, ContentIOException, IOException{
-		RunAsWork<?> raw = new RunAsWork<Object>() {
+	public void __internal_closeFile(final NodeRef expedientRef, final Date closeDate) throws GdibException, ContentIOException, IOException{
+			RunAsWork<?> raw = new RunAsWork<Object>() {
             public Object doWork() throws Exception {
                 //Set permission to this folder for the logged in user
                 _internal_closeFile(expedientRef,closeDate);
@@ -2321,7 +2334,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @param expedientRef Nodo que representa el expediente
 	 * @param properties Propiedades de archivado
 	 */
-	 private void setFileContentArchivedMetadataCollection(NodeRef nodeRef, Map<QName, Serializable> properties, boolean isFileRoot) throws GdibException {
+	 public void setFileContentArchivedMetadataCollection(NodeRef nodeRef, Map<QName, Serializable> properties, boolean isFileRoot) throws GdibException {
          List<ChildAssociationRef> childNodes;
          try{
                  LOGGER.debug("Procesando nodo ({"+nodeRef.getId()+"})");
@@ -2400,7 +2413,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 * @throws InvalidNodeRefException
 	 * @throws GdibException
 	 */
-	private void safeLinkedExpedient(NodeRef expedientRef) throws InvalidNodeRefException, GdibException{
+	public void safeLinkedExpedient(NodeRef expedientRef) throws InvalidNodeRefException, GdibException{
 		List<String> uuidEnlazado = new ArrayList<String>();
 		Queue<ChildAssociationRef> pilaNodos = new ArrayDeque<ChildAssociationRef>();
         pilaNodos.addAll(nodeService.getChildAssocs(expedientRef));
@@ -2430,7 +2443,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         }
 	}
 
-	private void deleteDraftDocuments(NodeRef expedientRef) throws GdibException{
+	public void deleteDraftDocuments(NodeRef expedientRef) throws GdibException{
 		Queue<NodeRef> pilaNodos = new ArrayDeque<NodeRef>();
         pilaNodos.add(expedientRef);
 
@@ -2731,4 +2744,16 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		}
 	}
 */
+
+	public NodeService getNodeService() {
+		return nodeService;
+	}
+
+	public AsynchronousDatabaseAccess getDatabaseAccess() {
+		return databaseAccess;
+	}
+
+	public void setDatabaseAccess(AsynchronousDatabaseAccess databaseAccess) {
+		this.databaseAccess = databaseAccess;
+	}
 }

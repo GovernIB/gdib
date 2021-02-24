@@ -484,7 +484,7 @@ public class UpgradeIndex {
 		docLifeTimeCal.setTime(fechaFinExp);
 		docLifeTimeCal.add(Calendar.DAY_OF_YEAR, Integer.valueOf(diasVigencia));
 		boolean res = docLifeTimeCal.before(jobRunDate);
-		LOGGER.debug("Checking if " + docLifeTimeCal.toString() + " is before than " + jobRunDate.toString());
+		LOGGER.debug("Checking if " + docLifeTimeCal.getTime() + " is before than " + jobRunDate.getTime());
 		return res;
 
 	}

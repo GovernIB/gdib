@@ -28,11 +28,6 @@ public class Documento extends Nodo{
 	 * Tipo mime del contenido del nodo, por ejemplo “text/plain”
 	 */
 	private String mimetype;
-
-	/**
-	 * Tamaño del contenido del documento en bytes
-	 */
-	private long byteSize;
 	/**
 	 * Cadena de caracteres, codificada en base64, que representa el contenido
 	 */
@@ -41,7 +36,6 @@ public class Documento extends Nodo{
 	 * Juego de caracteres del contenido (“UTF-8”).
 	 */
 	private String encoding;
-
 	
 	/**
 	 * Tipo de contenido del nodo.
@@ -52,15 +46,10 @@ public class Documento extends Nodo{
 	 * Lista de firmas del documento
 	 */
 	private List<FirmaDocumento> listaFirmas;
+	
+	
 
-
-	public Long getByteSize() {
-		return byteSize;
-	}
-
-	public void setByteSize(Long byteSize) {
-		this.byteSize = byteSize;
-	}
+	
 
 	public List<FirmaDocumento> getListaFirmas() {
 		return listaFirmas;
@@ -84,7 +73,6 @@ public class Documento extends Nodo{
 	public String getMimetype() {
 		return mimetype;
 	}
-
 	public void setMimetype(String mimetype) {
 		this.mimetype = mimetype;
 	}

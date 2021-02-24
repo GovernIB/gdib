@@ -23,6 +23,7 @@
 		<property name="searchLimit" value="$gdib{gdib.repository.search.limit}"/>
 		<property name="eniIdNoReplace" value="$gdib{gdib.createNode.dispatchDocument.eni_id.noReplace}" />
 		<property name="copyService" ref="CopyService" />
+		<property name="databaseAccess" ref="asynchronousDatabaseAccess" />
 		<property name="addEniExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.eniIndexV10.addExchangeFiles}" />
 		<property name="addIntExchangeFilesPropValue" value="$gdib{gdib.repository.custody.exp.caibIndexV10.addExchangeFiles}" />
 	</bean>
@@ -172,6 +173,19 @@
 		<property name="db_alfresco_url" value="${cuadro.db.url}" />
 		<property name="db_alfresco_username" value="${cuadro.db.username}" />
 		<property name="db_alfresco_password" value="${cuadro.db.password}" />
+	</bean>
+
+	<bean name="asynchronousDatabaseAccess" class="es.caib.gdib.utils.AsynchronousDatabaseAccess">
+		<property name="exUtils" ref="exUtils" />
+		<property name="utils" ref="gdibUtils" />
+		<property name="db_datasource" value="$gdib{async.db.driver}" />
+		<property name="db_url" value="${async.db.url}" />
+		<property name="db_username" value="${async.db.username}" />
+		<property name="db_password" value="${async.db.password}" />
+	</bean>
+
+	<bean name="MailService" class="es.caib.gdib.mail.MailServiceImpl">
+		<property name="actionService" ref="ActionService" />
 	</bean>
 
 </beans>

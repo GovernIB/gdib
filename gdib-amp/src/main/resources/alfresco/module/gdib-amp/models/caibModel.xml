@@ -99,6 +99,12 @@
 		<type name="eni:documento">
 			<title>Documento CAIB</title>
 			<parent>eni:docBase</parent>
+			<properties>
+				<property name="gdib:mimeType">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
 			<mandatory-aspects>
 				<aspect>eni:transferible</aspect>
 			</mandatory-aspects>
@@ -675,6 +681,10 @@
 				<!-- Descripcion:  Donde esta contenida la firma electronica del documento -->
 				<property name="eni:firma">
 					<type>d:content</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="gdib:nombre_firma">
+					<type>d:text</type>
 					<mandatory>false</mandatory>
 				</property>
 			</properties>

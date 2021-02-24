@@ -26,7 +26,7 @@ public interface CaibModelUtilsInterface {
     /**
      * Caib model
      *
-     */
+ 	*/
     public static final String CAIB_PREFIX = "gdib";
 
     public static final String CAIB_MODEL_PREFIX = CAIB_PREFIX + ConstantUtils.PREFIX_SEPARATOR;
@@ -145,6 +145,11 @@ public interface CaibModelUtilsInterface {
      */
     public static final String TYPE_FIRMA = "firma";
     public static final QName TYPE_FIRMA_QNAME = QName.createQName(NS_CAIB, TYPE_FIRMA);
+    /**
+     * Type eni:firma prop gdib:nombre_firma
+     */
+    public static final String PROP_NOMBRE_FIRMA = "nombre_firma";
+    public static final QName PROP_NOMBRE_FIRMA_QNAME = QName.createQName(NS_CAIB, PROP_NOMBRE_FIRMA);
 
     /**
      * Type gdib:firmaValCert

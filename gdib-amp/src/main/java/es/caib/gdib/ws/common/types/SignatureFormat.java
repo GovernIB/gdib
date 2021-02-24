@@ -49,13 +49,13 @@ public enum SignatureFormat {
 	XML_SIGNATURE(new Integer(33), "XML-Signature", "XML-Signature"),
 	PAdES_T(new Integer(34), "PAdES-T","PAdES");
 	private static final String CADES_FAMILY_NAME = "CAdES";
-	private static final String XADES_FAMILY_NAME = "XAdES";	
+	private static final String XADES_FAMILY_NAME = "XAdES";
 	private static final String PADES_FAMILY_NAME = "PAdES";
-	
+
 	private static Map<SignatureFormat,Integer> CADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
 	private static Map<SignatureFormat,Integer> XADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
 	private static Map<SignatureFormat,Integer> PADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
-	
+
 	private final Integer id;
     private final String name;
     private final String type;
@@ -146,7 +146,7 @@ public enum SignatureFormat {
 
 		advOrder = new Integer(-1);
 		aSignAdvOrder = new Integer(-1);
-		
+
 		if(this.getType().equals(aSigntureFormat.getType())){
 			switch(this.getType()){
 				case CADES_FAMILY_NAME:
@@ -177,7 +177,7 @@ public enum SignatureFormat {
 		}
 
 		res = advOrder > aSignAdvOrder;
-		
+
 		return res;
 	}
 }

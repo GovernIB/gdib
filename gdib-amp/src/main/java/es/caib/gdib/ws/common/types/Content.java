@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "content", propOrder = {
     "mimetype",
     "data",
-    "encoding",
-    "byteSize"
+    "encoding"
 },namespace = "http://www.caib.es/gdib/repository/ws")
 public class Content {
 
@@ -22,17 +21,7 @@ public class Content {
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
     protected DataHandler data;
     @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
-    protected String encoding;
-    @XmlElement(namespace = "http://www.caib.es/gdib/repository/ws")
-    protected Long byteSize;
-
-    public Long getByteSize() {
-        return byteSize;
-    }
-
-    public void setByteSize(Long byteSize) {
-        this.byteSize = byteSize;
-    }
+    protected String encoding;    
 
     public String getMimetype() {
         return mimetype;

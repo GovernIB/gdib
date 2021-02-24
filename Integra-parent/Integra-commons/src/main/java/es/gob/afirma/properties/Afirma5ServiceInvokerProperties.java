@@ -160,13 +160,6 @@ public final class Afirma5ServiceInvokerProperties {
 	    LOGGER.debug(Language.getResIntegra(ILogConstantKeys.ASIP_LOG008));
 	    isChanged = true;
 	}
-	LOGGER.error("Reading Afirma invoker props : " );
-
-	LOGGER.error("Reading Afirma invoker props : " );
-	LOGGER.error("truststorePath: "+truststorePath );
-	LOGGER.error("truststorePass : " +truststorePass);
-	LOGGER.error("Setting SystemProperty: "+TRUSTSTORE_CLASSNAME + " to " +truststorePath);
-	LOGGER.error("Setting SystemProperty: javax.net.ssl.trustStorePassword to " +truststorePass);
 	if (isChanged) {
 	    LOGGER.debug(Language.getFormatResIntegra(ILogConstantKeys.ASIP_LOG009, new Object[ ] { afirma5ServiceInvokerProperties.getProperty(WSServiceInvokerConstants.COM_PROPERTIE_HEADER + "." + WSServiceInvokerConstants.WS_TRUSTED_STORE_PROP) }));
 	    System.setProperty(TRUSTSTORE_CLASSNAME, truststorePath);
