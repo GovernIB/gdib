@@ -8,6 +8,7 @@ import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.RepositoryServiceSoapPort;
 import es.caib.gdib.ws.iface.SignatureService;
 import es.caib.gdib.ws.impl.RepositoryServiceSoapPortImpl;
+import es.caib.gdib.ws.impl.authtrans.AuthTransRepositoryServiceSoapPortImpl;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
 import org.alfresco.service.cmr.repository.*;
@@ -25,8 +26,8 @@ public class UpgradeSignature {
     @Autowired
     private MailServiceImpl mailService;
     @Autowired
-    @Qualifier("repositoryServiceSoap")
-    private RepositoryServiceSoapPort gdibRepositoryService;
+    @Qualifier("AuthTransRepo")
+    private RepositoryServiceSoapPort authTransRepo;
     private AsynchronousDatabaseAccess bbddService;
     private ExUtils exUtils;
     private GdibUtils utils;
@@ -60,6 +61,8 @@ public class UpgradeSignature {
      */
     public void run() throws GdibException {
 
+        LOGGER.debug("Nos autenticamos");
+        ((AuthTransRepositoryServiceSoapPortImpl) authTransRepo).doAuthentication("admin", "admin");
         LOGGER.debug("Recuperamos todas las entradas para upgradear de base de datos");
         List<UpgradeSignatureJobEntity> allUpgrades = bbddService.getAllUpgradeSignatureEntries();
         if (allUpgrades != null) {
@@ -73,95 +76,7 @@ public class UpgradeSignature {
         if (allUpgrades != null && !allUpgrades.isEmpty()) {
             for (UpgradeSignatureJobEntity entry : allUpgrades) {
                 if (entry.getTried() < maxTries) {
-                    LOGGER.debug("Se procede a upgradear la firma del documento [" + entry.getId() + "]");
-                    // Asignamos los valores recuperados de base de datos
-                    SignatureFormat minCustodySignatureFormat = SignatureFormat.getById(entry.getIdMinCustodySignature());
-                    EniSignatureType eniSignatureProfile = EniSignatureType.getById(entry.getIdEniSignatureNumber());
-                    Boolean implicitSignature = entry.getImplicitSignature();
-
-                    Node node = null;
-                    byte[] signature = null;
-
-                    try {
-                        // recuperamos el nodo y la firma
-                        NodeRef nodeRef = utils.checkNodeId(entry.getId());
-                        node = ((RepositoryServiceSoapPortImpl) gdibRepositoryService)._internal_getNode(nodeRef, false, false);
-                        if (node == null) {
-                            if (signature == null) {
-                                LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
-                                        "No se ha podido recuperar el nodo");
-                                entry.setError("No se ha podido recuperar el nodo");
-                                entry.setTried(entry.getTried() + 1);
-                                errors.add(entry);
-                                continue;
-                            }
-                        }
-                        // En funcion del tipo de firma, esta se encuentra en el contenido del documento, o tiene un dettached que es la firma
-                        if (implicitSignature) {
-                            //Firma electronica implicita (TF02, TF03, TF05 y TF06)
-                            signature = utils.getByteArrayFromHandler(utils.getNodeContent(node));
-                        } else {
-                            //Firma electronica explicita (dettached)
-                            signature = utils.getByteArrayFromHandler(utils.getNodeSign(node));
-                        }
-                        LOGGER.debug("Datos recuperados de base de datos setteados");
-                        if (signature == null) {
-                            LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
-                                    "No se ha podido recuperar el contenido de la firma");
-                            entry.setError("No se ha podido recuperar el contenido de la firma");
-                            entry.setTried(entry.getTried() + 1);
-                            errors.add(entry);
-                            continue;
-                        } else {
-                            LOGGER.debug("Firma recuperada");
-                        }
-                        // ******************* CODIGO QUE SE PASA AL JOB *******************************************
-                        LOGGER.debug("Formato de firma inferior al manimo exigido para custodia, se procede a evolucionar la firma al formato: " +
-                                minCustodySignatureFormat.getName() + " (Perfil de firma: " + eniSignatureProfile.getName() + ").");
-                        LOGGER.debug("Preparando invocacion a plataforma @firma (UpgradeFirma)...");
-                        signature = signatureService.upgradeSignature(signature, minCustodySignatureFormat);
-                        if (signature == null) {
-                            LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " +
-                                    "El valor devuelto por el servicio de firma es nulo");
-                            entry.setError("El valor devuelto por el servicio de firma es nulo");
-                            entry.setTried(entry.getTried() + 1);
-                            errors.add(entry);
-                            continue;
-                        }
-                        LOGGER.debug("Modificando firma electronica del documento " + node.getId() + "....");
-                        DataHandler signatureDataHandler = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(signature)));
-                        //Se actualiza la informacion del nodo y la firma electronica
-                        if (implicitSignature) {
-                            if (node.getContent() != null) {
-                                node.getContent().setData(signatureDataHandler);
-                            } else { // si el contenido no esta en el nodo es porque no se pasa como parametro pero existe anteriormente
-                                Content contenido = utils.getContent(utils.idToNodeRef(node.getId()));
-                                contenido.setData(signatureDataHandler);
-                                node.setContent(contenido);
-                            }
-                            node.setSign(null);
-                        } else {
-                            node.setSign(signatureDataHandler);
-                        }
-                        // ******************* FIN CODIGO QUE SE PASA AL JOB *******************************************
-                        // Actualizamos el contenido de la firma
-                        LOGGER.debug("Proceso de upgradeo finalizado, procedemos a actualizar el contenido de la firma");
-                        if (implicitSignature) {
-                            //actualizar contenido
-                            utils.setDataHandler(nodeRef, ContentModel.PROP_CONTENT, node.getContent().getData(), node.getContent().getMimetype());
-                        } else {
-                            //actualizar firma
-                            utils.setDataHandler(nodeRef, ConstantUtils.PROP_FIRMA_QNAME, node.getSign(), MimetypeMap.MIMETYPE_BINARY);
-                        }
-                    } catch (Exception exception) {
-                        LOGGER.error("Se ha producido un error upgradeando la firma del documento [" + entry.getId() + "]. Error:\n " + exception.getMessage());
-                        entry.setError(exception.getMessage());
-                        entry.setTried(entry.getTried() + 1);
-                        errors.add(entry);
-                        continue;
-                    }
-                    success.add(entry);
-                    LOGGER.debug("Firma actualizada, proceso de upgradeo finalizado correctamente");
+                    ((AuthTransRepositoryServiceSoapPortImpl) authTransRepo).getBean().upgradeDocumentSignature(errors, success, entry);
                 } else {
                     LOGGER.debug("Saltamos la entrada del documento id [" + entry.getId() + "] por superar el numero maximo de intentos [" + entry.getTried() + "]");
                     maxTriesList.add(entry);
@@ -255,14 +170,6 @@ public class UpgradeSignature {
         this.utils = utils;
     }
 
-    public RepositoryServiceSoapPort getGdibRepositoryService() {
-        return gdibRepositoryService;
-    }
-
-    public void setGdibRepositoryService(RepositoryServiceSoapPort gdibRepositoryService) {
-        this.gdibRepositoryService = gdibRepositoryService;
-    }
-
     public MailServiceImpl getMailService() {
         return mailService;
     }
@@ -277,5 +184,13 @@ public class UpgradeSignature {
 
     public void setExUtils(ExUtils exUtils) {
         this.exUtils = exUtils;
+    }
+
+    public RepositoryServiceSoapPort getAuthTransRepo() {
+        return authTransRepo;
+    }
+
+    public void setAuthTransRepo(RepositoryServiceSoapPort authTransRepo) {
+        this.authTransRepo = authTransRepo;
     }
 }
