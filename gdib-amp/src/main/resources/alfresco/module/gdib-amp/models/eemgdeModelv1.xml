@@ -15,6 +15,7 @@
 	
 	<namespaces>
 		<namespace uri="http://administracioelectronica.caib.es/model/eemgde/2.0" prefix="eemgde" />
+		<namespace uri="http://www.caib.es/model/egoib/1.0" prefix="egoib" />
 	</namespaces>
 	
 	<constraints>
@@ -36,6 +37,22 @@
 			<title>Serie documental</title>
 			<description>Carpeta metadatada que representa una sèrie documental d'un quadre de classificació funcional</description>	
 			<parent>cm:folder</parent>
+			<properties>
+				<property name="egoib:usuarios_aplicaciones">				
+					<title>Usuarios autorizados</title>
+					<description>Identificadores de los usuarios del grupo aplicacoines de Alfresco que tienen permisos sobre esta serie</description>
+					<type>d:text</type>
+					<mandatory >false</mandatory>
+					<multiple>true</multiple>
+				</property>
+				<property name="egoib:series_argen">				
+					<title>Código de clasificación antiguo</title>
+					<description>Código de clasificación de las series equivalentes en el antiguo cuadro funcional</description>
+					<type>d:text</type>
+					<mandatory >false</mandatory>
+					<multiple>true</multiple>
+				</property>
+			</properties>
 			<mandatory-aspects>
 				<aspect>eemgde:clasificable</aspect>
 				<aspect>eemgde:sensible_datos_personales</aspect>

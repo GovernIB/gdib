@@ -611,7 +611,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				break;
 			}
     	}else{
-			permissionService.setPermission(nodeRef, authority, PermissionService.CONTRIBUTOR, true);
+			permissionService.setPermission(nodeRef, authority, PermissionService.COORDINATOR, true);
     	}
     }
 
@@ -1176,17 +1176,24 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         LOGGER.debug("Ultimas comprobaciones.");
         long signMill = 0;
         UpgradeSignatureJobEntity jobEntity = null;
-		if (!repositoryDisableCheck.booleanValue()) {
-			if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
-				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+		if (!repositoryDisableCheck.booleanValue()) 
+		{
+			if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME))
+			{
+				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) 
+				{
 					LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
 					long beginMill = System.currentTimeMillis();
 					//Se comprueba para todos menos los migrados transformados.
-					if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) ){
+					if ( !utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) )
+					{
 						jobEntity = checkDocumentSignature(node);
-						if(jobEntity!=null) {
+						if(jobEntity!=null)
+						{
 							LOGGER.debug("Job entity devuelto: " + jobEntity.toString());
-						}else{
+						}
+						else
+						{
 							LOGGER.debug("Job entity nulo");
 						}
 
@@ -1196,13 +1203,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					signMill = System.currentTimeMillis() - beginMill;
 					LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
 					checkDocClassification(node,parentRef);
-				} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
-					if(parentId != null && !parentId.isEmpty()){
+				} 
+				else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) 
+				{
+					if(parentId != null && !parentId.isEmpty())
+					{
 						//Subexpediente
 						LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
 						checkDocClassification(node,parentRef);
-					} else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
-						if(parentId != null && !parentId.isEmpty()){
+					} 
+					else if(utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) 
+					{
+						if(parentId != null && !parentId.isEmpty())
+						{
 							//Subexpediente
 							LOGGER.debug("Expediente: NO es un borrador. Se pasa a chequear el cod clasif.");
 							checkDocClassification(node,parentRef);
@@ -1213,6 +1226,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					verifySubtypeDoc(node);
 				}
 			
+			}
 		}
 		LOGGER.debug("Preparación para la llamada al servicio");
         // preparar datos
@@ -1227,22 +1241,25 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
         NodeRef nodeRef = _internal_createNode(parentRef, name, type, props, aspects, node.getContent(), node.getSign(), utils.getESBOp(gdibHeader));
         long endCreate = System.currentTimeMillis();
         LOGGER.info(nodeRef.getId()+ " creado en " + (endCreate-initMill) +"ms (Checks: "+(checkMill-initMill)+"ms Props: "+(prepareProps-checkMill-signMill)+"ms Firma: "+signMill+"ms Servicio: "+(endCreate-prepareProps)+"ms).");
-        if(jobEntity!=null){
+        if(jobEntity!=null)
+        {
         	jobEntity.setId(nodeRef.getId());
         	databaseAccess.saveUpgradeSignature(jobEntity);
         	LOGGER.debug("Guardada informacion para el upgradeo de la firma en base de datos");
 		}
+		
         return nodeRef.getId();
-    }
+		
+	}
 
 
     /**
      * Servicio que crea un nodo en el Repositorio DM de Alfresco.
-     * Se realizar�n las comprobaciones necesarias: Permisos, formato de metadatos, tipo, etc...
-     * Adem�s se realizan dos comprobaciones adicionales dependiendo del flag repositoryDisableCheck est� activo o no:
-     *  1Âº Que el nodo creado estÃ© dentro del DM.
-     *  2Âº Que tenga una serie documental v�lida.
-     *  El formato de QName siempre que venga especificado como un String podr� ser tanto formato extendido {uri}prop
+     * Se realizarán las comprobaciones necesarias: Permisos, formato de metadatos, tipo, etc...
+     * Además se realizan dos comprobaciones adicionales dependiendo del flag repositoryDisableCheck está activo o no:
+     *  1º Que el nodo creado esté dentro del DM.
+     *  2º Que tenga una serie documental válida.
+     *  El formato de QName siempre que venga especificado como un String podrá ser tanto formato extendido {uri}prop
      *   o reducido prefix:prop .
      *
      *  Adem�s los Ids de nodos podr�n venir especificados tanto en nodeRef como en paths relativos tomando siempre como primer nodo
@@ -1824,7 +1841,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				if(utils.isType(nodeService.getType(node), ConstantUtils.TYPE_SERIE_QNAME)){
 					for(String authority:authorities){
 						this.utils.checkAuthorityExists(authority);
-						permissionService.setPermission(node, authority, PermissionService.CONTRIBUTOR, false);
+						permissionService.setPermission(node, authority, PermissionService.COORDINATOR, false);
 					}
 					continue;
 				}

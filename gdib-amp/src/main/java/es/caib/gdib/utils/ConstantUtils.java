@@ -40,11 +40,11 @@ public class ConstantUtils implements CaibModelUtilsInterface, EniModelUtilsInte
 
 	public static final String PERMISSION_READ = "read";
 	public static final String PERMISSION_WRITE = "write";
-	public static final String PERMISSION_CONTRIBUTOR = "contributor";
+	public static final String PERMISSION_COORDINATOR = "coordinator";
 	public static final List<String> PERMISSIONS = Arrays.asList(
 			PERMISSION_READ,
 			PERMISSION_WRITE,
-			PERMISSION_CONTRIBUTOR);
+			PERMISSION_COORDINATOR);
 
 	public static final String REPO_MIGR = "Migracion";
 
