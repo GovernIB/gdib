@@ -4,6 +4,8 @@
      	<xsl:variable name="eniUriNsLength" select="fn:string-length('{http://www.administracionelectronica.gob.es/model/eni/1.0}')" />
      	<xsl:variable name="gdibUriNsLength" select="fn:string-length('{http://www.caib.es/model/gdib/1.0}')" />
      	<xsl:variable name="cmUriNsLength" select="fn:string-length('{http://www.alfresco.org/model/content/1.0}')" />
+		<xsl:variable name="eemgdeUriNsLength" select="fn:string-length('{http://administracioelectronica.caib.es/model/eemgde/2.0}')" />
+		<xsl:variable name="egoibUriNsLength" select="fn:string-length('{http://www.caib.es/model/egoib/1.0}')" />
 
          <csgd:resParam>
            <csgd:id>
@@ -18,7 +20,7 @@
         </csgd:id>
 
             <xsl:choose>
-				<xsl:when test="fn:starts-with(ws:type/text(),'eni:') or fn:starts-with(ws:type/text(),'gdib:')">
+				<xsl:when test="fn:starts-with(ws:type/text(),'eni:') or fn:starts-with(ws:type/text(),'gdib:')  or fn:starts-with(ws:type/text(),'eemgde:')  or fn:starts-with(ws:type/text(),'egoib:')">
 					<csgd:type><xsl:value-of select="ws:type/text()"/></csgd:type>
 				</xsl:when>
 				<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.administracionelectronica.gob.es/model/eni/1.0}')">
@@ -26,6 +28,12 @@
 				</xsl:when>
 				<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.caib.es/model/gdib/1.0}')">
 					<csgd:type><xsl:value-of select="fn:concat('eni:',fn:substring(ws:type/text(),$gdibUriNsLength+1))"/></csgd:type>
+				</xsl:when>
+				<xsl:when test="fn:starts-with(ws:type/text(),'{http://administracioelectronica.caib.es/model/eemgde/2.0}')">
+					<csgd:type><xsl:value-of select="fn:concat('eemgde:',fn:substring(ws:type/text(),$eemgdeUriNsLength+1))"/></csgd:type>
+				</xsl:when>
+				<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.caib.es/model/egoib/1.0}')">
+					<csgd:type><xsl:value-of select="fn:concat('egoib:',fn:substring(ws:type/text(),$egoibUriNsLength+1))"/></csgd:type>
 				</xsl:when>
 				<xsl:when test="fn:ends-with(ws:type/text(),'recordFolder')">
 					<csgd:type>eni:expediente</csgd:type>
@@ -36,7 +44,7 @@
              </csgd:name>
              <xsl:for-each select="ws:aspects" >
              	<xsl:choose>
-					<xsl:when test="fn:starts-with(text(),'eni:') or fn:starts-with(text(),'gdib:')">
+					<xsl:when test="fn:starts-with(text(),'eni:') or fn:starts-with(text(),'gdib:')  or fn:starts-with(ws:type/text(),'eemgde:')  or fn:starts-with(ws:type/text(),'egoib:')">
 						<csgd:aspects><xsl:value-of select="text()"/></csgd:aspects>
 					</xsl:when>
 					<xsl:when test="fn:starts-with(text(),'{http://www.administracionelectronica.gob.es/model/eni/1.0}')">
@@ -45,12 +53,18 @@
 					<xsl:when test="fn:starts-with(text(),'{http://www.caib.es/model/gdib/1.0}')">
 						<csgd:aspects><xsl:value-of select="fn:concat('gdib:',fn:substring(text(),$gdibUriNsLength+1))"/></csgd:aspects>
 					</xsl:when>
+					<xsl:when test="fn:starts-with(text(),'{http://administracioelectronica.caib.es/model/eemgde/2.0}')">
+						<csgd:aspects><xsl:value-of select="fn:concat('eemgde:',fn:substring(text(),$eemgdeUriNsLength+1))"/></csgd:aspects>
+					</xsl:when>
+					<xsl:when test="fn:starts-with(text(),'{http://www.caib.es/model/egoib/1.0}')">
+						<csgd:aspects><xsl:value-of select="fn:concat('egoib:',fn:substring(text(),$egoibUriNsLength+1))"/></csgd:aspects>
+					</xsl:when>
 				</xsl:choose>
 			</xsl:for-each>
 			<xsl:for-each select="ws:properties" >
 				<xsl:if test="fn:boolean(ws:value/text()) and fn:string-length(ws:value/text()) > 0">
 					<xsl:choose>
-						<xsl:when test="fn:starts-with(ws:qname/text(),'eni:') or fn:starts-with(ws:qname/text(),'gdib:')">
+						<xsl:when test="fn:starts-with(ws:qname/text(),'eni:') or fn:starts-with(ws:qname/text(),'gdib:')  or fn:starts-with(ws:type/text(),'eemgde:')  or fn:starts-with(ws:type/text(),'egoib:')">
 							<csgd:metadataCollection>
 	 							<csgd:qname><xsl:value-of select="ws:qname/text()"/></csgd:qname>
 	 							<xsl:apply-templates select="ws:value/text()"/>
@@ -65,6 +79,18 @@
 						<xsl:when test="fn:starts-with(ws:qname/text(),'{http://www.caib.es/model/gdib/1.0}')">
 							<csgd:metadataCollection>
 	 							<csgd:qname><xsl:value-of select="fn:concat('gdib:',fn:substring(ws:qname/text(),$gdibUriNsLength+1))"/></csgd:qname>
+	 							<xsl:apply-templates select="ws:value/text()"/>
+	 						</csgd:metadataCollection>
+						</xsl:when>
+							<xsl:when test="fn:starts-with(ws:qname/text(),'{http://administracioelectronica.caib.es/model/eemgde/2.0}')">
+							<csgd:metadataCollection>
+	 							<csgd:qname><xsl:value-of select="fn:concat('eemgde:',fn:substring(ws:qname/text(),$eemgdeUriNsLength+1))"/></csgd:qname>
+	 							<xsl:apply-templates select="ws:value/text()"/>
+	 						</csgd:metadataCollection>
+						</xsl:when>
+						<xsl:when test="fn:starts-with(ws:qname/text(),'{http://www.caib.es/model/egoib/1.0}')">
+							<csgd:metadataCollection>
+	 							<csgd:qname><xsl:value-of select="fn:concat('egoib:',fn:substring(ws:qname/text(),$egoibUriNsLength+1))"/></csgd:qname>
 	 							<xsl:apply-templates select="ws:value/text()"/>
 	 						</csgd:metadataCollection>
 						</xsl:when>
@@ -83,32 +109,6 @@
           </xsl:if>
         </csgd:binaryContents>
       </xsl:if>
-			<xsl:for-each select="ws:childs" >
-             	<csgd:childObjects>
-             		<xsl:if test="fn:boolean(ws:id/text())">
-             			<csgd:id><xsl:value-of select="ws:id/text()"/></csgd:id>
-             		</xsl:if>
-             		<xsl:if test="fn:boolean(ws:name/text())">
-						<csgd:name><xsl:value-of select="ws:name/text()"/></csgd:name>
-					</xsl:if>
-					<xsl:if test="fn:boolean(ws:type/text())">
-						<xsl:choose>
-							<xsl:when test="fn:starts-with(ws:type/text(),'eni:') or fn:starts-with(ws:type/text(),'gdib:')">
-								<csgd:type><xsl:value-of select="ws:type/text()"/></csgd:type>
-							</xsl:when>
-							<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.administracionelectronica.gob.es/model/eni/1.0}')">
-								<csgd:type><xsl:value-of select="fn:concat('eni:',fn:substring(ws:type/text(),$eniUriNsLength+1))"/></csgd:type>
-							</xsl:when>
-							<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.caib.es/model/gdib/1.0}')">
-								<csgd:type><xsl:value-of select="fn:concat('gdib:',fn:substring(ws:type/text(),$gdibUriNsLength+1))"/></csgd:type>
-							</xsl:when>
-							<xsl:when test="fn:starts-with(ws:type/text(),'{http://www.alfresco.org/model/content/1.0}')">
-								<csgd:type><xsl:value-of select="fn:concat('cm:',fn:substring(ws:type/text(),$cmUriNsLength+1))"/></csgd:type>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-				</csgd:childObjects>
-			</xsl:for-each>
 		</csgd:resParam>
 	</xsl:template>
 
