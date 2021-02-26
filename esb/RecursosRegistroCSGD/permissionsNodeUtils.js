@@ -170,11 +170,11 @@ function buildAuthorizeSeriesRequest(mc) {
     	requestOk = (paramReq.nodeIds != null && paramReq.nodeIds.length > 0) && (paramReq.authorities != null && paramReq.authorities.length > 0) && paramReq.permission != null;
     	
     	if(requestOk){
-    		if(paramReq.permission == 'read' || paramReq.permission == 'write' || paramReq.permission == 'contributor'){
+    		if(paramReq.permission == 'read' || paramReq.permission == 'write' || paramReq.permission == 'coordinator'){
     			requestString = buildAuthorizeNodeRequest(paramReq);
     		} else {
     			requestOk = false;
-    			errorMessage = 'Petición mal formada. Los valores posibles para el parámetro permission son read, write o contributor.';
+    			errorMessage = 'Petición mal formada. Los valores posibles para el parámetro permission son read, write o coordinator.';
     		}
     	} else {
     		errorMessage = 'Petición mal formada. Los parámetros nodeIds, authorities y permission de la petición deben ser informados.';
