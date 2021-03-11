@@ -158,6 +158,40 @@ function buildAuthorizeFoldersRequest(mc) {
     mc.setProperty('reqServiceOk', requestOk);
 }
 
+function buildAuthorizeSeriesRequest(mc) {
+	payload = mc.getPayloadJSON();
+	grantPermSeriesReq = payload.grantPermissionsOnSeriesRequest;
+    var requestOk = false;
+    var requestString = '';
+    
+    if(grantPermSeriesReq != null && grantPermSeriesReq.param != null){
+    	
+    	var paramReq = grantPermSeriesReq.param;
+    	requestOk = (paramReq.nodeIds != null && paramReq.nodeIds.length > 0) && (paramReq.authorities != null && paramReq.authorities.length > 0) && paramReq.permission != null;
+    	
+    	if(requestOk){
+    		if(paramReq.permission == 'read' || paramReq.permission == 'write' || paramReq.permission == 'coordinator'){
+    			requestString = buildAuthorizeNodeRequest(paramReq);
+    		} else {
+    			requestOk = false;
+    			errorMessage = 'Petición mal formada. Los valores posibles para el parámetro permission son read, write o coordinator.';
+    		}
+    	} else {
+    		errorMessage = 'Petición mal formada. Los parámetros nodeIds, authorities y permission de la petición deben ser informados.';
+    	}   		 
+    } else {
+    	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+    }
+    
+    if(requestOk){
+    	mc.setProperty('reqService', requestString);    	
+    } else {
+    	mc.setProperty('reqServiceErrorMessage', errorMessage);
+    }
+    
+    mc.setProperty('reqServiceOk', requestOk);
+}
+
 function buildCancelPermissionsOnFoldersRequest(mc) {
 	payload = mc.getPayloadJSON();
 	cancelPermFoldersReq = payload.cancelPermissionsOnFoldersRequest;
@@ -186,6 +220,36 @@ function buildCancelPermissionsOnFoldersRequest(mc) {
     
     mc.setProperty('reqServiceOk', requestOk);
 }
+
+function buildCancelPermissionsOnSeriesRequest(mc) {
+	payload = mc.getPayloadJSON();
+	cancelPermSeriesReq = payload.cancelPermissionsOnSeriesRequest;
+    var requestOk = false;
+    var requestString = '';
+    
+    if(cancelPermSeriesReq != null && cancelPermSeriesReq.param != null){
+    	
+    	var paramReq = cancelPermSeriesReq.param;
+    	requestOk = (paramReq.nodeIds != null && paramReq.nodeIds.length > 0) && (paramReq.authorities != null && paramReq.authorities.length > 0);
+    	
+    	if(requestOk){
+    		requestString = buildRemoveAuthorityRequest(paramReq);
+    	} else {
+    		errorMessage = 'Petición mal formada. Los parámetros nodeIds y authorities de la petición deben ser informados.';
+    	}   		 
+    } else {
+    	errorMessage = 'Petición mal formada. Petición o parámetro de entrada no encontrados.';
+    }
+    
+    if(requestOk){
+    	mc.setProperty('reqService', requestString);    	
+    } else {
+    	mc.setProperty('reqServiceErrorMessage', errorMessage);
+    }
+    
+    mc.setProperty('reqServiceOk', requestOk);
+}
+
 
 function buildAuthorizeNodeRequest(paramReq){
 	var res = '<ws:authorizeNode xmlns:ws="http://www.caib.es/gdib/repository/ws">';
