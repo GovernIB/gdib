@@ -32,7 +32,7 @@ public interface RepositoryServiceSoapPort {
 	Node createAndGetNode(
 			@WebParam(partName = "node", name = "node", targetNamespace="http://www.caib.es/gdib/repository/ws") Node node,
 			@WebParam(partName = "parent", name = "parent", targetNamespace="http://www.caib.es/gdib/repository/ws") String parentId,
-			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws GdibException;
+			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws Exception;
 
 	@WebMethod(action = "modifyNode")
     @WebResult(name="result", targetNamespace="http://www.caib.es/gdib/repository/ws")

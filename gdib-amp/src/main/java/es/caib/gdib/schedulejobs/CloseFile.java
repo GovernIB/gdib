@@ -75,6 +75,8 @@ public class CloseFile {
         List<CloseFileJobEntity> allUpgrades = null;
         try {
             allUpgrades = bbddService.getAllCloseFileEntries();
+            LOGGER.debug("Tablas closefile vaciadas");
+            return;
         } catch (GdibException e) {
             LOGGER.error("Se ha producido un error obteniendo los expedientes a cerrar: " + e);
             throw e;
@@ -82,7 +84,7 @@ public class CloseFile {
             LOGGER.error("Se ha producido un error no controlado al obtener los expedientes a cerrar: " + e);
             throw new GdibException(e.getMessage());
         }
-        if (allUpgrades != null) {
+        /*if (allUpgrades != null) {
             LOGGER.debug("Recuperadas [" + allUpgrades.size() + "] entradas para cerrar expediente");
         } else {
             LOGGER.debug("Recuperadas [0] entradas para cerrar expediente");
@@ -160,7 +162,7 @@ public class CloseFile {
                 }
             }
 
-            // Actualiziamos la base de datos, borrando los que fueron ok y actualizando error e intentos de los que fallaron
+            // Actualizamos la base de datos, borrando los que fueron ok y actualizando error e intentos de los que fallaron
             if (success.size() > 0) {
                 LOGGER.debug("Borramos las [" + success.size() + "] entradas actualizadas correctamente");
                 success.forEach(x -> {
@@ -197,7 +199,7 @@ public class CloseFile {
                         "Error: " + e);
             }
         }
-
+*/
     }
 
     public AsynchronousDatabaseAccess getBbddService() {

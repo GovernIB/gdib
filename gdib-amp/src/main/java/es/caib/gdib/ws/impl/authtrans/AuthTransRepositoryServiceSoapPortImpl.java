@@ -68,7 +68,7 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 	}
 
 	@Override
-	public Node createAndGetNode(final Node node, final String parentId, final GdibHeader gdibHeader) throws GdibException {
+	public Node createAndGetNode(final Node node, final String parentId, final GdibHeader gdibHeader) throws Exception {
 		long initMill = System.currentTimeMillis();
         RetryingTransactionCallback<Node> callback = new RetryingTransactionCallback<Node>()
         {
@@ -84,11 +84,11 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            LOGGER.info("createAndGetNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
         } catch (Exception e) {
-            if (e.getCause() instanceof GdibException) {
+           /* if (e.getCause() instanceof GdibException) {
                 GdibException ex = ((GdibException) e.getCause());
                 LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
                 throw (GdibException) e.getCause();
-            }
+            }*/
             LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
             throw e;
         }

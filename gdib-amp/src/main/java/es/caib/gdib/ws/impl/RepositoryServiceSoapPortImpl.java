@@ -1324,7 +1324,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
      *
      * */
     @Override
-    public Node createAndGetNode(Node node, String parentId, GdibHeader gdibHeader) throws GdibException {
+    public Node createAndGetNode(Node node, String parentId, GdibHeader gdibHeader) throws Exception {
 	    String id = _createNode(node, parentId, gdibHeader);
 	    long flag = System.currentTimeMillis();
 	    Node ret =  _internal_getNode(utils.toNodeRef(id), true, true);

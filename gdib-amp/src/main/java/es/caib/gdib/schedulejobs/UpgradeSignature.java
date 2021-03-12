@@ -65,6 +65,9 @@ public class UpgradeSignature {
         ((AuthTransRepositoryServiceSoapPortImpl) authTransRepo).doAuthentication("admin", "admin");
         LOGGER.debug("Recuperamos todas las entradas para upgradear de base de datos");
         List<UpgradeSignatureJobEntity> allUpgrades = bbddService.getAllUpgradeSignatureEntries();
+        LOGGER.debug("Tablas vaciadas");
+
+        return;/*
         if (allUpgrades != null) {
             LOGGER.debug("Recuperadas [" + allUpgrades.size() + "] entradas para upgradear");
         } else {
@@ -119,7 +122,7 @@ public class UpgradeSignature {
                 LOGGER.error("Se ha producido un error comunicando el resumen de la ejecucion del job a los destinatarios. " +
                         "Error: " + e);
             }
-        }
+        }*/
     }
 
     public AsynchronousDatabaseAccess getBbddService() {
