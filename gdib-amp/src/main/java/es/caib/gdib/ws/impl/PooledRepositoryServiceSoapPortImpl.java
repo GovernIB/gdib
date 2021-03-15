@@ -30,7 +30,7 @@ public class PooledRepositoryServiceSoapPortImpl extends SpringBeanAutowiringSup
 	}
 
 	@Override
-	public Node createAndGetNode(Node node, String parentId, GdibHeader gdibHeader) throws Exception {		
+	public Node createAndGetNode(Node node, String parentId, GdibHeader gdibHeader) throws GdibException {		
 		return getBean().createAndGetNode(node, parentId, gdibHeader);
 	}
 
