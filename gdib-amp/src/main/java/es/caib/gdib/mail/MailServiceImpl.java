@@ -1,6 +1,5 @@
 package es.caib.gdib.mail;
 
-import com.drew.lang.StringUtil;
 import es.caib.gdib.ws.exception.GdibException;
 import org.alfresco.repo.action.executer.MailActionExecuter;
 import org.alfresco.service.cmr.action.Action;
