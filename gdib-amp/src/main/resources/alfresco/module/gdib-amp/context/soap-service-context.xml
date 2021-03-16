@@ -174,4 +174,8 @@
 		<property name="db_alfresco_password" value="${cuadro.db.password}" />
 	</bean>
 
+	<bean name="MailService" class="es.caib.gdib.mail.MailServiceImpl">
+		<property name="actionService" ref="ActionService" />
+	</bean>
+
 </beans>
