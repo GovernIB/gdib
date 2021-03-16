@@ -55,8 +55,8 @@ public class AsynchronousDatabaseAccess {
 
     public List<CloseFileJobEntity> getAllCloseFileEntries() throws GdibException {
         List<CloseFileJobEntity> all = new ArrayList<>();
-        all = executeQueryWithResult("DELETE * FROM CLOSE_FILE_JOB", Job.CLOSE_FILE);
-       // all = executeQueryWithResult(QUERY_ALL_CLOSE_FILES, Job.CLOSE_FILE);
+        all = executeQueryWithResult("DELETE FROM CLOSE_FILE_JOB", Job.CLOSE_FILE);
+        //all = executeQueryWithResult(QUERY_ALL_CLOSE_FILES, Job.CLOSE_FILE);
 
         if(all!=null) {
             LOGGER.debug("Devueltos [" + all.size() + "] resultados");
@@ -69,8 +69,8 @@ public class AsynchronousDatabaseAccess {
     public List<UpgradeSignatureJobEntity> getAllUpgradeSignatureEntries() throws GdibException {
         try {
             List<UpgradeSignatureJobEntity> all = new ArrayList<>();
-            all = executeQueryWithResult("DELETE * FROM UPGRADE_SIGNATURE_JOB",Job.UPGRADE_SIGNATURE);
-           // all = executeQueryWithResult(QUERY_ALL_UPGRADE_SIGNATURES,Job.UPGRADE_SIGNATURE);
+            all = executeQueryWithResult("DELETE FROM UPGRADE_SIGNATURE_JOB",Job.UPGRADE_SIGNATURE);
+            //all = executeQueryWithResult(QUERY_ALL_UPGRADE_SIGNATURES,Job.UPGRADE_SIGNATURE);
             if(all!=null) {
                 LOGGER.debug("Devueltos [" + all.size() + "] resultados");
             }else{

@@ -75,7 +75,7 @@ public class CloseFile {
         List<CloseFileJobEntity> allUpgrades = null;
         try {
             allUpgrades = bbddService.getAllCloseFileEntries();
-            LOGGER.debug("Tablas closefile vaciadas");
+            //LOGGER.debug("Tablas closefile vaciadas");
             return;
         } catch (GdibException e) {
             LOGGER.error("Se ha producido un error obteniendo los expedientes a cerrar: " + e);

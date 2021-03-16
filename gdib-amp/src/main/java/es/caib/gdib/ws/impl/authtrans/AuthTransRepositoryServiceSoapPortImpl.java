@@ -56,19 +56,22 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            String ret = txnHelper.doInTransaction(callback);
            LOGGER.info("createNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
-        } catch (Exception e) {
-            if (e.getCause() instanceof GdibException) {
+        } catch(GdibException e) {
+        	LOGGER.error("Excepción de GDIB : "+ e.getMessage(),e);
+        	throw e;
+        }catch (Exception e) {
+           /* if (e.getCause() instanceof GdibException) {
                 GdibException ex = ((GdibException) e.getCause());
                 LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
                 throw (GdibException) e.getCause();
-            }
+            }*/
             LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
             throw e;
         }
 	}
 
 	@Override
-	public Node createAndGetNode(final Node node, final String parentId, final GdibHeader gdibHeader) throws Exception {
+	public Node createAndGetNode(final Node node, final String parentId, final GdibHeader gdibHeader) throws GdibException {
 		long initMill = System.currentTimeMillis();
         RetryingTransactionCallback<Node> callback = new RetryingTransactionCallback<Node>()
         {
@@ -83,7 +86,10 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
            Node ret = txnHelper.doInTransaction(callback);
            LOGGER.info("createAndGetNode("+ret+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
-        } catch (Exception e) {
+        }catch(GdibException e) {
+        	LOGGER.error("Excepción de GDIB : "+ e.getMessage(),e);
+        	throw e;
+        }catch (Exception e) {
            /* if (e.getCause() instanceof GdibException) {
                 GdibException ex = ((GdibException) e.getCause());
                 LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
