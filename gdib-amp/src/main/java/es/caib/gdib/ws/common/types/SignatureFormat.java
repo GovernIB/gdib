@@ -46,94 +46,95 @@ public enum SignatureFormat {
 	CAdES(new Integer(30), "CAdES", "CAdES"),
 	XAdES(new Integer(31), "XAdES", "XAdES"),
 	PAdES(new Integer(32), "PAdES", "PAdES"),
-	XML_SIGNATURE(new Integer(33), "XML-Signature", "XML-Signature");
-
+	XML_SIGNATURE(new Integer(33), "XML-Signature", "XML-Signature"),
+	PAdES_T(new Integer(34), "PAdES-T","PAdES");
 	private static final String CADES_FAMILY_NAME = "CAdES";
-	private static final String XADES_FAMILY_NAME = "XAdES";	
+	private static final String XADES_FAMILY_NAME = "XAdES";
 	private static final String PADES_FAMILY_NAME = "PAdES";
-	
+
 	private static Map<SignatureFormat,Integer> CADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
 	private static Map<SignatureFormat,Integer> XADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
 	private static Map<SignatureFormat,Integer> PADES_ADVANCED_ORDER = new HashMap<SignatureFormat,Integer>();
-	
+
 	private final Integer id;
-    private final String name;
-    private final String type;
+	private final String name;
+	private final String type;
 
-    static{
-    	initCadesMap();
-    	initXadesMap();
-    	initPadesMap();
-    }
-    
-    private static void initCadesMap(){
-    	CADES_ADVANCED_ORDER.put(CAdES, 1);
-    	CADES_ADVANCED_ORDER.put(CAdES_BES, 1);
-    	CADES_ADVANCED_ORDER.put(CAdES_EPES, 2);
-    	CADES_ADVANCED_ORDER.put(CAdES_T, 3);
-    	CADES_ADVANCED_ORDER.put(CAdES_C, 4);
-    	CADES_ADVANCED_ORDER.put(CAdES_X, 5);
-    	CADES_ADVANCED_ORDER.put(CAdES_X1, 5);
-    	CADES_ADVANCED_ORDER.put(CAdES_X2, 5);
-    	CADES_ADVANCED_ORDER.put(CAdES_XL, 6);
-    	CADES_ADVANCED_ORDER.put(CAdES_XL1, 6);
-    	CADES_ADVANCED_ORDER.put(CAdES_XL2, 6);
-    	CADES_ADVANCED_ORDER.put(CAdES_A, 7);
-    }
-    
-    private static void initXadesMap(){
-    	XADES_ADVANCED_ORDER.put(XAdES, 1);
-    	XADES_ADVANCED_ORDER.put(XAdES_BES, 1);
-    	XADES_ADVANCED_ORDER.put(XAdES_EPES, 2);
-    	XADES_ADVANCED_ORDER.put(XAdES_T, 3);
-    	XADES_ADVANCED_ORDER.put(XAdES_C, 4);
-    	XADES_ADVANCED_ORDER.put(XAdES_X, 5);
-    	XADES_ADVANCED_ORDER.put(XAdES_X1, 5);
-    	XADES_ADVANCED_ORDER.put(XAdES_X2, 5);
-    	XADES_ADVANCED_ORDER.put(XAdES_XL, 6);
-    	XADES_ADVANCED_ORDER.put(XAdES_XL1, 6);
-    	XADES_ADVANCED_ORDER.put(XAdES_XL2, 6);
-    	XADES_ADVANCED_ORDER.put(XAdES_A, 7);
-    }
-    
-    private static void initPadesMap(){
-    	PADES_ADVANCED_ORDER.put(PAdES, 1);
-    	PADES_ADVANCED_ORDER.put(PAdES_Basic,1);
-    	PADES_ADVANCED_ORDER.put(PAdES_BES, 1);
-    	PADES_ADVANCED_ORDER.put(PAdES_EPES, 2);
-    	PADES_ADVANCED_ORDER.put(PAdES_LTV, 3);
-    }
-    
-    private SignatureFormat(Integer id, String name, String type) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-    }
+	static{
+		initCadesMap();
+		initXadesMap();
+		initPadesMap();
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	private static void initCadesMap(){
+		CADES_ADVANCED_ORDER.put(CAdES, 1);
+		CADES_ADVANCED_ORDER.put(CAdES_BES, 1);
+		CADES_ADVANCED_ORDER.put(CAdES_EPES, 2);
+		CADES_ADVANCED_ORDER.put(CAdES_T, 3);
+		CADES_ADVANCED_ORDER.put(CAdES_C, 4);
+		CADES_ADVANCED_ORDER.put(CAdES_X, 5);
+		CADES_ADVANCED_ORDER.put(CAdES_X1, 5);
+		CADES_ADVANCED_ORDER.put(CAdES_X2, 5);
+		CADES_ADVANCED_ORDER.put(CAdES_XL, 6);
+		CADES_ADVANCED_ORDER.put(CAdES_XL1, 6);
+		CADES_ADVANCED_ORDER.put(CAdES_XL2, 6);
+		CADES_ADVANCED_ORDER.put(CAdES_A, 7);
+	}
 
-    public Integer getId() {
-        return this.id;
-    }
+	private static void initXadesMap(){
+		XADES_ADVANCED_ORDER.put(XAdES, 1);
+		XADES_ADVANCED_ORDER.put(XAdES_BES, 1);
+		XADES_ADVANCED_ORDER.put(XAdES_EPES, 2);
+		XADES_ADVANCED_ORDER.put(XAdES_T, 3);
+		XADES_ADVANCED_ORDER.put(XAdES_C, 4);
+		XADES_ADVANCED_ORDER.put(XAdES_X, 5);
+		XADES_ADVANCED_ORDER.put(XAdES_X1, 5);
+		XADES_ADVANCED_ORDER.put(XAdES_X2, 5);
+		XADES_ADVANCED_ORDER.put(XAdES_XL, 6);
+		XADES_ADVANCED_ORDER.put(XAdES_XL1, 6);
+		XADES_ADVANCED_ORDER.put(XAdES_XL2, 6);
+		XADES_ADVANCED_ORDER.put(XAdES_A, 7);
+	}
 
-    public String getType() {
-        return this.type;
-    }
-    
-    public static SignatureFormat getById(Integer id) {
+	private static void initPadesMap(){
+		PADES_ADVANCED_ORDER.put(PAdES, 1);
+		PADES_ADVANCED_ORDER.put(PAdES_Basic,1);
+		PADES_ADVANCED_ORDER.put(PAdES_BES, 1);
+		PADES_ADVANCED_ORDER.put(PAdES_EPES, 2);
+		PADES_ADVANCED_ORDER.put(PAdES_LTV, 3);
+		PADES_ADVANCED_ORDER.put(PAdES_T, 4);
+	}
 
-        for (SignatureFormat e : SignatureFormat.values()) {
-            if (e.getId().equals(id)) {
-                return e;
-            }
-        }
+	private SignatureFormat(Integer id, String name, String type) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
+	}
 
-        return null;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    /**
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public static SignatureFormat getById(Integer id) {
+
+		for (SignatureFormat e : SignatureFormat.values()) {
+			if (e.getId().equals(id)) {
+				return e;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Metodo que comprueba si el formato de firma electrónica es un formato
 	 * de firma más avanzado que el pasado como parámetro, aSigntureFormat.
 	 * @param aSigntureFormat Un formato de firma electrónica
@@ -145,7 +146,7 @@ public enum SignatureFormat {
 
 		advOrder = new Integer(-1);
 		aSignAdvOrder = new Integer(-1);
-		
+
 		if(this.getType().equals(aSigntureFormat.getType())){
 			switch(this.getType()){
 				case CADES_FAMILY_NAME:
@@ -176,7 +177,7 @@ public enum SignatureFormat {
 		}
 
 		res = advOrder > aSignAdvOrder;
-		
+
 		return res;
 	}
 }

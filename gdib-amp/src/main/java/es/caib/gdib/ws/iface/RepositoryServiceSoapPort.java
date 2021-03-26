@@ -9,6 +9,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import es.caib.gdib.ws.common.types.CertSearchResults;
 import es.caib.gdib.ws.common.types.GdibHeader;
 import es.caib.gdib.ws.common.types.Node;
 import es.caib.gdib.ws.common.types.NodeVersion;
@@ -143,5 +144,11 @@ public interface RepositoryServiceSoapPort {
 	void closeFile(
 			@WebParam(partName = "nodeId", name = "nodeId", targetNamespace="http://www.caib.es/gdib/repository/ws")String nodeId,
 			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws GdibException;
+	
+	@WebMethod(action="recountFilesByCert")
+	CertSearchResults recountFilesByCert(
+			@WebParam(partName = "certId", name = "certId", targetNamespace="http://www.caib.es/gdib/repository/ws")String certId,
+			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws GdibException;
+
 
 }
