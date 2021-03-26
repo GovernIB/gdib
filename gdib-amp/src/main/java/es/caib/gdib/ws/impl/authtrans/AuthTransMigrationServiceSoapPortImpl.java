@@ -56,16 +56,15 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
            MigrationNode ret = txnHelper.doInTransaction(callback);
            LOGGER.info("getMigrationNode("+migrationId.getAppId()+"/"+migrationId.getExternalId()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
            return ret;
-        }
-        catch (Exception e)
-        {
-        	if ( e.getCause() instanceof GdibException ){
-        		throw (GdibException) e.getCause();
-        	}
-           throw e;
-        }finally{
-        	
-        }		
+		} catch (Exception e) {
+			if (e.getCause() instanceof GdibException) {
+				GdibException ex = ((GdibException) e.getCause());
+				LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+				throw (GdibException) e.getCause();
+			}
+			LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+			throw e;
+		}
 	}
 
 	@Override
@@ -85,16 +84,15 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 	           String ret = txnHelper.doInTransaction(callback);
 	           LOGGER.info("getMigrationNode("+datanodetransform.getMigrationId().getAppId()+"/"+datanodetransform.getMigrationId().getExternalId()+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
 	           return ret;
-	        }
-	        catch (Exception e)
-	        {
-	        	if ( e.getCause() instanceof GdibException ){
-	        		throw (GdibException) e.getCause();
-	        	}
-	           throw e;
-	        }finally{
-	        	
-	        }		
+			} catch (Exception e) {
+				if (e.getCause() instanceof GdibException) {
+					GdibException ex = ((GdibException) e.getCause());
+					LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+					throw (GdibException) e.getCause();
+				}
+				LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+				throw e;
+			}
 	}
 	
 	private MigrationServiceSoapPortImpl getBean(){
@@ -122,6 +120,7 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 				authenticationService.authenticate(username, password.toCharArray());
 			}
 		}catch (AuthenticationException ae){
+			LOGGER.error("Se ha producido un error en la autenticacion: "+ae.getMessage(),ae);
 			throw new GdibException(ae.getMessage());
 		}
 	}
