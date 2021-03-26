@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import es.caib.gdib.ws.common.types.CertSearchResults;
 import es.caib.gdib.ws.common.types.GdibHeader;
 import es.caib.gdib.ws.common.types.MigrationInfo;
 import es.caib.gdib.ws.common.types.Node;
@@ -547,6 +548,36 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
             throw e;
         }
     }
+	@Override
+	public CertSearchResults recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
+		long initMill = System.currentTimeMillis();
+        RetryingTransactionCallback<CertSearchResults> callback = new RetryingTransactionCallback<CertSearchResults>()
+        {
+           public CertSearchResults execute() throws Throwable
+           {                            
+        	   return getBean().recountFilesByCert(certId, gdibHeader);
+        	   
+           }
+        };        
+        try
+        {
+           doAuthentication(gdibHeader);
+           CertSearchResults res;
+           res = txnHelper.doInTransaction(callback);
+           LOGGER.info("Busqueda de certificados ("+certId+") securizado ejecutado en: "+(System.currentTimeMillis()-initMill)+" ms.");
+
+           return res;
+           
+        } catch (Exception e) {
+            if (e.getCause() instanceof GdibException) {
+                GdibException ex = ((GdibException) e.getCause());
+                LOGGER.error("Se ha producido la excepcion: " + ex.getMessage(), ex);
+                throw (GdibException) e.getCause();
+            }
+            LOGGER.error("Se ha producido la excepcion: " + e.getMessage(), e);
+            throw e;
+        }	
+    }
 	
 	public RepositoryServiceSoapPortImpl getBean(){
 		//return (RepositoryServiceSoapPortImpl) context.getBean("RepositoryServiceSoapPortImpl");
@@ -590,6 +621,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 	public void setAuthenticationService(AuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
+
+	
   
 	
 }

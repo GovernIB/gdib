@@ -2465,10 +2465,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 	
 	
-    @Override
 	public CertSearchResults recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
-		
-    	
+		//CertSearchResults res;
+		return null;
     	// TODO Set query here
 		
 	}

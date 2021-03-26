@@ -146,6 +146,7 @@ public interface RepositoryServiceSoapPort {
 			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws GdibException;
 	
 	@WebMethod(action="recountFilesByCert")
+	@WebResult(name="result", targetNamespace="http://www.caib.es/gdib/repository/ws")
 	CertSearchResults recountFilesByCert(
 			@WebParam(partName = "certId", name = "certId", targetNamespace="http://www.caib.es/gdib/repository/ws")String certId,
 			@WebParam( partName = "gdibHeader", name = "gdibHeader", targetNamespace="http://www.caib.es/gdib/repository/ws") GdibHeader gdibHeader) throws GdibException;

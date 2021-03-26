@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import es.caib.gdib.ws.common.types.CertSearchResults;
 import es.caib.gdib.ws.common.types.GdibHeader;
 import es.caib.gdib.ws.common.types.MigrationInfo;
 import es.caib.gdib.ws.common.types.Node;
@@ -129,8 +130,8 @@ public class PooledRepositoryServiceSoapPortImpl extends SpringBeanAutowiringSup
 	}
 	
 	@Override
-	public void recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
-		getBean().recountFilesByCert(certId, gdibHeader);
+	public CertSearchResults recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
+		return getBean().recountFilesByCert(certId, gdibHeader);
 	}
 
 	private RepositoryServiceSoapPort getBean(){		
