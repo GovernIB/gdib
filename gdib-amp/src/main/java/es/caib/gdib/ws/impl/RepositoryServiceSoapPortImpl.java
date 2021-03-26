@@ -75,6 +75,7 @@ import es.caib.gdib.utils.SubTypeDocInfo;
 import es.caib.gdib.utils.SubTypeDocUtil;
 import es.caib.gdib.utils.XmlUtils;
 import es.caib.gdib.utils.iface.EniModelUtilsInterface;
+import es.caib.gdib.ws.common.types.CertSearchResults;
 import es.caib.gdib.ws.common.types.Content;
 import es.caib.gdib.ws.common.types.EemgdeSignatureProfile;
 import es.caib.gdib.ws.common.types.EniSignatureType;
@@ -2462,7 +2463,17 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		return _getIndexFromRM(node,EXCHANGE);
 	}
 
-    /*
+	
+	
+    @Override
+	public CertSearchResults recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
+		
+    	
+    	// TODO Set query here
+		
+	}
+
+	/*
      * Setters.
      *
      * */

@@ -128,6 +128,11 @@ public class PooledRepositoryServiceSoapPortImpl extends SpringBeanAutowiringSup
 		getBean().closeFile(nodeId, gdibHeader);
 	}
 	
+	@Override
+	public void recountFilesByCert(String certId, GdibHeader gdibHeader) throws GdibException {
+		getBean().recountFilesByCert(certId, gdibHeader);
+	}
+
 	private RepositoryServiceSoapPort getBean(){		
 		return (RepositoryServiceSoapPort) context.getBean("AuthTransRepo");		
 	}
