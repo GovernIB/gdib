@@ -307,7 +307,7 @@ public class ExportUtils {
 	private NodeRef createRMExpedient(NodeRef expedient, NodeRef rmSeries) throws GdibException {
 		LOGGER.debug("Creamos el nodo expediente en el RM, pasandole todos los metadatos del expediente a la carpeta del RM");
 		// Creo la estructura de carpetas año, mes, dia en RM para guardar el expediente
-		String[] dateTreeFolder = new SimpleDateFormat("yyyy/MM/dd").format(new Date()).split("/");
+		String[] dateTreeFolder = new SimpleDateFormat("yyyy/MM/dd/HH/mm").format(new Date()).split("/");
 		for (String folder : dateTreeFolder) {
 			NodeRef folderRef = fileFolderService.searchSimple(rmSeries, folder);
 			if(folderRef != null)
