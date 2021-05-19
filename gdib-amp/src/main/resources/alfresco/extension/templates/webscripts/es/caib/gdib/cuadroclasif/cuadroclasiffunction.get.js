@@ -47,6 +47,8 @@ function getFunctions()
 			var dm_function = new Object();
 			dm_function.name = folders[i].name;
 			dm_function.title = folders[i].properties["title"];
+			if(!dm_functin.title)
+				dm_function.title = "";
 			functions.push(dm_function);
 		}
 	}
