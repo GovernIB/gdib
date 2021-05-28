@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.activation.DataHandler;
@@ -32,14 +33,18 @@ import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchParameters;
 import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.QName;
+import org.alfresco.transform.client.model.Mimetype;
 import org.alfresco.util.ISO8601DateFormat;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 
 import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.rm.utils.ImportUtils;
+import es.caib.gdib.utils.Certificate;
+import es.caib.gdib.utils.CertificateUtils;
 import es.caib.gdib.utils.ConstantUtils;
 import es.caib.gdib.utils.FilterPlaceholderProperties;
 import es.caib.gdib.utils.GdibUtils;
@@ -74,7 +79,8 @@ public class UpgradeIndex {
 	private int max_items; // parametro opcional para limitar el n�mero de resultados de la query
 	@Autowired
 	private GdibUtils utils;
-
+	@Autowired
+	private CertificateUtils certUtils;
 	/**
 	 * M�todo que dispara el m�todo en base al par�metro upgrade.active del fichero
 	 * schedule-job-upgrade.properties
@@ -145,14 +151,14 @@ public class UpgradeIndex {
 					String cod_clasif = (String) nodeService.getProperty(rmParent,
 							ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
 					if (cod_clasif == null) {
-						LOGGER.debug("No se encontr� codigo de clasificaci�n en expediente :" + rmParent.getId());
+						LOGGER.debug("No se encontró codigo de clasificación en expediente :" + rmParent.getId());
 					}
 					LOGGER.debug("Comprobando vigencia de expediente " + rmParent.getId()
 							+ " con codigo de clasificaci�n " + cod_clasif);
 					
 					Set<QName> toSearch = new HashSet<>();
 					toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
-					// Obtengo lista de �ndices antiguos que dejar�n de ser v�lidos al completar el
+					// Obtengo lista de índices antiguos que dejarán de ser válidos al completar el
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
 
@@ -161,7 +167,7 @@ public class UpgradeIndex {
 							timeLimitMap.get(cod_clasif))) {
 						for (ChildAssociationRef oldIndex : listaHijos)
 						{
-							//Recuperamos �ltimo �ndice v�lido y lo seteamos a SI_PERMANENTE
+							//Recuperamos último índice válido y lo seteamos a SI_PERMANENTE
 							if ("SI".equals(
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
@@ -219,7 +225,7 @@ public class UpgradeIndex {
 
 	}
 	/**
-	 * M�todo que actualiza el metadato de indice valido de los �ndices que posean de propiedad SI
+	 * Método que actualiza el metadato de indice valido de los índices que posean de propiedad SI
 	 * @param listaHijos Lista de �ndices hijos de cada expediente
 	 */
 	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
@@ -241,7 +247,7 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * M�todo que ejecuta la operaci�n de upgradeo/resellado de la firma de un
+	 * M�todo que ejecuta la operación de upgradeo/resellado de la firma de un
 	 * �ndice
 	 * 
 	 * @param indexIdentifier Nodo del expediente en el espacio temporal
@@ -250,6 +256,7 @@ public class UpgradeIndex {
 	 * @throws ContentIOException
 	 */
 	private List<NodeRef> upgradeTSASeal(NodeRef tempParentRef) throws GdibException, ContentIOException, IOException {
+		Map<Certificate,Integer> certValues = new HashMap<>();
 
 		// Check Cert
 		List<NodeRef> listaIndices = new ArrayList<NodeRef>();
@@ -257,7 +264,6 @@ public class UpgradeIndex {
 		Set<QName> toSearch = new HashSet<>();
 		toSearch.add(ConstantUtils.TYPE_FILE_INDEX_QNAME);
 		List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(tempParentRef, toSearch);
-
 		if (!listaHijos.isEmpty()) {
 			for (ChildAssociationRef it : listaHijos) {
 				if (!"SI".equals(
@@ -272,7 +278,8 @@ public class UpgradeIndex {
 
 				byte[] newSignature;
 				try {
-					newSignature = signatureService.upgradeSignature(signature, SignatureFormat.XAdES_A);
+					newSignature = signatureService.upgradeSignature(signature, SignatureFormat.XAdES_A); //Upgradeamos firma
+					
 				} catch (GdibException e) {
 					LOGGER.debug(e.getMessage());
 					continue;
@@ -281,15 +288,39 @@ public class UpgradeIndex {
 				// Afirma5ServiceInvokerFacade.getInstance().invokeService(newSignature,
 				// "validate", method, serviceProperties)
 				try {
-					Document toParseXml = obtenerDocumentDeByte(newSignature);
-					toParseXml.getDocumentElement().normalize();
+				//	Document toParseXml = obtenerDocumentDeByte(newSignature);
+					//toParseXml.getDocumentElement().normalize();
 					// LOGGER.debug(parseTimeStamp(toParseXml));
+//VALIDATE AGAIN
+					String cert = utils.makeHttpValidSignatureRequest(newSignature);
 
-					String certValue = utils.parseTimeStampASN1(toParseXml);
-					Date certValidity  = utils.parseTimeStampASN1CertCad(toParseXml);
-					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME, certValue);
-					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
-					LOGGER.debug("Validez del certificado : " + ISO8601DateFormat.format(certValidity));
+			    	Certificate certObj = utils.parseX509Cert(cert);
+					//certUtils.updateCertificatesInfo(certExists ? existingCert :certObj , certExists ? existingCert.getNumIndices()+1 : 0);
+					
+			    	//String certValue = utils.parseTimeStampASN1(toParseXml);
+					//Date certValidity  = utils.parseTimeStampASN1CertCad(toParseXml);
+					String tmpcertValue = (String)nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME);
+					Integer cont = certValues.get(certObj);
+					if(cont != null)
+					{
+						if(tmpcertValue != certObj.getSerialNumber())//Decrementamos valor del viejo certificado, aumentamos o insertaoms el nuevo
+						{
+							certValues.put(certObj, cont-1);
+							Integer auxCont= certValues.get(certObj);//Comprobamos si estaba en el mapa
+							if(auxCont != null)
+								certValues.put(certObj,auxCont+1);
+							else
+								certValues.putIfAbsent(certObj, 1);
+						}
+					}
+					else//Son iguales, insertamos si no estaba
+					{
+						certValues.putIfAbsent(certObj, 0);
+					}
+					
+					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME, certObj.getSerialNumber());
+					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certObj.getNotAfter()));
+					LOGGER.debug("Validez del certificado : " + ISO8601DateFormat.format(certObj.getNotAfter()));
 				} catch (Exception e) {
 
 					LOGGER.debug("Excepcion leyendo XML : " + e.getMessage());
@@ -301,7 +332,10 @@ public class UpgradeIndex {
 				// Actualizo la firma como contenido
 				DataHandler dh = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(newSignature)));
 
-				utils.setUnsecureDataHandler(it.getChildRef(), ConstantUtils.PROP_CONTENT, dh,
+				//utils.setUnsecureDataHandler(it.getChildRef(), ConstantUtils.PROP_CONTENT, dh,
+					//	MimetypeMap.MIMETYPE_BINARY);
+
+				utils.setDataHandler(it.getChildRef(), ConstantUtils.PROP_CONTENT, dh,
 						MimetypeMap.MIMETYPE_BINARY);
 				LOGGER.debug("Firma actualizada");
 
@@ -310,8 +344,22 @@ public class UpgradeIndex {
 				// break;
 			}
 		}
-		// Devuelvo una lista con los nodeRefs de los �ndices actualizados
-
+		// Actualizamos información de los certificado
+		try
+		{
+			for(Entry<Certificate, Integer> it : certValues.entrySet())
+			{
+				Certificate cf =certUtils.searchCertBySerialNumber(it.getKey().getSerialNumber());//Buscamos certificado
+				if(cf != null)
+					certUtils.updateCertificatesInfo(cf, cf.getNumIndices()+it.getValue()); //Añadimos valor de diferencia de índices (Cronjob se encarga de decrementar valor en caso de que el certificado haya cambiado		}
+				else // certificado nuevo
+					certUtils.createCertificate(it.getKey());
+			}
+		}catch(Exception e)
+		{
+			LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage());
+		}
+		// Devuelvo una lista con los nodeRefs de los  índices actualizados
 		return listaIndices;
 	}
 
@@ -362,7 +410,7 @@ public class UpgradeIndex {
 				LOGGER.debug("Encontrados " + resultSet.length() + " indices para upgradeSignature");
 
 			}
-			LOGGER.info("N�mero de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
+			LOGGER.info("Número de documentos obtenidos al ejecutar la consulta Lucene de upgradear: "
 					+ queryResultLength + ".");
 		}catch(Exception e){
 			LOGGER.error("Ocurrio un error haciendo query de upgradeo de indices :"+query.toString());
@@ -551,6 +599,14 @@ public class UpgradeIndex {
 
 	public void setCert_serial(String cert_serial) {
 		this.cert_serial = cert_serial;
+	}
+
+	public CertificateUtils getCertUtils() {
+		return certUtils;
+	}
+
+	public void setCertUtils(CertificateUtils certUtils) {
+		this.certUtils = certUtils;
 	}
 
 }

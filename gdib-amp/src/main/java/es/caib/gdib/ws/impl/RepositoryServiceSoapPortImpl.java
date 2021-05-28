@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -55,6 +56,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -66,6 +68,8 @@ import es.caib.gdib.rm.utils.ExportUtils;
 import es.caib.gdib.rm.utils.ImportUtils;
 import es.caib.gdib.utils.AdministrativeProcessingIndexSignerFactory;
 import es.caib.gdib.utils.CaibServicePermissions;
+import es.caib.gdib.utils.Certificate;
+import es.caib.gdib.utils.CertificateUtils;
 import es.caib.gdib.utils.ConstantUtils;
 import es.caib.gdib.utils.ExUtils;
 import es.caib.gdib.utils.GdibUtils;
@@ -196,13 +200,16 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
     private ExportUtils exportUtils;
     @Autowired
     private ImportUtils importUtils;
-
     @Autowired
+    private CertificateUtils certUtils;
+
+ 
+	@Autowired
     private IndiceElectronicoManager indiceElectronicoManager;
     @Autowired
     private SubTypeDocUtil subTypeDocUtil;
 
-
+    
     public RepositoryServiceSoapPortImpl(){
     	try{
 			this.addEniExchangeFiles = Boolean.valueOf(addEniExchangeFilesPropValue);
@@ -2176,17 +2183,31 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			byte[] indexBArrayInternal = utils.getByteArrayFromHandler(utils.getDataHandler(internalIndexNodeRef,ContentModel.PROP_CONTENT));
 			Document dIndexInternal = XmlUtils.byteArrayToXmlDocument(indexBArrayInternal);
 			dIndexInternal.getDocumentElement().normalize();
-			String serialCertIdentr= utils.parseTimeStampASN1(dIndexInternal) ;
-			Date certValidity = utils.parseTimeStampASN1CertCad(dIndexInternal);
-			
-			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
+		
+			LOGGER.debug("Before parsing index");
+
+			String cert = utils.makeHttpValidSignatureRequest(indexBArrayInternal);
+
+	    	Certificate certObj = utils.parseX509Cert(cert);
+			Certificate existingCert = certUtils.searchCertBySerialNumber(certObj.getSerialNumber());
+			boolean certExists= existingCert != null;
+			certUtils.updateCertificatesInfo(certExists ? existingCert :certObj , certExists ? existingCert.getNumIndices()+1 : 0);
+
+			//utils.parseX509Index(dIndexEchange);
+			LOGGER.debug("After parsing index");
+			//Make HTTP petition
+			//String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
+			//Date certValidity = utils.parseTimeStampASN1CertCad(dIndexEchange);
+
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, certObj.getSerialNumber());
 			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
-			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
+			nodeService.setProperty(internalIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certObj.getNotAfter()));
 				
 			
 		}catch(Exception e)
 		{
-			LOGGER.debug("Couldnt read TS token");
+			LOGGER.debug("Couldnt read TS token "+e.getMessage());
+			LOGGER.debug("Couldnt read TS token "+e.getLocalizedMessage());
 		}
 		
 		
@@ -2207,20 +2228,36 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			byte[] indexBArrayExchange = utils.getByteArrayFromHandler(utils.getDataHandler(exchangeIndexNodeRef, ContentModel.PROP_CONTENT));
 			Document dIndexEchange = XmlUtils.byteArrayToXmlDocument(indexBArrayExchange);
 			dIndexEchange.getDocumentElement().normalize();
-			String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
-			Date certValidity = utils.parseTimeStampASN1CertCad(dIndexEchange);
+			LOGGER.debug("Before parsing index");
 
-			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, serialCertIdentr);
+			String cert = utils.makeHttpValidSignatureRequest(indexBArrayExchange);
+
+	    	Certificate certObj=utils.parseX509Cert(cert);
+			//utils.parseX509Index(dIndexEchange);
+			LOGGER.debug("After parsing index");
+			//Make HTTP petition
+			//String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
+			//Date certValidity = utils.parseTimeStampASN1CertCad(dIndexEchange);
+			Certificate existingCert = certUtils.searchCertBySerialNumber(certObj.getSerialNumber());
+			boolean certExists= existingCert != null;
+			certUtils.updateCertificatesInfo(certExists ? existingCert :certObj , certExists ? existingCert.getNumIndices()+1 : 0);
+			
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, "123456789");
 			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
-			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certValidity));
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certObj.getNotAfter()));
 				
 			
 		}catch(Exception e)
 		{
-			LOGGER.debug("Couldnt read TS token");
+			LOGGER.debug("Couldnt read TS token "+e.getMessage());
+			LOGGER.debug("Couldnt read TS token "+e.getLocalizedMessage());
 		}
 	    
-	    
+		List<Certificate> certs = certUtils.getCertificatesInfo();
+		for(Certificate c : certs)
+			LOGGER.debug("FROM DB "+c.toString());
+
+
 	    LOGGER.info("Se procede a realizar la transferencia a RM del expediente....");
 		// Se efect�a la transferencia a la fase semi- activa del expediente.
 		NodeRef rmExpedient = exportUtils.exportExpediente(expedientRef);
@@ -2558,6 +2595,14 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 */
 	public void setAddIntExchangeFilesPropValue(String addIntExchangeFilesPropValue) {
 		this.addIntExchangeFilesPropValue = addIntExchangeFilesPropValue;
+	}
+	
+	public CertificateUtils getCertUtils() {
+		return certUtils;
+	}
+
+	public void setCertUtils(CertificateUtils certUtils) {
+		this.certUtils = certUtils;
 	}
 
 /*

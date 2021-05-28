@@ -280,9 +280,9 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		OptionalParameters optParam = new OptionalParameters();
 		optParam.setReturnProcessingDetails(true);
 		optParam.setAdditionalReportOption(true);
-		//optParam.setReturnSignedDataInfo(true); // UNCOMMENT TO GET ADITOINAL DATAINFO LIST
+		optParam.setReturnSignedDataInfo(true); // UNCOMMENT TO GET ADITOINAL DATAINFO LIST
 		optParam.setReturnReadableCertificateInfo(true);
-
+		
 		verSigReq.setOptionalParameters(optParam);
 
 		VerificationReport	reporte = new VerificationReport();
@@ -304,14 +304,21 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
 					+ "para validar una firma electrónica.");
 		}
-		/*LOGGER.debug("Obtaining Data info"); UNCOMMENT TO PARSE ADITIONAL DATA INFO
+		LOGGER.debug("Obtaining Data info"); //UNCOMMENT TO PARSE ADITIONAL DATA INFO
 		List<DataInfo> dataInfo = verSigRes.getSignedDataInfo();
 		if(dataInfo == null)
 			LOGGER.debug("DataInfo List is null");
 		else
 		{
 			//ITERATE AND PARSE DATAINFO
-		}*/
+			for(DataInfo di : dataInfo)
+			{
+				if(di.getDocumentHash() != null)LOGGER.debug(" Document hash"+di.getDocumentHash().toString());
+				if(di.getContentData()!= null)LOGGER.debug(new String(" ContentData refs"+di.getContentData()));
+				if(di.getSignedDataRefs() != null && di.getSignedDataRefs().isEmpty())LOGGER.debug(" Signed data refs"+di.getSignedDataRefs());
+
+			}
+		}
 
 		LOGGER.debug("Obteniendo datos detallados sobre validez");
 		List<IndividualSignatureReport> info = verSigRes.getVerificationReport();

@@ -142,6 +142,7 @@
 		<property name="destDir" value="$gdib{gdib.repository.rm.export.destDir}" />
 		<property name="tmpDir" value="$gdib{gdib.repository.temp.folder.uuid}" />
 	</bean>
+	
 	<!-- FIN: Beans relacionados con el export a RM  -->
 
 	<!-- Beans relacionados con el import a RM  -->
@@ -173,5 +174,15 @@
 		<property name="db_alfresco_username" value="${cuadro.db.username}" />
 		<property name="db_alfresco_password" value="${cuadro.db.password}" />
 	</bean>
-
+		<!-- Beans relacionados con los certificados  -->
+	
+	<bean name="certificateUtils" class="es.caib.gdib.utils.CertificateUtils">
+		<property name="utils" ref="gdibUtils" />
+		<property name="exUtils" ref="exUtils" />
+		<property name="db_alfresco_datasource" value="$gdib{cuadro.db.driver}" />
+		<property name="db_alfresco_url" value="${cuadro.db.url}" />
+		<property name="db_alfresco_username" value="${cuadro.db.username}" />
+		<property name="db_alfresco_password" value="${cuadro.db.password}" />
+		
+	</bean>
 </beans>
