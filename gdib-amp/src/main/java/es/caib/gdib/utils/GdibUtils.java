@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -162,6 +163,12 @@ public class GdibUtils {
      * Propiedades para petición Validacion firma HTTP
      *
      * */
+	@Value("$gdib{verify.request.protocol}")
+    private String firmaProtocol;
+	@Value("$gdib{verify.request.hostname}")
+    private String firmaHostName;
+	@Value("$gdib{verify.request.url}")
+    private String firmaUrl;
 	@Value("$gdib{verify.request.userName}")
     private String firmaUsername;
 	@Value("$gdib{verify.request.password}")
@@ -2843,13 +2850,14 @@ public class GdibUtils {
 				X509Certificate t = (X509Certificate) c;
 				LOGGER.debug("Cert read successfully");
 				inputStream.close();
-				LOGGER.debug(t.toString());
+				
 				result.setSerialNumber(t.getSerialNumber().toString(10));//Representacion en base decimal
 				result.setSubjectDN(t.getSubjectDN().getName());
 				result.setIssuerDN(t.getIssuerDN().getName());
 				
 				result.setNotAfter(new java.sql.Date(t.getNotAfter().getTime()));
 				result.setNotBefore(new java.sql.Date( t.getNotBefore().getTime()));
+				LOGGER.debug(result.toString());
 				//LOGGER.debug(result.toString());
 				return result;
 			
@@ -2875,20 +2883,20 @@ public class GdibUtils {
 		
 		Reader in= null; //Stream para leer respuesta de peticion
 		OutputStream wr= null; // Stream para escribir la peticion a la conexion
-		HttpURLConnection urlConn= null; // UrlConnection
+		HttpsURLConnection  urlConn= null; // UrlConnection
 		try {
-		LOGGER.debug("Into MakeHTTPValidSignatureREquest");
-		URL request = new URL("http://sdesfirlin2.caib.es:8080/afirmaws/services/DSSAfirmaVerify");
+		LOGGER.debug("Into MakeHTTPValidSignatureRequest");
+		URL request = new URL(firmaProtocol+"://+"+firmaHostName+"/"+firmaUrl);
 		//URL request = new URL("https://afirmades.caib.es:4430/esb/services/DSSAfirmaVerify");
-		urlConn=  (HttpURLConnection) request.openConnection();// TEST WITH HTTPS/HTTPURLCONNECTION
-		urlConn.setRequestMethod("POST");
+		urlConn=  (HttpsURLConnection) request.openConnection();// TEST WITH HTTPS/HTTPURLCONNECTION
+		
 
 		urlConn.setRequestProperty("Content-type", "text/xml; charset=utf-8");
 	    urlConn.setRequestProperty("SOAPAction", "");
 	    urlConn.setRequestProperty("accept", "*/*");
 	    urlConn.setRequestProperty("Cache-Control", "no-cache");
 	    urlConn.setRequestProperty("Pragma", "no-cache");
-	    urlConn.setRequestProperty("Host", "sdesfirlin2.caib.es:8080");
+	    urlConn.setRequestProperty("Host", firmaHostName);
 	    urlConn.setRequestProperty("Connection", "keep-alive");
 	    urlConn.setRequestProperty("user-agent", "Apache CXF 2.2.12");
 	    
@@ -2987,7 +2995,9 @@ public class GdibUtils {
 		{
 			if(urlConn!= null)
 			{
-		        in = new BufferedReader(new InputStreamReader(urlConn.getErrorStream(), "UTF-8"));
+		        //in = new BufferedReader(new InputStreamReader(((HttpURLConnection) urlConn).getErrorStream(), "UTF-8"));
+		     
+		        in = new BufferedReader(new InputStreamReader(((HttpsURLConnection) urlConn).getErrorStream(), "UTF-8"));
 		        StringBuilder res= new StringBuilder();
 		        for (int c; (c = in.read()) >= 0;)
 		            res.append((char)c);
@@ -3003,7 +3013,10 @@ public class GdibUtils {
 			if(baos!= null)baos.close(); 
 			if(in!= null)in.close();
 			if(wr!= null)wr.close();
-			if(urlConn!= null)urlConn.disconnect();
+			if(urlConn!= null)
+			{
+				((HttpsURLConnection) urlConn).disconnect();	
+			}
 		}
 		return "";
 	}

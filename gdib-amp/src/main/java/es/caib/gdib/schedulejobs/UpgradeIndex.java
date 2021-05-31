@@ -82,10 +82,11 @@ public class UpgradeIndex {
 	@Autowired
 	private CertificateUtils certUtils;
 	/**
-	 * M�todo que dispara el m�todo en base al par�metro upgrade.active del fichero
+	 * Método que dispara el m�todo en base al par�metro upgrade.active del fichero
 	 * schedule-job-upgrade.properties
 	 */
 	public void execute() {
+		LOGGER.debug("Running UpgradeIndex Cronjob : "+active);
 		// compruebo si el job esta activo, por la property "upgrade.active"
 		if (active) {
 			LOGGER.info("Lanzando el cronjob - UpgradeIndex Job");
@@ -247,8 +248,8 @@ public class UpgradeIndex {
 	}
 
 	/**
-	 * M�todo que ejecuta la operación de upgradeo/resellado de la firma de un
-	 * �ndice
+	 * Método que ejecuta la operación de upgradeo/resellado de la firma de un
+	 * índice
 	 * 
 	 * @param indexIdentifier Nodo del expediente en el espacio temporal
 	 * @throws GdibException      wrapper para propagar la excepci�n
@@ -300,22 +301,21 @@ public class UpgradeIndex {
 			    	//String certValue = utils.parseTimeStampASN1(toParseXml);
 					//Date certValidity  = utils.parseTimeStampASN1CertCad(toParseXml);
 					String tmpcertValue = (String)nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME);
+					certValues.putIfAbsent(certObj, 0);//Insertamos en el mapa por defecto
 					Integer cont = certValues.get(certObj);
 					if(cont != null)
 					{
 						if(tmpcertValue != certObj.getSerialNumber())//Decrementamos valor del viejo certificado, aumentamos o insertaoms el nuevo
 						{
-							certValues.put(certObj, cont-1);
+							Certificate auxCert = certUtils.searchCertBySerialNumber(tmpcertValue);//Siempre estara al insertarse en bbdd al crear el indice
+							certValues.put(auxCert, certValues.get(auxCert) != null ? certValues.get(auxCert)-1 :-1);
+//							certValues.put(certObj, cont+1);
 							Integer auxCont= certValues.get(certObj);//Comprobamos si estaba en el mapa
 							if(auxCont != null)
 								certValues.put(certObj,auxCont+1);
 							else
 								certValues.putIfAbsent(certObj, 1);
 						}
-					}
-					else//Son iguales, insertamos si no estaba
-					{
-						certValues.putIfAbsent(certObj, 0);
 					}
 					
 					nodeService.setProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME, certObj.getSerialNumber());
@@ -347,6 +347,10 @@ public class UpgradeIndex {
 		// Actualizamos información de los certificado
 		try
 		{
+			List<Certificate> oldList = certUtils.getCertificatesInfo();
+			for(Certificate cf : oldList)
+				LOGGER.debug("Cert "+cf.getSerialNumber() + " Numbers before >" + cf.getNumIndices());
+			
 			for(Entry<Certificate, Integer> it : certValues.entrySet())
 			{
 				Certificate cf =certUtils.searchCertBySerialNumber(it.getKey().getSerialNumber());//Buscamos certificado
@@ -355,6 +359,10 @@ public class UpgradeIndex {
 				else // certificado nuevo
 					certUtils.createCertificate(it.getKey());
 			}
+			
+			oldList = certUtils.getCertificatesInfo();
+			for(Certificate cf : oldList)
+				LOGGER.debug("Cert "+cf.getSerialNumber() + " Numbers after >" + cf.getNumIndices());
 		}catch(Exception e)
 		{
 			LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage());
