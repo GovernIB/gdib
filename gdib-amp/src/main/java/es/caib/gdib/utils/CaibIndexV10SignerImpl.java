@@ -51,7 +51,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 	
     private static final String INDEX_CHARSET = "UTF-8";
 
-    private static final String DEFAULT_CAIB_SIGNATURE_TYPE_XML_ELEMENT_VALUE = "TF01";
+    private static final String DEFAULT_CAIB_SIGNATURE_TYPE_XML_ELEMENT_VALUE = "TF03";
     
     private static final SignatureFormat DEFAULT_CAIB_INDEX_SIGNATURE_FORMAT = SignatureFormat.XAdES_A;
     
@@ -221,10 +221,10 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 			
 			LOGGER.debug("Nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
 					", con contenido vac�o, generado correctamente.");
-			LOGGER.debug("Se a�ade el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+			LOGGER.debug("Se añade el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
 					", con contenido vac�o, como hijo del nodo ra�z del documento.");
 			rootNode.appendChild(signatureNode);
-			LOGGER.debug("A�adido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
+			LOGGER.debug("Añadido el nodo " + CAIB_SIGNATURE_CONTENT_XML_ELEMENT + 
 					", con contenido vac�o, como hijo del nodo ra�z del documento.");
 			
 			LOGGER.debug("Actualizando contenido documento XML en memoria.");

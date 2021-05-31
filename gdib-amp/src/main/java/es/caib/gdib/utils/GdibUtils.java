@@ -1,27 +1,51 @@
 package es.caib.gdib.utils;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64.Decoder;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -77,6 +101,7 @@ import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.util.encoders.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.extensions.surf.util.ISO8601DateFormat;
 import org.w3c.dom.Element;
 
@@ -133,7 +158,20 @@ public class GdibUtils {
     private String registroCentralSeries;
     private Boolean inDMPathCheckActive;
 
-
+    /*
+     * Propiedades para petición Validacion firma HTTP
+     *
+     * */
+	@Value("$gdib{verify.request.userName}")
+    private String firmaUsername;
+	@Value("$gdib{verify.request.password}")
+    private String firmaPassword;
+	@Value("$gdib{gdib.afirma.integra.afirmaAppId}")
+    private String firmaAppName;
+	@Value("$gdib{verify.request.soapString}")
+    private String VERIFY_REQUEST_TEMPLATE;
+    
+    
     private static final SecureRandom secureRandom = new SecureRandom();
 
     private SignatureService signatureService;
@@ -2611,7 +2649,7 @@ public class GdibUtils {
 	}
 
 	/**
-	 * M�todo que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
+	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo tipo A de una firma XAdES
 	 * @param signature XML que contiene la firma en un �ndice
 	 * @return Serial number del certificado de la TSA
 	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
@@ -2780,7 +2818,230 @@ public class GdibUtils {
 
 		
 	}
+	
+	/**
+	 * Método que devuelve el identificador del certificado usado para generar el sello de tiempo 
+	 * @param El certificado codificado recuperado de la petición de firma
+	 * @return Serial number del certificado de la TSA
+	 * @throws GdibException Excepcion propagada en caso de que no sea capaz decodificar el ASN1
+	 * @throws IOException  Excepci�n lanzada si no consigue leer el XML
+	 */
+	public Certificate parseX509Cert(String certEncoded) throws GdibException,IOException
+	{
+		Certificate result = new Certificate();
+		ByteArrayInputStream inputStream = null;
+		try {
+			
+			//LOGGER.debug("CERT ENCODED :::: "+certEncoded);
+			StringBuilder stb = new StringBuilder(certEncoded);
+			
+				byte encodedCert[] = java.util.Base64.getDecoder().decode(stb.toString().getBytes("UTF-8"));
+				inputStream  =  new ByteArrayInputStream(encodedCert);
+				
+				CertificateFactory cf = CertificateFactory.getInstance("X.509");
+				java.security.cert.Certificate c = cf.generateCertificate(inputStream);
+				X509Certificate t = (X509Certificate) c;
+				LOGGER.debug("Cert read successfully");
+				inputStream.close();
+				LOGGER.debug(t.toString());
+				result.setSerialNumber(t.getSerialNumber().toString(10));//Representacion en base decimal
+				result.setSubjectDN(t.getSubjectDN().getName());
+				result.setIssuerDN(t.getIssuerDN().getName());
+				
+				result.setNotAfter(new java.sql.Date(t.getNotAfter().getTime()));
+				result.setNotBefore(new java.sql.Date( t.getNotBefore().getTime()));
+				//LOGGER.debug(result.toString());
+				return result;
+			
+		}catch(Exception e)
+		{
+			LOGGER.error("Error parsing X509 Cert : "+e.getLocalizedMessage());
+			throw exUtils.genericException(e.getLocalizedMessage());
+		}finally
+		{
+			if(inputStream != null)
+				inputStream.close();
+			
+		}
+		
+	}	
+	
+	
+	public String makeHttpValidSignatureRequest(byte [] docBase64) throws MalformedURLException,IOException,UnsupportedEncodingException,NoSuchAlgorithmException
+	//public String makeHttpValidSignatureRequest(String nonce, byte[] doc)
+	{
+		ByteArrayOutputStream bout = null; //Byte array para escribir la peticion a la url connection
+		ByteArrayOutputStream baos= null;// Auxiliar byte array para generar el messageDiggest
+		
+		Reader in= null; //Stream para leer respuesta de peticion
+		OutputStream wr= null; // Stream para escribir la peticion a la conexion
+		HttpURLConnection urlConn= null; // UrlConnection
+		try {
+		LOGGER.debug("Into MakeHTTPValidSignatureREquest");
+		URL request = new URL("http://sdesfirlin2.caib.es:8080/afirmaws/services/DSSAfirmaVerify");
+		//URL request = new URL("https://afirmades.caib.es:4430/esb/services/DSSAfirmaVerify");
+		urlConn=  (HttpURLConnection) request.openConnection();// TEST WITH HTTPS/HTTPURLCONNECTION
+		urlConn.setRequestMethod("POST");
+
+		urlConn.setRequestProperty("Content-type", "text/xml; charset=utf-8");
+	    urlConn.setRequestProperty("SOAPAction", "");
+	    urlConn.setRequestProperty("accept", "*/*");
+	    urlConn.setRequestProperty("Cache-Control", "no-cache");
+	    urlConn.setRequestProperty("Pragma", "no-cache");
+	    urlConn.setRequestProperty("Host", "sdesfirlin2.caib.es:8080");
+	    urlConn.setRequestProperty("Connection", "keep-alive");
+	    urlConn.setRequestProperty("user-agent", "Apache CXF 2.2.12");
+	    
+	    urlConn.setDoOutput(true);
+	    urlConn.setDoInput(true);
+/*
+ * Create Nonce+Digest
+ * */
+	  //From the spec: Password_Digest = Base64 ( SHA-1 ( nonce + created + password ) )
+        //Make the nonce
+        SecureRandom rand = SecureRandom.getInstance("SHA1PRNG");
+        rand.setSeed(System.currentTimeMillis());
+        byte[] nonceBytes = new byte[16];
+        rand.nextBytes(nonceBytes);
+        
+        //Make the created date
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        df.setTimeZone(TimeZone.getTimeZone("UTC+1"));
+        String createdDate = df.format(Calendar.getInstance().getTime());
+        byte[] createdDateBytes = createdDate.getBytes("UTF-8");
+        
+        //Make the password
+        byte[] passwordBytes = firmaPassword.getBytes("UTF-8");
+        
+        //SHA-1 hash the bunch of it.
+        baos = new ByteArrayOutputStream();
+        baos.write(nonceBytes);
+        baos.write(createdDateBytes);
+        baos.write(passwordBytes);
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] digestedPassword = md.digest(baos.toByteArray());
+        
+        //Encode the password and nonce for sending                   
+        String passwordB64 = java.util.Base64.getEncoder().encodeToString(digestedPassword);
+        
+        String nonceB64 = java.util.Base64.getEncoder().encodeToString(nonceBytes);
+	  
+		final StringBuilder requestString= new StringBuilder(400);
+        Formatter formatterDocumento = new Formatter(requestString);
+
+	    //FirmaUsername
+	    //PasswordDiggest
+	    //nonceB64
+	    //CreatedDate
+	    //docBase64
+	    //FirmaAppName
+        LOGGER.debug("FirmaUSername "+firmaUsername);
+        LOGGER.debug("FirmaUPassword "+firmaPassword);
+        LOGGER.debug("FirmaUPassword "+firmaAppName);
+        formatterDocumento.format(VERIFY_REQUEST_TEMPLATE,
+        		firmaUsername,
+        		passwordB64,
+        		nonceB64,
+        		createdDate,
+        		java.util.Base64.getEncoder().encodeToString(docBase64),
+        		firmaAppName
+        		)
+        		.toString();
+       // LOGGER.debug("WORKING REQUEST "+ stb.toString());
+        //LOGGER.debug("NON WORKING REQUEST "+ requestString.toString());
+	    urlConn.setRequestProperty("Content-Length", String.valueOf(requestString.toString().getBytes().length));
+	    //urlConn.setRequestProperty("Content-Length", String.valueOf(stb.toString().getBytes().length));
+	    urlConn.connect();
+
+		
+		
+		bout = new ByteArrayOutputStream();
+		//bout.write(stb.toString().getBytes());
+		bout.write(requestString.toString().getBytes());
+	    wr = urlConn.getOutputStream();
+	    wr.write( bout.toByteArray());		
+	   
+	    //Rd bytes
+        in = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "UTF-8"));
+        StringBuilder res= new StringBuilder();
+        for (int c; (c = in.read()) >= 0;)
+            res.append((char)c);
+	    
+	    
+	    //Parseamos mediante regex 
+	    String resString = res.toString();
+	    resString= resString.replaceAll("&lt;","<"); //Corregimos mensaje
+	    
+	    resString= resString.replaceAll("&gt;",">"); //Corregimos mensaje
+	    Pattern pattern = Pattern.compile("<vr:SignatureTimeStamp>.*?<vr:CertificateValue>.*?<!\\[CDATA\\[(.*?)\\]\\]");
+	    Matcher matcher = pattern.matcher(resString);
+
+	    if(matcher.find()) {
+	    	return matcher.group(1);
+	    }else
+	    {
+	    	throw exUtils.genericException("NO CERT FOUND");
+	    }
+
+		}catch( GdibException  | IOException | NoSuchAlgorithmException e)
+		{
+			if(urlConn!= null)
+			{
+		        in = new BufferedReader(new InputStreamReader(urlConn.getErrorStream(), "UTF-8"));
+		        StringBuilder res= new StringBuilder();
+		        for (int c; (c = in.read()) >= 0;)
+		            res.append((char)c);
+			    
+			    LOGGER.debug("REQUEST ANSWER ERROR "+res.toString());
+			}		    
+		    LOGGER.error("Error throwing HTTP Request to DSSAFirmaVerify "+e.getLocalizedMessage());
+		}
+		finally
+		{
+			//Liberamos resources para evitar leaks
+			if(bout != null)bout.close();
+			if(baos!= null)baos.close(); 
+			if(in!= null)in.close();
+			if(wr!= null)wr.close();
+			if(urlConn!= null)urlConn.disconnect();
+		}
+		return "";
+	}
 	//public void setUnsecureContentService(ContentService unsecureContentService) {
 		//this.unsecureContentService = unsecureContentService;
 	//}
+
+	public String getFirmaUsername() {
+		return firmaUsername;
+	}
+
+	public void setFirmaUsername(String firmaUsername) {
+		this.firmaUsername = firmaUsername;
+	}
+
+	public String getFirmaPassword() {
+		return firmaPassword;
+	}
+
+	public void setFirmaPassword(String firmaPassword) {
+		this.firmaPassword = firmaPassword;
+	}
+
+	public String getFirmaAppName() {
+		return firmaAppName;
+	}
+
+	public void setFirmaAppName(String firmaAppName) {
+		this.firmaAppName = firmaAppName;
+	}
+
+	public String getVERIFY_REQUEST_TEMPLATE() {
+		return VERIFY_REQUEST_TEMPLATE;
+	}
+
+	public void setVERIFY_REQUEST_TEMPLATE(String vERIFY_REQUEST_TEMPLATE) {
+		VERIFY_REQUEST_TEMPLATE = vERIFY_REQUEST_TEMPLATE;
+	}
+	
+	
 }

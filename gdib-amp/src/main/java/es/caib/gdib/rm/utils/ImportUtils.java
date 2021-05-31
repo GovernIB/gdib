@@ -189,25 +189,25 @@ public class ImportUtils {
 	 */
 	private NodeRef getXMLDescriptorFromExpedient(NodeRef expedient) {
 		String expedientName = (String) nodeService.getProperty(expedient, ConstantUtils.PROP_NAME);
-		LOGGER.debug(expedientName);
+		//LOGGER.debug(expedientName);
 
 		List<ChildAssociationRef> listNodes = nodeService.getChildAssocs(expedient);
-		LOGGER.debug(listNodes.toString());
+		//LOGGER.debug(listNodes.toString());
 		for (ChildAssociationRef childAssoc : listNodes) {
-			if (childAssoc != null)
-				LOGGER.debug(childAssoc.toString());
-			else
-				LOGGER.debug("node nul");
+			//if (childAssoc != null)
+			//	LOGGER.debug(childAssoc.toString());
+		//	else
+			//	LOGGER.debug("node nul");
 			NodeRef son = childAssoc.getChildRef();
-			LOGGER.debug("son.toString=" + son.toString());
+		//	LOGGER.debug("son.toString=" + son.toString());
 			String sonName = (String) nodeService.getProperty(son, ConstantUtils.PROP_NAME);
-			LOGGER.debug("SonName  = " + sonName);
-			LOGGER.debug("trying sonName(" + sonName + " contains expedientName(" + expedientName + ")");
+			//LOGGER.debug("SonName  = " + sonName);
+		//	LOGGER.debug("trying sonName(" + sonName + " contains expedientName(" + expedientName + ")");
 			if (sonName.contains(expedientName)) {
 				return son;
 			}
 		}
-		LOGGER.debug("returned nul");
+		//LOGGER.debug("returned nul");
 		return null;
 	}
 
