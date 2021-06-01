@@ -2243,7 +2243,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			boolean certExists= existingCert != null;
 			certUtils.updateCertificatesInfo(certExists ? existingCert :certObj , certExists ? existingCert.getNumIndices()+1 : 0);
 			
-			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, "123456789");
+			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_QNAME, certObj.getSerialNumber());
 			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_VALID_QNAME, "SI");
 			nodeService.setProperty(exchangeIndexNodeRef, ConstantUtils.PROP_INDEX_CERT_DATE_QNAME, ISO8601DateFormat.format(certObj.getNotAfter()));
 				
