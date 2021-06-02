@@ -123,7 +123,7 @@ public class UpgradeIndex {
 		// Si ocurre alg�n error ( la carpeta solo debe crearse para llevar a cabo el
 		// trabajo temporal)
 		if (tmpFolder == null)
-			throw new GdibException("Ocurri� un error creando el directorio temporal");
+			throw new GdibException("Ocurrió un error creando el directorio temporal");
 
 		upgradeDocs = null;
 

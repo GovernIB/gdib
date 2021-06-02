@@ -2187,7 +2187,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			LOGGER.debug("Before parsing index");
 
 			String cert = utils.makeHttpValidSignatureRequest(indexBArrayInternal);
-
+			
 	    	Certificate certObj = utils.parseX509Cert(cert);
 			Certificate existingCert = certUtils.searchCertBySerialNumber(certObj.getSerialNumber());
 			boolean certExists= existingCert != null;
@@ -2238,7 +2238,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			//Make HTTP petition
 			//String serialCertIdentr= utils.parseTimeStampASN1(dIndexEchange);
 			//Date certValidity = utils.parseTimeStampASN1CertCad(dIndexEchange);
-
+			
 			Certificate existingCert = certUtils.searchCertBySerialNumber(certObj.getSerialNumber());
 			boolean certExists= existingCert != null;
 			certUtils.updateCertificatesInfo(certExists ? existingCert :certObj , certExists ? existingCert.getNumIndices()+1 : 0);

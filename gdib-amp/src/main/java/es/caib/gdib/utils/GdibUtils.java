@@ -173,7 +173,7 @@ public class GdibUtils {
     private String firmaUsername;
 	@Value("$gdib{verify.request.password}")
     private String firmaPassword;
-	@Value("$gdib{gdib.afirma.integra.afirmaAppId}")
+	@Value("$gdib{verify.request.appName}")
     private String firmaAppName;
 	@Value("$gdib{verify.request.soapString}")
     private String VERIFY_REQUEST_TEMPLATE;
@@ -2886,7 +2886,8 @@ public class GdibUtils {
 		HttpsURLConnection  urlConn= null; // UrlConnection
 		try {
 		LOGGER.debug("Into MakeHTTPValidSignatureRequest");
-		URL request = new URL(firmaProtocol+"://+"+firmaHostName+"/"+firmaUrl);
+		String urlString =firmaProtocol+"://"+firmaHostName+"/"+firmaUrl;
+		URL request = new URL(urlString);
 		//URL request = new URL("https://afirmades.caib.es:4430/esb/services/DSSAfirmaVerify");
 		urlConn=  (HttpsURLConnection) request.openConnection();// TEST WITH HTTPS/HTTPURLCONNECTION
 		
@@ -2899,7 +2900,6 @@ public class GdibUtils {
 	    urlConn.setRequestProperty("Host", firmaHostName);
 	    urlConn.setRequestProperty("Connection", "keep-alive");
 	    urlConn.setRequestProperty("user-agent", "Apache CXF 2.2.12");
-	    
 	    urlConn.setDoOutput(true);
 	    urlConn.setDoInput(true);
 /*
@@ -2943,9 +2943,6 @@ public class GdibUtils {
 	    //CreatedDate
 	    //docBase64
 	    //FirmaAppName
-        LOGGER.debug("FirmaUSername "+firmaUsername);
-        LOGGER.debug("FirmaUPassword "+firmaPassword);
-        LOGGER.debug("FirmaUPassword "+firmaAppName);
         formatterDocumento.format(VERIFY_REQUEST_TEMPLATE,
         		firmaUsername,
         		passwordB64,
