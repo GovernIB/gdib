@@ -163,6 +163,7 @@ public class UpgradeIndex {
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
 
+
 					if (!checkExpedientReseal(
 							(Date) nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),
 							timeLimitMap.get(cod_clasif))) {
@@ -173,7 +174,7 @@ public class UpgradeIndex {
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
 									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "SI_PERMANENTE");
-									break;
+									//break;
 								}
 
 
@@ -524,9 +525,13 @@ public class UpgradeIndex {
 		return builder.parse(new ByteArrayInputStream(documentoXml));
 	}
 
+	public void setJobRunDate(Date jobRunDate) {
+		this.jobRunDate = jobRunDate;
+	}
+
 	/**
 	 * M�todo auxiliar para saber si un expediente se debe resellar
-	 * 
+	 *
 	 * @param fechaFinExp  fecha cierre del expediente
 	 * @param diasVigencia dias de vigencia por serie documental
 	 * @return true si debe resellarse
@@ -539,14 +544,32 @@ public class UpgradeIndex {
 		docLifeTimeCal = Calendar.getInstance();
 		docLifeTimeCal.setTime(fechaFinExp);
 		docLifeTimeCal.add(Calendar.DAY_OF_YEAR, Integer.valueOf(diasVigencia));
-		boolean res = docLifeTimeCal.before(jobRunDate);
-		LOGGER.debug("Checking if " + docLifeTimeCal.getTime() + " is before than " + jobRunDate.getTime());
+		boolean res = false;//docLifeTimeCal.before(jobRunDate);
+
+		DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmm");
+		long milliSeconds= Long.parseLong("" + jobRunDate.getTime());
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(milliSeconds);
+
+		if ( (docLifeTimeCal.getTimeInMillis()>=jobRunDate.getTime()) ==true ){
+
+			//   hoy()------FFV     or ------------fhoy()FFV------------
+			res =true;
+			LOGGER.debug("Checking if " + docLifeTimeCal.getTime() + " es mayor o igual a " + formatter.format(calendar.getTime()));
+			LOGGER.debug("docLifeTimeCal.after(jobRunDate): " + docLifeTimeCal.after(jobRunDate) + " or docLifeTimeCal.equals(jobRunDate) " + docLifeTimeCal.equals(jobRunDate));
+
+		}else
+		{
+			// FFV-----------HOY()+
+			res =false;
+			LOGGER.debug("Checking if " + docLifeTimeCal.getTime() + " es menor que " + formatter.format(calendar.getTime()));
+			LOGGER.debug( " ELSE :  docLifeTimeCal.after(jobRunDate):" + docLifeTimeCal.after(jobRunDate) + " or docLifeTimeCal.equals(jobRunDate) " + docLifeTimeCal.equals(jobRunDate));
+
+		}
+
+
 		return res;
 
-	}
-
-	public void setJobRunDate(Date jobRunDate) {
-		this.jobRunDate = jobRunDate;
 	}
 
 	public void setNodeService(NodeService nodeService) {
