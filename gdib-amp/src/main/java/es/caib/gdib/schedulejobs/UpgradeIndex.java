@@ -163,6 +163,7 @@ public class UpgradeIndex {
 					// proceso
 					List<ChildAssociationRef> listaHijos = nodeService.getChildAssocs(rmParent, toSearch);
 
+					LOGGER.debug("Modificacion Indices a las 18:27");
 
 					if (!checkExpedientReseal(
 							(Date) nodeService.getProperty(rmParent, ConstantUtils.PROP_FECHA_FIN_EXP_QNAME),
@@ -174,7 +175,11 @@ public class UpgradeIndex {
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
 									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "SI_PERMANENTE");
+									LOGGER.debug("Modificacion Indices a las 18:27- BREAK COMENTADO");
+
 									//break;
+									siPermanenteUpdate( oldIndex );
+
 								}
 
 
@@ -191,6 +196,10 @@ public class UpgradeIndex {
 					NodeRef tmpExpFolder = this.moveToTmp(rmParent, tmpFolder);
 					// Actualizo firma y devuelvo NodeRefs de indices resellados
 					List<NodeRef> listIndexes = this.upgradeTSASeal(tmpExpFolder);
+
+					//Añadir contador de elemetos en el listado de índices
+
+					LOGGER.info("NUMERO DE INDICES LUEGO DE UPGRADETSASEAL: " + listIndexes.size());
 
 					// Actualizo los metadatos necesarios- Se realiza aqui por que asi aseguras el haber generado los nuevos sellos
 					updateOldIndexesValidity(listaHijos);
@@ -248,6 +257,47 @@ public class UpgradeIndex {
 		
 	}
 
+
+	private void siPermanenteUpdate(ChildAssociationRef it )  throws GdibException, ContentIOException, IOException
+	{
+
+		LOGGER.debug( "INICIO NUEVO METODO");
+
+		String tmpcertValue = (String)nodeService.getProperty(it.getChildRef(), ConstantUtils.PROP_INDEX_CERT_QNAME);
+
+		try{
+		Certificate auxCert = certUtils.searchCertBySerialNumber(tmpcertValue);//Siempre estara al insertarse en bbdd al crear el indice
+
+		//Integer auxCont= certValues.get(auxCert);//Comprobamos si estaba en el mapa
+
+		//if(auxCont != null)
+		//	certValues.put(auxCert,auxCont-1);
+
+
+		 //Certificate cf =certUtils.searchCertBySerialNumber(it.getKey().getSerialNumber());//Buscamos certificado
+		 Certificate cf =auxCert;
+
+
+		 if(cf != null) {
+
+			LOGGER.debug( "CAMBIO SI A SI PERMANENTE CONTADOR DE CERTIFICADOS ANTES :" + cf.getNumIndices());
+
+			 	certUtils.updateCertificatesInfo(cf, cf.getNumIndices() - 1); //Añadimos valor de diferencia de índices (Cronjob se encarga de decrementar valor en caso de que el certificado haya cambiado		}
+
+			LOGGER.debug( "CAMBIO SI A SI PERMANENTE CONTADOR DE CERTIFICADOS DESPUES :" + (cf.getNumIndices()-1));
+
+		 }
+
+		 }catch(Exception e)
+		 {
+		 LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage());
+		 }
+
+		LOGGER.debug( "FIN NUEVO METODO");
+
+
+	}
+
 	/**
 	 * Método que ejecuta la operación de upgradeo/resellado de la firma de un
 	 * índice
@@ -287,6 +337,8 @@ public class UpgradeIndex {
 					continue;
 				}
 
+				LOGGER.debug("Se ha Actualizo correctamente la firma del nodo (UPGRADETSASEAL)");
+
 				// Afirma5ServiceInvokerFacade.getInstance().invokeService(newSignature,
 				// "validate", method, serviceProperties)
 				try {
@@ -312,8 +364,11 @@ public class UpgradeIndex {
 							certValues.put(auxCert, certValues.get(auxCert) != null ? certValues.get(auxCert)-1 :-1);
 //							certValues.put(certObj, cont+1);
 							Integer auxCont= certValues.get(certObj);//Comprobamos si estaba en el mapa
-							if(auxCont != null)
-								certValues.put(certObj,auxCont+1);
+							if(auxCont != null) {
+								LOGGER.debug( "CREA NUEVO CON METADATO A SI CONTADOR DE CERTIFICADOS ANTES :" + auxCont);
+								certValues.put(certObj, auxCont + 1);
+								LOGGER.debug( "CREA NUEVO CON METADATO A SI CONTADOR DE CERTIFICADOS ANTES :" + (auxCont+1));
+								}
 							else
 								certValues.putIfAbsent(certObj, 1);
 						}
@@ -330,6 +385,8 @@ public class UpgradeIndex {
 					throw new GdibException(e.getMessage());
 				}
 
+				LOGGER.debug("Ha ido bien la parte del Certificado (UPGRADETSASEAL) " );
+
 				// Actualizo la firma como contenido
 				DataHandler dh = new DataHandler(new InputStreamDataSource(new ByteArrayInputStream(newSignature)));
 
@@ -342,7 +399,7 @@ public class UpgradeIndex {
 
 				listaIndices.add(it.getChildRef());
 
-				// break;
+				//break;
 			}
 		}
 		// Actualizamos información de los certificado
@@ -549,9 +606,11 @@ public class UpgradeIndex {
 		DateFormat formatter = new SimpleDateFormat("yyyyMMddhhmm");
 		long milliSeconds= Long.parseLong("" + jobRunDate.getTime());
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(milliSeconds);
 
-		if ( (docLifeTimeCal.getTimeInMillis()>=jobRunDate.getTime()) ==true ){
+		/*long milliSeconds2 = 1625668980000L;
+		calendar.setTimeInMillis(milliSeconds);*/
+
+		if ( (docLifeTimeCal.getTimeInMillis()>=milliSeconds) ==true ){
 
 			//   hoy()------FFV     or ------------fhoy()FFV------------
 			res =true;
