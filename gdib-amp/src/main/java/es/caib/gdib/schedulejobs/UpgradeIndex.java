@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
 import org.alfresco.service.cmr.model.FileFolderService;
+import org.alfresco.service.cmr.model.FileExistsException;
 import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.ContentIOException;
@@ -108,7 +109,25 @@ public class UpgradeIndex {
 	public void run() throws GdibException {
 		List<NodeRef> upgradeDocs;
 		NodeRef nodeTmp = utils.idToNodeRef(tmpDir);
-		FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmpIndexFolder", ContentModel.TYPE_FOLDER);
+
+		final String fileName = "tmpIndexFolder" + System.currentTimeMillis();
+		FileInfo tmpParentFileInfo = null; //fileFolderService.create(nodeTmp, "tmpIndexFolder", ContentModel.TYPE_FOLDER);
+
+		try {
+			tmpParentFileInfo = fileFolderService.create(nodeTmp, fileName, ContentModel.TYPE_FOLDER);
+			LOGGER.info("Se creo el directorio temporal " +  fileName);
+		}
+		catch(FileExistsException fileExistsException){
+			LOGGER.error("Error creando el directorio temporal");
+		}
+		catch(Exception exception){
+			LOGGER.error("Error creando el directorio temporal");
+		}
+
+		if(tmpParentFileInfo==null){
+			throw new GdibException("Ocurrió un error creando el directorio temporal Metodo run Clase UpgradeIndex");
+		}
+
 
 		// Lista para comprobar vigencias
 		List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
@@ -175,7 +194,8 @@ public class UpgradeIndex {
 									nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME)))
 								{
 									nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "SI_PERMANENTE");
-									LOGGER.debug("Modificacion Indices a las 18:27- BREAK COMENTADO");
+									String nombre_expediente = (String)nodeService.getProperty(rmParent, ConstantUtils.PROP_NAME);
+									LOGGER.debug("Modificacion SI A SI PERMANENTE EN EL EXPEDIENTE :" + nombre_expediente);
 
 									//break;
 									siPermanenteUpdate( oldIndex );
@@ -223,9 +243,11 @@ public class UpgradeIndex {
 					nodeService.deleteNode(tmpExpFolder);
 
 				} catch (GdibException e) {
-					LOGGER.error("Error realizando el ugradeo del indice (" + doc.getId() + "). " + e.getMessage());
+					LOGGER.error("Error realizando el ugradeo del indice (" + doc.getId() + "). " + e.getMessage() +
+							"\nNo se borro la carpeta " + fileName);
 				} catch (Exception e) {
-					LOGGER.error("Error realizando el upgradeo del indice (" + doc.getId() + "). " + e.getMessage());
+					LOGGER.error("Error realizando el upgradeo del indice (" + doc.getId() + "). " + e.getMessage() +
+							"\nNo se borro la carpeta " + fileName);
 				}
 			}
 		}
@@ -233,6 +255,8 @@ public class UpgradeIndex {
 		LOGGER.debug("Upgrade Finalizado");
 
 		nodeService.deleteNode(tmpFolder);
+		LOGGER.info("Se borro la carpeta " + fileName);
+
 
 	}
 	/**
@@ -240,21 +264,24 @@ public class UpgradeIndex {
 	 * @param listaHijos Lista de �ndices hijos de cada expediente
 	 */
 	private void updateOldIndexesValidity(List<ChildAssociationRef> listaHijos) {
-		
-		for (ChildAssociationRef oldIndex : listaHijos) {
-			if ("NO".equals(
-					nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
-					||
-					"SI_PERMANENTE".equals(
-							nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
-					)
-				continue;
+		try {
+			for (ChildAssociationRef oldIndex : listaHijos) {
+				if ("NO".equals(
+						nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
+						||
+						"SI_PERMANENTE".equals(
+								nodeService.getProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME))
+				)
+					continue;
 
-			//nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
+				//nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_CERT_DATE_QNAME,
 				//	ISO8601DateFormat.format(new Date()));
-			nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
+				nodeService.setProperty(oldIndex.getChildRef(), ConstantUtils.PROP_INDEX_VALID_QNAME, "NO");
+			}
 		}
-		
+		catch(Exception exception){
+			LOGGER.error("Error en metodo updateOldIndexesValidity clase UpgradeIndex - No se borro carpeta temporal");
+		}
 	}
 
 
@@ -290,7 +317,7 @@ public class UpgradeIndex {
 
 		 }catch(Exception e)
 		 {
-		 LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage());
+		 LOGGER.debug("Exception metodo SiPermanente clase UpgradeIndex, updating Cert Datatable info >>> "+e.getLocalizedMessage());
 		 }
 
 		LOGGER.debug( "FIN NUEVO METODO");
@@ -333,7 +360,9 @@ public class UpgradeIndex {
 					newSignature = signatureService.upgradeSignature(signature, SignatureFormat.XAdES_A); //Upgradeamos firma
 					
 				} catch (GdibException e) {
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug(e.getMessage()
+							+ "\nError en metodo upgradeTSASeal Clase UpgradeIndex"
+							+ "\nNo se borro carpeta temporal");
 					continue;
 				}
 
@@ -379,7 +408,9 @@ public class UpgradeIndex {
 					LOGGER.debug("Validez del certificado : " + ISO8601DateFormat.format(certObj.getNotAfter()));
 				} catch (Exception e) {
 
-					LOGGER.debug("Excepcion leyendo XML : " + e.getMessage());
+					LOGGER.debug("Excepcion leyendo XML : " + e.getMessage()
+							+ "\nError en metodo upgradeTSASeal Clase UpgradeIndex"+
+							"\nNo se borro carpeta temporal");
 					// active = false;
 
 					throw new GdibException(e.getMessage());
@@ -423,7 +454,8 @@ public class UpgradeIndex {
 				LOGGER.debug("Cert "+cf.getSerialNumber() + " Numbers after >" + cf.getNumIndices());
 		}catch(Exception e)
 		{
-			LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage());
+			LOGGER.debug("Exception updating Cert Datatable info >>> "+e.getLocalizedMessage()
+			+ "\nError en metodo upgradeTSASeal Clase UpgradeIndex");
 		}
 		// Devuelvo una lista con los nodeRefs de los  índices actualizados
 		return listaIndices;
@@ -538,7 +570,8 @@ public class UpgradeIndex {
 		} catch (Exception e) {
 			for (StackTraceElement err : e.getStackTrace())
 				LOGGER.error(err.getFileName() + " line " + err.getLineNumber());
-			LOGGER.debug("Excepcion devolviendo indices al RM: " + e.getMessage());
+			LOGGER.debug("Excepcion devolviendo indices al RM: " + e.getMessage()
+			+ "\nError Metodo returnToRMExp clase UpgradeIndex");
 			throw new GdibException(e.getMessage());
 
 		}
@@ -607,8 +640,9 @@ public class UpgradeIndex {
 		long milliSeconds= Long.parseLong("" + jobRunDate.getTime());
 		Calendar calendar = Calendar.getInstance();
 
-		/*long milliSeconds2 = 1625668980000L;
-		calendar.setTimeInMillis(milliSeconds);*/
+		/*long milliSeconds2 =
+		1625841780000L;*/
+		calendar.setTimeInMillis(milliSeconds);
 
 		if ( (docLifeTimeCal.getTimeInMillis()>=milliSeconds) ==true ){
 
