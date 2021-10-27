@@ -48,15 +48,25 @@ import es.caib.gdib.ws.exception.GdibException;
 
 public class ExportUtils {
 
+
+
 	private static final Logger LOGGER =  Logger.getLogger(ExportUtils.class);
 	private static final String DOC_PREFIX = "DOC_";
 
+//	private static Object createRmMutex;
+	
     private NodeService nodeService;
     private FileFolderService fileFolderService;
     private ContentService contentService;
     private ExporterService exporterService;
     private CuadroClasificacionUtils ccUtils;
-
+    
+    
+	public ExportUtils() {
+//		if (createRmMutex == null)
+//			createRmMutex = new Object();
+	}   
+	
     // Utilidades
     @Autowired
     private GdibUtils utils;
@@ -187,93 +197,94 @@ public class ExportUtils {
 	 */
 	private NodeRef moveToRM(NodeRef expediente, RMExportPackageHandler exportHandler) throws GdibException {
 		Boolean moveNodeToRM;
+		NodeRef rmExpedient;
 		NodeRef nodeTmp = utils.idToNodeRef(tmpDir);
 		List<String> processedNodes = new ArrayList<String>();
 		try {
-			// Creamos la carpeta temporal del expediente
-			LOGGER.debug("Creo una carpeta temporal para mover el expediente");
-			String expedienteName = (String) nodeService.getProperty(expediente, ConstantUtils.PROP_NAME);
-			FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmp_" + expedienteName,
-					ContentModel.TYPE_FOLDER);
-
-			// Movemos a una carpeta temporal renombrando todos los nodos
-			LOGGER.debug("Renombramos los nombres que colisionen.");
-			List<String> colision = new ArrayList<String>();
-			// A la hora de renombrar, tengo que tener encuenta si es un documento del expediente, si es
-			// el indice electronico interno o de intercambio, o si es un documento de un expediente de exportacion (indice para remision cerrado)
-			for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
-				// parsear el nombre con expresion regular para detectar si viene
-
-				// indice electronico interno (indice-eni:id-fechahora.xml) indice-ES_123456789_2016_EXP_50d800a8a96a4c2cb224b1d9453ab0b9-201605051200.xml
-				//			--> nombre final el nombre del nodo sin tocar
-				// indice electronico de intercambio (indice-int-eni:id-fechahora.xml) indice-int-ES_123456789_2016_EXP_50d800a8a96a4c2cb224b1d9453ab0b9-201605051200.xml
-				//			--> nombre final el nombre del nodo sin tocar
-				// documentos
-				//			--> DOC_+UUID Alfresco
-
-				String nodeId = nodeRef.getId();
-				LOGGER.debug("Nodo a copiar " + nodeId);
-				if(!processedNodes.contains(nodeId)){
-					QName nodeType = nodeService.getType(nodeRef);
-					String name = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
-					String newName = "";
-					String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
-					moveNodeToRM = Boolean.FALSE;
-					
-					newName = getNewName(colision,name, eniId);
-					
-					System.out.println("Nodo no copiado aun. Tipo del nodo: " + nodeType.toString() + "; eni:id -> " + eniId);
-
-					if (utils.isType(nodeType, ConstantUtils.TYPE_DOCUMENTO_QNAME)){
-						/*
-						int posExtension = name.lastIndexOf(".");
-						if ( posExtension != -1 ){
-							newName = name.substring(0, posExtension)+"_"+eniId+name.substring(posExtension,name.length());
-						}else{
-							newName = name+eniId;
-						}*/
+//			synchronized(createRmMutex) {
+				// Creamos la carpeta temporal del expediente
+				LOGGER.debug("Creo una carpeta temporal para mover el expediente");
+				String expedienteName = (String) nodeService.getProperty(expediente, ConstantUtils.PROP_NAME);
+				FileInfo tmpParentFileInfo = fileFolderService.create(nodeTmp, "tmp_" + expedienteName,
+						ContentModel.TYPE_FOLDER);
+	
+				// Movemos a una carpeta temporal renombrando todos los nodos
+				LOGGER.debug("Renombramos los nombres que colisionen.");
+				List<String> colision = new ArrayList<String>();
+				// A la hora de renombrar, tengo que tener encuenta si es un documento del expediente, si es
+				// el indice electronico interno o de intercambio, o si es un documento de un expediente de exportacion (indice para remision cerrado)
+				for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
+					// parsear el nombre con expresion regular para detectar si viene
+	
+					// indice electronico interno (indice-eni:id-fechahora.xml) indice-ES_123456789_2016_EXP_50d800a8a96a4c2cb224b1d9453ab0b9-201605051200.xml
+					//			--> nombre final el nombre del nodo sin tocar
+					// indice electronico de intercambio (indice-int-eni:id-fechahora.xml) indice-int-ES_123456789_2016_EXP_50d800a8a96a4c2cb224b1d9453ab0b9-201605051200.xml
+					//			--> nombre final el nombre del nodo sin tocar
+					// documentos
+					//			--> DOC_+UUID Alfresco
+	
+					String nodeId = nodeRef.getId();
+					LOGGER.debug("Nodo a copiar " + nodeId);
+					if(!processedNodes.contains(nodeId)){
+						QName nodeType = nodeService.getType(nodeRef);
+						String name = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
+						String newName = "";
+						String eniId = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_ID_QNAME);
+						moveNodeToRM = Boolean.FALSE;
 						
-						//newName = DOC_PREFIX + nodeId.replaceAll("-", ConstantUtils.BLANK);
-						moveNodeToRM = Boolean.TRUE;
-					} else if(utils.isType(nodeType, ConstantUtils.TYPE_FILE_INDEX_QNAME)){
-						// indie electronico interno o de intercambio
-						// newName = name.toString();
-						moveNodeToRM = Boolean.TRUE;
-					}
-
-					LOGGER.warn("Nodo a copiar " + name + ". Nuevo nombre: " + newName);
-					System.out.println("Nodo a copiar " + name + ". Nuevo nombre: " + newName);
-					if(moveNodeToRM){
-						fileFolderService.move(nodeRef, tmpParentFileInfo.getNodeRef(), newName);
-						processedNodes.add(nodeId);
+						newName = getNewName(colision,name, eniId);
+						
+						System.out.println("Nodo no copiado aun. Tipo del nodo: " + nodeType.toString() + "; eni:id -> " + eniId);
+	
+						if (utils.isType(nodeType, ConstantUtils.TYPE_DOCUMENTO_QNAME)){
+							/*
+							int posExtension = name.lastIndexOf(".");
+							if ( posExtension != -1 ){
+								newName = name.substring(0, posExtension)+"_"+eniId+name.substring(posExtension,name.length());
+							}else{
+								newName = name+eniId;
+							}*/
+							
+							//newName = DOC_PREFIX + nodeId.replaceAll("-", ConstantUtils.BLANK);
+							moveNodeToRM = Boolean.TRUE;
+						} else if(utils.isType(nodeType, ConstantUtils.TYPE_FILE_INDEX_QNAME)){
+							// indie electronico interno o de intercambio
+							// newName = name.toString();
+							moveNodeToRM = Boolean.TRUE;
+						}
+	
+						LOGGER.debug("Nodo a copiar " + name + ". Nuevo nombre: " + newName);
+						if(moveNodeToRM){
+							fileFolderService.move(nodeRef, tmpParentFileInfo.getNodeRef(), newName);
+							processedNodes.add(nodeId);
+						}
 					}
 				}
-			}
-
-			// Movemos el exp al destino (Necesitamos conservar el uid del expediente)
-			LOGGER.debug("Movemos el expediente al RM");
-			NodeRef rmSeries = ccUtils.getDocumentarySeries((String) nodeService.getProperty(expediente, ConstantUtils.PROP_COD_CLASIFICACION_QNAME));
-
-			NodeRef rmExpedient = createRMExpedient(expediente, rmSeries);
-			
-			// Movemos los nodos de la carpeta temporal al expediente
-			LOGGER.debug("Movemos los documentos de la carpeta temporal al expediente creado en el RM");
-			for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
-				createRMRecord(nodeRef, rmExpedient);
-			}
-
-			// Escribimos el descriptor XML
-			LOGGER.debug("Creamos el archivo xml descriptor de la estructura del expediente antes de cerrarlo");
-			writeXMLexportDescriptor(expedienteName + ".xml", expediente,
-					(ByteArrayOutputStream) exportHandler.getXML_outputStream());
-
-			// Borramos la carpetata temporal
-			LOGGER.debug("Borramos la carpeta temporal");
-			nodeService.deleteNode(tmpParentFileInfo.getNodeRef());
-
-			return rmExpedient;
-
-		} catch (FileExistsException | FileNotFoundException | ContentIOException | UnsupportedEncodingException  e) {
+	
+				// Movemos el exp al destino (Necesitamos conservar el uid del expediente)
+				LOGGER.debug("Movemos el expediente al RM");
+				NodeRef rmSeries = ccUtils.getDocumentarySeries((String) nodeService.getProperty(expediente, ConstantUtils.PROP_COD_CLASIFICACION_QNAME));
+	
+				rmExpedient = createRMExpedient(expediente, rmSeries);
+				
+				// Movemos los nodos de la carpeta temporal al expediente
+				LOGGER.debug("Movemos los documentos de la carpeta temporal al expediente creado en el RM");
+				for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
+					createRMRecord(nodeRef, rmExpedient);
+				}
+	
+				// Escribimos el descriptor XML
+				LOGGER.debug("Creamos el archivo xml descriptor de la estructura del expediente antes de cerrarlo");
+				writeXMLexportDescriptor(expedienteName + ".xml", expediente,
+						(ByteArrayOutputStream) exportHandler.getXML_outputStream());
+	
+				// Borramos la carpetata temporal
+				LOGGER.debug("Borramos la carpeta temporal");
+				nodeService.deleteNode(tmpParentFileInfo.getNodeRef());
+//		}
+		return rmExpedient;
+// FileExistsException |
+		} catch (FileNotFoundException | ContentIOException | UnsupportedEncodingException  e) {
 			throw new GdibException("Ha ocurrido un error moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
 		}
 	}
