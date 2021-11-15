@@ -18,6 +18,7 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -34,7 +35,8 @@ import es.gob.afirma.signature.SigningException;
 import es.gob.afirma.utils.CryptoUtil;
 
 public class FoliateEniUtils {
-
+	private static final Logger LOGGER = Logger.getLogger(FoliateUtils.class);
+	
 	private static final String DEFAULT_ENI_NTI_VERSION = "http://administracionelectronica.gob.es/ENI/XSD/v1.0/expediente-e";
 	
 	@Autowired
@@ -163,9 +165,9 @@ public class FoliateEniUtils {
 
 			res.setValorHuella(Base64.encodeBase64String(hashDoc));
 		}catch(IOException e){
-			//No hacer nada
+			LOGGER.error(e);
 		} catch (SigningException e) {
-			//No hacer nada
+			LOGGER.error(e);
 		}
 
 		Date fecha_inicio_prop = (Date) nodeService.getProperty(node, ConstantUtils.PROP_FECHA_INICIO_QNAME);

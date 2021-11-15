@@ -529,7 +529,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw new GdibException("Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -567,7 +567,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw new GdibException("insertDocumentalSerieRow ::Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -605,7 +605,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw new GdibException("insertSubtypeDocRow ::Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -666,7 +666,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw  new GdibException("insertClassificationTableRow :: Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -705,7 +705,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw  new GdibException("updateSubtypeDocTableRow :: Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -742,7 +742,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw  new GdibException("deleteClassificationTableRow :: Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -778,7 +778,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw  new GdibException("deleteDocumentalSerieRow :: Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {
@@ -814,7 +814,7 @@ public class SubTypeDocUtil {
 			conn.commit();
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			conn.rollback();
 			throw  new GdibException("deleteSubtypeDocRow :: Ha ocurrido un error con la base de datos" + e.getMessage());
 		} finally {

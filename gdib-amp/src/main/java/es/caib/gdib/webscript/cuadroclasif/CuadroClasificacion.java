@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.extensions.surf.util.I18NUtil;
@@ -23,7 +24,7 @@ import es.caib.gdib.utils.SubTypeDocUtil;
 import es.caib.gdib.ws.exception.GdibException;
 
 public class CuadroClasificacion extends DeclarativeWebScript {
-
+	private static final Logger LOGGER = Logger.getLogger(CuadroClasificacion.class);
     private SubTypeDocUtil cuadroClasif;
 
     public void setCuadroClasif(SubTypeDocUtil cuadroClasif) {
@@ -56,7 +57,7 @@ public class CuadroClasificacion extends DeclarativeWebScript {
             model.put("data",allInfo);
 
         } catch (GdibException e) {
-            e.printStackTrace();
+        	LOGGER.error(e);
         }
         return model;
     }

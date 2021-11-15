@@ -127,7 +127,7 @@ public class CaibIndexV10SignerImpl implements AdministrativeProcessingIndexSign
 				try {
 					sf = SignatureUtils.eniSigntureFormatToInernalSignatureFormat(propValue);
 					this.indexSignatureFormat = (sf==null?DEFAULT_CAIB_INDEX_SIGNATURE_FORMAT:sf);
-				} catch (GdibException e) {
+				} catch (GdibException e) {					
 					this.indexSignatureFormat = DEFAULT_CAIB_INDEX_SIGNATURE_FORMAT;
 				}
     		}

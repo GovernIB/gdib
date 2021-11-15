@@ -27,13 +27,16 @@ import org.alfresco.service.cmr.site.SiteVisibility;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.transaction.TransactionService;
 import org.alfresco.util.PropertyMap;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSerieDocumental;
 import es.caib.gdib.ws.common.types.Content;
 import es.caib.gdib.ws.common.types.MigrationID;
 
 public class TestUtils {
+	private static final Logger LOGGER = Logger.getLogger(TestUtils.class);
 
 	public final static String USER_TEST = "testUser";
 	public final static String USER_TEST2 = "testUser2";
@@ -257,10 +260,10 @@ public class TestUtils {
 			}
     	} catch (ContentIOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e);
 		}
 
 		return node;

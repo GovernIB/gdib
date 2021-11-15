@@ -6,8 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.alfresco.service.namespace.QName;
+import org.apache.log4j.Logger;
 
 import es.caib.gdib.utils.GdibUtils;
+import es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSerieDocumental;
 import es.caib.gdib.ws.exception.GdibException;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -16,6 +18,8 @@ import es.caib.gdib.ws.exception.GdibException;
 	"value"
 },namespace = "http://www.caib.es/gdib/repository/ws")
 public class Property {
+	private static final Logger LOGGER = Logger.getLogger(Property.class);
+	
 	@XmlElement(namespace="http://www.caib.es/gdib/repository/ws")
 	String qname;
 	@XmlElement(namespace="http://www.caib.es/gdib/repository/ws")
@@ -65,6 +69,7 @@ public class Property {
 				QName qnameComprate = GdibUtils.createQName(prop.getQname());
 				return qname.equals(qnameComprate);
 			} catch (GdibException e) {
+				LOGGER.error(e);
 			}
 		}
 		return false;

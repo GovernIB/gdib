@@ -6,7 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
+import es.caib.gdib.webscript.cuadroclasif.CuadroClasificacionSerieDocumental;
 import es.caib.gdib.ws.iface.CSVServiceSoapPort;
 
 
@@ -14,7 +16,8 @@ import es.caib.gdib.ws.iface.CSVServiceSoapPort;
 targetNamespace = "http://www.caib.es/gdib/csv/ws",
 endpointInterface = "es.caib.gdib.ws.iface.CSVServiceSoapPort")
 public class CSVServiceSoapPortImpl implements CSVServiceSoapPort {
-
+	private static final Logger LOGGER = Logger.getLogger(CSVServiceSoapPortImpl.class);
+	
 	@Override
 	public String getCSV() {
 		UUID idOne = UUID.randomUUID();
@@ -28,9 +31,9 @@ public class CSVServiceSoapPortImpl implements CSVServiceSoapPort {
 			return String.format("%064x", new java.math.BigInteger(1, digest));
 
 		} catch (NoSuchAlgorithmException e) {	
-			e.printStackTrace();
+			LOGGER.error(e);
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LOGGER.error(e);
 		}
 		return null;
 	}

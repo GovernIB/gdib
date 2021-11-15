@@ -1229,6 +1229,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					signMill = System.currentTimeMillis() - beginMill;
 					LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
 					checkDocClassification(node, parentRef);
+					//checkDocCSV(node, parentRef);
 				} else if (utils.isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME)) {
 					if (parentId != null && !parentId.isEmpty()) {
 						// Subexpediente
@@ -1307,6 +1308,15 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			if (!StringUtils.isEmpty(nodeCodClasif) && !nodeCodClasif.equals(parentCodCasif)) {
 				throw exUtils.checkMetadataValueException(ConstantUtils.PROP_COD_CLASIFICACION_QNAME.toString(),
 						nodeCodClasif);
+			}
+		}
+	}
+	
+	private void checkDocCSV(Node node, NodeRef parentRef) throws GdibException {
+		if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+			String csv = utils.getProperty(node.getProperties(), ConstantUtils.PROP_CSV);			
+			if (csv == null || StringUtils.isEmpty(csv)) {
+				throw exUtils.checkMetadataValueException(ConstantUtils.PROP_CSV.toString(), "null");//			nodeCodClasif);
 			}
 		}
 	}
@@ -2617,6 +2627,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					}
 				} catch (Exception excpt) {
 					// do nothing. Bypass IndexOutOfBounds or other exceptions
+					LOGGER.error(excpt);
 				}
 			}
 		}

@@ -16,9 +16,11 @@ import org.alfresco.service.namespace.QName;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import es.caib.gdib.ws.common.types.Property;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.xsd.expediente.indice.TipoContenidoCarpetaIndizada;
 import es.caib.gdib.ws.xsd.expediente.indice.TipoContenidoCarpetas;
@@ -39,7 +41,8 @@ import es.gob.afirma.signature.SigningException;
 import es.gob.afirma.utils.CryptoUtil;
 
 public class FoliateUtils {
-
+	private static final Logger LOGGER = Logger.getLogger(FoliateUtils.class);
+	
 	@Autowired
 	@Qualifier("NodeService")
 	private NodeService nodeService;
@@ -385,9 +388,9 @@ public class FoliateUtils {
 		
 			doc.setHash(Base64.encodeBase64String(hashDoc));
 		}catch(IOException e){
-			//No hacer nada
+			LOGGER.error(e);
 		} catch (SigningException e) {
-			//No hacer nada
+			LOGGER.error(e);
 		}
 		return doc;
 	}

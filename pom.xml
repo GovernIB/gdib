@@ -10,13 +10,12 @@
 	<name>gdib</name>
 
 	<modules>
-		<module>gdib-amp</module>
-		<module>common-utils</module>
-		<module>gdib-apirest</module>
-		<module>gdib-share</module>
 		<module>Integra-parent</module>
-		<module>invoices</module>
-		<module>ws-base</module>
+	    <module>common-utils</module>
+	    <module>ws-base</module>
+	    <module>gdib-amp</module>
+	    <module>gdib-share</module>
+	    <module>invoices</module>
 	</modules>
 </project>
 

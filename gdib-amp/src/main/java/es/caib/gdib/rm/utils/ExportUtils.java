@@ -284,7 +284,7 @@ public class ExportUtils {
 //		}
 		return rmExpedient;
 // FileExistsException |
-		} catch (FileNotFoundException | ContentIOException | UnsupportedEncodingException  e) {
+		} catch (FileNotFoundException | ContentIOException | UnsupportedEncodingException | FileExistsException  e) {
 			throw new GdibException("Ha ocurrido un error moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
 		}
 	}

@@ -17,6 +17,7 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.extensions.webscripts.Cache;
 import org.springframework.extensions.webscripts.DeclarativeWebScript;
 import org.springframework.extensions.webscripts.Status;
@@ -29,7 +30,8 @@ import es.caib.gdib.utils.SubTypeDocUtil;
 import es.caib.gdib.ws.exception.GdibException;
 
 public class CuadroClasificacionSerieDocumental extends DeclarativeWebScript {
-
+	private static final Logger LOGGER = Logger.getLogger(CuadroClasificacionSerieDocumental.class);
+	
 	private final String PARAM_FUNCTION = "function";
 	private final String PARAM_SERIE_DOCUMENTAL_NAME = "name";
 	private final String PARAM_SERIE_DOCUMENTAL_DESCRIPTION = "description";
@@ -102,7 +104,7 @@ public class CuadroClasificacionSerieDocumental extends DeclarativeWebScript {
 			model.put("data",allInfo);
 
 		} catch (GdibException e) {
-			e.printStackTrace();
+			LOGGER.error(e);
 		}
 		return model;
 	}

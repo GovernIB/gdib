@@ -786,6 +786,7 @@ public class GdibUtils {
                 qname = QName.createQName(s, namespaceService);
             }
         } catch (NamespaceException ex) {
+        	LOGGER.error(ex);
             // casos como "inventado:inventado"
         	// cambio la cadena vacio por comillas simples
         	if(ConstantUtils.BLANK.equals(s))
@@ -1070,7 +1071,12 @@ public class GdibUtils {
             Property prop = it.next();
             QName compare = createQName(prop.getQname());
             if ( property.equals(compare))
-                return prop.getValue().toString();
+                if (prop!= null && prop.getValue() != null)
+                	return prop.getValue().toString();
+                else {
+                	LOGGER.error(String.format("La propietat: '%s' es null", prop.getQname().toString()));
+                	return null;
+                }
         }
         return null;
     }
@@ -2470,7 +2476,7 @@ public class GdibUtils {
 
         	}
     	}catch(GdibException e){
-    		LOGGER.debug("Error: " + e.getMessage());
+    		LOGGER.error("Error: " + e.getMessage());
     	} finally {
     		LOGGER.debug("Finalizada la validación de la firma electrónica del documento " + nodeId);
     	}
@@ -2594,6 +2600,7 @@ public class GdibUtils {
 		try {
 			xmlDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
 		} catch (DatatypeConfigurationException e) {
+			LOGGER.error(e);
 			GdibException exc = exUtils.generateXMLGregorianCalendarErrorException();
 			throw exc;
 		}
@@ -2861,8 +2868,7 @@ public class GdibUtils {
 				//LOGGER.debug(result.toString());
 				return result;
 			
-		}catch(Exception e)
-		{
+		}catch(Exception e){
 			LOGGER.error("Error parsing X509 Cert : "+e.getLocalizedMessage());
 			throw exUtils.genericException(e.getLocalizedMessage());
 		}finally

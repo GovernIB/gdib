@@ -1,0 +1,1920 @@
+[ 1;34mINFO m] Scanning for projects...
+[ 1;34mINFO m]  1m------------------------------------------------------------------------ m
+[ 1;34mINFO m]  1mReactor Build Order: m
+[ 1;34mINFO m] 
+[ 1;34mINFO m] Integra-parent                                                     [pom]
+[ 1;34mINFO m] Integra-commons                                                    [jar]
+[ 1;34mINFO m] Integra-commons-pdf-bc                                             [jar]
+[ 1;34mINFO m] Integra-commons-xml                                                [jar]
+[ 1;34mINFO m] Integra-encryption                                                 [jar]
+[ 1;34mINFO m] Integra-ocsp-rfc3161                                               [jar]
+[ 1;34mINFO m] Integra-ws                                                         [jar]
+[ 1;34mINFO m] Integra-sign-operations                                            [jar]
+[ 1;34mINFO m] Integra-utils                                                      [jar]
+[ 1;34mINFO m] Maven Quick Start Archetype                                        [jar]
+[ 1;34mINFO m] ws-base Repository AMP project                                     [amp]
+[ 1;34mINFO m] gdib Repository AMP project                                        [amp]
+[ 1;34mINFO m] arxiudigital-apirest                                               [jar]
+[ 1;34mINFO m] gdib-share AMP project                                             [amp]
+[ 1;34mINFO m] Integra-services                                                   [war]
+[ 1;34mINFO m] invoices Repository AMP project                                    [amp]
+[ 1;34mINFO m] gdib                                                               [pom]
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m--------------------<  0;36mes.gob.afirma:Integra-parent 0;1m >-------------------- m
+[ 1;34mINFO m]  1mBuilding Integra-parent 2.2.1_000                                 [1/17] m
+[ 1;34mINFO m]  1m--------------------------------[ pom ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-parent 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-parent:pom:2.2.1_000
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-------------------<  0;36mes.gob.afirma:Integra-commons 0;1m >-------------------- m
+[ 1;34mINFO m]  1mBuilding Integra-commons 2.2.1_000                                [2/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-commons 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-commons:jar:2.2.1_000
+[ 1;34mINFO m] +- log4j:log4j:jar:1.2.5:compile
+[ 1;34mINFO m] +- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[ 1;34mINFO m] +- commons-logging:commons-logging:jar:1.1.1:compile
+[ 1;34mINFO m] \- xalan:xalan:jar:2.7.1:compile
+[ 1;34mINFO m]    \- xalan:serializer:jar:2.7.1:compile
+[ 1;34mINFO m]       \- xml-apis:xml-apis:jar:1.3.04:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m----------------<  0;36mes.gob.afirma:Integra-commons-pdf-bc 0;1m >---------------- m
+[ 1;34mINFO m]  1mBuilding Integra-commons-pdf-bc 2.2.1_000                         [3/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-commons-pdf-bc 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] |        \- xml-apis:xml-apis:jar:1.3.04:provided
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- org.bouncycastle:bcprov-jdk16:jar:1.46:compile
+[ 1;34mINFO m] +- org.bouncycastle:bcmail-jdk16:jar:1.46:compile
+[ 1;34mINFO m] +- com.lowagie:itext:jar:2.2:compile
+[ 1;34mINFO m] \- org.bouncycastle:bctsp-jdk16:jar:1.46:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-----------------<  0;36mes.gob.afirma:Integra-commons-xml 0;1m >------------------ m
+[ 1;34mINFO m]  1mBuilding Integra-commons-xml 2.2.1_000                            [4/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-commons-xml 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-commons-xml:jar:2.2.1_000
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  \- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] +- xerces:xercesImpl:jar:2.10.0:compile
+[ 1;34mINFO m] |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- xalan:xalan:jar:2.7.1:compile
+[ 1;34mINFO m] |  \- xalan:serializer:jar:2.7.1:compile
+[ 1;34mINFO m] \- org.bouncycastle:bctsp-jdk16:jar:1.46:compile
+[ 1;34mINFO m]    +- org.bouncycastle:bcprov-jdk16:jar:1.46:compile
+[ 1;34mINFO m]    \- org.bouncycastle:bcmail-jdk16:jar:1.46:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m------------------<  0;36mes.gob.afirma:Integra-encryption 0;1m >------------------ m
+[ 1;34mINFO m]  1mBuilding Integra-encryption 2.2.1_000                             [5/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-encryption 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-encryption:jar:2.2.1_000
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] |        \- xml-apis:xml-apis:jar:1.3.04:provided
+[ 1;34mINFO m] +- commons-codec:commons-codec:jar:1.10:compile
+[ 1;34mINFO m] +- org.bouncycastle:bcprov-jdk16:jar:1.46:compile
+[ 1;34mINFO m] \- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-----------------<  0;36mes.gob.afirma:Integra-ocsp-rfc3161 0;1m >----------------- m
+[ 1;34mINFO m]  1mBuilding Integra-ocsp-rfc3161 2.2.1_000                           [6/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-ocsp-rfc3161 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-ocsp-rfc3161:jar:2.2.1_000
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcprov-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcmail-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- com.lowagie:itext:jar:2.2:provided
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] |        \- xml-apis:xml-apis:jar:1.3.04:provided
+[ 1;34mINFO m] \- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m----------------------<  0;36mes.gob.afirma:Integra-ws 0;1m >---------------------- m
+[ 1;34mINFO m]  1mBuilding Integra-ws 2.2.1_000                                     [7/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;33mWARNING m] The POM for sun-jaxws:stax-ex:jar:2.1.1 is missing, no dependency information available
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-ws 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-ws:jar:2.2.1_000
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-xml:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- xerces:xercesImpl:jar:2.10.0:provided
+[ 1;34mINFO m] |  |  \- xml-apis:xml-apis:jar:1.4.01:provided
+[ 1;34mINFO m] |  +- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |  |  \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |     +- org.bouncycastle:bcprov-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |     \- org.bouncycastle:bcmail-jdk16:jar:1.46:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  \- commons-logging:commons-logging:jar:1.1.1:compile
+[ 1;34mINFO m] +- org.apache.ws.security:wss4j:jar:1.6.6:compile
+[ 1;34mINFO m] |  +- org.apache.santuario:xmlsec:jar:1.5.2:compile
+[ 1;34mINFO m] |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[ 1;34mINFO m] |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[ 1;34mINFO m] |        \- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[ 1;34mINFO m] |           +- org.slf4j:slf4j-api:jar:1.6.1:compile
+[ 1;34mINFO m] |           \- joda-time:joda-time:jar:1.6.2:compile
+[ 1;34mINFO m] +- org.apache.axis:axis-jaxrpc:jar:1.4:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-adb:jar:1.7.9:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-kernel:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.21:compile
+[ 1;34mINFO m] |  |  |  +- jaxen:jaxen:jar:1.1.6:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[ 1;34mINFO m] |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:compile
+[ 1;34mINFO m] |  |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.21:runtime
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.2:compile
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1:compile
+[ 1;34mINFO m] |  |  +- javax.servlet:servlet-api:jar:2.3:compile
+[ 1;34mINFO m] |  |  +- commons-fileupload:commons-fileupload:jar:1.3.3:compile
+[ 1;34mINFO m] |  |  +- wsdl4j:wsdl4j:jar:1.6.2:compile
+[ 1;34mINFO m] |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.1:compile
+[ 1;34mINFO m] |  |  +- org.apache.neethi:neethi:jar:3.0.3:compile
+[ 1;34mINFO m] |  |  +- org.apache.woden:woden-core:jar:1.0M10:compile
+[ 1;34mINFO m] |  |  +- javax.ws.rs:jsr311-api:jar:1.1.1:compile
+[ 1;34mINFO m] |  |  \- commons-io:commons-io:jar:2.1:compile
+[ 1;34mINFO m] |  +- org.apache.ws.commons.axiom:axiom-dom:jar:1.2.21:runtime
+[ 1;34mINFO m] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:runtime
+[ 1;34mINFO m] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:runtime
+[ 1;34mINFO m] |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-saaj:jar:1.7.9:compile
+[ 1;34mINFO m] |  \- org.apache.geronimo.specs:geronimo-saaj_1.3_spec:jar:1.0.1:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-transport-local:jar:1.7.9:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-transport-http:jar:1.7.9:compile
+[ 1;34mINFO m] |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
+[ 1;34mINFO m] |  |  \- commons-codec:commons-codec:jar:1.9:compile
+[ 1;34mINFO m] |  \- commons-httpclient:commons-httpclient:jar:3.1:compile
+[ 1;34mINFO m] +- com.sun.xml.wss:xws-security:jar:3.0:compile
+[ 1;34mINFO m] |  +- javax.xml.soap:saaj-api:jar:1.3:compile
+[ 1;34mINFO m] |  |  \- javax.activation:activation:jar:1.0.2:compile
+[ 1;34mINFO m] |  +- javax.mail:mail:jar:1.4:compile
+[ 1;34mINFO m] |  +- javax.xml.bind:jaxb-api:jar:2.0:compile
+[ 1;34mINFO m] |  |  \- javax.xml.bind:jsr173_api:jar:1.0:compile
+[ 1;34mINFO m] |  +- javax.xml.stream:stax-api:jar:1.0:compile
+[ 1;34mINFO m] |  \- javax.xml.ws:jaxws-api:jar:2.1:compile
+[ 1;34mINFO m] +- org.apache.commons:commons-lang3:jar:3.3.2:compile
+[ 1;34mINFO m] +- commons-discovery:commons-discovery:jar:0.4:compile
+[ 1;34mINFO m] +- sun-jaxws:stax-ex:jar:2.1.1:compile
+[ 1;34mINFO m] \- com.sun.xml.bind:jaxb-impl:jar:2.2.4:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---------------<  0;36mes.gob.afirma:Integra-sign-operations 0;1m >---------------- m
+[ 1;34mINFO m]  1mBuilding Integra-sign-operations 2.2.1_000                        [8/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-sign-operations 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-sign-operations:jar:2.2.1_000
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcprov-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcmail-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- com.lowagie:itext:jar:2.2:provided
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-xml:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  \- xerces:xercesImpl:jar:2.10.0:provided
+[ 1;34mINFO m] |     \- xml-apis:xml-apis:jar:1.4.01:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ws:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.santuario:xmlsec:jar:1.5.2:provided
+[ 1;34mINFO m] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:provided
+[ 1;34mINFO m] |  |     \- org.opensaml:openws:jar:1.4.2-1:provided
+[ 1;34mINFO m] |  +- org.apache.axis:axis-jaxrpc:jar:1.4:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-adb:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.axis2:axis2-kernel:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  |  +- jaxen:jaxen:jar:1.1.6:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1:provided
+[ 1;34mINFO m] |  |  |  +- javax.servlet:servlet-api:jar:2.3:provided
+[ 1;34mINFO m] |  |  |  +- commons-fileupload:commons-fileupload:jar:1.3.3:provided
+[ 1;34mINFO m] |  |  |  +- wsdl4j:wsdl4j:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.woden:woden-core:jar:1.0M10:provided
+[ 1;34mINFO m] |  |  |  \- javax.ws.rs:jsr311-api:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.ws.commons.axiom:axiom-dom:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:provided
+[ 1;34mINFO m] |  |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-saaj:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-saaj_1.3_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-local:jar:1.7.9:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-http:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:provided
+[ 1;34mINFO m] |  |  \- commons-httpclient:commons-httpclient:jar:3.1:provided
+[ 1;34mINFO m] |  +- com.sun.xml.wss:xws-security:jar:3.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.soap:saaj-api:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.0.2:provided
+[ 1;34mINFO m] |  |  +- javax.mail:mail:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.0:provided
+[ 1;34mINFO m] |  |  |  \- javax.xml.bind:jsr173_api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.stream:stax-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  \- javax.xml.ws:jaxws-api:jar:2.1:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-lang3:jar:3.3.2:provided
+[ 1;34mINFO m] |  +- commons-discovery:commons-discovery:jar:0.4:provided
+[ 1;34mINFO m] |  +- sun-jaxws:stax-ex:jar:2.1.1:provided
+[ 1;34mINFO m] |  \- com.sun.xml.bind:jaxb-impl:jar:2.2.4:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ocsp-rfc3161:jar:2.2.1_000:provided
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- commons-io:commons-io:jar:2.4:compile
+[ 1;34mINFO m] +- commons-codec:commons-codec:jar:1.10:compile
+[ 1;34mINFO m] \- org.apache.tika:tika-core:jar:1.2:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m--------------------<  0;36mes.gob.afirma:Integra-utils 0;1m >--------------------- m
+[ 1;34mINFO m]  1mBuilding Integra-utils 2.2.1_000                                  [9/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-utils 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-utils:jar:2.2.1_000
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:provided
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:provided
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:provided
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ocsp-rfc3161:jar:2.2.1_000:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ws:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.santuario:xmlsec:jar:1.5.2:provided
+[ 1;34mINFO m] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:provided
+[ 1;34mINFO m] |  |     \- org.opensaml:openws:jar:1.4.2-1:provided
+[ 1;34mINFO m] |  +- org.apache.axis:axis-jaxrpc:jar:1.4:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-adb:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.axis2:axis2-kernel:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  |  +- jaxen:jaxen:jar:1.1.6:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1:provided
+[ 1;34mINFO m] |  |  |  +- javax.servlet:servlet-api:jar:2.3:provided
+[ 1;34mINFO m] |  |  |  +- commons-fileupload:commons-fileupload:jar:1.3.3:provided
+[ 1;34mINFO m] |  |  |  +- wsdl4j:wsdl4j:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.woden:woden-core:jar:1.0M10:provided
+[ 1;34mINFO m] |  |  |  \- javax.ws.rs:jsr311-api:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.ws.commons.axiom:axiom-dom:jar:1.2.21:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:provided
+[ 1;34mINFO m] |  |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-saaj:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-saaj_1.3_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-local:jar:1.7.9:provided
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-http:jar:1.7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:provided
+[ 1;34mINFO m] |  |  \- commons-httpclient:commons-httpclient:jar:3.1:provided
+[ 1;34mINFO m] |  +- com.sun.xml.wss:xws-security:jar:3.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.soap:saaj-api:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.0.2:provided
+[ 1;34mINFO m] |  |  +- javax.mail:mail:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.0:provided
+[ 1;34mINFO m] |  |  |  \- javax.xml.bind:jsr173_api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.stream:stax-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  \- javax.xml.ws:jaxws-api:jar:2.1:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-lang3:jar:3.3.2:provided
+[ 1;34mINFO m] |  +- commons-discovery:commons-discovery:jar:0.4:provided
+[ 1;34mINFO m] |  +- sun-jaxws:stax-ex:jar:2.1.1:provided
+[ 1;34mINFO m] |  \- com.sun.xml.bind:jaxb-impl:jar:2.2.4:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-sign-operations:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- commons-io:commons-io:jar:2.4:provided
+[ 1;34mINFO m] |  +- commons-codec:commons-codec:jar:1.10:provided
+[ 1;34mINFO m] |  \- org.apache.tika:tika-core:jar:1.2:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcprov-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- org.bouncycastle:bcmail-jdk16:jar:1.46:provided
+[ 1;34mINFO m] |  +- com.lowagie:itext:jar:2.2:provided
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:provided
+[ 1;34mINFO m] \- es.gob.afirma:Integra-commons-xml:jar:2.2.1_000:provided
+[ 1;34mINFO m]    \- xerces:xercesImpl:jar:2.10.0:provided
+[ 1;34mINFO m]       \- xml-apis:xml-apis:jar:1.4.01:provided
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-----------------------<  0;36mes.rsits:common-utils 0;1m >------------------------ m
+[ 1;34mINFO m]  1mBuilding Maven Quick Start Archetype 1.0-SNAPSHOT                [10/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;33mWARNING m] The POM for com.sun.xml.bind:jaxb-xjc:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[ 1;33mWARNING m] The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[ 1;33mWARNING m] The POM for com.sun.xml.bind:jaxb-core:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mcommon-utils 0;1m --- m
+[ 1;34mINFO m] es.rsits:common-utils:jar:1.0-SNAPSHOT
+[ 1;34mINFO m] +- org.springframework:spring-core:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-jcl:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] +- org.alfresco:alfresco-remote-api:jar:7.107.1:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-repository:jar:7.134.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-legacy-lucene:jar:6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-core:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-analyzers:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-regex:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.lucene:lucene-snowball:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jlan-embed:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-core:jar:7.22:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-math3:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  +- org.safehaus.jug:jug:jar:asl:2.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis:jar:3.3.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis-spring:jar:1.2.5:provided
+[ 1;34mINFO m] |  |  |  +- log4j:log4j:jar:1.2.17:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.guessencoding:guessencoding:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-text-gen:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-heartbeat-data-sender:jar:1.0.12:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:provided
+[ 1;34mINFO m] |  |  +- com.sun.mail:javax.mail:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-greenmail:jar:6.1:provided
+[ 1;34mINFO m] |  |  +- commons-dbcp:commons-dbcp:jar:1.4-DBCP330:provided
+[ 1;34mINFO m] |  |  +- commons-discovery:commons-discovery:jar:0.5:provided
+[ 1;34mINFO m] |  |  +- commons-fileupload:commons-fileupload:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-compress:jar:1.19:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-lang3:jar:3.9:provided
+[ 1;34mINFO m] |  |  +- commons-codec:commons-codec:jar:1.13:provided
+[ 1;34mINFO m] |  |  +- commons-beanutils:commons-beanutils:jar:1.9.4:provided
+[ 1;34mINFO m] |  |  +- commons-collections:commons-collections:jar:3.2.2:provided
+[ 1;34mINFO m] |  |  +- commons-io:commons-io:jar:2.6:provided
+[ 1;34mINFO m] |  |  +- commons-net:commons-net:jar:3.6:provided
+[ 1;34mINFO m] |  |  +- commons-pool:commons-pool:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- commons-validator:commons-validator:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient-cache:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  +- org.json:json:jar:20090211:provided
+[ 1;34mINFO m] |  |  +- com.ibm.icu:icu4j:jar:64.2:provided
+[ 1;34mINFO m] |  |  +- oro:oro:jar:2.0.8:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.json-simple:json-simple:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.mozilla:rhino:jar:1.7.11:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-orm:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-tx:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context-support:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-web:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.subethamail:subethasmtp:jar:3.1.7:provided
+[ 1;34mINFO m] |  |  |  \- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.maven:maven-artifact:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.2.0:provided
+[ 1;34mINFO m] |  |  +- com.sun.pdfview:pdfrenderer:jar:0.9.1-patched:provided
+[ 1;34mINFO m] |  |  +- com.benfante:JSlideShare:jar:0.6:provided
+[ 1;34mINFO m] |  |  +- bsf:bsf:jar:2.4.0:provided
+[ 1;34mINFO m] |  |  +- com.beetstra.jutf7:jutf7:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- cglib:cglib:jar:3.2.12:provided
+[ 1;34mINFO m] |  |  |  \- org.ow2.asm:asm:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-api:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-log4j12:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- xerces:xercesImpl:jar:2.11.0-alfresco-patched-20180402:provided
+[ 1;34mINFO m] |  |  +- xalan:xalan:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  |  \- xalan:serializer:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-annotation_1.0_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-jaxws_2.1_spec:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.3:provided
+[ 1;34mINFO m] |  |  +- net.java.dev.stax-utils:stax-utils:jar:20070216:provided
+[ 1;34mINFO m] |  |  +- org.freemarker:freemarker:jar:2.3.20-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.xmlbeans:xmlbeans:jar:3.1.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:fontbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox-tools:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.pdfbox:pdfbox-debugger:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:jempbox:jar:1.8.16:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcmail-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.mp4parser:isoparser:jar:1.1.22:provided
+[ 1;34mINFO m] |  |  +- net.sf:bliki:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.jsr107cache:jsr107cache:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- javax.jws:jsr181-api:jar:1.0-MR1:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:jsr250-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.4.2:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.groovy:groovy-all:jar:indy:2.4.17:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jodconverter-core:jar:3.0.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:juh:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  |  \- org.openoffice:jurt:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:ridl:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  \- org.openoffice:unoil:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.javamusictag:jid3lib:jar:0.5.4:provided
+[ 1;34mINFO m] |  |  +- jmagick:jmagick:jar:6.6.9:provided
+[ 1;34mINFO m] |  |  +- org.htmlparser:htmlparser:jar:2.1:provided
+[ 1;34mINFO m] |  |  |  \- org.htmlparser:htmllexer:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- joda-time:joda-time:jar:2.10.3:provided
+[ 1;34mINFO m] |  |  +- jaxen:jaxen:jar:1.2.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-collections4:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-ooxml:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.poi:poi-ooxml-schemas:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- com.github.virtuald:curvesapi:jar:1.05:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-scratchpad:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  +- org.livetribe:livetribe-jsr223:jar:2.0.7:provided
+[ 1;34mINFO m] |  |  +- edu.ucar:netcdf:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |  \- edu.ucar:unidataCommon:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |     \- net.jcip:jcip-annotations:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.servlet:jstl:jar:1.2:provided
+[ 1;34mINFO m] |  |  +- javax.transaction:jta:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core-configservice:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.alfresco.surf:spring-surf-core:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  \- org.dom4j:dom4j:jar:2.1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-webscripts-api:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-support:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-core-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-media-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-meta-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-meta-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-youtube-2.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.guava:guava:jar:28.0-jre:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[ 1;34mINFO m] |  |  |  +- org.checkerframework:checker-qual:jar:2.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.google.j2objc:j2objc-annotations:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[ 1;34mINFO m] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.quartz-scheduler:quartz:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  |  \- com.zaxxer:HikariCP-java7:jar:2.4.13:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-engine:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-bpmn-converter:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  |  \- org.activiti:activiti-bpmn-model:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-process-validation:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-image-generator:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  \- org.glassfish.corba:glassfish-corba-omgapi:jar:4.1.0:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-spring:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-authz-client:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-common:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-servlet-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-sync-events:jar:1.2.14:provided
+[ 1;34mINFO m] |  |  +- org.gytheio:gytheio-messaging-camel:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  +- org.gytheio:gytheio-messaging-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.gytheio:gytheio-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  \- org.gytheio:gytheio-health-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-spring:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.camel:camel-core:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-amqp:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.camel:camel-jms:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.springframework:spring-jms:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  |     \- org.springframework:spring-messaging:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:qpid-jms-client:jar:0.39.0:provided
+[ 1;34mINFO m] |  |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  |  \- io.netty:netty-transport-native-unix-common:jar:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:proton-j:jar:0.31.0:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-buffer:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-common:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-handler:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-codec:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-transport:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-resolver:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  \- io.netty:netty-codec-http:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-jackson:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-client:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.fusesource.hawtbuf:hawtbuf:jar:1.11:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-broker:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-openwire-legacy:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-camel:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-spring:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |     \- org.apache.xbean:xbean-spring:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-amqp:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.activemq:activemq-jms-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-pool2:jar:2.4.2:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-transform-model:jar:1.0.2.7:provided
+[ 1;34mINFO m] |  |  \- org.aspectj:aspectjrt:jar:1.9.4:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-data-model:jar:8.50.2:provided
+[ 1;34mINFO m] |  |  +- org.jibx:jibx-run:jar:1.3.1:provided
+[ 1;34mINFO m] |  |  +- org.antlr:antlr:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  +- org.antlr:antlr-runtime:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  \- org.antlr:ST4:jar:4.0.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:provided
+[ 1;34mINFO m] |  |  |  \- javax.xml.stream:stax-api:jar:1.0-2:provided
+[ 1;34mINFO m] |  |  +- org.acegisecurity:acegi-security:jar:0.8.2_patched:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-xmlfactory:jar:1.3:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-core:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-parsers:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.activation:jakarta.activation:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.tallison:jmatio:jar:1.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-core:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-dom:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.tukaani:xz:jar:1.8:provided
+[ 1;34mINFO m] |  |  |  +- com.epam:parso:jar:2.0.11:provided
+[ 1;34mINFO m] |  |  |  +- org.brotli:dec:jar:0.1.2:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess-encrypt:jar:3.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.ccil.cowan.tagsoup:tagsoup:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- com.drewnoakes:metadata-extractor:jar:2.11.0:provided
+[ 1;34mINFO m] |  |  |  |  \- com.adobe.xmp:xmpcore:jar:5.1.3:provided
+[ 1;34mINFO m] |  |  |  +- de.l3s.boilerpipe:boilerpipe:jar:1.1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.codelibs:jhighlight:jar:1.0.3:provided
+[ 1;34mINFO m] |  |  |  +- com.pff:java-libpst:jar:0.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.junrar:junrar:jar:4.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-rs-client:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-frontend-jaxrs:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.5:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.cxf:cxf-rt-security:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-exec:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.opennlp:opennlp-tools:jar:1.9.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.openjson:openjson:jar:1.0.10:provided
+[ 1;34mINFO m] |  |  |  +- com.google.code.gson:gson:jar:2.8.5:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:netcdf4:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:grib:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  \- org.itadaki:bzip2:jar:0.9.1:provided
+[ 1;34mINFO m] |  |  |  +- net.java.dev.jna:jna:jar:5.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.jsoup:jsoup:jar:1.11.3:provided
+[ 1;34mINFO m] |  |  |  +- com.google.protobuf:protobuf-java:jar:3.7.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:cdm:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- edu.ucar:udunits:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- net.sf.ehcache:ehcache-core:jar:2.6.2:provided
+[ 1;34mINFO m] |  |  |  |  \- com.beust:jcommander:jar:1.35:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:httpservices:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-utility:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- javax.measure:unit-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.storage:sis-netcdf:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.sis.storage:sis-storage:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.sis.core:sis-feature:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.sis.core:sis-referencing:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-metadata:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.opengis:geoapi:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.usc.ir:sentiment-analysis-parser:jar:0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.pdfbox:jbig2-imageio:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  |  \- com.github.jai-imageio:jai-imageio-core:jar:1.4.0:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-core:jar:0.8:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-tika:jar:0.8:provided
+[ 1;34mINFO m] |  |  \- com.googlecode.juniversalchardet:juniversalchardet:jar:1.0.3:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.10:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.19:provided
+[ 1;34mINFO m] |  |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.santuario:xmlsec:jar:1.5.8:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-csv:jar:20110211:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-email:jar:1.5:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-webscripts:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- commons-digester:commons-digester:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.alfresco.cmis.client:alfresco-opencmis-extension:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- commons-httpclient:commons-httpclient:jar:3.1:provided
+[ 1;34mINFO m] |  |  \- junit:junit:jar:4.11:provided
+[ 1;34mINFO m] |  |     \- org.hamcrest:hamcrest-core:jar:1.3:provided
+[ 1;34mINFO m] |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.4:provided
+[ 1;34mINFO m] |  +- javax.xml:jaxrpc-api:jar:1.1:provided
+[ 1;34mINFO m] |  +- com.rometools:rome:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  +- com.rometools:rome-utils:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  \- org.jdom:jdom2:jar:2.0.6:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-test-tck:jar:1.0.0:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:provided
+[ 1;34mINFO m] |  |  |  +- asm:asm:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-core:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  \- org.apache.cxf:cxf-rt-ws-policy:jar:3.0.10:provided
+[ 1;34mINFO m] |  |     +- wsdl4j:wsdl4j:jar:1.6.3:provided
+[ 1;34mINFO m] |  |     \- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  \- org.alfresco:alfresco-pdf-renderer:tgz:linux:1.1:provided
+[ 1;34mINFO m] +- org.springframework:spring-context:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] |  +- org.springframework:spring-aop:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] |  +- org.springframework:spring-beans:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-expression:jar:5.0.4.RELEASE:provided
+[ 1;34mINFO m] +- org.glassfish.jaxb:jaxb-runtime:jar:2.4.0-b180830.0438:compile
+[ 1;34mINFO m] |  +- javax.xml.bind:jaxb-api:jar:2.4.0-b180830.0359:compile
+[ 1;34mINFO m] |  +- org.glassfish.jaxb:txw2:jar:2.4.0-b180830.0438:compile
+[ 1;34mINFO m] |  +- com.sun.istack:istack-commons-runtime:jar:3.0.7:compile
+[ 1;34mINFO m] |  +- org.jvnet.staxex:stax-ex:jar:1.8:compile
+[ 1;34mINFO m] |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.15:compile
+[ 1;34mINFO m] |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+[ 1;34mINFO m] +- com.sun.xml.ws:jaxws-rt:pom:2.3.1:compile
+[ 1;34mINFO m] |  +- javax.xml.ws:jaxws-api:jar:2.3.1:compile
+[ 1;34mINFO m] |  +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:compile
+[ 1;34mINFO m] |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[ 1;34mINFO m] |  +- javax.jws:javax.jws-api:jar:1.1:compile
+[ 1;34mINFO m] |  +- com.sun.xml.ws:policy:jar:2.7.5:compile
+[ 1;34mINFO m] |  |  \- com.sun.activation:javax.activation:jar:1.2.0:compile
+[ 1;34mINFO m] |  +- org.glassfish.gmbal:gmbal-api-only:jar:3.1.0-b001:compile
+[ 1;34mINFO m] |  |  \- org.glassfish.external:management-api:jar:3.0.0-b012:compile
+[ 1;34mINFO m] |  +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.6:compile
+[ 1;34mINFO m] |  +- org.jvnet.mimepull:mimepull:jar:1.9.10:compile
+[ 1;34mINFO m] |  +- org.glassfish.ha:ha-api:jar:3.1.9:compile
+[ 1;34mINFO m] |  +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.5.0:compile
+[ 1;34mINFO m] |  +- com.fasterxml.woodstox:woodstox-core:jar:5.1.0:compile
+[ 1;34mINFO m] |  \- org.codehaus.woodstox:stax2-api:jar:4.1:compile
+[ 1;34mINFO m] \- com.sun.xml.ws:rt:jar:2.3.1:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m------------------------<  0;36mes.rsits.ws:ws-base 0;1m >------------------------- m
+[ 1;34mINFO m]  1mBuilding ws-base Repository AMP project 1.5.1-SNAPSHOT           [11/17] m
+[ 1;34mINFO m]  1m--------------------------------[ amp ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mws-base 0;1m --- m
+[ 1;34mINFO m] es.rsits.ws:ws-base:amp:1.5.1-SNAPSHOT
+[ 1;34mINFO m] +- org.alfresco:alfresco-remote-api:jar:7.107.1:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-repository:jar:7.134.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-legacy-lucene:jar:6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-core:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-analyzers:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-regex:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.lucene:lucene-snowball:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jlan-embed:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-core:jar:7.22:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-math3:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  +- org.safehaus.jug:jug:jar:asl:2.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis:jar:3.3.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis-spring:jar:1.2.5:provided
+[ 1;34mINFO m] |  |  |  +- log4j:log4j:jar:1.2.17:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.guessencoding:guessencoding:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-text-gen:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-heartbeat-data-sender:jar:1.0.12:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:provided
+[ 1;34mINFO m] |  |  +- com.sun.mail:javax.mail:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-greenmail:jar:6.1:provided
+[ 1;34mINFO m] |  |  +- commons-dbcp:commons-dbcp:jar:1.4-DBCP330:provided
+[ 1;34mINFO m] |  |  +- commons-discovery:commons-discovery:jar:0.5:provided
+[ 1;34mINFO m] |  |  +- commons-fileupload:commons-fileupload:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-compress:jar:1.19:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-lang3:jar:3.9:provided
+[ 1;34mINFO m] |  |  +- commons-codec:commons-codec:jar:1.13:provided
+[ 1;34mINFO m] |  |  +- commons-beanutils:commons-beanutils:jar:1.9.4:provided
+[ 1;34mINFO m] |  |  +- commons-collections:commons-collections:jar:3.2.2:provided
+[ 1;34mINFO m] |  |  +- commons-io:commons-io:jar:2.6:provided
+[ 1;34mINFO m] |  |  +- commons-net:commons-net:jar:3.6:provided
+[ 1;34mINFO m] |  |  +- commons-pool:commons-pool:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- commons-validator:commons-validator:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient-cache:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  +- org.json:json:jar:20090211:provided
+[ 1;34mINFO m] |  |  +- com.ibm.icu:icu4j:jar:64.2:provided
+[ 1;34mINFO m] |  |  +- oro:oro:jar:2.0.8:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.json-simple:json-simple:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.mozilla:rhino:jar:1.7.11:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-core:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-orm:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-tx:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-expression:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context-support:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-web:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.subethamail:subethasmtp:jar:3.1.7:provided
+[ 1;34mINFO m] |  |  |  \- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.maven:maven-artifact:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.2.0:provided
+[ 1;34mINFO m] |  |  +- com.sun.pdfview:pdfrenderer:jar:0.9.1-patched:provided
+[ 1;34mINFO m] |  |  +- com.benfante:JSlideShare:jar:0.6:provided
+[ 1;34mINFO m] |  |  +- bsf:bsf:jar:2.4.0:provided
+[ 1;34mINFO m] |  |  +- com.beetstra.jutf7:jutf7:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- cglib:cglib:jar:3.2.12:provided
+[ 1;34mINFO m] |  |  |  \- org.ow2.asm:asm:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-api:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-log4j12:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- xerces:xercesImpl:jar:2.11.0-alfresco-patched-20180402:provided
+[ 1;34mINFO m] |  |  +- xalan:xalan:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  |  \- xalan:serializer:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-annotation_1.0_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-jaxws_2.1_spec:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.3:provided
+[ 1;34mINFO m] |  |  +- net.java.dev.stax-utils:stax-utils:jar:20070216:provided
+[ 1;34mINFO m] |  |  +- org.freemarker:freemarker:jar:2.3.20-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.xmlbeans:xmlbeans:jar:3.1.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:fontbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox-tools:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.pdfbox:pdfbox-debugger:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:jempbox:jar:1.8.16:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcmail-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.mp4parser:isoparser:jar:1.1.22:provided
+[ 1;34mINFO m] |  |  +- net.sf:bliki:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.jsr107cache:jsr107cache:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- javax.jws:jsr181-api:jar:1.0-MR1:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:jsr250-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.4.2:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.groovy:groovy-all:jar:indy:2.4.17:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jodconverter-core:jar:3.0.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:juh:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  |  \- org.openoffice:jurt:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:ridl:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  \- org.openoffice:unoil:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.javamusictag:jid3lib:jar:0.5.4:provided
+[ 1;34mINFO m] |  |  +- jmagick:jmagick:jar:6.6.9:provided
+[ 1;34mINFO m] |  |  +- org.htmlparser:htmlparser:jar:2.1:provided
+[ 1;34mINFO m] |  |  |  \- org.htmlparser:htmllexer:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- joda-time:joda-time:jar:2.10.3:provided
+[ 1;34mINFO m] |  |  +- jaxen:jaxen:jar:1.2.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-collections4:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-ooxml:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.poi:poi-ooxml-schemas:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- com.github.virtuald:curvesapi:jar:1.05:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-scratchpad:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  +- org.livetribe:livetribe-jsr223:jar:2.0.7:provided
+[ 1;34mINFO m] |  |  +- edu.ucar:netcdf:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |  \- edu.ucar:unidataCommon:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |     \- net.jcip:jcip-annotations:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.servlet:jstl:jar:1.2:provided
+[ 1;34mINFO m] |  |  +- javax.transaction:jta:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core-configservice:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.alfresco.surf:spring-surf-core:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  \- org.dom4j:dom4j:jar:2.1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-webscripts-api:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-support:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-core-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-media-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-meta-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-meta-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-youtube-2.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.guava:guava:jar:28.0-jre:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[ 1;34mINFO m] |  |  |  +- org.checkerframework:checker-qual:jar:2.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.google.j2objc:j2objc-annotations:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[ 1;34mINFO m] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.quartz-scheduler:quartz:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  |  \- com.zaxxer:HikariCP-java7:jar:2.4.13:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-engine:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-bpmn-converter:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  |  \- org.activiti:activiti-bpmn-model:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-process-validation:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-image-generator:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  \- org.glassfish.corba:glassfish-corba-omgapi:jar:4.1.0:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-spring:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-authz-client:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-common:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-servlet-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-sync-events:jar:1.2.14:provided
+[ 1;34mINFO m] |  |  +- org.gytheio:gytheio-messaging-camel:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  +- org.gytheio:gytheio-messaging-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.gytheio:gytheio-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  \- org.gytheio:gytheio-health-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-spring:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.camel:camel-core:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-amqp:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.camel:camel-jms:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.springframework:spring-jms:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  |     \- org.springframework:spring-messaging:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:qpid-jms-client:jar:0.39.0:provided
+[ 1;34mINFO m] |  |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  |  \- io.netty:netty-transport-native-unix-common:jar:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:proton-j:jar:0.31.0:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-buffer:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-common:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-handler:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-codec:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-transport:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-resolver:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  \- io.netty:netty-codec-http:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-jackson:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-client:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.fusesource.hawtbuf:hawtbuf:jar:1.11:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-broker:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-openwire-legacy:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-camel:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-spring:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |     \- org.apache.xbean:xbean-spring:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-amqp:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.activemq:activemq-jms-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-pool2:jar:2.4.2:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-transform-model:jar:1.0.2.7:provided
+[ 1;34mINFO m] |  |  \- org.aspectj:aspectjrt:jar:1.9.4:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-data-model:jar:8.50.2:provided
+[ 1;34mINFO m] |  |  +- org.jibx:jibx-run:jar:1.3.1:provided
+[ 1;34mINFO m] |  |  +- org.antlr:antlr:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  +- org.antlr:antlr-runtime:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  \- org.antlr:ST4:jar:4.0.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:provided
+[ 1;34mINFO m] |  |  |  \- javax.xml.stream:stax-api:jar:1.0-2:provided
+[ 1;34mINFO m] |  |  +- org.acegisecurity:acegi-security:jar:0.8.2_patched:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-xmlfactory:jar:1.3:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-core:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-parsers:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.activation:jakarta.activation:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.tallison:jmatio:jar:1.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-core:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-dom:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.tukaani:xz:jar:1.8:provided
+[ 1;34mINFO m] |  |  |  +- com.epam:parso:jar:2.0.11:provided
+[ 1;34mINFO m] |  |  |  +- org.brotli:dec:jar:0.1.2:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess-encrypt:jar:3.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.ccil.cowan.tagsoup:tagsoup:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- com.drewnoakes:metadata-extractor:jar:2.11.0:provided
+[ 1;34mINFO m] |  |  |  |  \- com.adobe.xmp:xmpcore:jar:5.1.3:provided
+[ 1;34mINFO m] |  |  |  +- de.l3s.boilerpipe:boilerpipe:jar:1.1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.codelibs:jhighlight:jar:1.0.3:provided
+[ 1;34mINFO m] |  |  |  +- com.pff:java-libpst:jar:0.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.junrar:junrar:jar:4.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-rs-client:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-frontend-jaxrs:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.5:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.cxf:cxf-rt-security:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-exec:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.opennlp:opennlp-tools:jar:1.9.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.openjson:openjson:jar:1.0.10:provided
+[ 1;34mINFO m] |  |  |  +- com.google.code.gson:gson:jar:2.8.5:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:netcdf4:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:grib:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  \- org.itadaki:bzip2:jar:0.9.1:provided
+[ 1;34mINFO m] |  |  |  +- net.java.dev.jna:jna:jar:5.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.jsoup:jsoup:jar:1.11.3:provided
+[ 1;34mINFO m] |  |  |  +- com.google.protobuf:protobuf-java:jar:3.7.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:cdm:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- edu.ucar:udunits:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- net.sf.ehcache:ehcache-core:jar:2.6.2:provided
+[ 1;34mINFO m] |  |  |  |  \- com.beust:jcommander:jar:1.35:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:httpservices:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-utility:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- javax.measure:unit-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.storage:sis-netcdf:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.sis.storage:sis-storage:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.sis.core:sis-feature:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.sis.core:sis-referencing:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-metadata:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.opengis:geoapi:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.usc.ir:sentiment-analysis-parser:jar:0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.pdfbox:jbig2-imageio:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  |  \- com.github.jai-imageio:jai-imageio-core:jar:1.4.0:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-core:jar:0.8:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-tika:jar:0.8:provided
+[ 1;34mINFO m] |  |  \- com.googlecode.juniversalchardet:juniversalchardet:jar:1.0.3:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.10:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.19:provided
+[ 1;34mINFO m] |  |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.santuario:xmlsec:jar:1.5.8:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-csv:jar:20110211:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-email:jar:1.5:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-webscripts:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- commons-digester:commons-digester:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.alfresco.cmis.client:alfresco-opencmis-extension:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- commons-httpclient:commons-httpclient:jar:3.1:provided
+[ 1;34mINFO m] |  |  \- junit:junit:jar:4.11:provided
+[ 1;34mINFO m] |  |     \- org.hamcrest:hamcrest-core:jar:1.3:provided
+[ 1;34mINFO m] |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.4:provided
+[ 1;34mINFO m] |  +- javax.xml:jaxrpc-api:jar:1.1:provided
+[ 1;34mINFO m] |  +- com.rometools:rome:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  +- com.rometools:rome-utils:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  \- org.jdom:jdom2:jar:2.0.6:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-test-tck:jar:1.0.0:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:provided
+[ 1;34mINFO m] |  |  |  +- asm:asm:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-core:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  \- org.apache.cxf:cxf-rt-ws-policy:jar:3.0.10:provided
+[ 1;34mINFO m] |  |     +- wsdl4j:wsdl4j:jar:1.6.3:provided
+[ 1;34mINFO m] |  |     \- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  \- org.alfresco:alfresco-pdf-renderer:tgz:linux:1.1:provided
+[ 1;34mINFO m] +- com.sun.xml.ws:jaxws-rt:jar:2.3.1:compile
+[ 1;34mINFO m] |  +- javax.xml.bind:jaxb-api:jar:2.3.1:compile
+[ 1;34mINFO m] |  +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:compile
+[ 1;34mINFO m] |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[ 1;34mINFO m] |  +- javax.jws:javax.jws-api:jar:1.1:compile
+[ 1;34mINFO m] |  +- org.glassfish.jaxb:jaxb-runtime:jar:2.3.1:compile
+[ 1;34mINFO m] |  |  +- org.glassfish.jaxb:txw2:jar:2.3.1:compile
+[ 1;34mINFO m] |  |  \- com.sun.istack:istack-commons-runtime:jar:3.0.7:compile
+[ 1;34mINFO m] |  +- com.sun.xml.ws:policy:jar:2.7.5:compile
+[ 1;34mINFO m] |  |  \- com.sun.activation:javax.activation:jar:1.2.0:compile
+[ 1;34mINFO m] |  +- org.glassfish.gmbal:gmbal-api-only:jar:3.1.0-b001:compile
+[ 1;34mINFO m] |  |  \- org.glassfish.external:management-api:jar:3.0.0-b012:compile
+[ 1;34mINFO m] |  +- org.jvnet.staxex:stax-ex:jar:1.8:compile
+[ 1;34mINFO m] |  +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.6:compile
+[ 1;34mINFO m] |  +- org.jvnet.mimepull:mimepull:jar:1.9.10:compile
+[ 1;34mINFO m] |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.15:compile
+[ 1;34mINFO m] |  +- org.glassfish.ha:ha-api:jar:3.1.9:compile
+[ 1;34mINFO m] |  +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.5.0:compile
+[ 1;34mINFO m] |  +- com.fasterxml.woodstox:woodstox-core:jar:5.1.0:compile
+[ 1;34mINFO m] |  +- org.codehaus.woodstox:stax2-api:jar:4.1:compile
+[ 1;34mINFO m] |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+[ 1;34mINFO m] +- javax.xml.ws:jaxws-api:jar:2.3.1:provided
+[ 1;34mINFO m] +- es.rsits:common-utils:jar:1.0-SNAPSHOT:compile
+[ 1;34mINFO m] |  +- com.sun.xml.ws:jaxws-rt:pom:2.3.1:compile
+[ 1;34mINFO m] |  \- com.sun.xml.ws:rt:jar:2.3.1:compile
+[ 1;34mINFO m] \- javax.servlet:servlet-api:jar:2.5:provided
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m--------------------------<  0;36mes.caib:gdib-amp 0;1m >-------------------------- m
+[ 1;34mINFO m]  1mBuilding gdib Repository AMP project 1.5.1-SNAPSHOT              [12/17] m
+[ 1;34mINFO m]  1m--------------------------------[ amp ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mgdib-amp 0;1m --- m
+[ 1;34mINFO m] es.caib:gdib-amp:amp:1.5.1-SNAPSHOT
+[ 1;34mINFO m] +- org.alfresco:alfresco-governance-services-enterprise-repo:jar:classes:3.3.0:provided
+[ 1;34mINFO m] +- org.alfresco:alfresco-governance-services-community-repo:jar:classes:3.3.0:provided
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:compile
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:compile
+[ 1;34mINFO m] |        \- xml-apis:xml-apis:jar:1.3.04:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- org.bouncycastle:bcprov-jdk16:jar:1.46:compile
+[ 1;34mINFO m] |  +- org.bouncycastle:bcmail-jdk16:jar:1.46:compile
+[ 1;34mINFO m] |  +- com.lowagie:itext:jar:2.2:compile
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-xml:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-encryption:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ocsp-rfc3161:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-sign-operations:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-utils:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ws:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.6:compile
+[ 1;34mINFO m] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[ 1;34mINFO m] |  |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[ 1;34mINFO m] |  +- org.apache.axis:axis-jaxrpc:jar:1.4:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-adb:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  +- org.apache.axis2:axis2-kernel:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.21:compile
+[ 1;34mINFO m] |  |  |  |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.21:runtime
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1:compile
+[ 1;34mINFO m] |  |  |  +- wsdl4j:wsdl4j:jar:1.6.2:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.neethi:neethi:jar:3.0.3:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.woden:woden-core:jar:1.0M10:compile
+[ 1;34mINFO m] |  |  |  \- javax.ws.rs:jsr311-api:jar:1.1.1:compile
+[ 1;34mINFO m] |  |  +- org.apache.ws.commons.axiom:axiom-dom:jar:1.2.21:runtime
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-saaj:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-saaj_1.3_spec:jar:1.0.1:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-local:jar:1.7.9:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-transport-http:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.3:compile
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:compile
+[ 1;34mINFO m] |  |  \- commons-httpclient:commons-httpclient:jar:3.1:compile
+[ 1;34mINFO m] |  \- com.sun.xml.wss:xws-security:jar:3.0:compile
+[ 1;34mINFO m] |     +- javax.xml.soap:saaj-api:jar:1.3:compile
+[ 1;34mINFO m] |     \- javax.mail:mail:jar:1.4:compile
+[ 1;34mINFO m] +- javax.servlet:servlet-api:jar:2.5:provided
+[ 1;34mINFO m] +- org.alfresco:alfresco-remote-api:jar:7.107.1:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-repository:jar:7.134.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-legacy-lucene:jar:6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-core:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-analyzers:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-regex:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.lucene:lucene-snowball:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jlan-embed:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-core:jar:7.22:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-math3:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  +- org.safehaus.jug:jug:jar:asl:2.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis:jar:3.3.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis-spring:jar:1.2.5:provided
+[ 1;34mINFO m] |  |  |  +- log4j:log4j:jar:1.2.17:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.guessencoding:guessencoding:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-text-gen:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-heartbeat-data-sender:jar:1.0.12:provided
+[ 1;34mINFO m] |  |  +- com.sun.mail:javax.mail:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-greenmail:jar:6.1:provided
+[ 1;34mINFO m] |  |  +- commons-dbcp:commons-dbcp:jar:1.4-DBCP330:provided
+[ 1;34mINFO m] |  |  +- commons-discovery:commons-discovery:jar:0.5:provided
+[ 1;34mINFO m] |  |  +- commons-fileupload:commons-fileupload:jar:1.4:compile
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-compress:jar:1.19:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-lang3:jar:3.9:provided
+[ 1;34mINFO m] |  |  +- commons-codec:commons-codec:jar:1.13:compile
+[ 1;34mINFO m] |  |  +- commons-beanutils:commons-beanutils:jar:1.9.4:provided
+[ 1;34mINFO m] |  |  +- commons-collections:commons-collections:jar:3.2.2:provided
+[ 1;34mINFO m] |  |  +- commons-io:commons-io:jar:2.6:compile
+[ 1;34mINFO m] |  |  +- commons-net:commons-net:jar:3.6:provided
+[ 1;34mINFO m] |  |  +- commons-pool:commons-pool:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- commons-validator:commons-validator:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient-cache:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  +- org.json:json:jar:20090211:provided
+[ 1;34mINFO m] |  |  +- com.ibm.icu:icu4j:jar:64.2:provided
+[ 1;34mINFO m] |  |  +- oro:oro:jar:2.0.8:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.json-simple:json-simple:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.mozilla:rhino:jar:1.7.11:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-core:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-orm:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-tx:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-expression:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context-support:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-web:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.subethamail:subethasmtp:jar:3.1.7:provided
+[ 1;34mINFO m] |  |  |  \- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.maven:maven-artifact:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.2.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  +- com.sun.pdfview:pdfrenderer:jar:0.9.1-patched:provided
+[ 1;34mINFO m] |  |  +- com.benfante:JSlideShare:jar:0.6:provided
+[ 1;34mINFO m] |  |  +- bsf:bsf:jar:2.4.0:provided
+[ 1;34mINFO m] |  |  +- com.beetstra.jutf7:jutf7:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- cglib:cglib:jar:3.2.12:provided
+[ 1;34mINFO m] |  |  |  \- org.ow2.asm:asm:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-api:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-log4j12:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- xerces:xercesImpl:jar:2.11.0-alfresco-patched-20180402:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:javax.annotation-api:jar:1.3.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-annotation_1.0_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-jaxws_2.1_spec:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.3:compile
+[ 1;34mINFO m] |  |  +- net.java.dev.stax-utils:stax-utils:jar:20070216:provided
+[ 1;34mINFO m] |  |  +- org.freemarker:freemarker:jar:2.3.20-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.xmlbeans:xmlbeans:jar:3.1.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:fontbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox-tools:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.pdfbox:pdfbox-debugger:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:jempbox:jar:1.8.16:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcmail-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.mp4parser:isoparser:jar:1.1.22:provided
+[ 1;34mINFO m] |  |  +- net.sf:bliki:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.jsr107cache:jsr107cache:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- javax.jws:jsr181-api:jar:1.0-MR1:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:jsr250-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.4.2:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.16:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.groovy:groovy-all:jar:indy:2.4.17:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jodconverter-core:jar:3.0.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:juh:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  |  \- org.openoffice:jurt:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:ridl:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  \- org.openoffice:unoil:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.javamusictag:jid3lib:jar:0.5.4:provided
+[ 1;34mINFO m] |  |  +- jmagick:jmagick:jar:6.6.9:provided
+[ 1;34mINFO m] |  |  +- org.htmlparser:htmlparser:jar:2.1:provided
+[ 1;34mINFO m] |  |  |  \- org.htmlparser:htmllexer:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- joda-time:joda-time:jar:2.10.3:provided
+[ 1;34mINFO m] |  |  +- jaxen:jaxen:jar:1.2.0:compile
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-collections4:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-ooxml:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.poi:poi-ooxml-schemas:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- com.github.virtuald:curvesapi:jar:1.05:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-scratchpad:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  +- org.livetribe:livetribe-jsr223:jar:2.0.7:provided
+[ 1;34mINFO m] |  |  +- edu.ucar:netcdf:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |  \- edu.ucar:unidataCommon:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |     \- net.jcip:jcip-annotations:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.servlet:jstl:jar:1.2:provided
+[ 1;34mINFO m] |  |  +- javax.transaction:jta:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core-configservice:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.alfresco.surf:spring-surf-core:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  \- org.dom4j:dom4j:jar:2.1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-webscripts-api:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-support:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-core-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-media-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-meta-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-meta-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-youtube-2.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.guava:guava:jar:28.0-jre:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[ 1;34mINFO m] |  |  |  +- org.checkerframework:checker-qual:jar:2.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.google.j2objc:j2objc-annotations:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[ 1;34mINFO m] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.quartz-scheduler:quartz:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  |  \- com.zaxxer:HikariCP-java7:jar:2.4.13:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-engine:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-bpmn-converter:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  |  \- org.activiti:activiti-bpmn-model:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-process-validation:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-image-generator:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  \- org.glassfish.corba:glassfish-corba-omgapi:jar:4.1.0:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-spring:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-authz-client:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-common:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-servlet-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-sync-events:jar:1.2.14:provided
+[ 1;34mINFO m] |  |  +- org.gytheio:gytheio-messaging-camel:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  +- org.gytheio:gytheio-messaging-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.gytheio:gytheio-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  \- org.gytheio:gytheio-health-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-spring:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.camel:camel-core:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-amqp:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.camel:camel-jms:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.springframework:spring-jms:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  |     \- org.springframework:spring-messaging:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:qpid-jms-client:jar:0.39.0:provided
+[ 1;34mINFO m] |  |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  |  \- io.netty:netty-transport-native-unix-common:jar:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:proton-j:jar:0.31.0:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-buffer:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-common:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-handler:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-codec:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-transport:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-resolver:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  \- io.netty:netty-codec-http:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-jackson:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-client:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.fusesource.hawtbuf:hawtbuf:jar:1.11:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-broker:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-openwire-legacy:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-camel:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-spring:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |     \- org.apache.xbean:xbean-spring:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-amqp:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.activemq:activemq-jms-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-pool2:jar:2.4.2:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-transform-model:jar:1.0.2.7:provided
+[ 1;34mINFO m] |  |  \- org.aspectj:aspectjrt:jar:1.9.4:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-data-model:jar:8.50.2:provided
+[ 1;34mINFO m] |  |  +- org.jibx:jibx-run:jar:1.3.1:provided
+[ 1;34mINFO m] |  |  +- org.antlr:antlr:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  +- org.antlr:antlr-runtime:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  \- org.antlr:ST4:jar:4.0.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:runtime
+[ 1;34mINFO m] |  |  |  \- javax.xml.stream:stax-api:jar:1.0-2:runtime
+[ 1;34mINFO m] |  |  +- org.acegisecurity:acegi-security:jar:0.8.2_patched:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-xmlfactory:jar:1.3:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-core:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-parsers:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.activation:jakarta.activation:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.tallison:jmatio:jar:1.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-core:jar:0.8.3:compile
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-dom:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.tukaani:xz:jar:1.8:provided
+[ 1;34mINFO m] |  |  |  +- com.epam:parso:jar:2.0.11:provided
+[ 1;34mINFO m] |  |  |  +- org.brotli:dec:jar:0.1.2:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess-encrypt:jar:3.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.ccil.cowan.tagsoup:tagsoup:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- com.drewnoakes:metadata-extractor:jar:2.11.0:provided
+[ 1;34mINFO m] |  |  |  |  \- com.adobe.xmp:xmpcore:jar:5.1.3:provided
+[ 1;34mINFO m] |  |  |  +- de.l3s.boilerpipe:boilerpipe:jar:1.1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.codelibs:jhighlight:jar:1.0.3:provided
+[ 1;34mINFO m] |  |  |  +- com.pff:java-libpst:jar:0.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.junrar:junrar:jar:4.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-rs-client:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-frontend-jaxrs:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.5:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.cxf:cxf-rt-security:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-exec:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.opennlp:opennlp-tools:jar:1.9.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.openjson:openjson:jar:1.0.10:provided
+[ 1;34mINFO m] |  |  |  +- com.google.code.gson:gson:jar:2.8.5:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:netcdf4:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:grib:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  \- org.itadaki:bzip2:jar:0.9.1:provided
+[ 1;34mINFO m] |  |  |  +- net.java.dev.jna:jna:jar:5.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.jsoup:jsoup:jar:1.11.3:provided
+[ 1;34mINFO m] |  |  |  +- com.google.protobuf:protobuf-java:jar:3.7.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:cdm:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- edu.ucar:udunits:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- net.sf.ehcache:ehcache-core:jar:2.6.2:provided
+[ 1;34mINFO m] |  |  |  |  \- com.beust:jcommander:jar:1.35:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:httpservices:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-utility:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- javax.measure:unit-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.storage:sis-netcdf:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.sis.storage:sis-storage:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.sis.core:sis-feature:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.sis.core:sis-referencing:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-metadata:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.opengis:geoapi:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.usc.ir:sentiment-analysis-parser:jar:0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.pdfbox:jbig2-imageio:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  |  \- com.github.jai-imageio:jai-imageio-core:jar:1.4.0:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-core:jar:0.8:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-tika:jar:0.8:provided
+[ 1;34mINFO m] |  |  \- com.googlecode.juniversalchardet:juniversalchardet:jar:1.0.3:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.10:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-csv:jar:20110211:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-email:jar:1.5:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-webscripts:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- commons-digester:commons-digester:jar:2.1:provided
+[ 1;34mINFO m] |  |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.alfresco.cmis.client:alfresco-opencmis-extension:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  \- junit:junit:jar:4.11:provided
+[ 1;34mINFO m] |  |     \- org.hamcrest:hamcrest-core:jar:1.3:provided
+[ 1;34mINFO m] |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.4:compile
+[ 1;34mINFO m] |  +- javax.xml:jaxrpc-api:jar:1.1:provided
+[ 1;34mINFO m] |  +- com.rometools:rome:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  +- com.rometools:rome-utils:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  \- org.jdom:jdom2:jar:2.0.6:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-test-tck:jar:1.0.0:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:provided
+[ 1;34mINFO m] |  |  |  +- asm:asm:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-core:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  \- org.apache.cxf:cxf-rt-ws-policy:jar:3.0.10:provided
+[ 1;34mINFO m] |  \- org.alfresco:alfresco-pdf-renderer:tgz:linux:1.1:provided
+[ 1;34mINFO m] +- es.rsits:common-utils:jar:1.0-SNAPSHOT:provided
+[ 1;34mINFO m] |  +- org.glassfish.jaxb:jaxb-runtime:jar:2.4.0-b180830.0438:provided
+[ 1;34mINFO m] |  |  +- org.glassfish.jaxb:txw2:jar:2.4.0-b180830.0438:provided
+[ 1;34mINFO m] |  |  +- com.sun.istack:istack-commons-runtime:jar:3.0.7:provided
+[ 1;34mINFO m] |  |  +- org.jvnet.staxex:stax-ex:jar:1.8:provided
+[ 1;34mINFO m] |  |  \- javax.activation:javax.activation-api:jar:1.2.0:provided
+[ 1;34mINFO m] |  +- com.sun.xml.ws:jaxws-rt:pom:2.3.1:provided
+[ 1;34mINFO m] |  |  +- javax.xml.ws:jaxws-api:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:provided
+[ 1;34mINFO m] |  |  +- javax.jws:javax.jws-api:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.ws:policy:jar:2.7.5:provided
+[ 1;34mINFO m] |  |  |  \- com.sun.activation:javax.activation:jar:1.2.0:provided
+[ 1;34mINFO m] |  |  +- org.glassfish.gmbal:gmbal-api-only:jar:3.1.0-b001:provided
+[ 1;34mINFO m] |  |  |  \- org.glassfish.external:management-api:jar:3.0.0-b012:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.6:provided
+[ 1;34mINFO m] |  |  +- org.jvnet.mimepull:mimepull:jar:1.9.10:provided
+[ 1;34mINFO m] |  |  +- org.glassfish.ha:ha-api:jar:3.1.9:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.5.0:provided
+[ 1;34mINFO m] |  |  +- com.fasterxml.woodstox:woodstox-core:jar:5.1.0:provided
+[ 1;34mINFO m] |  |  \- org.codehaus.woodstox:stax2-api:jar:4.1:runtime
+[ 1;34mINFO m] |  \- com.sun.xml.ws:rt:jar:2.3.1:provided
+[ 1;34mINFO m] \- es.rsits.ws:ws-base:amp:1.5.1-SNAPSHOT:provided
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-------------<  0;36mes.caib.arxiudigital:arxiudigital-apirest 0;1m >-------------- m
+[ 1;34mINFO m]  1mBuilding arxiudigital-apirest 1.0.9                              [13/17] m
+[ 1;34mINFO m]  1m--------------------------------[ jar ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36marxiudigital-apirest 0;1m --- m
+[ 1;34mINFO m] es.caib.arxiudigital:arxiudigital-apirest:jar:1.0.9
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:test
+[ 1;34mINFO m] +- org.fundaciobit.plugins:plugins-api:jar:1.0.0:test
+[ 1;34mINFO m] +- com.sun.jersey:jersey-client:jar:1.19:compile
+[ 1;34mINFO m] |  \- com.sun.jersey:jersey-core:jar:1.19:compile
+[ 1;34mINFO m] |     \- javax.ws.rs:jsr311-api:jar:1.1.1:compile
+[ 1;34mINFO m] +- com.fasterxml.jackson.core:jackson-databind:jar:2.6.3:compile
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.6.0:compile
+[ 1;34mINFO m] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.6.3:compile
+[ 1;34mINFO m] +- log4j:log4j:jar:1.2.17:compile
+[ 1;34mINFO m] \- org.apache.commons:commons-lang3:jar:3.1:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-------------------------<  0;36mes.caib:gdib-share 0;1m >------------------------- m
+[ 1;34mINFO m]  1mBuilding gdib-share AMP project 1.5.1-SNAPSHOT                   [14/17] m
+[ 1;34mINFO m]  1m--------------------------------[ amp ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mgdib-share 0;1m --- m
+[ 1;34mINFO m] es.caib:gdib-share:amp:1.5.1-SNAPSHOT
+[ 1;34mINFO m] +- org.springframework:spring-core:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] +- org.alfresco:share:war:6.2.0:provided
+[ 1;34mINFO m] +- org.alfresco:share:jar:classes:6.2.0:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-web-framework-commons:jar:classes:6.2.0:provided
+[ 1;34mINFO m] |  |  \- org.alfresco.surf:spring-surf:jar:7.3:provided
+[ 1;34mINFO m] |  |     +- com.yahoo.platform.yui:yuicompressor:jar:2.4.8-alfresco-patched:provided
+[ 1;34mINFO m] |  |     +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.2:provided
+[ 1;34mINFO m] |  |     +- com.google.javascript:closure-compiler:jar:v20160619:provided
+[ 1;34mINFO m] |  |     |  +- com.google.javascript:closure-compiler-externs:jar:v20160619:provided
+[ 1;34mINFO m] |  |     |  +- args4j:args4j:jar:2.0.26:provided
+[ 1;34mINFO m] |  |     |  +- com.google.guava:guava:jar:19.0:provided
+[ 1;34mINFO m] |  |     |  +- com.google.protobuf:protobuf-java:jar:2.5.0:provided
+[ 1;34mINFO m] |  |     |  +- com.google.code.gson:gson:jar:2.2.4:provided
+[ 1;34mINFO m] |  |     |  \- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[ 1;34mINFO m] |  |     +- com.asual.lesscss:lesscss-engine:jar:1.5.1:provided
+[ 1;34mINFO m] |  |     \- org.apache.maven:maven-artifact:jar:3.0.3:provided
+[ 1;34mINFO m] |  |        \- org.codehaus.plexus:plexus-utils:jar:2.0.6:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-core:jar:7.5.6:provided
+[ 1;34mINFO m] |  |  +- commons-codec:commons-codec:jar:1.12:provided
+[ 1;34mINFO m] |  |  +- commons-httpclient:commons-httpclient:jar:3.1-HTTPCLIENT-1265:provided
+[ 1;34mINFO m] |  |  +- commons-logging:commons-logging:jar:1.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-math3:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  +- org.safehaus.jug:jug:jar:asl:2.0.0:provided
+[ 1;34mINFO m] |  |  +- log4j:log4j:jar:1.2.17:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-orm:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-tx:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-aop:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context-support:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core-configservice:jar:7.4:provided
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:javax.activation-api:jar:1.2.0:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.bind:jaxb-xjc:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.guessencoding:guessencoding:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- javax.transaction:jta:jar:1.0.1b:provided
+[ 1;34mINFO m] |  |  \- joda-time:joda-time:jar:2.9.3:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-jlan-embed:jar:7.1:provided
+[ 1;34mINFO m] |  +- org.dom4j:dom4j:jar:2.1.1:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:provided
+[ 1;34mINFO m] |  |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.4:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:provided
+[ 1;34mINFO m] |  |  |  +- asm:asm:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-core:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  \- org.apache.cxf:cxf-rt-ws-policy:jar:3.0.10:provided
+[ 1;34mINFO m] |  |     +- wsdl4j:wsdl4j:jar:1.6.3:provided
+[ 1;34mINFO m] |  |     \- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  +- org.alfresco.cmis.client:alfresco-opencmis-extension:jar:1.0:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-surf-api:jar:7.3:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-webscripts-api:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core:jar:7.9:provided
+[ 1;34mINFO m] |  |  \- org.alfresco.surf:spring-webscripts:jar:7.9:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-cmis-framework:jar:7.3:provided
+[ 1;34mINFO m] |  +- org.mozilla:rhino:jar:1.7.11:provided
+[ 1;34mINFO m] |  +- com.googlecode.json-simple:json-simple:jar:1.1.1:provided
+[ 1;34mINFO m] |  +- org.tuckey:urlrewritefilter:jar:4.0.4:provided
+[ 1;34mINFO m] |  +- commons-fileupload:commons-fileupload:jar:1.3.3:provided
+[ 1;34mINFO m] |  +- jaxen:jaxen:jar:1.1.6:provided
+[ 1;34mINFO m] |  +- org.freemarker:freemarker:jar:2.3.28:provided
+[ 1;34mINFO m] |  +- stax:stax-api:jar:1.0.1:provided
+[ 1;34mINFO m] |  +- com.hazelcast:hazelcast-spring:jar:2.4:provided
+[ 1;34mINFO m] |  |  \- com.hazelcast:hazelcast:jar:2.4:provided
+[ 1;34mINFO m] |  +- javax.servlet:jstl:jar:1.2:provided
+[ 1;34mINFO m] |  +- org.apache.myfaces.core:myfaces-api:jar:1.1.10:provided
+[ 1;34mINFO m] |  +- org.apache.myfaces.core:myfaces-impl:jar:1.1.10:provided
+[ 1;34mINFO m] |  |  +- commons-lang:commons-lang:jar:2.1:provided
+[ 1;34mINFO m] |  |  \- commons-el:commons-el:jar:1.0:provided
+[ 1;34mINFO m] |  +- org.alfresco:aikau:jar:1.0.101.19:provided
+[ 1;34mINFO m] |  +- com.yahoo.platform.yui:yui:zip:2.9.0-alfresco-20141223:provided
+[ 1;34mINFO m] |  +- org.alfresco.3rdparty.com.asual.lesscss:lesscss-engine:jar:1.5.1-patched:provided
+[ 1;34mINFO m] |  +- org.slf4j:slf4j-api:jar:1.7.24:provided
+[ 1;34mINFO m] |  \- org.slf4j:slf4j-log4j12:jar:1.7.24:provided
+[ 1;34mINFO m] +- org.springframework.extensions.surf:spring-webscripts:jar:5.9:provided
+[ 1;34mINFO m] |  +- org.springframework.extensions.surf:spring-surf-core-configservice:jar:5.9:provided
+[ 1;34mINFO m] |  |  +- org.springframework.extensions.surf:spring-surf-core:jar:5.9:provided
+[ 1;34mINFO m] |  |  +- dom4j:dom4j:jar:1.6.1:provided
+[ 1;34mINFO m] |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:provided
+[ 1;34mINFO m] |  |  \- org.springframework:spring-web:jar:3.2.14.RELEASE:provided
+[ 1;34mINFO m] |  +- commons-io:commons-io:jar:2.4:provided
+[ 1;34mINFO m] |  +- commons-beanutils:commons-beanutils:jar:1.9.2:provided
+[ 1;34mINFO m] |  +- commons-collections:commons-collections:jar:3.2.1:provided
+[ 1;34mINFO m] |  +- commons-digester:commons-digester:jar:2.1:provided
+[ 1;34mINFO m] |  +- org.json:json:jar:20090211:provided
+[ 1;34mINFO m] |  +- org.htmlparser:htmlparser:jar:2.1:provided
+[ 1;34mINFO m] |  |  \- org.htmlparser:htmllexer:jar:2.1:provided
+[ 1;34mINFO m] |  +- org.apache.httpcomponents:httpclient:jar:4.5.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.3:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-webmvc:jar:3.2.14.RELEASE:provided
+[ 1;34mINFO m] |     +- org.springframework:spring-beans:jar:3.2.14.RELEASE:provided
+[ 1;34mINFO m] |     \- org.springframework:spring-expression:jar:3.2.14.RELEASE:provided
+[ 1;34mINFO m] \- javax.servlet:servlet-api:jar:2.5:provided
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m-------------------<  0;36mes.gob.afirma:Integra-services 0;1m >------------------- m
+[ 1;34mINFO m]  1mBuilding Integra-services 2.2.1_000                              [15/17] m
+[ 1;34mINFO m]  1m--------------------------------[ war ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mIntegra-services 0;1m --- m
+[ 1;34mINFO m] es.gob.afirma:Integra-services:war:2.2.1_000
+[ 1;34mINFO m] +- junit:junit:jar:4.8.2:compile
+[ 1;34mINFO m] +- javax.servlet:servlet-api:jar:2.5:provided
+[ 1;34mINFO m] +- wsdl4j:wsdl4j:jar:1.6.2:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- log4j:log4j:jar:1.2.5:compile
+[ 1;34mINFO m] |  +- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[ 1;34mINFO m] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[ 1;34mINFO m] |  \- xalan:xalan:jar:2.7.1:compile
+[ 1;34mINFO m] |     \- xalan:serializer:jar:2.7.1:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-xml:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- xerces:xercesImpl:jar:2.10.0:compile
+[ 1;34mINFO m] |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[ 1;34mINFO m] |  \- org.bouncycastle:bctsp-jdk16:jar:1.46:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-commons-pdf-bc:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- org.bouncycastle:bcprov-jdk16:jar:1.46:compile
+[ 1;34mINFO m] |  +- org.bouncycastle:bcmail-jdk16:jar:1.46:compile
+[ 1;34mINFO m] |  \- com.lowagie:itext:jar:2.2:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ocsp-rfc3161:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-sign-operations:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- commons-io:commons-io:jar:2.4:compile
+[ 1;34mINFO m] |  +- commons-codec:commons-codec:jar:1.10:compile
+[ 1;34mINFO m] |  \- org.apache.tika:tika-core:jar:1.2:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-utils:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-ws:jar:2.2.1_000:compile
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.6:compile
+[ 1;34mINFO m] |  |  +- org.apache.santuario:xmlsec:jar:1.5.2:compile
+[ 1;34mINFO m] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[ 1;34mINFO m] |  |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[ 1;34mINFO m] |  +- org.apache.axis:axis-jaxrpc:jar:1.4:compile
+[ 1;34mINFO m] |  +- org.apache.axis2:axis2-saaj:jar:1.7.9:compile
+[ 1;34mINFO m] |  |  \- org.apache.geronimo.specs:geronimo-saaj_1.3_spec:jar:1.0.1:compile
+[ 1;34mINFO m] |  +- com.sun.xml.wss:xws-security:jar:3.0:compile
+[ 1;34mINFO m] |  |  +- javax.xml.soap:saaj-api:jar:1.3:compile
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.0.2:compile
+[ 1;34mINFO m] |  |  +- javax.mail:mail:jar:1.4:compile
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.0:compile
+[ 1;34mINFO m] |  |  |  \- javax.xml.bind:jsr173_api:jar:1.0:compile
+[ 1;34mINFO m] |  |  +- javax.xml.stream:stax-api:jar:1.0:compile
+[ 1;34mINFO m] |  |  \- javax.xml.ws:jaxws-api:jar:2.1:compile
+[ 1;34mINFO m] |  +- org.apache.commons:commons-lang3:jar:3.3.2:compile
+[ 1;34mINFO m] |  +- commons-discovery:commons-discovery:jar:0.4:compile
+[ 1;34mINFO m] |  +- sun-jaxws:stax-ex:jar:2.1.1:compile
+[ 1;34mINFO m] |  \- com.sun.xml.bind:jaxb-impl:jar:2.2.4:compile
+[ 1;34mINFO m] +- es.gob.afirma:Integra-encryption:jar:2.2.1_000:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-kernel:jar:1.7.1:compile
+[ 1;34mINFO m] |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.17:compile
+[ 1;34mINFO m] |  |  +- jaxen:jaxen:jar:1.1.6:compile
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[ 1;34mINFO m] |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:compile
+[ 1;34mINFO m] |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.17:runtime
+[ 1;34mINFO m] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:runtime
+[ 1;34mINFO m] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:runtime
+[ 1;34mINFO m] |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.2:compile
+[ 1;34mINFO m] |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1:compile
+[ 1;34mINFO m] |  +- commons-fileupload:commons-fileupload:jar:1.3.1:compile
+[ 1;34mINFO m] |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.1:compile
+[ 1;34mINFO m] |  +- org.apache.neethi:neethi:jar:3.0.3:compile
+[ 1;34mINFO m] |  +- org.apache.woden:woden-core:jar:1.0M10:compile
+[ 1;34mINFO m] |  \- javax.ws.rs:jsr311-api:jar:1.1.1:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-adb:jar:1.7.1:compile
+[ 1;34mINFO m] |  +- org.apache.ws.commons.axiom:axiom-dom:jar:1.2.17:runtime
+[ 1;34mINFO m] |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-transport-http:jar:1.7.1:compile
+[ 1;34mINFO m] |  +- org.apache.httpcomponents:httpcore:jar:4.2.1:compile
+[ 1;34mINFO m] |  +- org.apache.httpcomponents:httpclient:jar:4.2.1:compile
+[ 1;34mINFO m] |  \- commons-httpclient:commons-httpclient:jar:3.1:compile
+[ 1;34mINFO m] +- org.apache.axis2:axis2-transport-local:jar:1.7.1:compile
+[ 1;34mINFO m] \- org.apache.xmlbeans:xmlbeans:jar:2.4.0:compile
+[ 1;34mINFO m]    \- stax:stax-api:jar:1.0.1:compile
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m--------------------------<  0;36mes.caib:invoices 0;1m >-------------------------- m
+[ 1;34mINFO m]  1mBuilding invoices Repository AMP project 1.5.1-SNAPSHOT          [16/17] m
+[ 1;34mINFO m]  1m--------------------------------[ amp ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36minvoices 0;1m --- m
+[ 1;34mINFO m] es.caib:invoices:amp:1.5.1-SNAPSHOT
+[ 1;34mINFO m] +- org.alfresco:alfresco-remote-api:jar:7.107.1:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-repository:jar:7.134.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-legacy-lucene:jar:6.2:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-core:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-analyzers:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.lucene:lucene-regex:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.lucene:lucene-snowball:jar:2.4.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jlan-embed:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-core:jar:7.22:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-math3:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  +- org.safehaus.jug:jug:jar:asl:2.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis:jar:3.3.0:provided
+[ 1;34mINFO m] |  |  |  +- org.mybatis:mybatis-spring:jar:1.2.5:provided
+[ 1;34mINFO m] |  |  |  +- log4j:log4j:jar:1.2.17:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-impl:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.guessencoding:guessencoding:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-text-gen:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-heartbeat-data-sender:jar:1.0.12:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.6:provided
+[ 1;34mINFO m] |  |  +- com.sun.mail:javax.mail:jar:1.6.2:provided
+[ 1;34mINFO m] |  |  |  \- javax.activation:activation:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-greenmail:jar:6.1:provided
+[ 1;34mINFO m] |  |  +- commons-dbcp:commons-dbcp:jar:1.4-DBCP330:provided
+[ 1;34mINFO m] |  |  +- commons-discovery:commons-discovery:jar:0.5:provided
+[ 1;34mINFO m] |  |  +- commons-fileupload:commons-fileupload:jar:1.4:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-compress:jar:1.19:provided
+[ 1;34mINFO m] |  |  +- org.apache.commons:commons-lang3:jar:3.9:provided
+[ 1;34mINFO m] |  |  +- commons-codec:commons-codec:jar:1.13:provided
+[ 1;34mINFO m] |  |  +- commons-beanutils:commons-beanutils:jar:1.9.4:provided
+[ 1;34mINFO m] |  |  +- commons-collections:commons-collections:jar:3.2.2:provided
+[ 1;34mINFO m] |  |  +- commons-io:commons-io:jar:2.6:provided
+[ 1;34mINFO m] |  |  +- commons-net:commons-net:jar:3.6:provided
+[ 1;34mINFO m] |  |  +- commons-pool:commons-pool:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- commons-validator:commons-validator:jar:1.6:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient-cache:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  +- org.json:json:jar:20090211:provided
+[ 1;34mINFO m] |  |  +- com.ibm.icu:icu4j:jar:64.2:provided
+[ 1;34mINFO m] |  |  +- oro:oro:jar:2.0.8:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.json-simple:json-simple:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.mozilla:rhino:jar:1.7.11:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-orm:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  |  \- org.springframework:spring-tx:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-context-support:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.springframework:spring-web:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.subethamail:subethasmtp:jar:3.1.7:provided
+[ 1;34mINFO m] |  |  |  \- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.maven:maven-artifact:jar:3.6.1:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.plexus:plexus-utils:jar:3.2.0:provided
+[ 1;34mINFO m] |  |  +- javax.xml.bind:jaxb-api:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  +- com.sun.pdfview:pdfrenderer:jar:0.9.1-patched:provided
+[ 1;34mINFO m] |  |  +- com.benfante:JSlideShare:jar:0.6:provided
+[ 1;34mINFO m] |  |  +- bsf:bsf:jar:2.4.0:provided
+[ 1;34mINFO m] |  |  +- com.beetstra.jutf7:jutf7:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- cglib:cglib:jar:3.2.12:provided
+[ 1;34mINFO m] |  |  |  \- org.ow2.asm:asm:jar:7.1:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-api:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- org.slf4j:slf4j-log4j12:jar:1.7.26:provided
+[ 1;34mINFO m] |  |  +- xerces:xercesImpl:jar:2.11.0-alfresco-patched-20180402:provided
+[ 1;34mINFO m] |  |  +- xalan:xalan:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  |  \- xalan:serializer:jar:2.7.2:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:javax.annotation-api:jar:1.3.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-annotation_1.0_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-jaxws_2.1_spec:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.0.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar:1.1.3:provided
+[ 1;34mINFO m] |  |  +- net.java.dev.stax-utils:stax-utils:jar:20070216:provided
+[ 1;34mINFO m] |  |  +- org.freemarker:freemarker:jar:2.3.20-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.xmlbeans:xmlbeans:jar:3.1.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:fontbox:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:pdfbox-tools:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.pdfbox:pdfbox-debugger:jar:2.0.16:provided
+[ 1;34mINFO m] |  |  +- org.apache.pdfbox:jempbox:jar:1.8.16:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- org.bouncycastle:bcmail-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.62:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.mp4parser:isoparser:jar:1.1.22:provided
+[ 1;34mINFO m] |  |  +- net.sf:bliki:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.jsr107cache:jsr107cache:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- javax.jws:jsr181-api:jar:1.0-MR1:provided
+[ 1;34mINFO m] |  |  +- javax.annotation:jsr250-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.4.2:provided
+[ 1;34mINFO m] |  |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.16:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.groovy:groovy-all:jar:indy:2.4.17:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-jodconverter-core:jar:3.0.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:juh:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  |  \- org.openoffice:jurt:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  +- org.openoffice:ridl:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  |  \- org.openoffice:unoil:jar:4.1.2:provided
+[ 1;34mINFO m] |  |  +- net.sf.javamusictag:jid3lib:jar:0.5.4:provided
+[ 1;34mINFO m] |  |  +- jmagick:jmagick:jar:6.6.9:provided
+[ 1;34mINFO m] |  |  +- org.htmlparser:htmlparser:jar:2.1:provided
+[ 1;34mINFO m] |  |  |  \- org.htmlparser:htmllexer:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- joda-time:joda-time:jar:2.10.3:provided
+[ 1;34mINFO m] |  |  +- jaxen:jaxen:jar:1.2.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-collections4:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-ooxml:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.poi:poi-ooxml-schemas:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  |  \- com.github.virtuald:curvesapi:jar:1.05:provided
+[ 1;34mINFO m] |  |  +- org.apache.poi:poi-scratchpad:jar:4.0.1:provided
+[ 1;34mINFO m] |  |  +- org.livetribe:livetribe-jsr223:jar:2.0.7:provided
+[ 1;34mINFO m] |  |  +- edu.ucar:netcdf:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |  \- edu.ucar:unidataCommon:jar:4.2.20:provided
+[ 1;34mINFO m] |  |  |     \- net.jcip:jcip-annotations:jar:1.0:provided
+[ 1;34mINFO m] |  |  +- javax.servlet:jstl:jar:1.2:provided
+[ 1;34mINFO m] |  |  +- javax.transaction:jta:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-surf-core-configservice:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  +- org.alfresco.surf:spring-surf-core:jar:7.9:provided
+[ 1;34mINFO m] |  |  |  \- org.dom4j:dom4j:jar:2.1.1:provided
+[ 1;34mINFO m] |  |  +- org.alfresco.surf:spring-webscripts-api:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-support:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-core-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-media-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-client-meta-1.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-docs-meta-3.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.gdata:gdata-youtube-2.0:jar:1.47.1:provided
+[ 1;34mINFO m] |  |  +- com.google.guava:guava:jar:28.0-jre:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[ 1;34mINFO m] |  |  |  +- org.checkerframework:checker-qual:jar:2.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.2:provided
+[ 1;34mINFO m] |  |  |  +- com.google.j2objc:j2objc-annotations:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[ 1;34mINFO m] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:provided
+[ 1;34mINFO m] |  |  +- org.quartz-scheduler:quartz:jar:2.3.1:provided
+[ 1;34mINFO m] |  |  |  \- com.zaxxer:HikariCP-java7:jar:2.4.13:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-engine:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-bpmn-converter:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  |  \- org.activiti:activiti-bpmn-model:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-process-validation:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  +- org.activiti:activiti-image-generator:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  |  \- org.glassfish.corba:glassfish-corba-omgapi:jar:4.1.0:provided
+[ 1;34mINFO m] |  |  +- org.activiti:activiti-spring:jar:5.23.0:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-authz-client:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-common:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-core:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.keycloak:keycloak-servlet-adapter-spi:jar:6.0.1:provided
+[ 1;34mINFO m] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-sync-events:jar:1.2.14:provided
+[ 1;34mINFO m] |  |  +- org.gytheio:gytheio-messaging-camel:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  +- org.gytheio:gytheio-messaging-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.gytheio:gytheio-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  |  \- org.gytheio:gytheio-health-commons:jar:0.10.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-spring:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.camel:camel-core:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-amqp:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.camel:camel-jms:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.springframework:spring-jms:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  |     \- org.springframework:spring-messaging:jar:5.1.6.RELEASE:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:qpid-jms-client:jar:0.39.0:provided
+[ 1;34mINFO m] |  |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  |  \- io.netty:netty-transport-native-unix-common:jar:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.31.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.qpid:proton-j:jar:0.31.0:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-buffer:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-common:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-handler:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-codec:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  +- io.netty:netty-transport:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  |  \- io.netty:netty-resolver:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  |  \- io.netty:netty-codec-http:jar:4.1.32.Final:provided
+[ 1;34mINFO m] |  |  +- org.apache.camel:camel-jackson:jar:2.24.1:provided
+[ 1;34mINFO m] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-client:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  +- org.fusesource.hawtbuf:hawtbuf:jar:1.11:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-broker:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-openwire-legacy:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-camel:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.activemq:activemq-spring:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |     \- org.apache.xbean:xbean-spring:jar:4.2:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-amqp:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  +- org.apache.activemq:activemq-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.activemq:activemq-jms-pool:jar:5.15.9:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:jar:1.0.1:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.commons:commons-pool2:jar:2.4.2:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-transform-model:jar:1.0.2.7:provided
+[ 1;34mINFO m] |  |  \- org.aspectj:aspectjrt:jar:1.9.4:provided
+[ 1;34mINFO m] |  +- org.alfresco:alfresco-data-model:jar:8.50.2:provided
+[ 1;34mINFO m] |  |  +- org.jibx:jibx-run:jar:1.3.1:provided
+[ 1;34mINFO m] |  |  +- org.antlr:antlr:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  +- org.antlr:antlr-runtime:jar:3.5.2:provided
+[ 1;34mINFO m] |  |  |  \- org.antlr:ST4:jar:4.0.8:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-server-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.codehaus.woodstox:woodstox-core-asl:jar:4.4.1:provided
+[ 1;34mINFO m] |  |  |  \- javax.xml.stream:stax-api:jar:1.0-2:provided
+[ 1;34mINFO m] |  |  +- org.acegisecurity:acegi-security:jar:0.8.2_patched:provided
+[ 1;34mINFO m] |  |  +- org.alfresco:alfresco-xmlfactory:jar:1.3:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-core:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  +- org.apache.tika:tika-parsers:jar:1.21-20190624-alfresco-patched:provided
+[ 1;34mINFO m] |  |  |  +- com.sun.activation:jakarta.activation:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- org.tallison:jmatio:jar:1.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-core:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.james:apache-mime4j-dom:jar:0.8.3:provided
+[ 1;34mINFO m] |  |  |  +- org.tukaani:xz:jar:1.8:provided
+[ 1;34mINFO m] |  |  |  +- com.epam:parso:jar:2.0.11:provided
+[ 1;34mINFO m] |  |  |  +- org.brotli:dec:jar:0.1.2:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- com.healthmarketscience.jackcess:jackcess-encrypt:jar:3.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.ccil.cowan.tagsoup:tagsoup:jar:1.2.1:provided
+[ 1;34mINFO m] |  |  |  +- com.drewnoakes:metadata-extractor:jar:2.11.0:provided
+[ 1;34mINFO m] |  |  |  |  \- com.adobe.xmp:xmpcore:jar:5.1.3:provided
+[ 1;34mINFO m] |  |  |  +- de.l3s.boilerpipe:boilerpipe:jar:1.1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.codelibs:jhighlight:jar:1.0.3:provided
+[ 1;34mINFO m] |  |  |  +- com.pff:java-libpst:jar:0.8.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.junrar:junrar:jar:4.0.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-rs-client:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-frontend-jaxrs:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.5:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.cxf:cxf-rt-security:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  |  |  \- org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.commons:commons-exec:jar:1.3:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.opennlp:opennlp-tools:jar:1.9.1:provided
+[ 1;34mINFO m] |  |  |  +- com.github.openjson:openjson:jar:1.0.10:provided
+[ 1;34mINFO m] |  |  |  +- com.google.code.gson:gson:jar:2.8.5:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:netcdf4:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:grib:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  \- org.itadaki:bzip2:jar:0.9.1:provided
+[ 1;34mINFO m] |  |  |  +- net.java.dev.jna:jna:jar:5.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.jsoup:jsoup:jar:1.11.3:provided
+[ 1;34mINFO m] |  |  |  +- com.google.protobuf:protobuf-java:jar:3.7.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:cdm:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- edu.ucar:udunits:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  |  +- net.sf.ehcache:ehcache-core:jar:2.6.2:provided
+[ 1;34mINFO m] |  |  |  |  \- com.beust:jcommander:jar:1.35:provided
+[ 1;34mINFO m] |  |  |  +- edu.ucar:httpservices:jar:4.5.5:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-utility:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- javax.measure:unit-api:jar:1.0:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.storage:sis-netcdf:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.sis.storage:sis-storage:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  |  \- org.apache.sis.core:sis-feature:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.sis.core:sis-referencing:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.sis.core:sis-metadata:jar:0.8:provided
+[ 1;34mINFO m] |  |  |  +- org.opengis:geoapi:jar:3.0.1:provided
+[ 1;34mINFO m] |  |  |  +- edu.usc.ir:sentiment-analysis-parser:jar:0.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.pdfbox:jbig2-imageio:jar:3.0.2:provided
+[ 1;34mINFO m] |  |  |  \- com.github.jai-imageio:jai-imageio-core:jar:1.4.0:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-core:jar:0.8:provided
+[ 1;34mINFO m] |  |  +- org.gagravarr:vorbis-java-tika:jar:0.8:provided
+[ 1;34mINFO m] |  |  \- com.googlecode.juniversalchardet:juniversalchardet:jar:1.0.3:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.10:provided
+[ 1;34mINFO m] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.9:provided
+[ 1;34mINFO m] |  +- org.apache.ws.security:wss4j:jar:1.6.19:provided
+[ 1;34mINFO m] |  |  +- commons-logging:commons-logging:jar:1.1.1:provided
+[ 1;34mINFO m] |  |  \- org.apache.santuario:xmlsec:jar:1.5.8:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-csv:jar:20110211:provided
+[ 1;34mINFO m] |  +- org.apache.commons:commons-email:jar:1.5:provided
+[ 1;34mINFO m] |  +- org.alfresco.surf:spring-webscripts:jar:7.9:provided
+[ 1;34mINFO m] |  |  +- commons-digester:commons-digester:jar:2.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:provided
+[ 1;34mINFO m] |  |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.alfresco.cmis.client:alfresco-opencmis-extension:jar:1.1:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- commons-httpclient:commons-httpclient:jar:3.1:provided
+[ 1;34mINFO m] |  |  \- junit:junit:jar:4.11:provided
+[ 1;34mINFO m] |  |     \- org.hamcrest:hamcrest-core:jar:1.3:provided
+[ 1;34mINFO m] |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.4:provided
+[ 1;34mINFO m] |  +- javax.xml:jaxrpc-api:jar:1.1:provided
+[ 1;34mINFO m] |  +- com.rometools:rome:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  +- com.rometools:rome-utils:jar:1.12.1:provided
+[ 1;34mINFO m] |  |  \- org.jdom:jdom2:jar:2.0.6:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-test-tck:jar:1.0.0:provided
+[ 1;34mINFO m] |  +- org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:jar:1.0.0:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- xml-resolver:xml-resolver:jar:1.2:provided
+[ 1;34mINFO m] |  |  |  +- asm:asm:jar:3.3.1:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-core:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.0.10:provided
+[ 1;34mINFO m] |  |  \- org.apache.cxf:cxf-rt-ws-policy:jar:3.0.10:provided
+[ 1;34mINFO m] |  |     +- wsdl4j:wsdl4j:jar:1.6.3:provided
+[ 1;34mINFO m] |  |     \- org.apache.neethi:neethi:jar:3.0.3:provided
+[ 1;34mINFO m] |  \- org.alfresco:alfresco-pdf-renderer:tgz:linux:1.1:provided
+[ 1;34mINFO m] +- org.springframework:spring-core:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] +- org.springframework:spring-context:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] |  \- org.springframework:spring-expression:jar:5.1.8.RELEASE:provided
+[ 1;34mINFO m] \- es.rsits:common-utils:jar:1.0-SNAPSHOT:provided
+[ 1;34mINFO m]    +- org.glassfish.jaxb:jaxb-runtime:jar:2.4.0-b180830.0438:provided
+[ 1;34mINFO m]    |  +- org.glassfish.jaxb:txw2:jar:2.4.0-b180830.0438:provided
+[ 1;34mINFO m]    |  +- com.sun.istack:istack-commons-runtime:jar:3.0.7:provided
+[ 1;34mINFO m]    |  +- org.jvnet.staxex:stax-ex:jar:1.8:provided
+[ 1;34mINFO m]    |  \- javax.activation:javax.activation-api:jar:1.2.0:provided
+[ 1;34mINFO m]    +- com.sun.xml.ws:jaxws-rt:pom:2.3.1:provided
+[ 1;34mINFO m]    |  +- javax.xml.ws:jaxws-api:jar:2.3.1:provided
+[ 1;34mINFO m]    |  +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:provided
+[ 1;34mINFO m]    |  +- javax.jws:javax.jws-api:jar:1.1:provided
+[ 1;34mINFO m]    |  +- com.sun.xml.ws:policy:jar:2.7.5:provided
+[ 1;34mINFO m]    |  |  \- com.sun.activation:javax.activation:jar:1.2.0:provided
+[ 1;34mINFO m]    |  +- org.glassfish.gmbal:gmbal-api-only:jar:3.1.0-b001:provided
+[ 1;34mINFO m]    |  |  \- org.glassfish.external:management-api:jar:3.0.0-b012:provided
+[ 1;34mINFO m]    |  +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.6:provided
+[ 1;34mINFO m]    |  +- org.jvnet.mimepull:mimepull:jar:1.9.10:provided
+[ 1;34mINFO m]    |  +- org.glassfish.ha:ha-api:jar:3.1.9:provided
+[ 1;34mINFO m]    |  +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.5.0:provided
+[ 1;34mINFO m]    |  +- com.fasterxml.woodstox:woodstox-core:jar:5.1.0:provided
+[ 1;34mINFO m]    |  \- org.codehaus.woodstox:stax2-api:jar:4.1:provided
+[ 1;34mINFO m]    \- com.sun.xml.ws:rt:jar:2.3.1:provided
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m----------------------<  0;36mes.caib.gdib:gdib-parent 0;1m >---------------------- m
+[ 1;34mINFO m]  1mBuilding gdib 1.0                                                [17/17] m
+[ 1;34mINFO m]  1m--------------------------------[ pom ]--------------------------------- m
+[ 1;34mINFO m] 
+[ 1;34mINFO m]  1m---  0;32mmaven-dependency-plugin:2.8:tree m  1m(default-cli) m @  36mgdib-parent 0;1m --- m
+[ 1;34mINFO m] es.caib.gdib:gdib-parent:pom:1.0
+[ 1;34mINFO m]  1m------------------------------------------------------------------------ m
+[ 1;34mINFO m]  1mReactor Summary: m
+[ 1;34mINFO m] 
+[ 1;34mINFO m] Integra-parent 2.2.1_000 ...........................  1;32mSUCCESS m [  0.260 s]
+[ 1;34mINFO m] Integra-commons 2.2.1_000 ..........................  1;32mSUCCESS m [  0.020 s]
+[ 1;34mINFO m] Integra-commons-pdf-bc 2.2.1_000 ...................  1;32mSUCCESS m [  0.009 s]
+[ 1;34mINFO m] Integra-commons-xml 2.2.1_000 ......................  1;32mSUCCESS m [  0.011 s]
+[ 1;34mINFO m] Integra-encryption 2.2.1_000 .......................  1;32mSUCCESS m [  0.011 s]
+[ 1;34mINFO m] Integra-ocsp-rfc3161 2.2.1_000 .....................  1;32mSUCCESS m [  0.008 s]
+[ 1;34mINFO m] Integra-ws 2.2.1_000 ...............................  1;32mSUCCESS m [  0.101 s]
+[ 1;34mINFO m] Integra-sign-operations 2.2.1_000 ..................  1;32mSUCCESS m [  0.024 s]
+[ 1;34mINFO m] Integra-utils 2.2.1_000 ............................  1;32mSUCCESS m [  0.021 s]
+[ 1;34mINFO m] Maven Quick Start Archetype 1.0-SNAPSHOT ...........  1;32mSUCCESS m [  0.660 s]
+[ 1;34mINFO m] ws-base Repository AMP project 1.5.1-SNAPSHOT ......  1;32mSUCCESS m [  0.305 s]
+[ 1;34mINFO m] gdib Repository AMP project 1.5.1-SNAPSHOT .........  1;32mSUCCESS m [  0.161 s]
+[ 1;34mINFO m] arxiudigital-apirest 1.0.9 .........................  1;32mSUCCESS m [  0.016 s]
+[ 1;34mINFO m] gdib-share AMP project 1.5.1-SNAPSHOT ..............  1;32mSUCCESS m [  0.092 s]
+[ 1;34mINFO m] Integra-services 2.2.1_000 .........................  1;32mSUCCESS m [  0.038 s]
+[ 1;34mINFO m] invoices Repository AMP project 1.5.1-SNAPSHOT .....  1;32mSUCCESS m [  0.139 s]
+[ 1;34mINFO m] gdib 1.0 ...........................................  1;32mSUCCESS m [  0.002 s]
+[ 1;34mINFO m]  1m------------------------------------------------------------------------ m
+[ 1;34mINFO m]  1;32mBUILD SUCCESS m
+[ 1;34mINFO m]  1m------------------------------------------------------------------------ m
+[ 1;34mINFO m] Total time:  2.520 s
+[ 1;34mINFO m] Finished at: 2021-10-27T13:29:28+02:00
+[ 1;34mINFO m]  1m------------------------------------------------------------------------ m

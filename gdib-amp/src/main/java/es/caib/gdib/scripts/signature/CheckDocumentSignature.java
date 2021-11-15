@@ -198,6 +198,7 @@ public class CheckDocumentSignature extends DeclarativeWebScript {
     		}
 
 		} catch (GdibException e) {
+			LOGGER.error(e);
 			operationMessage = e.getMessage();
 			valStatus = ValidationStatus.NO_CORRECTO.getName();
 		}

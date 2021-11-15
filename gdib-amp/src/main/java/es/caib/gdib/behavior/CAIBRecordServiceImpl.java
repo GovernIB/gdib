@@ -446,7 +446,7 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
                 }
             }
         }
-        catch (FileExistsException e)
+        /*catch (FileExistsException e)
         {
             if (logger.isDebugEnabled())
             {
@@ -466,6 +466,9 @@ public class CAIBRecordServiceImpl extends BaseBehaviourBean
             {
                 logger.debug(e.getMessage());
             }
+        }*/
+        catch(Exception e) {
+        	e.printStackTrace();
         }
     }
 
