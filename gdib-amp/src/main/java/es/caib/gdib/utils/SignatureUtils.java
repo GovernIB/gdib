@@ -228,6 +228,8 @@ public class SignatureUtils {
 					case A_DSS_URI_SIGNATURE_FORM:
 						res = SignatureFormat.CAdES_A;
 						break;
+					case DSS_URI_T_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.CAdES_T;
 				}
 				break;
 			case PDF_DSS_URI_SIGNATURE_TYPE:
