@@ -147,7 +147,8 @@ public class SignatureUtils {
 	public static SignatureFormat dssSigntureFormatToInernalSignatureFormat(String signatureType, String signatureForm) {
 		// Por defecto definimos que el formato no está reconocido
 		SignatureFormat res = SignatureFormat.UNRECOGNIZED;
-
+        LOGGER.debug(String.format("Tipus firma: %s, Signature form: %s", signatureType, signatureForm));
+        
 		switch(signatureType){
 			case XADES_DSS_URI_XADESBASELINE:
 			case XADES_1_4_2_DSS_URI_SIGNATURE_TYPE:
@@ -189,6 +190,8 @@ public class SignatureUtils {
 					case A_DSS_URI_SIGNATURE_FORM:
 						res = SignatureFormat.XAdES_A;
 						break;
+					case DSS_URI_T_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.XAdES_T;
 				}
 				break;
 			case CADES_DSS_URI_SIGNATURE_TYPE:

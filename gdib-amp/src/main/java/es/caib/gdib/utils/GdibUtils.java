@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.TypeVariable;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -119,6 +120,10 @@ import es.caib.gdib.ws.common.types.ValidationStatus;
 import es.caib.gdib.ws.common.types.header.GdibRestriction;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
+
+import java.lang.reflect.Type;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 
 public class GdibUtils {
 
@@ -1234,12 +1239,22 @@ public class GdibUtils {
 		for (QName property : propertiesNode.keySet()) {
 			// solo estoy metiendo las propiedades del modelo de gdib, evitando meter los aspectos del sistema
 			Object prop = propertiesNode.get(property);
+					
 			if (!property.getNamespaceURI().contains(ConstantUtils.NS_SYSTEM_MODEL) && prop != null) {
 				if (prop instanceof Date) {
 					//properties.put(formatQname(property), new SimpleDateFormat("yyyy-MM-dd").format(prop));
 					properties.add(new Property(formatQname(property), ISO8601DateFormat.format((Date) prop)));
-				} else if (prop instanceof java.util.ArrayList){
-					properties.add(new Property(formatQname(property), prop.toString().replace(", ", ",")));
+				} else if (prop instanceof java.util.ArrayList){										
+					if (((ArrayList)prop).size() > 0 && ((ArrayList)prop).get(0) instanceof Date) {
+						String resultDateArray = "";
+						for(Date d : (ArrayList<Date>)prop) {
+							if (!"".equals(resultDateArray)) resultDateArray += ",";
+							resultDateArray += ISO8601DateFormat.format(d);
+						}
+						properties.add(new Property(formatQname(property), resultDateArray));
+					}else {
+						properties.add(new Property(formatQname(property), prop.toString().replace(", ", ",")));
+					}
 				} else {
 					properties.add(new Property(formatQname(property), prop.toString()));
 				}
