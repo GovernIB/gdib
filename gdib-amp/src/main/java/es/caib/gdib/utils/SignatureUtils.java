@@ -49,6 +49,7 @@ public class SignatureUtils {
 	private static final String A_DSS_URI_SIGNATURE_FORM = "urn:oasis:names:tc:dss:1.0:profiles:AdES:forms:ES-A";
 	private static final String LTV_DSS_URI_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:PAdES:1.1.2:forms:LTV";
 
+	private static final String DSS_URI_B_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:B-Level";
 	private static final String DSS_URI_T_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:T-Level";
 	private static final String DSS_URI_LT_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:LT-Level";
 	private static final String DSS_URI_LTA_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:LTA-Level";
@@ -161,6 +162,9 @@ public class SignatureUtils {
 					case A_DSS_URI_SIGNATURE_FORM:
 						res = SignatureFormat.XAdES_A;
 						break;
+					case DSS_URI_B_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.XAdES_BES;
+						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.XAdES_T;
 						break;
@@ -209,6 +213,9 @@ public class SignatureUtils {
 					case A_DSS_URI_SIGNATURE_FORM:
 						res = SignatureFormat.CAdES_A;
 						break;
+					case DSS_URI_B_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.CAdES_BES;
+						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.CAdES_T;
 						break;
@@ -238,6 +245,9 @@ public class SignatureUtils {
 						break;
 					case LTV_DSS_URI_SIGNATURE_FORM:
 						res = SignatureFormat.PAdES_LTV;
+						break;
+					case DSS_URI_B_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.PAdES_BES;
 						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.PAdES_T;
