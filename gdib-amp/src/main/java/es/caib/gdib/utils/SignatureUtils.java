@@ -28,7 +28,7 @@ public class SignatureUtils {
 	private static final String PDF_DSS_URI_SIGNATURE_TYPE = "urn:afirma:dss:1.0:profile:XSS:forms:PDF";
 	private static final String PADES_DSS_URI_SIGNATURE_TYPE = "urn:afirma:dss:1.0:profile:XSS:forms:PAdES";
 	private static final String OOXML_DSS_URI_SIGNATURE_TYPE = "urn:afirma:dss:1.0:profile:XSS:forms:OOXML";
-
+														
 	//NuevosFormatos
 	private static final String PDF_DSS_URI_PADESBASELINE= "http://uri.etsi.org/103172/v2.1.1#";
 	private static final String CADES_DSS_URI_CADESBASELINE= "http://uri.etsi.org/103173/v2.2.1#";
@@ -50,6 +50,9 @@ public class SignatureUtils {
 	private static final String LTV_DSS_URI_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:PAdES:1.1.2:forms:LTV";
 
 	private static final String DSS_URI_T_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:T-Level";
+	private static final String DSS_URI_LT_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:LT-Level";
+	private static final String DSS_URI_LTA_LVL_SIGNATURE_FORM = "urn:afirma:dss:1.0:profile:XSS:AdES:forms:LTA-Level";
+	
 	public static final String SIGNATURE_FORMAT_CONCATENATE_STRING = "_#_";
 
 	private static Map<String,SignatureFormat> ENI_TRANSFORMED_FORMATS = new HashMap<String,SignatureFormat>();
@@ -62,78 +65,46 @@ public class SignatureUtils {
 
 		//XAdES
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase(), SignatureFormat.XAdES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.XAdES_BES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.XAdES_EPES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.XAdES_T);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.XAdES_C);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.XAdES_X);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.XAdES_XL);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.XAdES_A);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.XAdES_BES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.XAdES_EPES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.XAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.XAdES_C);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.XAdES_X);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.XAdES_XL);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF02.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.XAdES_A);
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase(), SignatureFormat.XAdES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.XAdES_BES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.XAdES_EPES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.XAdES_T);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.XAdES_C);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.XAdES_X);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.XAdES_XL);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.XAdES_A);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.XAdES_BES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.XAdES_EPES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.XAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.XAdES_C);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.XAdES_X);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.XAdES_XL);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF03.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.XAdES_A);
 
 		//CAdES
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase(), SignatureFormat.CAdES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.CAdES_BES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.CAdES_EPES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.CAdES_T);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.CAdES_C);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.CAdES_X);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.CAdES_XL);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.CAdES_A);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.CAdES_BES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.CAdES_EPES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.CAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.CAdES_C);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.CAdES_X);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.CAdES_XL);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF04.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.CAdES_A);
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase(), SignatureFormat.CAdES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.CAdES_BES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.CAdES_EPES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.CAdES_T);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.CAdES_C);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.CAdES_X);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.CAdES_XL);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.CAdES_A);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.CAdES_BES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.CAdES_EPES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.CAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.C.getName().toUpperCase(), SignatureFormat.CAdES_C);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.X.getName().toUpperCase(), SignatureFormat.CAdES_X);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.XL.getName().toUpperCase(), SignatureFormat.CAdES_XL);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF05.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.A.getName().toUpperCase(), SignatureFormat.CAdES_A);
 
 		//PAdES
 		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase(), SignatureFormat.PAdES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.PAdES_BES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.PAdES_EPES);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.LTV.getName().toUpperCase(), SignatureFormat.PAdES_LTV);
-		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.PAdES_T);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.BES.getName().toUpperCase(), SignatureFormat.PAdES_BES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.EPES.getName().toUpperCase(), SignatureFormat.PAdES_EPES);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.LTV.getName().toUpperCase(), SignatureFormat.PAdES_LTV);
+		ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				EemgdeSignatureProfile.T.getName().toUpperCase(), SignatureFormat.PAdES_T);
 
 		//ENI_TRANSFORMED_FORMATS.put(EniSignatureType.TF06.getName().toUpperCase(), SignatureFormat.PAdES_T);
 	}
@@ -147,7 +118,7 @@ public class SignatureUtils {
 	public static SignatureFormat dssSigntureFormatToInernalSignatureFormat(String signatureType, String signatureForm) {
 		// Por defecto definimos que el formato no está reconocido
 		SignatureFormat res = SignatureFormat.UNRECOGNIZED;
-        LOGGER.debug(String.format("Tipus firma: %s, Signature form: %s", signatureType, signatureForm));
+       //LOGGER.debug(String.format("Tipus firma: %s, Signature form: %s", signatureType, signatureForm));
         
 		switch(signatureType){
 			case XADES_DSS_URI_XADESBASELINE:
@@ -192,6 +163,13 @@ public class SignatureUtils {
 						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.XAdES_T;
+						break;
+					case DSS_URI_LT_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.XAdES_T;
+						break;
+					case DSS_URI_LTA_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.XAdES_A;
+						break;
 				}
 				break;
 			case CADES_DSS_URI_SIGNATURE_TYPE:
@@ -233,6 +211,13 @@ public class SignatureUtils {
 						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.CAdES_T;
+						break;
+					case DSS_URI_LT_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.CAdES_T;
+						break;
+					case DSS_URI_LTA_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.CAdES_A;
+						break;
 				}
 				break;
 			case PDF_DSS_URI_SIGNATURE_TYPE:
@@ -256,6 +241,12 @@ public class SignatureUtils {
 						break;
 					case DSS_URI_T_LVL_SIGNATURE_FORM:
 						res = SignatureFormat.PAdES_T;
+						break;
+					case DSS_URI_LT_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.PAdES_T;
+						break;
+					case DSS_URI_LTA_LVL_SIGNATURE_FORM:
+						res = SignatureFormat.PAdES_LTV;
 						break;
 				}
 				break;
@@ -284,7 +275,7 @@ public class SignatureUtils {
 	public static SignatureFormat eniSigntureFormatToInernalSignatureFormat(String signatureType, String signatureForm) throws GdibException {
 		// Por defecto definimos que el formato no está reconocido
 		SignatureFormat res;
-		LOGGER.debug("Checking EniSignaturFormatToInternalSignatueFormat with signatureTyp ="+signatureType+" and stringformat = " +signatureForm);
+	//LOGGER.debug("Checking EniSignaturFormatToInternalSignatueFormat with signatureTyp ="+signatureType+" and stringformat = " +signatureForm);
 		EniSignatureType eniSignatureType = EniSignatureType.valueOf(signatureType.toUpperCase());
 
 		EemgdeSignatureProfile eemgdeSignatureProfile = EemgdeSignatureProfile.valueOf(signatureForm);
@@ -298,8 +289,7 @@ public class SignatureUtils {
 		}
 
 
-		String signatureFormatString = signatureType.toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +
-				signatureForm.toUpperCase();
+		String signatureFormatString = signatureType.toUpperCase() + SIGNATURE_FORMAT_CONCATENATE_STRING +				signatureForm.toUpperCase();
 
 		res = ENI_TRANSFORMED_FORMATS.get(signatureFormatString);
 
@@ -323,7 +313,7 @@ public class SignatureUtils {
 		if(signatureFormat == null){
 			throw new GdibException("Formato de firma ENI no informado.");
 		}
-		LOGGER.debug("Checking eniSigntureFormatToInernalSignatureFormat with signatureFormat =" + signatureFormat);
+	//LOGGER.debug("Checking eniSigntureFormatToInernalSignatureFormat with signatureFormat =" + signatureFormat);
 		res = ENI_TRANSFORMED_FORMATS.get(signatureFormat);
 
 		if(res == null){
