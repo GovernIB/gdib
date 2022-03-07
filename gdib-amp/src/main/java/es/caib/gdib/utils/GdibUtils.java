@@ -1803,10 +1803,12 @@ public class GdibUtils {
     	String expedienteDateString = null;
     	if(StringUtils.isEmpty(date)){
 			expedientDate = new Date();
-    		expedienteDateString = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(expedientDate);
+			//expedienteDateString = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(expedientDate);
+			expedienteDateString = new SimpleDateFormat("yyyy-MM-dd").format(expedientDate);
     	}else if( date.length() > 10){
 			expedientDate = ISO8601DateFormat.parse(date);
-			expedienteDateString = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(expedientDate);
+			//expedienteDateString = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(expedientDate);
+			expedienteDateString = new SimpleDateFormat("yyyy-MM-dd").format(expedientDate);
 		}else{
 			expedienteDateString = date.replace(ConstantUtils.PATH_SEPARATOR, "-");
 		}
