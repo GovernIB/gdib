@@ -109,8 +109,8 @@ public class ExportUtils {
 
 		} catch (ExporterException e) {
 			throw new GdibException("Ha ocurrido un error durante la exportacion de nodos a RM. " + e.getMessage(),e);
-		} catch (Throwable e) {
-			throw new GdibException("Ha ocurrido un error durante la exportacion de nodos a RM. " + e.getMessage(),e);
+		} catch (Exception e) {
+			throw new GdibException("Ha ocurrido un error generico durante la exportacion de nodos a RM. " + e.getMessage(),e);
 		}
 	}
 
@@ -185,6 +185,8 @@ public class ExportUtils {
 
 		} catch (FileExistsException | FileNotFoundException | ContentIOException | UnsupportedEncodingException e) {
 			throw new GdibException("Ha ocurrido un error moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
+		} catch (Exception e) {
+			throw new GdibException("Ha ocurrido un error generico moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
 		}
 	}
 
@@ -286,6 +288,8 @@ public class ExportUtils {
 // FileExistsException |
 		} catch (FileNotFoundException | ContentIOException | UnsupportedEncodingException | FileExistsException  e) {
 			throw new GdibException("Ha ocurrido un error moviendo los ficheros de exportacion a RM. " + e.getMessage(),e);
+		} catch (Exception e) {
+			throw new GdibException("Ha ocurrido un error generico moviendo los ficheros de exportacion a RM. " + e.getMessage(), e);
 		}
 	}
 
