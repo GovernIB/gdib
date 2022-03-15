@@ -2493,7 +2493,7 @@ public class GdibUtils {
 
         	}
     	}catch(GdibException e){
-    		LOGGER.error("Error: " + e.getMessage());
+    		LOGGER.error("Error: " + e.getMessage() + " - " + e.getCause());
     	} finally {
     		LOGGER.debug("Finalizada la validación de la firma electrónica del documento " + nodeId);
     	}
@@ -2887,7 +2887,7 @@ public class GdibUtils {
 			
 		}catch(Exception e){
 			LOGGER.error("Error parsing X509 Cert : "+e.getLocalizedMessage());
-			throw exUtils.genericException(e.getLocalizedMessage());
+			throw exUtils.genericException(e.getLocalizedMessage() + " - " + e.getCause());
 		}finally
 		{
 			if(inputStream != null)
