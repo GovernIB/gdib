@@ -205,9 +205,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		upgSigReq.setSignatureFormat(dssSignatureFormat);
 		upgSigReq.setIgnoreGracePeriod(true);
 
-		ServerSignerResponse serSigRes = IntegraFacadeWSDSS.getInstance().upgradeSignature(upgSigReq);
+		ServerSignerResponse serSigRes;
 
-
+		try {
+			serSigRes = IntegraFacadeWSDSS.getInstance().upgradeSignature(upgSigReq);
+		} catch (Exception e) {
+			throw new GdibException("Error Afirma upgrade ("+ e.getMessage() + " - " + e.getCause() + ")");
+		}
 
 
 		LOGGER.debug("Resultado evoluci�n firma:");
@@ -292,9 +296,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		reporte.setIncludeRevocationValues(true);
 
 		verSigReq.setVerificationReport(reporte);
-		verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
 
-
+		try {
+			verSigRes = IntegraFacadeWSDSS.getInstance().verifySignature(verSigReq);
+		} catch (Exception e) {
+			throw new GdibException("Error Afirma verify ("+ e.getMessage() + " - " + e.getCause() + ")");
+		}
+	
 
 		//verSigRes.ge
 		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
@@ -424,8 +432,14 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 	private static byte[] sign(ServerSignerRequest serSigReq) throws GdibException {
 		byte[] res = null;
 
+		ServerSignerResponse serSigRes;
 
-		ServerSignerResponse serSigRes = IntegraFacadeWSDSS.getInstance().sign(serSigReq);
+		try {
+			serSigRes = IntegraFacadeWSDSS.getInstance().sign(serSigReq);
+		} catch (Exception e) {
+			throw new GdibException("Error Afirma sign ("+ e.getMessage() + " - " + e.getCause() + ")");
+		}
+
 
 		LOGGER.debug("Resultado firma de servidor delegada en @firma:");
 		if (serSigRes == null) {
