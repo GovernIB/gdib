@@ -38,6 +38,9 @@ import org.apache.axis2.engine.Handler;
 import org.apache.axis2.engine.Phase;
 import org.apache.axis2.phaseresolver.PhaseException;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.log4j.Logger;
 
 import es.gob.afirma.i18n.ILogConstantKeys;
@@ -169,17 +172,32 @@ public class WebServiceInvoker {
 	    // conexión al servicio.
 	    LOGGER.debug(Language.getResIntegra(ILogConstantKeys.WSI_LOG006));
 	    Options options = new Options();
-	    options.setTimeOutInMilliSeconds(Integer.valueOf(timeout));
+	    
+	    //Aquesta opcio no funciona
+	    //options.setTimeOutInMilliSeconds(Integer.valueOf(timeout));
+	    options.setProperty(HTTPConstants.SO_TIMEOUT, Integer.valueOf(timeout));
+		options.setProperty(HTTPConstants.CONNECTION_TIMEOUT, Integer.valueOf(timeout));
+	    
 	    options.setTo(new EndpointReference(endPointURL));
 
 	    // Desactivamos el chunked.
-	    options.setProperty(HTTPConstants.CHUNKED, "false");
+	    options.setProperty(HTTPConstants.CHUNKED, "false");	    
 
 	    // Creamos el cliente y le añadimos la configuración anterior.
 	    LOGGER.debug(Language.getResIntegra(ILogConstantKeys.WSI_LOG005));
 	    client = new ServiceClient();
 	    client.setOptions(options);
-
+	    
+/*	    // el timeout no te efecte
+	    // https://stackoverflow.com/questions/46108563/axis2-what-is-the-correct-way-to-set-connection-timeout-and-so-timeout
+	    MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager = new MultiThreadedHttpConnectionManager();
+	    HttpConnectionManagerParams paramsHttp = new HttpConnectionManagerParams();
+	    paramsHttp.setSoTimeout(Integer.valueOf(timeout));
+	    paramsHttp.setConnectionTimeout(Integer.valueOf(timeout));
+	    multiThreadedHttpConnectionManager.setParams(paramsHttp);
+	    HttpClient httpClient = new HttpClient(multiThreadedHttpConnectionManager);
+	    client.getServiceContext().getConfigurationContext().setProperty(HTTPConstants.CACHED_HTTP_CLIENT, httpClient);
+*/	    
 	    // Añadimos los handler generados al flujo de handlers de Axis2.
 	    addHandlers(client, requestHandler, responseHandler);
 
