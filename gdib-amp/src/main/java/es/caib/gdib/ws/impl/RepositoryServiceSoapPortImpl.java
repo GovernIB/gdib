@@ -2333,12 +2333,14 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		
 		NodeRef rmExpedient;
 //		synchronized(closeMutex) {
+		
+		NodeRef internalIndexNodeRef = _internal_createNode(expedientRef, utils.createNameQName(internalIndexNodeName),
+				ConstantUtils.TYPE_FILE_INDEX_QNAME, indexsProps);
+		utils.setDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT, internalIndexHandler,
+				MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
+		
+		LOGGER.info("Iniciant proces de validacio: " + enableVerify);
 		if("true".equalsIgnoreCase(enableVerify)) {
-			NodeRef internalIndexNodeRef = _internal_createNode(expedientRef, utils.createNameQName(internalIndexNodeName),
-					ConstantUtils.TYPE_FILE_INDEX_QNAME, indexsProps);
-			utils.setDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT, internalIndexHandler,
-					MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
-	
 			try {
 				byte[] indexBArrayInternal = utils
 						.getByteArrayFromHandler(utils.getDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT));

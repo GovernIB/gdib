@@ -448,7 +448,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
-		if (serSigRes.getResult() == null || serSigRes.getResult() == null) {
+		if (serSigRes == null || serSigRes.getResult() == null) {
 			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operación.");
 		}
 
