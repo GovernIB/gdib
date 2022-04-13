@@ -308,7 +308,7 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 		LOGGER.debug("Procesando respuesta servicio DSSAfirmaVerify ...");
 
 
-		if (verSigRes == null) {
+		if (verSigRes == null || verSigRes.getResult() == null) {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaVerify de la plataforma @firma "
 					+ "para validar una firma electrónica.");
 		}
@@ -442,13 +442,13 @@ public class AfirmaV6SignatureServiceImpl implements SignatureService {
 
 
 		LOGGER.debug("Resultado firma de servidor delegada en @firma:");
-		if (serSigRes == null) {
+		if (serSigRes == null || serSigRes.getResult() == null) {
 			throw new GdibException("No se obtuvo respuesta en la invocación del servicio DSSAfirmaSign de la plataforma @firma.");
 		}
 		LOGGER.debug("SersigRes asyncResponse: " + serSigRes.getAsyncResponse());
 		LOGGER.debug("SersigRes transactionId: " + serSigRes.getTransactionId());
 		LOGGER.debug("SersigRes signatureFormat: " + serSigRes.getSignatureFormat());
-		if (serSigRes.getResult() == null) {
+		if (serSigRes.getResult() == null || serSigRes.getResult() == null) {
 			throw new GdibException("La respuesta retornada por el servicio DSSAfirmaSign de la plataforma @firma no incluye el resultado de la operación.");
 		}
 

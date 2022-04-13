@@ -2280,6 +2280,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		// Run as admin
 		AuthenticationUtil.runAs(raw, "admin");
 	}
+	
+	@Value("$gdib{verify.request.enable}")
+    private String enableVerify;
 
 	private NodeRef _internal_closeFile(NodeRef expedientRef, Date closeDate)
 			throws GdibException, ContentIOException, IOException {
@@ -2330,7 +2333,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		
 		NodeRef rmExpedient;
 //		synchronized(closeMutex) {
-		
+		if("true".equalsIgnoreCase(enableVerify)) {
 			NodeRef internalIndexNodeRef = _internal_createNode(expedientRef, utils.createNameQName(internalIndexNodeName),
 					ConstantUtils.TYPE_FILE_INDEX_QNAME, indexsProps);
 			utils.setDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT, internalIndexHandler,
@@ -2416,7 +2419,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.debug("Couldnt read TS token " + e.getMessage());
 				LOGGER.debug("Couldnt read TS token " + e.getLocalizedMessage());
 			}
-	
+		} // fi de la comprovacio
 			List<Certificate> certs = certUtils.getCertificatesInfo();
 			for (Certificate c : certs)
 				LOGGER.debug("FROM DB " + c.toString());
