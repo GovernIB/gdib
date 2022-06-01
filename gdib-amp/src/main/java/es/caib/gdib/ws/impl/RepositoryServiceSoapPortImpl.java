@@ -2339,7 +2339,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		utils.setDataHandler(internalIndexNodeRef, ContentModel.PROP_CONTENT, internalIndexHandler,
 				MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
 		
-		LOGGER.info("Iniciant proces de validacio: " + enableVerify);
+		LOGGER.info("Iniciant proces de validacio index intern: " + enableVerify);
 		if("true".equalsIgnoreCase(enableVerify)) {
 			try {
 				byte[] indexBArrayInternal = utils
@@ -2373,7 +2373,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.debug("Couldnt read TS token " + e.getMessage());
 				LOGGER.debug("Couldnt read TS token " + e.getLocalizedMessage());
 			}
-	
+		}
+
 			LOGGER.info("Indice interno del expediente generado (" + internalIndexNodeRef.getId() + ").");
 	
 			String exchangeIndexNodeName = ConstantUtils.EXCHANGE_INDEX_NAME_PREFIX + eniId + "-" + dateString + ".xml";
@@ -2390,6 +2391,8 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					MimetypeMap.MIMETYPE_XML, DEFAULT_CHARSET_ENCODING);
 			LOGGER.info("Indice de intercambio del expediente generado (" + exchangeIndexNodeRef.getId() + ").");
 	
+		LOGGER.info("Iniciant proces de validacio index interoperable: " + enableVerify);
+		if("true".equalsIgnoreCase(enableVerify)) {
 			try {
 				byte[] indexBArrayExchange = utils
 						.getByteArrayFromHandler(utils.getDataHandler(exchangeIndexNodeRef, ContentModel.PROP_CONTENT));
@@ -2421,10 +2424,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.debug("Couldnt read TS token " + e.getMessage());
 				LOGGER.debug("Couldnt read TS token " + e.getLocalizedMessage());
 			}
-		} // fi de la comprovacio
+
 			List<Certificate> certs = certUtils.getCertificatesInfo();
 			for (Certificate c : certs)
 				LOGGER.debug("FROM DB " + c.toString());
+		}
 	
 			LOGGER.info("Se procede a realizar la transferencia a RM del expediente....");
 			// Se efect�a la transferencia a la fase semi- activa del expediente.
