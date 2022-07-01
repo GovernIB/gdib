@@ -17,25 +17,25 @@ public class GdibException extends Exception {
 	}
 
 	public GdibException(String message){
-		super(message);
+		super(message.replaceAll("[\\s\\']", " ").replaceAll("[^\\wçñàáèéíïòóúüÇÑÀÁÈÉÍÏÒÓÚÜ()\\-,\\.·\\s\\:\\-\\/\\{\\}]", "").trim());
 	}
 
 	public GdibException(String message, Throwable cause){
-		super(message,cause);
+		super(message.replaceAll("[\\s\\']", " ").replaceAll("[^\\wçñàáèéíïòóúüÇÑÀÁÈÉÍÏÒÓÚÜ()\\-,\\.·\\s\\:\\-\\/\\{\\}]", "").trim(), cause);
 	}
 
 	public GdibException(final String message, final GdibExceptionInfo faultInfo) {
-		super(message);
+		super(message.replaceAll("[\\s\\']", " ").replaceAll("[^\\wçñàáèéíïòóúüÇÑÀÁÈÉÍÏÒÓÚÜ()\\-,\\.·\\s\\:\\-\\/\\{\\}]", "").trim());
 		this.faultInfo = faultInfo;
 	}
 
 	public GdibException(final String message, final GdibExceptionInfo faultInfo, final Throwable cause) {
-		super(message, cause);
+		super(message.replaceAll("[\\s\\']", " ").replaceAll("[^\\wçñàáèéíïòóúüÇÑÀÁÈÉÍÏÒÓÚÜ()\\-,\\.·\\s\\:\\-\\/\\{\\}]", "").trim(), cause);
 		this.faultInfo = faultInfo;
 	}
 
 	public GdibException(GdibTransactionException e) {
-		super(e.getMessage(),e.getCause());		
+		super(e.getMessage().replaceAll("[\\s\\']", " ").replaceAll("[^\\wçñàáèéíïòóúüÇÑÀÁÈÉÍÏÒÓÚÜ()\\-,\\.·\\s\\:\\-\\/\\{\\}]", "").trim(), e.getCause());		
 		this.faultInfo = e.getFaultInfo();
 	}
 
