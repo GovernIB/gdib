@@ -3001,7 +3001,7 @@ public class GdibUtils {
 	    resString= resString.replaceAll("&lt;","<"); //Corregimos mensaje
 	    
 	    resString= resString.replaceAll("&gt;",">"); //Corregimos mensaje
-	    Pattern pattern = Pattern.compile("<vr:SignatureTimeStamp>.*?<vr:CertificateValue>.*?<!\\[CDATA\\[(.*?)\\]\\]");
+	    Pattern pattern = Pattern.compile("<vr:ArchiveTimeStamp>.*?<vr:CertificateValue>.*?<!\\[CDATA\\[(.*?)\\]\\]");
 	    Matcher matcher = pattern.matcher(resString);
 
 	    if(matcher.find()) {
