@@ -70,7 +70,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent create node nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
 	}
 
@@ -102,7 +103,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent createAndGetNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
 	}
 
@@ -130,7 +132,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent modifyNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -159,7 +162,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent getNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -187,7 +191,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent moveNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -215,7 +220,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent searchNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -243,7 +249,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent removeNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -272,7 +279,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent linkNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -300,7 +308,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent foliateNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -328,7 +337,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent exportNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -356,7 +366,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent getNodeVersionList nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -385,7 +396,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent autorizeNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -414,7 +426,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent removeAuthority nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -442,7 +455,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent lockNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -470,7 +484,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent unlockNode nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -487,7 +502,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
             throw ge;
         } catch (Exception e) {
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
 	}
 
@@ -534,7 +550,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
             throw ge;
         } catch (Exception e) {
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
 	}
 
@@ -562,7 +579,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent openfile nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
@@ -594,7 +612,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent closeFile nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
 	}
 	
@@ -612,7 +631,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
             throw ge;
         } catch (Exception e) {
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
 		}
 	}
 
