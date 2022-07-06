@@ -531,7 +531,8 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
         	LOGGER.error(String.format("reintent getMigrationInfo nº: %s", reintent));
         	//LOGGER.error(e);
             LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-            throw new GdibException(e.getMessage() + " - " + e.getCause());
+            String s = e.getMessage() + " - " + e.getCause();
+            throw new GdibException(s);
         }
     }
 
