@@ -2887,7 +2887,7 @@ public class GdibUtils {
 			
 		}catch(Exception e){
 			LOGGER.error("Error parsing X509 Cert : "+e.getLocalizedMessage());
-			throw exUtils.genericException(e.getLocalizedMessage() + " - " + e.getCause());
+			throw exUtils.genericException(e.getLocalizedMessage().toString() + " - " + e.getCause().toString());
 		}finally
 		{
 			if(inputStream != null)

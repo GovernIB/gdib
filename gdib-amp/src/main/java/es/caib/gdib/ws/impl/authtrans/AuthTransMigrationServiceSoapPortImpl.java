@@ -61,7 +61,7 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 			throw ge;
 		} catch (Exception e) {
 			LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-			throw new GdibException(e.getMessage() + " - " + e.getCause());
+			throw new GdibException(e.getMessage().toString() + " - " + e.getCause().toString());
 		}
 	}
 
@@ -87,7 +87,7 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 				throw ge;
 			} catch (Exception e) {
 				LOGGER.error("Se ha producido la excepcion generica: " + e.getMessage() + " - " + e.getCause(), e);
-				throw new GdibException(e.getMessage() + " - " + e.getCause());
+				throw new GdibException(e.getMessage().toString() + " - " + e.getCause().toString());
 			}
 	}
 	
@@ -104,7 +104,7 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 			throw ge;
 		} catch (Exception e) {
 			LOGGER.error("Se ha producido la excepcion generica:  " + e.getMessage() + " - " + e.getCause(), e);
-			throw new GdibException(e.getMessage() + " - " + e.getCause());
+			throw new GdibException(e.getMessage().toString() + " - " + e.getCause().toString());
 		}
 	}
 	private void doAuthentication(String username, String password) throws GdibException {
@@ -128,7 +128,7 @@ public class AuthTransMigrationServiceSoapPortImpl extends SpringBeanAutowiringS
 			throw new GdibException(ae.getMessage());
 		} catch (Exception e) {
 			LOGGER.error("Se ha producido un error generico en la autenticacion:  " + e.getMessage() + " - " + e.getCause(), e);
-			throw new GdibException(e.getMessage() + " - " + e.getCause());
+			throw new GdibException(e.getMessage().toString() + " - " + e.getCause().toString());
 		}
 	}
 
