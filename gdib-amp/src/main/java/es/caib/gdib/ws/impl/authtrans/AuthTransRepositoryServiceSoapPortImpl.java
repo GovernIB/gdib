@@ -655,10 +655,10 @@ public class AuthTransRepositoryServiceSoapPortImpl extends SpringBeanAutowiring
 			}
 		}catch (AuthenticationException ae){
 		    LOGGER.error("Error logueando: " + ae.getMessage() + " - " + ae.getCause(), ae);
-			throw new GdibException(ae.getMessage() + " - " + ae.getCause());
+			throw new GdibException("" + ae.getMessage() + " - " + ae.getCause());
 		} catch (Exception e) {
 		    LOGGER.error("Error generico logueando: " + e.getMessage() + " - " + e.getCause(), e);
-		    throw new GdibException(e.getMessage() + " - " + e.getCause());
+		    throw new GdibException("" + e.getMessage() + " - " + e.getCause());
 		}
 	}
 
