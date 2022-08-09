@@ -1717,6 +1717,8 @@ public class GdibUtils {
 			// me salto este paso si esta desactivado los check principales del repositorio
 			if (isType(node.getType(), ConstantUtils.TYPE_EXPEDIENTE_QNAME) && StringUtils.isEmpty(parentId)) {
 				String classificationCode = this.getProperty(node.getProperties(), ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
+				if (classificationCode == null)
+					throw exUtils.checkMetadataException(ConstantUtils.PROP_COD_CLASIFICACION_QNAME.getLocalName());
 				parentRef = getParentFromClassificationTable(node, classificationCode);
 				// si al consultar el cuadro de clasificacion no tengo el nodeRef del padre es que ha habido un error
 				// en el cuadro de clasificacion
