@@ -359,6 +359,9 @@ public class SubTypeDocUtil {
 			} catch (SQLException e) {
 				LOGGER.error("No se ha podido cerrar la conexion a base de datos.");
 				throw  new GdibException("No se ha podido cerrar la conexion a base de datos.");
+			} catch (NullPointerException e) {
+				LOGGER.error("No se ha podido cerrar la conexion a base de datos. Conexión a null.");
+				throw  new GdibException("No se ha podido cerrar la conexion a base de datos. Conexión a null.");
 			}
 		}
 
