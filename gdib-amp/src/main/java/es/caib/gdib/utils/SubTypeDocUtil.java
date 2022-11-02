@@ -353,15 +353,17 @@ public class SubTypeDocUtil {
 			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
 			throw  new GdibException("Ha fallado la conexion con la bddd de alfresco. Error: " + e.getMessage(),e);
 		} finally {
-			try {
-				ps.close();
-				conn.close();
-			} catch (SQLException e) {
-				LOGGER.error("No se ha podido cerrar la conexion a base de datos.");
-				throw  new GdibException("No se ha podido cerrar la conexion a base de datos.");
-			} catch (NullPointerException e) {
-				LOGGER.error("No se ha podido cerrar la conexion a base de datos. Conexión a null.");
-				throw  new GdibException("No se ha podido cerrar la conexion a base de datos. Conexión a null.");
+            if (conn != null) {
+				try {
+					ps.close();
+					conn.close();
+				} catch (SQLException e) {
+					LOGGER.error("No se ha podido cerrar la conexion a base de datos.");
+					throw  new GdibException("No se ha podido cerrar la conexion a base de datos.");
+				} catch (Exception e) {
+					LOGGER.error("No se ha podido cerrar la conexion a base de datos. Excepcion general");
+					throw new GdibException("No se ha podido cerrar la conexion a base de datos. Excepcion general");
+				}
 			}
 		}
 
@@ -852,6 +854,10 @@ public class SubTypeDocUtil {
 			LOGGER.error("Ha fallado la conexion con la bddd de alfresco.");
 			LOGGER.debug("Cannot connect to "+getDb_alfresco_datasource()+"["+getDb_alfresco_url()+"] with username:"+getDb_alfresco_username()+" password:"+getDb_alfresco_password());
 			throw  new GdibException("Ha fallado la conexion con la bddd de alfresco.",e);
+		} catch (Exception e) {
+			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Excepcion general");
+			LOGGER.debug("Cannot connect to "+getDb_alfresco_datasource()+"["+getDb_alfresco_url()+"] with username:"+getDb_alfresco_username()+" password:"+getDb_alfresco_password()+ ". Excepcion general");
+			throw new GdibException("Ha fallado la conexion con la bddd de alfresco. Excepcion general",e);
 		}
 
 		return conn;
