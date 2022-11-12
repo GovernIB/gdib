@@ -851,11 +851,11 @@ public class SubTypeDocUtil {
 			LOGGER.error("DataBase Driver no encontrado en el Class Path del servidor para la conexion con la base de datos de alfresco.");
 			throw  new GdibException("DataBase Driver no encontrado en el Class Path del servidor para la conexion con la base de datos de alfresco.",e);
 		} catch (SQLException e) {
-			LOGGER.error("Ha fallado la conexion con la bddd de alfresco.");
+			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. SQLException Error: " + e.getMessage(),e);
 			LOGGER.debug("Cannot connect to "+getDb_alfresco_datasource()+"["+getDb_alfresco_url()+"] with username:"+getDb_alfresco_username()+" password:"+getDb_alfresco_password());
 			throw  new GdibException("Ha fallado la conexion con la bddd de alfresco.",e);
 		} catch (Exception e) {
-			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Excepcion general");
+			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. Excepcion general Error: " + e.getMessage(),e);
 			LOGGER.debug("Cannot connect to "+getDb_alfresco_datasource()+"["+getDb_alfresco_url()+"] with username:"+getDb_alfresco_username()+" password:"+getDb_alfresco_password()+ ". Excepcion general");
 			throw new GdibException("Ha fallado la conexion con la bddd de alfresco. Excepcion general",e);
 		}
