@@ -167,22 +167,62 @@
 	<!-- FIN: Beans relacionados con el import a RM  -->
 
 	<bean name="subTypeDocUtil" class="es.caib.gdib.utils.SubTypeDocUtil">
+		<property name="dataSource" ref="gdibDataSource2" />
 		<property name="exUtils" ref="exUtils" />
 		<property name="utils" ref="gdibUtils" />
 		<property name="db_alfresco_datasource" value="$gdib{cuadro.db.driver}" />
-		<property name="db_alfresco_url" value="${cuadro.db.url}" />
-		<property name="db_alfresco_username" value="${cuadro.db.username}" />
-		<property name="db_alfresco_password" value="${cuadro.db.password}" />
+		<property name="db_alfresco_url" value="$gdib{cuadro.db.url}" />
+		<property name="db_alfresco_username" value="$gdib{cuadro.db.username}" />
+		<property name="db_alfresco_password" value="$gdib{cuadro.db.password}" />
 	</bean>
+
+	<!-- Datasource de base de datos del cuadro -->
+
+    <bean id="gdibDataSource2" class="org.alfresco.config.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/dataSource</value>
+        </property>
+        <property name="defaultObject">
+            <ref bean="defaultGdibDataSource2" />
+        </property>
+    </bean>
+
+	<bean id="defaultGdibDataSource2" parent="baseGdibDefaultDataSource2" />
+
+    <bean id="baseGdibDefaultDataSource2" parent="baseDefaultDataSource">
+        <property name="driverClassName">
+            <value>$gdib{cuadro.db.driver}</value>
+        </property>
+        <property name="url">
+            <value>$gdib{cuadro.db.url}</value>
+        </property>
+        <property name="username">
+            <value>$gdib{cuadro.db.username}</value>
+        </property>
+        <property name="password">
+            <value>$gdib{cuadro.db.password}</value>
+        </property>
+        <property name="initialSize" >
+            <value>$gdib{cuadro.db.pool.initial}</value>
+        </property>
+        <property name="maxActive" >
+            <value>$gdib{cuadro.db.pool.max}</value>
+        </property>
+        <property name="defaultAutoCommit" >
+            <value>false</value>
+        </property>
+    </bean>
+	<!-- Fin DataSource  -->
+
 		<!-- Beans relacionados con los certificados  -->
 	
 	<bean name="certificateUtils" class="es.caib.gdib.utils.CertificateUtils">
 		<property name="utils" ref="gdibUtils" />
 		<property name="exUtils" ref="exUtils" />
 		<property name="db_alfresco_datasource" value="$gdib{cuadro.db.driver}" />
-		<property name="db_alfresco_url" value="${cuadro.db.url}" />
-		<property name="db_alfresco_username" value="${cuadro.db.username}" />
-		<property name="db_alfresco_password" value="${cuadro.db.password}" />
+		<property name="db_alfresco_url" value="$gdib{cuadro.db.url}" />
+		<property name="db_alfresco_username" value="$gdib{cuadro.db.username}" />
+		<property name="db_alfresco_password" value="$gdib{cuadro.db.password}" />
 		
 	</bean>
 </beans>

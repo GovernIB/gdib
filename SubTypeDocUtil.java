@@ -56,6 +56,7 @@ public class SubTypeDocUtil {
     	String codClasificacion = utils.getProperty(node.getProperties(), ConstantUtils.PROP_COD_CLASIFICACION_QNAME);
     	String subTypeDoc = utils.getProperty(node.getProperties(), ConstantUtils.PROP_SUBTIPO_DOC_QNAME);
     	SubTypeDocInfo info = this.getSubTypeDocInfo(codClasificacion, subTypeDoc);
+    	//SubTypeDocInfo info = null;
     	if(info != null)
     		fillSubTypeDocInfo(node.getType(), node.getProperties(), info);
     }
@@ -855,8 +856,14 @@ public class SubTypeDocUtil {
 
 
 		try {
+			//Class.forName(getDb_alfresco_datasource());
+			//conn = DriverManager.getConnection(getDb_alfresco_url(), props);
 			conn = dataSource.getConnection();
+			conn.setAutoCommit(false);
 
+		/*} catch (ClassNotFoundException e) {
+			LOGGER.error("DataBase Driver no encontrado en el Class Path del servidor para la conexion con la base de datos de alfresco.");
+			throw  new GdibException("DataBase Driver no encontrado en el Class Path del servidor para la conexion con la base de datos de alfresco.",e);*/
 		} catch (SQLException e) {
 			LOGGER.error("Ha fallado la conexion con la bddd de alfresco. SQLException Error: " + e.getMessage(),e);
 			LOGGER.debug("Cannot connect to "+getDb_alfresco_datasource()+"["+getDb_alfresco_url()+"] with username:"+getDb_alfresco_username()+" password:"+getDb_alfresco_password());
