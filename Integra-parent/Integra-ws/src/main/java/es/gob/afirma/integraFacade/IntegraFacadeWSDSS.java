@@ -315,18 +315,22 @@ public final class IntegraFacadeWSDSS {
 	    Map<String, Object> inputParameters = GenerateMessageRequest.generateUpgradeSignatureRequest(upgSigReq);
 
 	    if (inputParameters != null) {
-		// se crea mensaje XML de petición.
-		String xmlInput = TransformersFacade.getInstance().generateXml(inputParameters, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, TransformersConstants.VERSION_10);
-
-		// se invoca al servicio almacenar documento
-		String xmlOutput = Afirma5ServiceInvokerFacade.getInstance().invokeService(xmlInput, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, upgSigReq.getApplicationId(), idClient);
-
-		// parseamos el resultado.
-		Map<String, Object> propertiesResult = TransformersFacade.getInstance().parseResponse(xmlOutput, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, TransformersConstants.VERSION_10);
-
-		if (propertiesResult != null) {
-		    GenerateMessageResponse.generateServerSignerResponse(propertiesResult, serSigRes);
-		}
+			// se crea mensaje XML de petición.
+			String xmlInput = TransformersFacade.getInstance().generateXml(inputParameters, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, TransformersConstants.VERSION_10);
+	
+			// se invoca al servicio almacenar documento
+			String xmlOutput = Afirma5ServiceInvokerFacade.getInstance().invokeService(xmlInput, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, upgSigReq.getApplicationId(), idClient);
+	
+			// parseamos el resultado.
+			Map<String, Object> propertiesResult = TransformersFacade.getInstance().parseResponse(xmlOutput, GeneralConstants.DSS_AFIRMA_VERIFY_REQUEST, GeneralConstants.DSS_AFIRMA_VERIFY_METHOD, TransformersConstants.VERSION_10);
+	
+			if (propertiesResult != null) {
+			    Object obj = propertiesResult.get("dss:OptionalOutputs/dss:UpdatedSignature/dss:SignatureObject/ds:Signature");
+			    if (obj != null) {
+			    	propertiesResult.put("dss:SignatureObject/dss:Signature", obj);
+			    }
+			    GenerateMessageResponse.generateServerSignerResponse(propertiesResult, serSigRes);
+			}
 
 	    }
 
