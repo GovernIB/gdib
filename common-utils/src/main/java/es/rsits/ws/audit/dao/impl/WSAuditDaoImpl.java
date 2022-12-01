@@ -78,12 +78,20 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 			conn.commit();
 
 			LOGGER.debug("Insert Done.");
+
+			ps.close();
+			ps = null;
+			conn.close();
+			conn = null;
+
 			return rows;
 
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			try {
-				conn.rollback();
+				if (conn != null) {
+					conn.rollback();
+				}
 			} catch (SQLException ex) {
 				LOGGER.error(ex.getMessage());
 				throw new DAOException(ex);
@@ -159,12 +167,20 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 			conn.commit();
 
 			LOGGER.debug("Insert Done.");
+
+			ps.close();
+			ps = null;
+			conn.close();
+			conn = null;
+
 			return rows;
 
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			try {
-				conn.rollback();
+				if (conn != null) {
+					conn.rollback();
+				}
 			} catch (SQLException ex) {
 				LOGGER.error(ex.getMessage());
 				throw new DAOException(ex);
@@ -198,11 +214,20 @@ public class WSAuditDaoImpl implements WSAuditDAO {
 			rs = ps.executeQuery();
 			int rows = rs.getRow();
 
+			rs.close();
+			rs = null;
+			ps.close();
+			ps = null;
+			conn.close();
+			conn = null;
+
 			return rows;
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 			try {
-				conn.rollback();
+				if (conn != null) {
+					conn.rollback();
+				}
 			} catch (SQLException ex) {
 				LOGGER.error(ex.getMessage());
 				throw new DAOException(ex);
