@@ -496,8 +496,6 @@
 							</evaluator>
 							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
 							</evaluator>
-							<evaluator negate="true">evaluator.doclib.indicator.isSynced
-							</evaluator>
 							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
 							</evaluator>
 							<evaluator>evaluator.doclib.action.siteBased</evaluator>
@@ -529,8 +527,6 @@
 							<evaluator negate="true">evaluator.doclib.action.isLocked
 							</evaluator>
 							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
-							</evaluator>
-							<evaluator negate="true">evaluator.doclib.indicator.isSynced
 							</evaluator>
 							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
 							</evaluator>
@@ -584,8 +580,6 @@
 							<evaluator negate="true">evaluator.doclib.action.isLocked
 							</evaluator>
 							<evaluator negate="true">evaluator.doclib.action.isWorkingCopy
-							</evaluator>
-							<evaluator negate="true">evaluator.doclib.indicator.isSynced
 							</evaluator>
 							<evaluator negate="true">evaluator.rm.doclib.isRejectedRecord
 							</evaluator>
