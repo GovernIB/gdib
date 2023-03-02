@@ -63,6 +63,7 @@
 		<property name="searchService" ref="SearchService" />
 		<property name="permissionService" ref="PermissionService" />
 		<property name="categoryService" ref="CategoryService" />
+		<property name="siteService" ref="SiteService" />
 		<property name="exUtils" ref="exUtils" />
 		<property name="gdibAmpPropertiesAplicationFilter" ref="gdibAmpPropertiesAplicationFilter" />
 		<property name="gdibAmpPropertiesESBOperationFilter" ref="gdibAmpPropertiesESBOperationFilter" />

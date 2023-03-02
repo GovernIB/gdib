@@ -1482,9 +1482,10 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		}
 		LOGGER.debug("permisos checkeados");
 
+		//Este if lo comentamos, no hace nada...
+		/*
 		if (!repositoryDisableCheck.booleanValue()) {
 			// me salto este paso si esta desactivado los check principales del repositorio
-
 			if (versionService.isAVersion(nodeRef)) {
 				utils.inDMPath(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1)));
 			} else {
@@ -1492,7 +1493,19 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				utils.inDMPath(nodeRef);
 			}
 		}
-		Node ret = _internal_getNode(nodeRef, withContent, withSign);
+		*/
+		
+		Node ret;
+		NodeRef nodeSinVersion = utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1));
+		//Comprobamos si está en el RM para pasarle la versión o el nodo workspace
+		if(utils.isInRM(nodeSinVersion)) {
+			LOGGER.debug("El documento está en el RM: obtenemos el objeto del workspace");
+			ret = _internal_getNode(nodeSinVersion, withContent, withSign);
+		} else {
+			LOGGER.debug("El documento NO está en el RM: obtenemos el nodo especificado en la llamada");
+			ret = _internal_getNode(nodeRef, withContent, withSign);
+		}
+
 		LOGGER.info(nodeId + " recuperado en " + (System.currentTimeMillis() - initMill) + "ms");
 		return ret;
 	}
@@ -1823,14 +1836,23 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		long initMill = System.currentTimeMillis();
 		// comprobar los parametros de entrada
 		NodeRef node = utils.checkNodeId(nodeId);
-		utils.inDMPath(node);
-		// comprobar si el usuario tiene permisos sobre el nodo
-		utils.hasPermission(node, CaibServicePermissions.READ);
-
-		// recuperar lista de versiones
-		List<NodeVersion> list = utils.getVersionList(node);
-		LOGGER.info("Lista de versiones de " + nodeId + " recuperada en " + (System.currentTimeMillis() - initMill)
-				+ "ms.");
+		//Si es version revisamos permisos sobre el nodo del workspace
+		if(versionService.isAVersion(node)) {
+			utils.hasPermission(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1)),
+					CaibServicePermissions.READ);
+		} else {
+			utils.hasPermission(node, CaibServicePermissions.READ);
+		}
+		
+		List<NodeVersion> list;
+		//Si es una versión habrá que buscar las versiones sobre el nodo del workspace
+		if(versionService.isAVersion(node)) {
+			list = utils.getVersionList(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1)));
+		} else {
+			list = utils.getVersionList(node);
+		}
+		
+		LOGGER.info("Lista de versiones de " + nodeId + " recuperada en " + (System.currentTimeMillis() - initMill) + "ms.");
 		return list;
 	}
 

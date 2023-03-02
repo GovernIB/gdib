@@ -82,6 +82,7 @@ import org.alfresco.service.cmr.security.AccessStatus;
 import org.alfresco.service.cmr.security.AuthenticationService;
 import org.alfresco.service.cmr.security.AuthorityService;
 import org.alfresco.service.cmr.security.PermissionService;
+import org.alfresco.service.cmr.site.SiteService;
 import org.alfresco.service.cmr.version.Version;
 import org.alfresco.service.cmr.version.VersionDoesNotExistException;
 import org.alfresco.service.cmr.version.VersionHistory;
@@ -153,8 +154,9 @@ public class GdibUtils {
     private PermissionService permissionService;
     private AuthorityService authorityService;
     private CategoryService categoryService;
+    private SiteService siteService;
 
-    private String rootCT;
+	private String rootCT;
     private String rootTemplate;
     private FilterPlaceholderProperties gdibAmpPropertiesAplicationFilter;
     private FilterPlaceholderProperties gdibAmpPropertiesESBOperationFilter;
@@ -276,6 +278,31 @@ public class GdibUtils {
 		}
 		return this._pathDM;
 	}
+    
+
+    
+    public boolean isInRM(NodeRef node) {
+    	AuthenticationUtil.pushAuthentication();
+    	try {
+    	    AuthenticationUtil.setRunAsUserSystem();
+    	    
+    	    NodeRef rmDocumentLibrary = siteService.getContainer("rm", SiteService.DOCUMENT_LIBRARY);
+    	    Path pathRM = nodeService.getPath(rmDocumentLibrary);
+    	    String displayPathRM = pathRM.toDisplayPath(nodeService, permissionService) + "/"+ nodeService.getProperty(rmDocumentLibrary, ConstantUtils.PROP_NAME);
+    	    
+    	    Path nodePath = nodeService.getPath(node);
+    	    String displayPathNode = nodePath.toDisplayPath(nodeService, permissionService) + "/"+ nodeService.getProperty(node, ConstantUtils.PROP_NAME);
+    	    
+    	    if (!displayPathNode.contains(displayPathRM)) {
+    	    	return false;
+    	    }
+    	    
+    	    return true;
+    	    
+    	} finally {
+    	    AuthenticationUtil.popAuthentication();
+    	}
+    }
 
 	/**
      * Compruebo que el nodo esta en el path de la raiz del repositorio de migracion
@@ -2260,6 +2287,10 @@ public class GdibUtils {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+    
+    public void setSiteService(SiteService siteService) {
+		this.siteService = siteService;
+	}
 
     public void setGdibAmpPropertiesAplicationFilter(FilterPlaceholderProperties gdibAmpPropertiesAplicationFilter) {
         this.gdibAmpPropertiesAplicationFilter = gdibAmpPropertiesAplicationFilter;
