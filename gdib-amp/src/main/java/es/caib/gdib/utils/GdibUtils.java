@@ -3,23 +3,15 @@ package es.caib.gdib.utils;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.TypeVariable;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -31,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64.Decoder;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -121,10 +112,6 @@ import es.caib.gdib.ws.common.types.ValidationStatus;
 import es.caib.gdib.ws.common.types.header.GdibRestriction;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.SignatureService;
-
-import java.lang.reflect.Type;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 
 public class GdibUtils {
 
@@ -1566,7 +1553,6 @@ public class GdibUtils {
             throw exUtils.isAVersionException(nodeRef.getId());
     }
 
-    @SuppressWarnings("deprecation")
     public List<NodeVersion> getVersionList(NodeRef node) {
         List<NodeVersion> versionList = new ArrayList<NodeVersion>();
         NodeVersion nodeVersion = null;
@@ -1576,7 +1562,7 @@ public class GdibUtils {
         	for (Version version : history.getAllVersions()) {
 	            nodeVersion = new NodeVersion();
 
-	            Date createdDate = version.getCreatedDate();
+	            Date createdDate = version.getFrozenModifiedDate();
 	            String label = version.getVersionLabel();
 
 	            //nodeVersion.setDate(new SimpleDateFormat("yyyy-MM-dd").format(createdDate));
@@ -1585,6 +1571,17 @@ public class GdibUtils {
 	            versionList.add(nodeVersion);
 	        }
         }
+        
+        if (versionList.size()==0 && isInRM(node)) {
+        	nodeVersion = new NodeVersion();
+    	    Date createdDate = (Date) nodeService.getProperty(node, ContentModel.PROP_CREATED);
+            String label = "1.0";
+
+            nodeVersion.setDate(ISO8601DateFormat.format(createdDate));
+            nodeVersion.setId(label);
+            versionList.add(nodeVersion);
+		}
+        
         return versionList;
     }
 

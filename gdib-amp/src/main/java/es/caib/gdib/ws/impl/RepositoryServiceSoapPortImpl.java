@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.activation.DataHandler;
@@ -55,7 +54,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -95,7 +93,6 @@ import es.caib.gdib.ws.common.types.ValidationStatus;
 import es.caib.gdib.ws.exception.GdibException;
 import es.caib.gdib.ws.iface.RepositoryServiceSoapPort;
 import es.caib.gdib.ws.iface.SignatureService;
-import groovy.transform.Synchronized;
 
 @Component
 @Scope("request")
@@ -1837,7 +1834,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		// comprobar los parametros de entrada
 		NodeRef node = utils.checkNodeId(nodeId);
 		//Si es version revisamos permisos sobre el nodo del workspace
-		if(versionService.isAVersion(node)) {
+		if(versionService.isAVersion(node) && !utils.isInRM(node)) {
 			utils.hasPermission(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1)),
 					CaibServicePermissions.READ);
 		} else {
@@ -1846,7 +1843,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		
 		List<NodeVersion> list;
 		//Si es una versión habrá que buscar las versiones sobre el nodo del workspace
-		if(versionService.isAVersion(node)) {
+		if(versionService.isAVersion(node) && !utils.isInRM(node)) {
 			list = utils.getVersionList(utils.toNodeRef(nodeId.substring(nodeId.lastIndexOf("@") + 1)));
 		} else {
 			list = utils.getVersionList(node);
