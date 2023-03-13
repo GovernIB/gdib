@@ -51,14 +51,14 @@ public class CAIBRecordFolderBehavior {
 		
 		eventManager.bindClassBehaviour(NodeServicePolicies.OnUpdatePropertiesPolicy.QNAME,
 				RecordsManagementModel.TYPE_RECORD_FOLDER,
-				new JavaBehaviour(this, "onUpdateDocumentProperties", NotificationFrequency.TRANSACTION_COMMIT));
+				new JavaBehaviour(this, "onUpdateRecordFolderProperties", NotificationFrequency.TRANSACTION_COMMIT));
 
 	}
 
-	public void onUpdateDocumentProperties(NodeRef docRef, Map<QName, Serializable> before,
+	public void onUpdateRecordFolderProperties(NodeRef docRef, Map<QName, Serializable> before,
 			Map<QName, Serializable> after)
 	{
-		LOGGER.debug("onUpdateDocumentProperties :: start");
+		LOGGER.debug("onUpdateRecordFolderProperties :: start");
 
 		String estadoArchivoBefore = null;
 		String estadoArchivoAfter = null;
@@ -67,7 +67,7 @@ public class CAIBRecordFolderBehavior {
 		if(after.get(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME) != null)
 			estadoArchivoAfter = (String)after.get(ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME);
 
-		LOGGER.debug("onUpdateDocumentProperties : estadoArchivoBefore ({}) estadoArchivoAfter({})", estadoArchivoBefore, estadoArchivoAfter);
+		LOGGER.debug("onUpdateRecordFolderProperties : estadoArchivoBefore ({}) estadoArchivoAfter({})", estadoArchivoBefore, estadoArchivoAfter);
 		// si los dos son null no se hace nada
 		if(!StringUtils.isEmpty(estadoArchivoBefore) || !StringUtils.isEmpty(estadoArchivoAfter))
 		{
@@ -82,7 +82,7 @@ public class CAIBRecordFolderBehavior {
 					NodeRef child = childAssoc.getChildRef();
 					if(ConstantUtils.TYPE_DOCUMENTO_QNAME.equals(nodeService.getType(child)))
 					{
-						LOGGER.debug("onUpdateDocumentProperties : change child nodes ({}) state", child.getId());
+						LOGGER.debug("onUpdateRecordFolderProperties : change child nodes ({}) state", child.getId());
 						// desactivo y activo el behavior para que no envie dos emails.
 						policyBehaviourFilter.disableBehaviour(child);
 						nodeService.setProperty(child, ConstantUtils.PROP_ESTADO_ARCHIVO_QNAME, estadoArchivoAfter);
@@ -91,18 +91,18 @@ public class CAIBRecordFolderBehavior {
 				}
 
 				// enviar un email informando del cambio
-				LOGGER.debug("onUpdateDocumentProperties : send email");
 				if(emailNotifications)
+					LOGGER.debug("onUpdateRecordFolderProperties : send email");
 					sendEmail(docRef, estadoArchivoBefore, estadoArchivoAfter);
 			}
 		}
 
-		LOGGER.debug("onUpdateDocumentProperties :: end");
+		LOGGER.debug("onUpdateRecordFolderProperties :: end");
 	}
 
 	private void sendEmail(NodeRef exp, String estadoArchivoBefore, String estadoArchivoAfter)
 	{
-		LOGGER.debug("onUpdateDocumentProperties :: sendEmail : start");
+		LOGGER.debug("onUpdateRecordFolderProperties :: sendEmail : start");
 		String to = "";
 		Set<String> usersGroup = null;
 
@@ -118,7 +118,7 @@ public class CAIBRecordFolderBehavior {
 			to = to.substring(1);
 //			to = "alfrescoto@yopmail.com";
 		}
-		LOGGER.debug("onUpdateDocumentProperties :: sendEmail : email to ({})", to);
+		LOGGER.debug("onUpdateRecordFolderProperties :: sendEmail : email to ({})", to);
 
 		if(!StringUtils.isEmpty(to))
 		{
@@ -132,7 +132,7 @@ public class CAIBRecordFolderBehavior {
 	        mailAction.setParameterValue(MailActionExecuter.PARAM_TEXT, body);
 	        actionService.executeAction(mailAction, null);
 		}
-		LOGGER.debug("onUpdateDocumentProperties :: sendEmail : end");
+		LOGGER.debug("onUpdateRecordFolderProperties :: sendEmail : end");
 	}
 
 	public void setEventManager(PolicyComponent eventManager) {
