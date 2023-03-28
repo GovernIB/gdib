@@ -76,8 +76,10 @@ public class CAIBDocumentBehavior {
 					|| (!estadoArchivoAfter.equals(estadoArchivoBefore)))
 				{
 					// enviar el email
-					if(emailNotifications)
+					if(emailNotifications) {
+						LOGGER.debug("onUpdateDocumentProperties : we send an email");
 						sendEmail(docRef, estadoArchivoBefore, estadoArchivoAfter);
+					}
 				}
 			}
 		}

@@ -91,9 +91,10 @@ public class CAIBRecordFolderBehavior {
 				}
 
 				// enviar un email informando del cambio
-				if(emailNotifications)
-					LOGGER.debug("onUpdateRecordFolderProperties : send email");
+				if(emailNotifications) {
+					LOGGER.debug("onUpdateRecordFolderProperties : we send an email");
 					sendEmail(docRef, estadoArchivoBefore, estadoArchivoAfter);
+				}
 			}
 		}
 
