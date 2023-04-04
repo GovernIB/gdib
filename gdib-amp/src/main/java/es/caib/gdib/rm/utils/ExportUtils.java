@@ -215,7 +215,9 @@ public class ExportUtils {
 				List<String> colision = new ArrayList<String>();
 				// A la hora de renombrar, tengo que tener encuenta si es un documento del expediente, si es
 				// el indice electronico interno o de intercambio, o si es un documento de un expediente de exportacion (indice para remision cerrado)
+				LOGGER.debug("Export handler - NodeRefsToMove 1 size: " + exportHandler.getListNodeRefsToMove().size());
 				for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
+					
 					// parsear el nombre con expresion regular para detectar si viene
 	
 					// indice electronico interno (indice-eni:id-fechahora.xml) indice-ES_123456789_2016_EXP_50d800a8a96a4c2cb224b1d9453ab0b9-201605051200.xml
@@ -271,6 +273,7 @@ public class ExportUtils {
 				
 				// Movemos los nodos de la carpeta temporal al expediente
 				LOGGER.debug("Movemos los documentos de la carpeta temporal al expediente creado en el RM");
+				LOGGER.debug("Export handler 2 - NodeRefsToMove size: " + exportHandler.getListNodeRefsToMove().size());
 				for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
 					createRMRecord(nodeRef, rmExpedient);
 				}
