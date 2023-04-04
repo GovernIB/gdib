@@ -274,7 +274,7 @@ public class ExportUtils {
 				for (NodeRef nodeRef : exportHandler.getListNodeRefsToMove()) {
 					createRMRecord(nodeRef, rmExpedient);
 				}
-	
+				
 				// Escribimos el descriptor XML
 				LOGGER.debug("Creamos el archivo xml descriptor de la estructura del expediente antes de cerrarlo");
 				writeXMLexportDescriptor(expedienteName + ".xml", expediente,
@@ -389,15 +389,18 @@ public class ExportUtils {
 		// TODO parsear los documentos que son de tipo thumbnail
 		if(nodeService.exists(nodeRef) && !nodeService.getType(nodeRef).equals(ContentModel.TYPE_THUMBNAIL))
 		{
-
+			LOGGER.debug("Empieza createRMRecord");
 			List<QName> aspects = utils.transformListStringToQname(utils.getAspects(nodeRef));
 			List<Property> properties = utils.getProperties(nodeRef);
 			QName type = nodeService.getType(nodeRef);
 			
 			String uuid = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NODE_UUID);
 			String nodeRefName = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
+			LOGGER.debug("createRMRecord obteniendo contenido content");
 			ContentDataWithId content = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_CONTENT);
+			LOGGER.debug("createRMRecord obteniendo contenido firma");
 			ContentDataWithId signature = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_FIRMA_QNAME);
+			LOGGER.debug("createRMRecord fin obtención contenido y firma");
 			// elimino el nodo para tener libre el uuid
 			nodeService.deleteNode(nodeRef);
 			// creo el nuevo nodo en el RM
@@ -418,7 +421,7 @@ public class ExportUtils {
 			NodeRef docRM = createdChildRef.getChildRef();
 				// le aplico los datos recuperados anteriormente
 			utils.addAspects(docRM, aspects);		
-			
+			LOGGER.debug("Termina createRMRecord");
 			
 		}
 	}
