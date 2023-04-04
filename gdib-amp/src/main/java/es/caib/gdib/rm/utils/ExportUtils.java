@@ -389,13 +389,14 @@ public class ExportUtils {
 		// TODO parsear los documentos que son de tipo thumbnail
 		if(nodeService.exists(nodeRef) && !nodeService.getType(nodeRef).equals(ContentModel.TYPE_THUMBNAIL))
 		{
-			LOGGER.debug("Empieza createRMRecord");
+			LOGGER.debug("Empieza createRMRecord: " + nodeRef);
 			List<QName> aspects = utils.transformListStringToQname(utils.getAspects(nodeRef));
 			List<Property> properties = utils.getProperties(nodeRef);
 			QName type = nodeService.getType(nodeRef);
 			
 			String uuid = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NODE_UUID);
 			String nodeRefName = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
+			LOGGER.debug("createRMRecord node name: " + nodeRefName);
 			LOGGER.debug("createRMRecord obteniendo contenido content");
 			ContentDataWithId content = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_CONTENT);
 			LOGGER.debug("createRMRecord obteniendo contenido firma");
@@ -421,7 +422,7 @@ public class ExportUtils {
 			NodeRef docRM = createdChildRef.getChildRef();
 				// le aplico los datos recuperados anteriormente
 			utils.addAspects(docRM, aspects);		
-			LOGGER.debug("Termina createRMRecord");
+			LOGGER.debug("Termina createRMRecord: " + nodeRef);
 			
 		}
 	}
