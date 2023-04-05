@@ -10,8 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
+import java.util.Map.Entry;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.module.org_alfresco_module_rm.model.RecordsManagementModel;
@@ -229,6 +228,15 @@ public class ExportUtils {
 	
 					String nodeId = nodeRef.getId();
 					LOGGER.debug("Nodo a copiar " + nodeId);
+					Map <QName, Serializable> properties = nodeService.getProperties(nodeRef);
+					LOGGER.debug("*************************");
+					for (Entry<QName, Serializable> entry : properties.entrySet()) {
+					    QName key = entry.getKey();
+					    Serializable value = entry.getValue();
+					    System.out.println("Clave: " + key + ", Valor: " + value);
+					}
+					LOGGER.debug("*************************");
+					
 					if(!processedNodes.contains(nodeId)){
 						QName nodeType = nodeService.getType(nodeRef);
 						String name = (String) nodeService.getProperty(nodeRef, ConstantUtils.PROP_NAME);
