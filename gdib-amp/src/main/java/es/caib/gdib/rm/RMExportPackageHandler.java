@@ -40,8 +40,9 @@ public class RMExportPackageHandler implements ExportPackageHandler {
 			NodeRef nodeRef = nodeContentData.getNodeRef();
 			
 			// TODO Tener en cuenta los expedientes enlazados => igual hace falta crear un aspecto con un porpiedad nultiple para guardar los uid de los exp. enlazados.
-			
-			listNodeRefsToMove.add(nodeRef);
+			if (!listNodeRefsToMove.contains(nodeRef)) {
+				listNodeRefsToMove.add(nodeRef);
+			}
 		}
 		
 		return contentData;

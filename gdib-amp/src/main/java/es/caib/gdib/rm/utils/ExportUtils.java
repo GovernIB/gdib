@@ -414,8 +414,11 @@ public class ExportUtils {
 			ContentDataWithId signature = (ContentDataWithId) nodeService.getProperty(nodeRef, ConstantUtils.PROP_FIRMA_QNAME);
 			LOGGER.debug("createRMRecord fin obtención contenido y firma");
 			// elimino el nodo para tener libre el uuid
+			LOGGER.debug("createRMRecord se elimina el nodo");
 			nodeService.deleteNode(nodeRef);
+			LOGGER.debug("createRMRecord fin se elimina el nodo");
 			// creo el nuevo nodo en el RM
+			LOGGER.debug("createRMRecord se asigna propiedades al nuevo nodo");
 			QName nameQname = utils.createNameQName(nodeRefName);
 			Map<QName, Serializable> props = new HashMap<QName, Serializable>();
 			props.put(ContentModel.PROP_NODE_UUID, uuid);
@@ -427,12 +430,16 @@ public class ExportUtils {
 			props.put(ContentModel.PROP_AUTO_VERSION_PROPS, true);
 			// guardo las propiedades del nodo previo
 			props.putAll(utils.transformMapStringToQname(properties));
+			LOGGER.debug("createRMRecord fin se asigna propiedades al nuevo nodo");
+			LOGGER.debug("createRMRecord se crea el nuevo nodo");
 			ChildAssociationRef createdChildRef = nodeService.createNode(rmExpedient, ContentModel.ASSOC_CONTAINS,
 						nameQname, type, props);
-				
+			LOGGER.debug("createRMRecord fin se crea el nuevo nodo");	
 			NodeRef docRM = createdChildRef.getChildRef();
-				// le aplico los datos recuperados anteriormente
+			// le aplico los datos recuperados anteriormente
+			LOGGER.debug("createRMRecord se añade aspectos al nuevo nodo");
 			utils.addAspects(docRM, aspects);		
+			LOGGER.debug("createRMRecord fin se añade aspectos al nuevo nodo");
 			LOGGER.debug("Termina createRMRecord: " + nodeRef);
 			
 		}
