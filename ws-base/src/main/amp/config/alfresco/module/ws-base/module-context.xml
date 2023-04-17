@@ -76,9 +76,9 @@
 
 	<!-- ThreadPool para la insercion en base de datos de auditoria asincrono -->
 	<bean id="auditTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-	    <property name="corePoolSize" value="50" />
-	    <property name="maxPoolSize" value="100" />
-	    <property name="queueCapacity" value="250" />
+	    <property name="corePoolSize" value="200" />
+	    <property name="maxPoolSize" value="250" />
+	    <property name="queueCapacity" value="200" />
 	</bean>
 
 	<!-- Fin ThreadPool PARA EL THREADPOOL -->
