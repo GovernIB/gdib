@@ -2701,12 +2701,12 @@ public class GdibUtils {
 	 *            nodo a modificar
 	 */
 	public void updateResealDate(Node node) {
-		Property property = new Property(ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date(0)));
+		Property property = new Property(ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date()));
 		node.getProperties().add(property);
 	}
 
 	public void updateResealDate(NodeRef node) {
-		nodeService.setProperty(node, ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date(0)));
+		nodeService.setProperty(node, ConstantUtils.PROP_FECHA_SELLADO_QNAME, ISO8601DateFormat.format(new Date()));
 	}
 
 	/**

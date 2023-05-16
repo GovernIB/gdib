@@ -1385,8 +1385,14 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 		modifyNodeAspects(nodeRef, node.getAspects(), original.getAspects());
 		modifyNodeProperties(node, original.getProperties(), utils.getESBOp(gdibHeader), isFinalNode);
+		LOGGER.info("ModifyNode - Nombre: " + node.getName());
+		LOGGER.info("ModifyNode - Aspectos: " + node.getAspects());
+		LOGGER.info("ModifyNode - Es nodo final? " + isFinalNode);
+		
 		if (!isFinalNode) {
+			LOGGER.info("ModifyNode - Se modifica el contenido del documento");
 			modifyContentNode(nodeRef, node.getContent());
+			LOGGER.info("ModifyNode - Se firma el documento");
 			modifySignNode(nodeRef, node.getSign());
 		}
 		// Esto NO se puede hacer -> this.getNode(nodeRef.getId(), false, false,
