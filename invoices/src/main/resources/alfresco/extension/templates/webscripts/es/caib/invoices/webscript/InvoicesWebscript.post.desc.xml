@@ -1,0 +1,7 @@
+<webscript>
+      <shortname>Invoices</shortname>
+      <description>Add SAP Properties</description>
+      <url>/caib/invoices</url>
+      <authentication>user</authentication>
+      <format default="json">any</format>
+</webscript>
