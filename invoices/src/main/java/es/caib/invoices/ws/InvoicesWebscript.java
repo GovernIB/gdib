@@ -69,9 +69,9 @@ public class InvoicesWebscript extends DeclarativeWebScript{
 			logger.debug("objectid: " + objectid);
 			NodeRef nodeRef = findNode(objectid);
 			if(nodeRef == null) {
-				logger.info("Nodo con uid {} no encontrado", objectid);
+				logger.info("Nodo con connexasArchivelink:sapid:{} no encontrado", objectid);
 				code = 404;
-				message= "No se ha encontrado el nodo con uuid: " + objectid;
+				message= "No se ha encontrado con sapid: " + objectid;
 				status.setCode(code, message);
 				return null;
 			}
@@ -101,7 +101,7 @@ public class InvoicesWebscript extends DeclarativeWebScript{
     }
 	
 	private NodeRef findNode(String id) {
-		String query = "=connexasArchivelink:sapId:" +id + " AND TYPE:\"cm:content\"";
+		String query = "=connexasArchivelink:sapid:" +id + " AND TYPE:\"cm:content\"";
 		logger.debug("Query: " + query);
 	    ResultSet results = null;
 	    NodeRef ret = null;
