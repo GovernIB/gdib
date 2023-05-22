@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model name="caibf:invoicesModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+<model name="caibf:invoicesModel"
+	xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
-    <!-- Optional meta-data about the model -->
-    <description>CAIB Invoices model</description>
-    <author>CAIB</author>
-    <version>1.0</version>
+	<!-- Optional meta-data about the model -->
+	<description>CAIB Invoices model</description>
+	<author>CAIB</author>
+	<version>1.0</version>
 
-    <imports>
-        <!-- Import Alfresco Dictionary Definitions -->
-        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
-        <!-- Import Alfresco Content Domain Model Definitions -->
-        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
-        <!-- Import Alfresco System Model Definitions -->
-        <import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
-    </imports>
+	<imports>
+		<!-- Import Alfresco Dictionary Definitions -->
+		<import uri="http://www.alfresco.org/model/dictionary/1.0"
+			prefix="d" />
+		<!-- Import Alfresco Content Domain Model Definitions -->
+		<import uri="http://www.alfresco.org/model/content/1.0"
+			prefix="cm" />
+		<!-- Import Alfresco System Model Definitions -->
+		<import uri="http://www.alfresco.org/model/system/1.0"
+			prefix="sys" />
+	</imports>
 
-    <!-- Custom namespace for your domain -->
-    <namespaces>
-        <namespace uri="http://www.caib.es/invoices/model/content/1.0" prefix="caibf"/>
-    </namespaces>
+	<!-- Custom namespace for your domain -->
+	<namespaces>
+		<namespace
+			uri="http://www.caib.es/invoices/model/content/1.0" prefix="caibf" />
+	</namespaces>
 
-    <!-- ===============================================================================================================
-        Constraints, Types, and Aspects go here...
-        -->
+	<!-- =============================================================================================================== 
+		Constraints, Types, and Aspects go here... -->
 	<types>
-		
+
 	</types>
 	<aspects>
 		<aspect name="caibf:invoice">
@@ -51,10 +55,13 @@
 				<property name="caibf:dir3">
 					<type>d:text</type>
 				</property>
+				<property name="caibf:docid">
+					<type>d:text</type>
+				</property>
+				<property name="caibf:archiv_id">
+					<type>d:text</type>
+				</property>
 			</properties>
 		</aspect>
-		
-		
-		
 	</aspects>
 </model>
