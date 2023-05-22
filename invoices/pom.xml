@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.caib</groupId>
 	<artifactId>invoices</artifactId>
-	<version>1.5.1-SNAPSHOT</version>
+	<version>1.5.1.1-SNAPSHOT</version>
 	<name>invoices Platform/Repository JAR Module</name>
 	<description>Platform/Repo JAR Module (to be included in the alfresco.war)</description>
 	<packaging>jar</packaging>
