@@ -44,10 +44,10 @@ public class InvoicesWebscript extends DeclarativeWebScript{
 		
 		try {
 			String bodyStr = req.getContent().getContent();
-			logger.debug("body: \n" + bodyStr);
+			logger.debug("body: {}", bodyStr);
 			//Convertimos el cuerpo a objeto
 			dto = mapper.readValue(bodyStr, InvoicesRequestDto.class);
-			logger.debug("DTO created \n - {}", dto.toString());
+			logger.debug("DTO created: {}", dto.toString());
 			//Validamos el objeto: si falla lanza ValidationException
 			validator.validateObject(dto);
 			logger.debug("DTO validated");
@@ -66,20 +66,20 @@ public class InvoicesWebscript extends DeclarativeWebScript{
 			return null;
 		} else {
 			String objectid = dto.getArcDocId();
-			logger.debug("objectid: " + objectid);
+			logger.info("Buscando nodo con sapid: {}", objectid);
 			NodeRef nodeRef = findNode(objectid);
 			if(nodeRef == null) {
 				logger.info("Nodo con connexasArchivelink:sapid:{} no encontrado", objectid);
 				code = 404;
-				message= "No se ha encontrado con sapid: " + objectid;
+				message= "No se ha encontrado contenido con sapid: " + objectid;
 				status.setCode(code, message);
 				return null;
 			}
-			logger.debug("NodeRef found: " + nodeRef.getId());
+			logger.info("NodeRef found: {}", nodeRef.getId());
 			Map<QName,Serializable> properties = formatProperties(dto);
-			logger.debug("Adding properties to the node");
+			logger.info("Adding properties to the node");
 			addProperties(nodeRef, properties);
-			logger.debug("Properties set - OK");
+			logger.info("Properties set - HttpStatus OK");
 			status.setCode(code, "OK");
 		}
 			
