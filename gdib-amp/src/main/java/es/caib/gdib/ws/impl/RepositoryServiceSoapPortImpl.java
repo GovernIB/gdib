@@ -75,6 +75,7 @@ import es.caib.gdib.utils.SignatureUtils;
 import es.caib.gdib.utils.SubTypeDocInfo;
 import es.caib.gdib.utils.SubTypeDocUtil;
 import es.caib.gdib.utils.XmlUtils;
+import es.caib.gdib.utils.iface.CaibConstraintsUtilsInterface;
 import es.caib.gdib.utils.iface.EniModelUtilsInterface;
 import es.caib.gdib.ws.common.types.Content;
 import es.caib.gdib.ws.common.types.EemgdeSignatureProfile;
@@ -705,7 +706,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		try {
 			// si es un documento, es version definitiva y si la firma es realizada mediante
 			// certificado electr�nico
-			if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME) && utils.isFinalNode(node)
+			if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)
 					&& !EniSignatureType.TF01.equals(eniSignatureType)) {
 				content = null;
 				signature = null;
@@ -904,7 +905,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 	 *
 	 */
 	private void modifyNodeProperties(Node node, List<Property> originalProperties, String esbOperation,
-			boolean isFinalNode) throws GdibException {
+			boolean isFinalNode, boolean isSign) throws GdibException {
 
 		// Si el nombre cambia Y no hay definida en node ninguna propiedad de nombre
 		if (node.getProperties() == null)
@@ -958,6 +959,25 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		if (isFinalNode)
 			utils.checkFinalMandatoryProperties(node.getType(), properties, esbOperation);
 
+		// (31/05/2023) Se le modifica siempre el perfil de firma a uno BES, para que no venga dado errónamente 
+		// por aplicaciones clientes y así se calcule siempre automáticamente.
+		if (isSign) {
+			String signTypeProp = utils.getProperty(node.getProperties(),
+					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_TIPO_FIRMA);
+			LOGGER.debug("Tipo de firma ENI para inicializar: " + signTypeProp);
+			EniSignatureType eniSignatureType = EniSignatureType.valueOf(signTypeProp);
+			
+			if (!EniSignatureType.TF01.equals(eniSignatureType)
+					&& !EniSignatureType.TF04.equals(eniSignatureType)) {
+				LOGGER.info("Se modifica el perfil de firma:"+ properties.get(ConstantUtils.PROP_PERFIL_FIRMA_QNAME) + " a: " +  CaibConstraintsUtilsInterface.PERFIL_FIRMA_BES);
+				if (properties.get(ConstantUtils.PROP_PERFIL_FIRMA_QNAME)==null) {
+					properties.put(ConstantUtils.PROP_PERFIL_FIRMA_QNAME, CaibConstraintsUtilsInterface.PERFIL_FIRMA_BES);
+				}else {
+					properties.replace(ConstantUtils.PROP_PERFIL_FIRMA_QNAME, CaibConstraintsUtilsInterface.PERFIL_FIRMA_BES);	
+				}
+			}
+		}
+		
 		nodeService.addProperties(utils.idToNodeRef(node.getId()), properties);
 	}
 
@@ -1382,9 +1402,40 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		if (!utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
 			isFinalNode = true;
 		}
+		
 
+		// (06/06/2023) Si no tiene el documento firma o no es válida y no es estado final del
+		// documento, se deja las propiedades que viene de las aplicaciones cliente y no se firma el documento.
+		String signTypeProp, nodeIdValue;
+		boolean isSign = true;
+		nodeIdValue = (node.getId() == null ? "nuevo documento" : node.getId());
+		LOGGER.debug("Se inicia la validacion de la firma electr�nica del documento " + nodeIdValue);
+		signTypeProp = utils.getProperty(node.getProperties(),
+				EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_TIPO_FIRMA);
+		LOGGER.debug("Tipo de firma ENI: " + signTypeProp);
+		if (signTypeProp == null) {
+			if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
+					&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME)) {
+				throw new GdibException("La propiedad o metadato " + EniModelUtilsInterface.PROP_TIPO_FIRMA
+						+ " del documento " + nodeIdValue + " no ha sido establecida.");
+			} else {
+				isSign = false;
+				nodeService.removeProperty(utils.idToNodeRef(original.getId()), EniModelUtilsInterface.PROP_TIPO_FIRMA_QNAME);
+				nodeService.removeProperty(utils.idToNodeRef(original.getId()), EniModelUtilsInterface.PROP_PERFIL_FIRMA_QNAME);
+				nodeService.removeProperty(utils.idToNodeRef(original.getId()), EniModelUtilsInterface.PROP_FECHA_SELLADO_QNAME);
+				nodeService.removeProperty(utils.idToNodeRef(original.getId()), EniModelUtilsInterface.PROP_CSV_QNAME);
+				nodeService.removeAspect(utils.idToNodeRef(original.getId()), EniModelUtilsInterface.ASPECT_FIRMADO_BASE_QNAME);
+			}
+		} else {
+			EniSignatureType eniSignatureType = EniSignatureType.valueOf(signTypeProp);
+			if (!EniSignatureType.TF01.equals(eniSignatureType)
+					&& !EniSignatureType.TF04.equals(eniSignatureType)) {
+				nodeService.setProperty(nodeRef, EniModelUtilsInterface.PROP_PERFIL_FIRMA_QNAME, nodeIdValue);
+			}
+		}
+		LOGGER.debug("Está firmado?: " + isSign);
 		modifyNodeAspects(nodeRef, node.getAspects(), original.getAspects());
-		modifyNodeProperties(node, original.getProperties(), utils.getESBOp(gdibHeader), isFinalNode);
+		modifyNodeProperties(node, original.getProperties(), utils.getESBOp(gdibHeader), isFinalNode, isSign);
 		LOGGER.info("ModifyNode - Nombre: " + node.getName());
 		LOGGER.info("ModifyNode - Aspectos: " + node.getAspects());
 		LOGGER.info("ModifyNode - Es nodo final? " + isFinalNode);
@@ -1399,21 +1450,22 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		// gdibHeader);
 		Node newNode = _internal_getNode(nodeRef, false, false);
 		this.checkCalculateEniId(nodeRef, null);
-
+		
 		long signMill = 0;
-		if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
-				&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME)) {
+		// (31/05/2023) Se comprueba el resellar sólo si no es definitivo.
+		if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME) && isSign) {
 			// Documentos
 			NodeRef parentNodeRef = nodeService.getPrimaryParent(nodeRef).getParentRef();
 			checkDocClassification(node, parentNodeRef);
-			utils.checkNodeIntegrity(newNode);
+			if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
+					&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME)) {
+				utils.checkNodeIntegrity(newNode);
+			}
+			
 			verifySubtypeDoc(newNode);
 
 			long initSign = System.currentTimeMillis();
-			// (26/09): Se debe llamar al mÃ©todo checkSignature cuando un documento pasa de
-			// estado borrador a definitivo, dado que es el
-			// momento en el que se verifica la firma electr�nica del mismo, y se evoluciona
-			// si no presenta el formato m�nimo exigido.
+
 			String perfil = utils.getProperty(newNode.getProperties(),
 					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
 			LOGGER.info("Perfil de firma antes de comprobar firma: " + perfil);
@@ -1424,6 +1476,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 
 			if (!perfil.equals(newperfil)) {
 				// El perfil de firma ha cambiado.
+				LOGGER.info("El Perfil de firma ha cambiado de: " + perfil + " a: " + newperfil);
 				String signatureTypeProp = utils.getProperty(newNode.getProperties(),
 						EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_TIPO_FIRMA);
 				EniSignatureType eniSignatureType = EniSignatureType.valueOf(signatureTypeProp);
