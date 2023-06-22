@@ -815,6 +815,9 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						} else {
 							node.setSign(signatureDataHandler);
 						}
+						
+						LOGGER.debug("Se procede a poner fecha de sellado del documento " + nodeIdValue + "....");
+						utils.updateResealDate(node);
 					}
 
 					// Se verifica que el perfil de firma informado es el mismo que el retornado por
@@ -1257,6 +1260,40 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				LOGGER.debug("Última comprobación integridad del nodo.");
 				utils.checkNodeIntegrity(node);
 				verifySubtypeDoc(node);
+			} else {
+				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
+					LOGGER.debug("Documento: SI es un borrador. Se pasa a chequear la firma si está firmado");
+					// (06/06/2023) Si no tiene el documento firma o no es válida y no es estado final del
+					// documento, se deja las propiedades que viene de las aplicaciones cliente y no se firma el documento.
+					String signTypeProp, nodeIdValue;
+					boolean isSign = true;
+					nodeIdValue = (node.getId() == null ? "nuevo documento" : node.getId());
+					LOGGER.debug("Se inicia la validacion de la firma electr�nica del documento " + nodeIdValue);
+					signTypeProp = utils.getProperty(node.getProperties(),
+							EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_TIPO_FIRMA);
+					LOGGER.debug("Tipo de firma ENI: " + signTypeProp);
+					if (signTypeProp == null) {
+						isSign = false;
+					}
+					LOGGER.debug("Está firmado?: " + isSign);
+					
+					if (isSign) {
+						EniSignatureType eniSignatureType = EniSignatureType.valueOf(signTypeProp);
+						if (!EniSignatureType.TF01.equals(eniSignatureType)
+							&& !EniSignatureType.TF04.equals(eniSignatureType)) {
+								long beginMill = System.currentTimeMillis();
+								// Se comprueba para todos menos los migrados transformados.
+								if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME)) {
+									checkDocumentSignature(node);
+								}
+								// incluir a lista de propiedades la fecha de sellado pues la firma es valida
+								utils.updateResealDate(node);
+								signMill = System.currentTimeMillis() - beginMill;
+								LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
+								checkDocClassification(node, parentRef);
+						}
+					}
+				}
 			}
 		}
 		LOGGER.debug("Preparación para la llamada al servicio");
@@ -1492,7 +1529,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				nodeService.setProperty(nodeRef, EniModelUtilsInterface.PROP_PERFIL_FIRMA_QNAME, newperfil);
 			}
 			// se incluye la fecha sellado pues el documento a sido firmado correctamente
-			utils.updateResealDate(nodeRef);
+			// utils.updateResealDate(nodeRef);
 			signMill = System.currentTimeMillis() - initSign;
 		}
 
