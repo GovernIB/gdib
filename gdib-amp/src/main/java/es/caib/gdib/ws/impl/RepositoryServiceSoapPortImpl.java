@@ -1494,7 +1494,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		
 		long signMill = 0;
 		// (31/05/2023) Se comprueba el resellar sólo si no es definitivo.
-		if ((utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME) && isSign) || isFinalNode) {
+		if ((utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME) && isSign)) {
 			// Documentos
 			NodeRef parentNodeRef = nodeService.getPrimaryParent(nodeRef).getParentRef();
 			checkDocClassification(node, parentNodeRef);
@@ -1510,7 +1510,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			String perfil = utils.getProperty(newNode.getProperties(),
 					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
 			LOGGER.info("Perfil de firma antes de comprobar firma: " + perfil);
-			if (isFinalNode || upgradeSign) {
+			if (upgradeSign) {
 				isUpgradeSign = checkDocumentSignature(newNode);
 			}
 			String newperfil = utils.getProperty(newNode.getProperties(),
