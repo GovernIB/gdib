@@ -1245,12 +1245,15 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 				if (utils.isType(node.getType(), ConstantUtils.TYPE_DOCUMENTO_QNAME)) {
 					LOGGER.debug("Documento: NO es un borrador. Se pasa a chequear la firma");
 					long beginMill = System.currentTimeMillis();
+					Boolean isUpgradeSign = Boolean.FALSE;
 					// Se comprueba para todos menos los migrados transformados.
-					if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) && upgradeSign) {
-						checkDocumentSignature(node);
+					if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME)) {
+						isUpgradeSign = checkDocumentSignature(node);
 					}
-					// incluir a lista de propiedades la fecha de sellado pues la firma es valida
-					utils.updateResealDate(node);
+					if (isUpgradeSign) {
+						// incluir a lista de propiedades la fecha de sellado pues la firma es valida
+						utils.updateResealDate(node);
+					}
 					signMill = System.currentTimeMillis() - beginMill;
 					LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
 					checkDocClassification(node, parentRef);
@@ -1286,12 +1289,15 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 						EniSignatureType eniSignatureType = EniSignatureType.valueOf(signTypeProp);
 						if (!EniSignatureType.TF01.equals(eniSignatureType)) {
 								long beginMill = System.currentTimeMillis();
+								Boolean isUpgradeSign = Boolean.FALSE;
 								// Se comprueba para todos menos los migrados transformados.
 								if (!utils.contains(node.getAspects(), ConstantUtils.ASPECT_TRANSFORMADO_QNAME) && upgradeSign) {
-									checkDocumentSignature(node);
+									isUpgradeSign = checkDocumentSignature(node);
 								}
-								// incluir a lista de propiedades la fecha de sellado pues la firma es valida
-								utils.updateResealDate(node);
+								if (isUpgradeSign) {
+									// incluir a lista de propiedades la fecha de sellado pues la firma es valida
+									utils.updateResealDate(node);
+								}
 								signMill = System.currentTimeMillis() - beginMill;
 								LOGGER.debug("Firma checkeada. Se pasa a comprobar el cod Classif.");
 								checkDocClassification(node, parentRef);
@@ -1510,8 +1516,11 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 			String perfil = utils.getProperty(newNode.getProperties(),
 					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
 			LOGGER.info("Perfil de firma antes de comprobar firma: " + perfil);
-			if (upgradeSign) {
-				isUpgradeSign = checkDocumentSignature(newNode);
+			// (29/06/2023) Sólo si se configura el check de la propiedad upgradeSign=true o es definitivo
+			if (upgradeSign ||
+				(utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
+				&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME))) {
+					isUpgradeSign = checkDocumentSignature(newNode);
 			}
 			String newperfil = utils.getProperty(newNode.getProperties(),
 					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
