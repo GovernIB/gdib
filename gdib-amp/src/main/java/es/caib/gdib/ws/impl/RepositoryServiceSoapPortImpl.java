@@ -1450,7 +1450,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		if (!utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)) {
 			isFinalNode = true;
 		}
-		
+
 
 		// (06/06/2023) Si no tiene el documento firma o no es válida y no es estado final del
 		// documento, se deja las propiedades que viene de las aplicaciones cliente y no se firma el documento.
