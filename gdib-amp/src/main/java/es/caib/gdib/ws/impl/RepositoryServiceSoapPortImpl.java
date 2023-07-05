@@ -1500,12 +1500,12 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 		
 		long signMill = 0;
 		// (31/05/2023) Se comprueba el resellar sólo si no es definitivo.
-		if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME) && isSign) {
+		if ((utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME) || isFinalNode) && isSign) {
 			// Documentos
 			NodeRef parentNodeRef = nodeService.getPrimaryParent(nodeRef).getParentRef();
 			checkDocClassification(node, parentNodeRef);
-			if (utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
-					&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME)) {
+			if ((utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
+					&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME)) || isFinalNode) {
 				utils.checkNodeIntegrity(newNode);
 			}
 			
@@ -1517,7 +1517,7 @@ public class RepositoryServiceSoapPortImpl extends SpringBeanAutowiringSupport i
 					EniModelUtilsInterface.ENI_MODEL_PREFIX + EniModelUtilsInterface.PROP_PERFIL_FIRMA);
 			LOGGER.info("Perfil de firma antes de comprobar firma: " + perfil);
 			// (29/06/2023) Sólo si se configura el check de la propiedad upgradeSign=true o es definitivo
-			if (upgradeSign ||
+			if (upgradeSign || isFinalNode ||
 				(utils.contains(original.getAspects(), ConstantUtils.ASPECT_BORRADOR_QNAME)
 				&& !nodeService.hasAspect(nodeRef, ConstantUtils.ASPECT_BORRADOR_QNAME))) {
 					isUpgradeSign = checkDocumentSignature(newNode);
