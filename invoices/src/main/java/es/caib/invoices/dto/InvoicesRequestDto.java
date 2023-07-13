@@ -28,7 +28,6 @@ public class InvoicesRequestDto {
 	private String providerId;
 	
 	@JsonProperty(InvoicesConstants.SERIALNUMBER_JSON)
-	@NotBlank(message = "'serialNumber' is null or empty")
 	private String serialNumber;
 	
 	@JsonProperty(InvoicesConstants.ISSUEDATE_JSON)
@@ -55,7 +54,7 @@ public class InvoicesRequestDto {
 			@NotBlank(message = "'invoiceNumber' is null or empty") String invoiceNumber,
 			@NotBlank(message = "'providerName' is null or empty") String providerName,
 			@NotBlank(message = "'providerId' is null or empty") String providerId,
-			@NotBlank(message = "'serialNumber' is null or empty") String serialNumber, Date issueDate,
+			String serialNumber, Date issueDate,
 			@NotBlank(message = "'invoiceTotal' is null or empty") String invoiceTotal,
 			@NotBlank(message = "'dir3' is null or empty") String dir3,
 			@NotBlank(message = "'docid' is null or empty") String docid,
