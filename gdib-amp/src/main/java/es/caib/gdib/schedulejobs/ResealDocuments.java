@@ -62,6 +62,7 @@ public class ResealDocuments extends BaseProcessorExtension {
     private static final String SIGN_PROFILE_ATT = "signprofileatt";
     private static final String RESEAL_DATE_ATT = "resealdateatt";
     private static final String LUCENE_QUERY_TEMPLATE = "lucene.query.template";
+    private static final String LUCENE_QUERY_TEMPLATE_NO_UPGRADE = "lucene.query.template.noupgrade";
 
     private static final String CLASIFICATION = "clasification";
     private static final String MIGRATION = "migration";
@@ -95,6 +96,8 @@ public class ResealDocuments extends BaseProcessorExtension {
 
     private String typeDoc;
     private boolean active;
+    
+    private boolean upgradeSign;
 
     public void execute() {
         // compruebo si el job esta activo, por la property "reseal.active"
@@ -193,8 +196,11 @@ public class ResealDocuments extends BaseProcessorExtension {
     	int queryResultLength = 0;
     	List<NodeRef> res = new ArrayList<NodeRef>();
     	List<SubTypeDocInfo> resealInfo = subTypeDocUtil.getReselladoInfo();
-    	String luceneQuery = resealDocumentsPropertiesFilter.getProperty(typeDoc, LUCENE_QUERY_TEMPLATE);
 
+    	//Elegimos una query en funcion de la propiedad updateSign
+    	String checkIfUpgradeSignQuery = upgradeSign ? LUCENE_QUERY_TEMPLATE : LUCENE_QUERY_TEMPLATE_NO_UPGRADE;
+    	String luceneQuery = resealDocumentsPropertiesFilter.getProperty(typeDoc, checkIfUpgradeSignQuery);
+    	
     	final SearchParameters params = new SearchParameters();
         params.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
         params.setLanguage(SearchService.LANGUAGE_LUCENE);
@@ -886,5 +892,13 @@ public class ResealDocuments extends BaseProcessorExtension {
 
     public void setTxnHelper(RetryingTransactionHelper txnHelper) {
 		this.txnHelper = txnHelper;
+	}
+    
+    public boolean isUpgradeSign() {
+		return upgradeSign;
+	}
+
+	public void setUpgradeSign(boolean upgradeSign) {
+		this.upgradeSign = upgradeSign;
 	}
 }
