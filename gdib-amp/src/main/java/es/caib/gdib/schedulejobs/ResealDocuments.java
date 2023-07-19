@@ -62,6 +62,7 @@ public class ResealDocuments extends BaseProcessorExtension {
     private static final String SIGN_PROFILE_ATT = "signprofileatt";
     private static final String RESEAL_DATE_ATT = "resealdateatt";
     private static final String LUCENE_QUERY_TEMPLATE = "lucene.query.template";
+    private static final String LUCENE_QUERY_TEMPLATE_NO_UPGRADE = "lucene.query.template.noupgrade";
 
     private static final String CLASIFICATION = "clasification";
     private static final String MIGRATION = "migration";
